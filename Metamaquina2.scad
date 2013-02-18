@@ -244,19 +244,20 @@ if (preview_metal && render_bolts){
 
 // 2d shapes for laser-cutting:
 
-Sanguinololu_width=43;
-Sanguinololu_height=94;
-module Sanguinololu_holes(){
-  circle(r=m3_diameter/2, $fn=20);
+RAMBo_border = 3.7;
+RAMBo_width = 103;
+RAMBo_height = 104;
+module RAMBo_holes(){
+  circle(r=m4_diameter/2, $fn=20);
 
-  translate([0,Sanguinololu_height])
-  circle(r=m3_diameter/2, $fn=20);
+  translate([RAMBo_border, RAMBo_height-RAMBo_border])
+  circle(r=m4_diameter/2, $fn=20);
 
-  translate([Sanguinololu_width, 0])
-  circle(r=m3_diameter/2, $fn=20);
+  translate([RAMBo_width-RAMBo_border, RAMBo_border])
+  circle(r=m4_diameter/2, $fn=20);
 
-  translate([Sanguinololu_width, Sanguinololu_height])
-  circle(r=m3_diameter/2, $fn=20);
+  translate([RAMBo_width-RAMBo_border, RAMBo_height-RAMBo_border])
+  circle(r=m4_diameter/2, $fn=20);
 }
 
 //This is based on measurements of
@@ -381,7 +382,7 @@ module MachineLeftPanel_face(){
     MachineSidePanel_face();
 
     translate([45, 220])
-    Sanguinololu_holes();
+    RAMBo_holes();
 
     holes_for_motor_wires();
     holes_for_z_endstop_wires();
@@ -444,7 +445,7 @@ module MachineRightPanel_face(){
       zip_tie_holes();
     }
 
-    //zip-tie holes for sanguinololu power wires
+    //zip-tie holes for RAMBo power wires
     translate([30 + feetwidth,feetheight*2.5]){
       translate([10,-3])
       rotate([0,0,90])
