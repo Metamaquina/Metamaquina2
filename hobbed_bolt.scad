@@ -11,7 +11,9 @@ M8_washer_thickness = 1.5; //based on washer.scad
 wade_large_thickness = 6; //based on wade_big.stl (using projection(cut=true))
 M8_nut_thickness = 6; //based on nut.scad
 
-bolt_diameter = 8;
+bolt_diameter = 7.7; //The hobbed bolt diameter must not be any greater than 7.7 
+         // otherwise it wont fit in the 608zz bearing.
+
 //hobbing_position = 22; //3d printed wade block
 hobbing_position = MDF_thickness*3/2 + bearing_thickness + 2*M8_washer_thickness + wade_large_thickness;
 
@@ -56,6 +58,46 @@ module Square(x1,y1,x2,y2){
   roundline(x1,y2,x1,y1);
 }
 
+module RegularPolygon(N,r, even_odd=false){
+  if (even_odd){
+    for (i=[1:N/2])
+      roundline(r*cos(2*i*360/N), r*sin(2*i*360/N),
+                r*cos((2*i+1)*360/N), r*sin((2*i+1)*360/N));
+  } else {
+    for (i=[1:N])
+      roundline(r*cos(i*360/N), r*sin(i*360/N),
+                r*cos((i+1)*360/N), r*sin((i+1)*360/N));
+  }
+}
+
+module Hexagon(r){
+  RegularPolygon(6,r);
+}
+
+module Circle(r, even_odd=false){
+  RegularPolygon(60,r, even_odd=even_odd);
+}
+
+module bolt_hex_head_frontal_view(D){
+  //ISO standard for NON-STRUCTURAL hexagonal bolt head dimensions:
+  e = 1.8 * D;
+  s = 1.6 * D;
+
+  translate([-15,0]){
+    dimension(-s/2, 14, s/2, 14);
+    rotate([0,0,90])
+    dimension(-e/2, 12, e/2, 12);
+
+    rotate([0,0,30])
+    Hexagon(e/2);
+
+    Circle(D/2, even_odd=true);
+    dimension(-D/2, 10, D/2, 10);
+
+    Circle(e/2*sqrt(3)/2);
+  }
+}
+
 module arrow(x,y,angle,length=1, width=0.4, thickness=0.1){
   translate([x,y])
   rotate([0,0,angle])
@@ -70,14 +112,20 @@ module arrow(x,y,angle,length=1, width=0.4, thickness=0.1){
   }
 }
 
-module head(h, w){
-  Square(-h, -w/2, 0, w/2);
-  Square(-h, -w/5, 0, w/5);
+module head(D){
+  //ISO standard for NON-STRUCTURAL hexagonal bolt head dimensions:
+  e = 1.8 * D;
+  h = 0.7 * D;
+
+  Square(-h, -e/2, 0, e/2);
+  Square(-h, -e/4, 0, e/4);
+
+  dimension(-h,16,0,16);
 }
 
 module body(diameter, length){
   Square(0, -diameter/2, length, diameter/2);
-  cota(0,-10, length,-10);
+  dimension(0,-10, length,-10);
 }
 
 module glyph(char, fontsize){
@@ -86,7 +134,7 @@ module glyph(char, fontsize){
   }
 }
 
-module dimension(x, y, string, spacing=0.7, fontsize=2){
+module dimension_label(x, y, string, spacing=0.7, fontsize=2){
 //draw dimension text at coordinate x,y
 
   text_length = (len(string)+1) * spacing*fontsize;
@@ -100,7 +148,7 @@ module dimension(x, y, string, spacing=0.7, fontsize=2){
   }
 }
 
-module cota(x1,y1, x2,y2, color="blue"){
+module dimension(x1,y1, x2,y2, color="blue"){
   length = round(1000*sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)))/1000.0;
   angle = atan2(y2-y1, x2-x1);
 
@@ -112,14 +160,14 @@ module cota(x1,y1, x2,y2, color="blue"){
     roundline(x2,y2+1, x2,y2-6);
 
     roundline(x1,y1, x2,y2);
-    dimension((x1+x2)/2, (y1+y2)/2, str(length));
+    dimension_label((x1+x2)/2, (y1+y2)/2, str(length));
   }
 }
 
 module hobbing(position, diameter, length){
   N=6;
-  cota(0,11, position,11);
-  cota(position-length/2, 12, position+length/2, 12, color="red");
+  dimension(0,11, position,11);
+  dimension(position-length/2, 12, position+length/2, 12, color="red");
 
   translate([position,0]){
     for (i=[0:N])
@@ -130,7 +178,7 @@ module hobbing(position, diameter, length){
 module screw(diameter, length){
   N=10;
   spacing=3;
-  cota(bolt_length-length,11, bolt_length,11);
+  dimension(bolt_length-length,11, bolt_length,11);
 
   Square(bolt_length-length, -diameter/2, bolt_length, diameter/2);
 
@@ -179,7 +227,9 @@ translate([wade_height,0]){
 //%wade_block_3d();
 
 module parafuso_trator(){
-  head(h=5, w=16);
+  bolt_hex_head_frontal_view(bolt_diameter);
+
+  head(bolt_diameter);
   body(diameter=bolt_diameter, length=bolt_length);
   hobbing(position=hobbing_position, diameter=bolt_diameter, length=hobbing_width);
   screw(diameter=bolt_diameter, length=screw_length);
