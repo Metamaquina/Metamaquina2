@@ -244,10 +244,12 @@ if (preview_metal && render_bolts){
 
 // 2d shapes for laser-cutting:
 
+RAMBo_thickness = 35; //considering the height of the connectors and components
 RAMBo_border = 3.7;
 RAMBo_width = 103;
 RAMBo_height = 104;
 module RAMBo_holes(){
+  translate([RAMBo_border, RAMBo_border])
   circle(r=m4_diameter/2, $fn=20);
 
   translate([RAMBo_border, RAMBo_height-RAMBo_border])
@@ -376,12 +378,15 @@ module holes_for_motor_wires(){
 
 }
 
+RAMBo_x = 5;
+RAMBo_y = 150;
+
 //!MachineLeftPanel_face();
 module MachineLeftPanel_face(){
   difference(){
     MachineSidePanel_face();
 
-    translate([45, 220])
+    translate([RAMBo_x, RAMBo_y])
     RAMBo_holes();
 
     holes_for_motor_wires();
@@ -1496,9 +1501,13 @@ module MachineLeftPanel_sheet(){
     color(sheet_color){
       translate([-SidePanels_distance/2 + thickness, RightPanel_basewidth/2])
       rotate([0,0,-90])
-      rotate([90,0,0])
-      linear_extrude(height=thickness)
-      MachineLeftPanel_face();
+      rotate([90,0,0]){
+        linear_extrude(height=thickness)
+        MachineLeftPanel_face();
+
+        translate([RAMBo_x, RAMBo_y, -RAMBo_thickness])
+        RAMBo_volume();
+      }
     }
   }
 }
@@ -1659,6 +1668,13 @@ module XEndIdler_belt_face_assembly(){
     }
   }
 
+}
+
+module RAMBo_volume(){
+//This is the space that is required for the RAMBo Electronics.
+//We must make sure there's enough space so that the electronics doesn't
+//take up part of the printer's max build volume.
+  %cube([RAMBo_width, RAMBo_height, RAMBo_thickness]);
 }
 
 module Z_couplings(){
