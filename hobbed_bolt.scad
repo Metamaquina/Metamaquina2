@@ -116,6 +116,9 @@ module head(D){
   //ISO standard for NON-STRUCTURAL hexagonal bolt head dimensions:
   e = 1.8 * D;
   h = 0.7 * D;
+//TODO: these rules are based on the info found at
+//http://www.metrication.com/engineering/fastener.html
+// We should double check it.
 
   Square(-h, -e/2, 0, e/2);
   Square(-h, -e/4, 0, e/4);
