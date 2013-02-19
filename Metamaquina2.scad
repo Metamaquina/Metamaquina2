@@ -455,7 +455,7 @@ module holes_for_motor_wires(){
 }
 
 RAMBo_x = 5;
-RAMBo_y = 150;
+RAMBo_y = 133;
 
 //!MachineLeftPanel_face();
 module MachineLeftPanel_face(){
