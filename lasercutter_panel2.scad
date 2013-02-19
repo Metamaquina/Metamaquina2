@@ -1,0 +1,60 @@
+// Lasercutter Panel #2 for manufacturing the Metamaquina 2 desktop 3d printer
+//
+// (c) 2013 Felipe C. da S. Sanches <fsanches@metamaquina.com.br>
+// Lincensed under the terms of the GNU General Public License
+// version 3 (or later).
+
+use <Metamaquina2.scad>;
+
+module lasercutter_panel2(){
+  % plate_border();
+
+  translate([340,275])
+  rotate([0,0,-90])
+  MachineTopPanel_face();
+
+  translate([395,155])
+  rotate([0,0,90])
+  MachineArcPanel_face();
+
+  translate([190,230])
+  rotate([0,0,90])
+  MachineBottomPanel_face();
+
+  translate([80,230]){
+    rotate([0,0,90])
+    XPlatform_bottom_face();
+
+    translate([25,-40])
+    rotate([0,0,90]){
+      XEnd_front_face();//Motor
+
+      translate([125,0])
+      XEnd_front_face();//Idler
+    }
+  }
+
+  translate([400,160])
+  rotate([0,0,90])
+  YMotorHolder_face();
+
+  translate([370,350])
+  rotate([0,0,90])
+  render() XCarriage_bottom_face();
+
+  translate([240,470]){
+    for (i=[0:1]){
+      translate([i*25,0]) RodEndBottom_face();
+    }
+  }
+
+  translate([240,400]){
+    for (i=[0:1]){
+      translate([0,i*35]) RodEndTop_face();
+    }
+  }
+
+}
+
+lasercutter_panel2();
+
