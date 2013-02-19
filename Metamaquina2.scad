@@ -2712,11 +2712,6 @@ module YMotor(){
   NEMA17();
 }
 
-module AirZMotors(){
-  translate([Z_rods_distance/2 - z_rod_z_bar_distance, 0, machine_height+thickness]) NEMA17();
-  translate([-Z_rods_distance/2 + z_rod_z_bar_distance, 0, machine_height+thickness]) NEMA17();
-}
-
 module ZMotors(){
   translate([Z_rods_distance/2 - z_rod_z_bar_distance, 0, BottomPanel_zoffset])
   rotate([180,0,0]) NEMA17();
