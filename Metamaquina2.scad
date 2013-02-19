@@ -249,10 +249,16 @@ if (preview_metal && render_bolts){
 
 // 2d shapes for laser-cutting:
 
-RAMBo_thickness = 35; //considering the height of the connectors and components
+hexspacer_length = 35; //considering the height of the connectors and components
+nylonspacer_length = 4;
+RAMBo_pcb_thickness = 2;
+M3_bolt_head = 3;
+RAMBo_cover_thickness = 3;
+RAMBo_thickness = nylonspacer_length + RAMBo_pcb_thickness + hexspacer_length + RAMBo_cover_thickness + M3_bolt_head;
 RAMBo_border = 3.7;
 RAMBo_width = 103;
 RAMBo_height = 104;
+
 module RAMBo_holes(){
   translate([RAMBo_border, RAMBo_border])
   circle(r=m4_diameter/2, $fn=20);
@@ -265,6 +271,71 @@ module RAMBo_holes(){
 
   translate([RAMBo_width-RAMBo_border, RAMBo_height-RAMBo_border])
   circle(r=m4_diameter/2, $fn=20);
+}
+
+module RAMBo_pcb(){
+  color("dark green")
+  linear_extrude(height=RAMBo_pcb_thickness)
+  difference(){
+    square([RAMBo_width, RAMBo_height]);
+    RAMBo_holes();
+  }
+}
+
+white_nylon_color = [1, 1, 0.8];
+module nylonspacer(D=8, d=m4_diameter, h=nylonspacer_length){
+  color(white_nylon_color)
+  linear_extrude(height=h)
+  difference(){
+    circle(r=D/2, $fn=20);
+    circle(r=d/2, $fn=20);
+  }
+}
+
+module hexspacer(D=8, d=m3_diameter, h=hexspacer_length){
+  color(metal_color)
+  linear_extrude(height=h)
+  difference(){
+    circle(r=D/2, $fn=6);
+    circle(r=d/2, $fn=20);
+  }
+}
+
+acrylic_color = [1, 0.5, 0.5, 0.7];//red-transparent
+module RAMBo_cover(){
+  color(acrylic_color)
+  linear_extrude(height=RAMBo_cover_thickness)
+  difference(){
+    rounded_square([RAMBo_width, RAMBo_height], corners=[3,3,3,3]);
+    RAMBo_holes();
+  }
+  //TODO: Add logo / labels ?
+}
+
+module RAMBo(){
+  for (x=[RAMBo_border, RAMBo_width-RAMBo_border]){
+    for (y=[RAMBo_border, RAMBo_height-RAMBo_border]){
+      translate([x,y]){
+        nylonspacer();
+
+        translate([0,0,nylonspacer_length+RAMBo_pcb_thickness]){
+          hexspacer();
+          translate([0,0,hexspacer_length+RAMBo_cover_thickness]){
+            //bolt head
+            color("grey")
+            cylinder(r=3, h=M3_bolt_head, $fn=20);
+          }
+        }
+      }
+    }
+  }
+
+  translate([0,0,nylonspacer_length]){
+    RAMBo_pcb();
+
+    translate([0,0,RAMBo_pcb_thickness + hexspacer_length])
+    RAMBo_cover();    
+  }
 }
 
 //This is based on measurements of
@@ -1392,16 +1463,16 @@ module MachineRightPanel_sheet(){
 
 module MachineLeftPanel_sheet(){
   if( preview_lasercut ){
-    color(sheet_color){
-      translate([-SidePanels_distance/2 + thickness, RightPanel_basewidth/2])
-      rotate([0,0,-90])
-      rotate([90,0,0]){
+    translate([-SidePanels_distance/2 + thickness, RightPanel_basewidth/2])
+    rotate([0,0,-90])
+    rotate([90,0,0]){
+      color(sheet_color){
         linear_extrude(height=thickness)
         MachineLeftPanel_face();
-
-        translate([RAMBo_x, RAMBo_y, -RAMBo_thickness])
-        RAMBo_volume();
       }
+
+      translate([RAMBo_x, RAMBo_y, thickness])
+      RAMBo();
     }
   }
 }
