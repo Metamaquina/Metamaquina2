@@ -76,9 +76,14 @@ sheet_color = [0.9, 0.3, 0.3, 1];
 peek_color = "beige";
 
 /* Desired build volume: */
-BuildVolume_X=215;
-BuildVolume_Y=215;
+BuildVolume_X=200;
+BuildVolume_Y=200;
 BuildVolume_Z=150;
+
+//For the actual build volume we avoid using the marginal
+//region around the heated bed
+HeatedBed_X = BuildVolume_X + 15;
+HeatedBed_Y = BuildVolume_Y + 15;
 
 hack_couplings = 5; // for astethical purposes, the z-couplings are animated rotating <hack_couplings> times slower than the correct mechanical behaviour
 
@@ -128,10 +133,10 @@ NEMA17_length=40;
 and dimensions of the several acrylic/plywood panels:*/
 
 BuildPlatform_SidePanels_distance = 40;
-SidePanels_distance = BuildVolume_X + 2*BuildPlatform_SidePanels_distance;
+SidePanels_distance = HeatedBed_X + 2*BuildPlatform_SidePanels_distance;
 
 RightPanel_baseheight = 92;
-RightPanel_basewidth = 2*(BuildVolume_Y)+10;
+RightPanel_basewidth = 2*(HeatedBed_Y)+10;
 
 //Z_rods_distance = 388; //PrusaAir2
 Z_rods_distance = SidePanels_distance + 2*(z_rod_z_bar_distance + NEMA17_width/2 + 5);
@@ -2024,10 +2029,10 @@ module BuildPlatform_pcb(){
 
 module BuildPlatform_pcb_curves(){
   difference(){
-    square([BuildVolume_X, BuildVolume_Y], center=true);
+    square([HeatedBed_X, HeatedBed_Y], center=true);
     for (i=[-1,1]){
       for (j=[-1,1]){
-        translate([i*(BuildVolume_X/2 - 4), j*(BuildVolume_Y/2 - 4)])
+        translate([i*(HeatedBed_X/2 - 4), j*(HeatedBed_Y/2 - 4)])
         circle(r=m3_diameter/2, $fn=20);
       }
     }
@@ -2046,10 +2051,10 @@ module YPlatform_sheet(){
 
 module YPlatform_sheet_curves_generic(){
   difference(){
-    rounded_square([BuildVolume_X, BuildVolume_Y + 35], corners=[10,10,10,10], center=true);
+    rounded_square([HeatedBed_X, HeatedBed_Y + 35], corners=[10,10,10,10], center=true);
     for (i=[-1,1]){
       for (j=[-1,1]){
-        translate([i*(BuildVolume_X/2 - 4), j*(BuildVolume_Y/2 - 4)])
+        translate([i*(HeatedBed_X/2 - 4), j*(HeatedBed_Y/2 - 4)])
         circle(r=m3_diameter/2, $fn=20);
       }
     }
@@ -2113,13 +2118,9 @@ module YPlatform_sheet_curves(){
 }
 
 module BuildVolumePreview(){
-  x = BuildVolume_X - 2*10;
-  y = BuildVolume_Y - 2*10;
   if (render_build_volume){
-    //For the actual build volume we avoid using the 1cm-wide marginal 
-    //region around the build platform 
-    translate([-x/2, -y/2, BuildPlatform_height])
-    %cube([x, y, BuildVolume_Z]);
+    translate([-BuildVolume_X/2, -BuildVolume_Y/2, BuildPlatform_height])
+    %cube([BuildVolume_X, BuildVolume_Y, BuildVolume_Z]);
   }
 }
 
