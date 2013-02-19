@@ -32,6 +32,7 @@ use <bar-clamp.scad>;
 use <coupling.scad>;
 
 //rendering configs:
+render_calibration_guide = false;
 
 //*
 preview_lasercut=true;
@@ -2771,8 +2772,10 @@ barclamp_calibration = (SidePanels_distance - 2*thickness - Y_rods_distance - m8
 
 echo(str("calibration distance between the internal face of a sidepanel and the closest tangent of a Y-axis rod: ", barclamp_calibration, " mm"));
 
-translate([-SidePanels_distance/2 + thickness, -RightPanel_basewidth/2 + bar_cut_length - 10, base_bars_Zdistance + base_bars_height])
-color([0,1,0,0.7]) cube([barclamp_calibration, 20, 10]);
+if (render_calibration_guide){
+  translate([-SidePanels_distance/2 + thickness, -RightPanel_basewidth/2 + bar_cut_length - 10, base_bars_Zdistance + base_bars_height])
+  color([0,1,0,0.7]) cube([barclamp_calibration, 20, 10]);
+}
 
 bearing_thickness = 7;
 washer_thickness = 1.5;
@@ -2781,8 +2784,10 @@ Ybearing_calibration = (SidePanels_distance - 2*thickness)/2 - bearing_thickness
 
 echo(str("calibration distance between the internal face of a sidepanel and the closest face of a mudguard washer: ", Ybearing_calibration, " mm"));
 
-translate([-SidePanels_distance/2 + thickness, -RightPanel_basewidth/2 + bar_cut_length - 10, base_bars_Zdistance + base_bars_height])
-color([0,0,1,0.7]) cube([Ybearing_calibration, 20, 15]);
+if (render_calibration_guide){
+  translate([-SidePanels_distance/2 + thickness, -RightPanel_basewidth/2 + bar_cut_length - 10, base_bars_Zdistance + base_bars_height])
+  color([0,0,1,0.7]) cube([Ybearing_calibration, 20, 15]);
+}
 
 echo(str("side panels distance (internal faces): ", SidePanels_distance - 2*thickness, " mm"));
 
