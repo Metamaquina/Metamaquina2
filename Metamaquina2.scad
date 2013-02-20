@@ -32,6 +32,7 @@ use <bar-clamp.scad>;
 use <coupling.scad>;
 
 //rendering configs:
+render_calibration_guide = false;
 
 //*
 preview_lasercut=true;
@@ -76,9 +77,14 @@ sheet_color = [0.9, 0.3, 0.3, 1];
 peek_color = "beige";
 
 /* Desired build volume: */
-BuildVolume_X=215;
-BuildVolume_Y=215;
+BuildVolume_X=200;
+BuildVolume_Y=200;
 BuildVolume_Z=150;
+
+//For the actual build volume we avoid using the marginal
+//region around the heated bed
+HeatedBed_X = BuildVolume_X + 15;
+HeatedBed_Y = BuildVolume_Y + 15;
 
 hack_couplings = 5; // for astethical purposes, the z-couplings are animated rotating <hack_couplings> times slower than the correct mechanical behaviour
 
@@ -128,10 +134,10 @@ NEMA17_length=40;
 and dimensions of the several acrylic/plywood panels:*/
 
 BuildPlatform_SidePanels_distance = 40;
-SidePanels_distance = BuildVolume_X + 2*BuildPlatform_SidePanels_distance;
+SidePanels_distance = HeatedBed_X + 2*BuildPlatform_SidePanels_distance;
 
 RightPanel_baseheight = 92;
-RightPanel_basewidth = 2*(BuildVolume_Y)+10;
+RightPanel_basewidth = 2*(HeatedBed_Y)+10;
 
 //Z_rods_distance = 388; //PrusaAir2
 Z_rods_distance = SidePanels_distance + 2*(z_rod_z_bar_distance + NEMA17_width/2 + 5);
@@ -244,10 +250,16 @@ if (preview_metal && render_bolts){
 
 // 2d shapes for laser-cutting:
 
-RAMBo_thickness = 35; //considering the height of the connectors and components
+hexspacer_length = 35; //considering the height of the connectors and components
+nylonspacer_length = 4;
+RAMBo_pcb_thickness = 2;
+M3_bolt_head = 3;
+RAMBo_cover_thickness = 3;
+RAMBo_thickness = nylonspacer_length + RAMBo_pcb_thickness + hexspacer_length + RAMBo_cover_thickness + M3_bolt_head;
 RAMBo_border = 3.7;
 RAMBo_width = 103;
 RAMBo_height = 104;
+
 module RAMBo_holes(){
   translate([RAMBo_border, RAMBo_border])
   circle(r=m4_diameter/2, $fn=20);
@@ -260,6 +272,71 @@ module RAMBo_holes(){
 
   translate([RAMBo_width-RAMBo_border, RAMBo_height-RAMBo_border])
   circle(r=m4_diameter/2, $fn=20);
+}
+
+module RAMBo_pcb(){
+  color("dark green")
+  linear_extrude(height=RAMBo_pcb_thickness)
+  difference(){
+    square([RAMBo_width, RAMBo_height]);
+    RAMBo_holes();
+  }
+}
+
+white_nylon_color = [1, 1, 0.8];
+module nylonspacer(D=8, d=m4_diameter, h=nylonspacer_length){
+  color(white_nylon_color)
+  linear_extrude(height=h)
+  difference(){
+    circle(r=D/2, $fn=20);
+    circle(r=d/2, $fn=20);
+  }
+}
+
+module hexspacer(D=8, d=m3_diameter, h=hexspacer_length){
+  color(metal_color)
+  linear_extrude(height=h)
+  difference(){
+    circle(r=D/2, $fn=6);
+    circle(r=d/2, $fn=20);
+  }
+}
+
+acrylic_color = [1, 0.5, 0.5, 0.7];//red-transparent
+module RAMBo_cover(){
+  color(acrylic_color)
+  linear_extrude(height=RAMBo_cover_thickness)
+  difference(){
+    rounded_square([RAMBo_width, RAMBo_height], corners=[3,3,3,3]);
+    RAMBo_holes();
+  }
+  //TODO: Add logo / labels ?
+}
+
+module RAMBo(){
+  for (x=[RAMBo_border, RAMBo_width-RAMBo_border]){
+    for (y=[RAMBo_border, RAMBo_height-RAMBo_border]){
+      translate([x,y]){
+        nylonspacer();
+
+        translate([0,0,nylonspacer_length+RAMBo_pcb_thickness]){
+          hexspacer();
+          translate([0,0,hexspacer_length+RAMBo_cover_thickness]){
+            //bolt head
+            color("grey")
+            cylinder(r=3, h=M3_bolt_head, $fn=20);
+          }
+        }
+      }
+    }
+  }
+
+  translate([0,0,nylonspacer_length]){
+    RAMBo_pcb();
+
+    translate([0,0,RAMBo_pcb_thickness + hexspacer_length])
+    RAMBo_cover();    
+  }
 }
 
 //This is based on measurements of
@@ -379,7 +456,7 @@ module holes_for_motor_wires(){
 }
 
 RAMBo_x = 5;
-RAMBo_y = 150;
+RAMBo_y = 133;
 
 //!MachineLeftPanel_face();
 module MachineLeftPanel_face(){
@@ -637,117 +714,6 @@ module TopPanel_holes(){
 
       translate([-Z_rod_sidepanel_distance + thickness/2, RightPanel_topwidth-5])
         t_slot_holes(width=50, thickness=thickness);
-    }
-  }
-}
-
-ArcPanel_width = SidePanels_distance - 2 * thickness;
-//ArcPanel_height = 220; //TODO: make it depend on the machine height
-module MachineArcPanel_long_face(){
-  render(){
-    difference(){
-      union(){
-        translate([-ArcPanel_width/2, ArcPanel_height - 53])
-        square([ArcPanel_width,53]);
-
-        translate([-ArcPanel_width/2, 0])
-        rounded_square([20,ArcPanel_height], corners=[5,5,5,5]);
-        translate([+ArcPanel_width/2-20, 0])
-        rounded_square([20,ArcPanel_height], corners=[5,5,5,5]);
-
-        polygon(points=[ [-ArcPanel_width/2, 0], [-ArcPanel_width/2, ArcPanel_height],[-ArcPanel_width/2 + 60, ArcPanel_height], [-ArcPanel_width/2 + 10, 0] ]);
-
-        polygon(points=[ [ArcPanel_width/2, 0], [ArcPanel_width/2, ArcPanel_height],[ArcPanel_width/2 - 60, ArcPanel_height], [ArcPanel_width/2 - 10, 0] ]);
-
-        //tslots for top panel
-        translate([0,ArcPanel_height + thickness/2]){
-          translate([-ArcPanel_width/2, 0])
-          rotate([0,0,-90])
-          t_slot_joints(width=50, thickness=thickness);
-
-          translate([25, 0])
-          rotate([0,0,90])
-          t_slot_joints(width=50, thickness=thickness);
-
-          translate([ArcPanel_width/2, 0])
-          rotate([0,0,90])
-          t_slot_joints(width=50, thickness=thickness);
-        }
-
-        //tslots for left panel
-        translate([-ArcPanel_width/2 - thickness/2, 0]){
-          translate([0, ArcPanel_height - 50])
-          t_slot_joints(width=50, thickness=thickness);
-
-          translate([0, ArcPanel_height/2 - 25])
-          t_slot_joints(width=50, thickness=thickness);
-
-          t_slot_joints(width=50, thickness=thickness);
-        }
-
-        //tslots for right panel
-        translate([ArcPanel_width/2 + thickness/2, 0]){
-          translate([0, ArcPanel_height - 50])
-          t_slot_joints(width=50, thickness=thickness);
-
-          translate([0, ArcPanel_height/2 - 25])
-          t_slot_joints(width=50, thickness=thickness);
-
-          t_slot_joints(width=50, thickness=thickness);
-        }
-      }
-
-      //tslots for top panel
-      translate([0,ArcPanel_height + thickness]){
-        translate([-ArcPanel_width/2 + 25, 0])
-        rotate([0,0,180])
-        t_slot_shape(3,16);
-
-        rotate([0,0,180])
-        t_slot_shape(3,16);
-
-        translate([ArcPanel_width/2 - 25, 0])
-        rotate([0,0,180])
-        t_slot_shape(3,16);
-      }
-
-      //tslots for right panel
-      translate([ArcPanel_width/2 + thickness, 0]){
-        translate([0, 25])
-        rotate([0,0,90])
-        t_slot_shape(3,16);
-
-        translate([0, ArcPanel_height/2])
-        rotate([0,0,90])
-        t_slot_shape(3,16);
-
-        translate([0, ArcPanel_height - 25])
-        rotate([0,0,90])
-        t_slot_shape(3,16);
-      }
-
-      //tslots for left panel
-      translate([-ArcPanel_width/2 - thickness, 0]){
-        translate([0, 25])
-        rotate([0,0,-90])
-        t_slot_shape(3,16);
-
-        translate([0, ArcPanel_height/2])
-        rotate([0,0,-90])
-        t_slot_shape(3,16);
-
-        translate([0, ArcPanel_height - 25])
-        rotate([0,0,-90])
-        t_slot_shape(3,16);
-      }
-
-      //hole for what? extruder wiring, maybe?
-      //This is copied from the PrusaAir2 design
-      translate([0, ArcPanel_height-27])
-      rounded_square([ArcPanel_width-60,10], corners=[5,5,5,5], center=true);
-
-      translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance - thickness/2, -BottomPanel_width/2])
-      t_slot_holes(width=BottomPanel_width, thickness=thickness);
     }
   }
 }
@@ -1424,16 +1390,16 @@ module MachineRightPanel_sheet(){
 
 module MachineLeftPanel_sheet(){
   if( preview_lasercut ){
-    color(sheet_color){
-      translate([-SidePanels_distance/2 + thickness, RightPanel_basewidth/2])
-      rotate([0,0,-90])
-      rotate([90,0,0]){
+    translate([-SidePanels_distance/2 + thickness, RightPanel_basewidth/2])
+    rotate([0,0,-90])
+    rotate([90,0,0]){
+      color(sheet_color){
         linear_extrude(height=thickness)
         MachineLeftPanel_face();
-
-        translate([RAMBo_x, RAMBo_y, -RAMBo_thickness])
-        RAMBo_volume();
       }
+
+      translate([RAMBo_x, RAMBo_y, thickness])
+      RAMBo();
     }
   }
 }
@@ -2061,10 +2027,10 @@ module BuildPlatform_pcb(){
 
 module BuildPlatform_pcb_curves(){
   difference(){
-    square([BuildVolume_X, BuildVolume_Y], center=true);
+    square([HeatedBed_X, HeatedBed_Y], center=true);
     for (i=[-1,1]){
       for (j=[-1,1]){
-        translate([i*(BuildVolume_X/2 - 4), j*(BuildVolume_Y/2 - 4)])
+        translate([i*(HeatedBed_X/2 - 4), j*(HeatedBed_Y/2 - 4)])
         circle(r=m3_diameter/2, $fn=20);
       }
     }
@@ -2083,10 +2049,10 @@ module YPlatform_sheet(){
 
 module YPlatform_sheet_curves_generic(){
   difference(){
-    rounded_square([BuildVolume_X, BuildVolume_Y + 35], corners=[10,10,10,10], center=true);
+    rounded_square([HeatedBed_X, HeatedBed_Y + 35], corners=[10,10,10,10], center=true);
     for (i=[-1,1]){
       for (j=[-1,1]){
-        translate([i*(BuildVolume_X/2 - 4), j*(BuildVolume_Y/2 - 4)])
+        translate([i*(HeatedBed_X/2 - 4), j*(HeatedBed_Y/2 - 4)])
         circle(r=m3_diameter/2, $fn=20);
       }
     }
@@ -2150,13 +2116,9 @@ module YPlatform_sheet_curves(){
 }
 
 module BuildVolumePreview(){
-  x = BuildVolume_X - 2*10;
-  y = BuildVolume_Y - 2*10;
   if (render_build_volume){
-    //For the actual build volume we avoid using the 1cm-wide marginal 
-    //region around the build platform 
-    translate([-x/2, -y/2, BuildPlatform_height])
-    %cube([x, y, BuildVolume_Z]);
+    translate([-BuildVolume_X/2, -BuildVolume_Y/2, BuildPlatform_height])
+    %cube([BuildVolume_X, BuildVolume_Y, BuildVolume_Z]);
   }
 }
 
@@ -2638,11 +2600,6 @@ module YMotor(){
   NEMA17();
 }
 
-module AirZMotors(){
-  translate([Z_rods_distance/2 - z_rod_z_bar_distance, 0, machine_height+thickness]) NEMA17();
-  translate([-Z_rods_distance/2 + z_rod_z_bar_distance, 0, machine_height+thickness]) NEMA17();
-}
-
 module ZMotors(){
   translate([Z_rods_distance/2 - z_rod_z_bar_distance, 0, BottomPanel_zoffset])
   rotate([180,0,0]) NEMA17();
@@ -2656,82 +2613,6 @@ module ZAxis(){
   ZBars();
   Z_couplings();
 }
-
-module RodEndBottom_x2(){
-  translate([0,0]) RodEndBottom_face(); //Z bottom left
-  translate([0,30]) RodEndBottom_face(); //Z bottom right
-}
-
-module RodEndTop_x2(){
-  translate([0,0]) RodEndTop_face(); //Z top left
-  translate([0,30]) RodEndTop_face(); //Z top right
-}
-
-module export_individual_dxf_files(){
-  export_curves(file = "/tmp/export/RightPanel.dxf")
-  MachineRightPanel_face();
-
-  export_curves(file = "/tmp/export/LeftPanel.dxf")
-  MachineLeftPanel_face();
-
-  export_curves(file = "/tmp/export/ArcPanel.dxf")
-  MachineArcPanel_face();
-
-  export_curves(file = "/tmp/export/BottomPanel.dxf")
-  MachineBottomPanel_face();
-
-  export_curves(file = "/tmp/export/TopPanel.dxf")
-  MachineTopPanel_face();
-
-  export_curves(file = "/tmp/export/XPlatformBottom.dxf")
-  XPlatform_bottom_face();
-
-  export_curves(file = "/tmp/export/XEndMotor_back.dxf")
-  XEnd_back_face();
-
-  export_curves(file = "/tmp/export/XEndMotor_front.dxf")
-  XEnd_front_face();
-
-  export_curves(file = "/tmp/export/XEndMotor_belt.dxf")
-  XEndMotor_belt_face();
-
-  export_curves(file = "/tmp/export/XEndMotor_plain.dxf")
-  XEndMotor_plain_face();
-
-  export_curves(file = "/tmp/export/XEndIdler_back.dxf")
-  XEnd_back_face();
-
-  export_curves(file = "/tmp/export/XEndIdler_front.dxf")
-  XEnd_front_face();
-
-  export_curves(file = "/tmp/export/XEndIdler_belt.dxf")
-  XEndIdler_belt_face();
-
-  export_curves(file = "/tmp/export/XEndIdler_plain.dxf")
-  XEndIdler_plain_face();
-
-  export_curves(file = "/tmp/export/XCarriage_bottom.dxf")
-  XCarriage_bottom_face();
-  
-  export_curves(file = "/tmp/export/YPlatform_sheet.dxf")
-  YPlatform_sheet_curves();
-
-  export_curves(file = "/tmp/export/RodEndBottom_x2.dxf")
-  RodEndBottom_x2();
-
-  export_curves(file = "/tmp/export/RodEndTop_x2.dxf")
-  RodEndTop_x2();
-
-  export_curves(file = "/tmp/export/YMotorHolder.dxf")
-  YMotorHolder_face();
-}
-
-//alphacortelaser Tel. (11) 3916-6452 
-// 2,5 1,30
-// cast / extrusado
-//MDF
-//PS - branco talvez
-//PC um pouco mais duro
 
 module ZRodCap_face(l=15.5, hole=true){
   difference(){
@@ -2774,135 +2655,6 @@ module plate_border(w=500, h=500, border=2){
   }
 }
 
-//lasercutter_panels();
-
-module lasercutter_panels(){
-  lasercutter_panel1();
-
-  translate([500,0])
-  lasercutter_panel2();
-
-  translate([1000,0])
-  lasercutter_panel3();
-}
-
-module lasercutter_panel2(){
-  % plate_border();
-
-//ok
-  translate([340,275])
-  rotate([0,0,-90])
-  MachineTopPanel_face();
-
-//ok
-  translate([395,155])
-  rotate([0,0,90])
-  MachineArcPanel_face();
-
-//ok
-  translate([190,230])
-  rotate([0,0,90])
-  MachineBottomPanel_face();
-
-//ok
-  translate([80,230]){
-    rotate([0,0,90])
-    XPlatform_bottom_face();
-
-    translate([25,-40])
-    rotate([0,0,90]){
-      XEnd_front_face();//Motor
-
-      translate([125,0])
-      XEnd_front_face();//Idler
-    }
-  }
-
-//ok
-  translate([400,160])
-  rotate([0,0,90])
-  YMotorHolder_face();
-
-//ok
-  translate([370,350])
-  rotate([0,0,90])
-  render() XCarriage_bottom_face();
-
-//ok
-  translate([240,470]){
-    for (i=[0:1]){
-      translate([i*25,0]) RodEndBottom_face();
-    }
-  }
-
-//ok
-  translate([240,400]){
-    for (i=[0:1]){
-      translate([0,i*35]) RodEndTop_face();
-    }
-  }
-
-}
-
-module lasercutter_panel3(){
-  % plate_border();
-
-  translate([130,150])
-  YPlatform_sheet_curves();
-}
-
-module lasercutter_panel1(){
-//TODO: figure out the usual plate dimentions for laser cutting service providers 
-
-// alpha corte laser: 2500 1300 
-  margin=20;
-  //difference(){
-    //translate([-margin,-margin]) square([2500+2*margin, 1300+2*margin]);
-    //square([2500, 1300]);
-  //}
-
-  %plate_border();
-
-//ok
-  translate([145,165])
-  set_of_M3_spacers(h=2, w=6);
-
-//ok
-  translate([10,10])
-  render() MachineLeftPanel_face();
-
-//ok
-  translate([470,470])
-  rotate([0,0,180])
-  MachineRightPanel_face();
-
-//ok
-  translate([240,200])
-  XEndIdler_back_face();
-
-//ok
-  translate([280,200+70])
-  XEndMotor_back_face();
-
-//ok
-  translate([155,110])
-  XEndMotor_belt_face();
-
-//ok
-  translate([195,270])
-  rotate([0,0,90])
-  XEndMotor_plain_face();
-
-//ok
-  translate([187,205])
-  rotate([0,0,90])
-  XEndIdler_belt_face();
-
-//ok
-  translate([270,157])
-  XEndIdler_plain_face();
-}
-
 //!LaserCutPanels();
 module Metamaquina2(){
   LaserCutPanels();
@@ -2922,18 +2674,6 @@ module Metamaquina2(){
     HiquaPowerSupply();
   }
 }
-
-//export_individual_dxf_files();
-
-//export plates for laser cutting all parts:
-//export_curves(file="/tmp/export/Metamaquina2-panel-1.dxf")
-//lasercutter_panel1();
-
-//export_curves(file="/tmp/export/Metamaquina2-panel-2.dxf")
-//lasercutter_panel2();
-
-//export_curves(file="/tmp/export/Metamaquina2-panel-3.dxf")
-//lasercutter_panel3();
 
 //rotate([0,0,cos(360*time)*60])
 Metamaquina2();
@@ -2958,8 +2698,10 @@ barclamp_calibration = (SidePanels_distance - 2*thickness - Y_rods_distance - m8
 
 echo(str("calibration distance between the internal face of a sidepanel and the closest tangent of a Y-axis rod: ", barclamp_calibration, " mm"));
 
-translate([-SidePanels_distance/2 + thickness, -RightPanel_basewidth/2 + bar_cut_length - 10, base_bars_Zdistance + base_bars_height])
-color([0,1,0,0.7]) cube([barclamp_calibration, 20, 10]);
+if (render_calibration_guide){
+  translate([-SidePanels_distance/2 + thickness, -RightPanel_basewidth/2 + bar_cut_length - 10, base_bars_Zdistance + base_bars_height])
+  color([0,1,0,0.7]) cube([barclamp_calibration, 20, 10]);
+}
 
 bearing_thickness = 7;
 washer_thickness = 1.5;
@@ -2968,8 +2710,10 @@ Ybearing_calibration = (SidePanels_distance - 2*thickness)/2 - bearing_thickness
 
 echo(str("calibration distance between the internal face of a sidepanel and the closest face of a mudguard washer: ", Ybearing_calibration, " mm"));
 
-translate([-SidePanels_distance/2 + thickness, -RightPanel_basewidth/2 + bar_cut_length - 10, base_bars_Zdistance + base_bars_height])
-color([0,0,1,0.7]) cube([Ybearing_calibration, 20, 15]);
+if (render_calibration_guide){
+  translate([-SidePanels_distance/2 + thickness, -RightPanel_basewidth/2 + bar_cut_length - 10, base_bars_Zdistance + base_bars_height])
+  color([0,0,1,0.7]) cube([Ybearing_calibration, 20, 15]);
+}
 
 echo(str("side panels distance (internal faces): ", SidePanels_distance - 2*thickness, " mm"));
 
