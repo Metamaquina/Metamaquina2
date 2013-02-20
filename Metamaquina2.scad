@@ -24,6 +24,9 @@ m4_diameter = 4;
 m8_diameter = 8;
 m8_nut_height = 6.3; //TODO: check the datasheets
 m8_washer_height = 1.5; //TODO: check the datasheets
+lm8uu_diameter = 15;
+lm8uu_length=24;
+sandwich_hexspacer_length = 12; //TODO: check availability
 
 //platic parts
 use <lm8uu-holder.scad>;
@@ -163,7 +166,7 @@ pcb_height = YPlatform_height + 10;
 BuildPlatform_height = pcb_height+2;
 
 //machine_x_dim is the actual width of the whole machine
-machine_x_dim = Z_rods_distance+2*(lm8uu_holder_rod_height+thickness);
+machine_x_dim = Z_rods_distance+2*(lm8uu_diameter/2+thickness);
 XPlatform_height = 45;
 
 //ZLink-specific parameters:
@@ -171,9 +174,8 @@ ZLink_rod_height = 11*sqrt(3)/2;
 dx_z_threaded = 14;
 Zlink_hole_height = thickness + (XPlatform_height-thickness)/2;
 
-lm8uu_hole_offset = lm8uu_holder_rod_height + 1;
 XEnd_extra_width = 30;
-XEnd_box_size = lm8uu_holder_rod_height + z_rod_z_bar_distance + ZLink_rod_height;
+XEnd_box_size = lm8uu_diameter/2 + z_rod_z_bar_distance + ZLink_rod_height;
 
 X_rod_length = machine_x_dim - 2*thickness;
 X_rod_height = 10;
@@ -1045,12 +1047,11 @@ module holes_for_XMIN_endstop(d=12, r=3){
 }
 
 module XEndMotor_bottom_holes(){
+  r=2;
+
   //hole for lm8uu holder
   translate([0, -20])
-  square([lm8uu_hole_offset, 40]);
-  translate([lm8uu_hole_offset, 0]){
-    circle(r=20);
-  }
+  rounded_square([sandwich_hexspacer_length + 3*thickness + r, 40], corners=[0,r,0,r]);
 
   //hole for M8 nut&rod
   translate([thickness + XEnd_box_size - ZLink_rod_height, 0])
@@ -1068,12 +1069,11 @@ module XEndMotor_bottom_holes(){
 }
 
 module XEndIdler_bottom_holes(){
+  r=2;
+
   //hole for lm8uu holder
   translate([0, -20])
-  square([lm8uu_hole_offset, 40]);
-  translate([lm8uu_hole_offset, 0]){
-    circle(r=20);
-  }
+  rounded_square([sandwich_hexspacer_length + 3*thickness + r, 40], corners=[0,r,0,r]);
 
   //hole for M8 nut&rod
   translate([thickness + XEnd_box_size - ZLink_rod_height, 0])
@@ -1238,6 +1238,49 @@ module XEnd_back_face(){
   }
 }
 
+module xend_bearing_sandwich_plainface(){
+  r = 20;
+  difference(){
+    hull(){
+      circle(r=r, $fn=20);
+
+      translate([0, XPlatform_height])
+      circle(r=r, $fn=20);
+    }
+
+    for (i=[-14,14]){
+      translate([i,0])
+      circle(r=m3_diameter/2, $fn=20);
+
+      translate([i, XPlatform_height])
+      circle(r=m3_diameter/2, $fn=20);
+    }
+  }
+}
+
+module LM8UU(){
+  translate([0,12])
+  rotate([90,0])
+  cylinder(r=lm8uu_diameter/2,h=lm8uu_length);
+}
+
+module xend_bearing_sandwich_face(){
+  projection(cut=true){
+    difference(){
+      linear_extrude(height=thickness)
+      xend_bearing_sandwich_plainface();
+
+      //linear bearings
+      translate([0,0,lm8uu_diameter/2 - sandwich_hexspacer_length ]){
+        LM8UU();
+
+        translate([0,XPlatform_height])
+        LM8UU();
+      }
+    }
+  }
+}
+
 module XEnd_front_face(){
   difference(){
   	translate([-XPlatform_width/2 - XEnd_extra_width, thickness])
@@ -1326,6 +1369,29 @@ module XCarriage_bottom_face(){
 }
 
 // 3d preview of lasercut plates:
+
+module XEnd_bearing_sandwich_sheet(){
+  translate([thickness,0])
+  for (x=[-14,14]){
+    for (y=[0,45]){
+      rotate([0,90,0])
+      rotate([0,0,90])
+      translate([x,y])
+      hexspacer(h=sandwich_hexspacer_length);
+    }
+  }
+
+  if( preview_lasercut ){
+    color(sheet_color){
+      translate([thickness + sandwich_hexspacer_length,0])
+      rotate([0,90,0])
+      rotate([0,0,90]){
+        linear_extrude(height=thickness)
+        xend_bearing_sandwich_face();
+      }
+    }
+  }
+}
 
 module YMotorHolder(){
   if( preview_lasercut ){
@@ -1572,10 +1638,10 @@ module RAMBo_volume(){
 module Z_couplings(){
   if (preview_ABS){
     color(ABS_color){
-      translate([-machine_x_dim/2 + thickness + lm8uu_holder_rod_height + z_rod_z_bar_distance, 0, BottomPanel_zoffset + motor_shaft_length])
+      translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, 0, BottomPanel_zoffset + motor_shaft_length])
       coupling_pair();
 
-      translate([machine_x_dim/2 - thickness - lm8uu_holder_rod_height - z_rod_z_bar_distance, 0, BottomPanel_zoffset + motor_shaft_length])
+      translate([machine_x_dim/2 - thickness - lm8uu_diameter/2 - z_rod_z_bar_distance, 0, BottomPanel_zoffset + motor_shaft_length])
       coupling_pair();
     }
   }
@@ -1591,38 +1657,6 @@ module coupling_pair(){
     rotate([0,90,0])
     translate([0, 0, -4.5]) 
     coupling(c=1);
-  }
-}
-
-module XEndIdler_lm8uu_holders(){
-  if( preview_PLA ){
-    color(PLA_color){
-      translate([-thickness, 0, 0])
-      rotate([0, 0, -90])
-      rotate([90, 0, 0])
-      lm8uu_holder();
-
-      translate([-thickness, 0, XPlatform_height])
-      rotate([0, 0, -90])
-      rotate([90, 0, 0])
-      lm8uu_holder();
-    }
-  }
-}
-
-module XEndMotor_lm8uu_holders(){
-  if( preview_PLA ){
-    color(PLA_color){
-      translate([thickness, 0, 0])
-      rotate([0, 0, 90])
-      rotate([90, 0, 0])
-      lm8uu_holder();
-
-      translate([thickness, 0, XPlatform_height])
-      rotate([0, 0, 90])
-      rotate([90, 0, 0])
-      lm8uu_holder();
-    }
   }
 }
 
@@ -1715,25 +1749,18 @@ module belt_clamps(){
 module XEndMotor_linear_bearings(){
   if (preview_metal){
     color(metal_color){
-	    translate([thickness + lm8uu_holder_rod_height, 0, -12]){
-      	cylinder(r=8, h=24);
-      	translate([0, 0, XPlatform_height])
-      	cylinder(r=8, h=24);
+	    translate([thickness + lm8uu_diameter/2, 0, -12]){
+        cylinder(r=lm8uu_diameter/2, h=lm8uu_length);
+        translate([0, 0, XPlatform_height])
+        cylinder(r=lm8uu_diameter/2, h=lm8uu_length);
       }
     }
   }
 }
 
 module XEndIdler_linear_bearings(){
-  if (preview_metal){
-    color(metal_color){
-      translate([- thickness - lm8uu_holder_rod_height, 0, -12]){
-      	cylinder(r=8, h=24);
-      	translate([0, 0, XPlatform_height])
-      	cylinder(r=8, h=24);
-      }
-    }
-  }
+  mirror([1,0])
+  XEndMotor_linear_bearings();
 }
 
 module XCarriage_linear_bearings(){
@@ -1772,14 +1799,14 @@ module ZLink(){
 }
 
 module XEndMotor_ZLink(){
-  translate([thickness + lm8uu_holder_rod_height + ZLink_rod_height + z_rod_z_bar_distance, 0, thickness + (XPlatform_height-thickness)/2])
+  translate([thickness + lm8uu_diameter/2 + z_rod_z_bar_distance + ZLink_rod_height, 0, thickness + (XPlatform_height-thickness)/2])
   rotate([0,0,-90])
   rotate([90,0,0])
   ZLink();
 }
 
 module XEndIdler_ZLink(){
-  translate([-thickness - lm8uu_holder_rod_height - ZLink_rod_height - z_rod_z_bar_distance, 0, thickness + (XPlatform_height-thickness)/2])
+  translate([-thickness - lm8uu_diameter/2 - z_rod_z_bar_distance - ZLink_rod_height, 0, thickness + (XPlatform_height-thickness)/2])
   rotate([0,0,90])
   rotate([90,0,0])
   ZLink();
@@ -1816,10 +1843,10 @@ module YRods(){
 module ZRods(){
   if (preview_metal){
     color(metal_color){
-      translate([-machine_x_dim/2 + thickness + lm8uu_holder_rod_height, 0, BottomPanel_zoffset])
+      translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2, 0, BottomPanel_zoffset])
       cylinder(r=8/2, h=Z_rod_length);
 
-      translate([machine_x_dim/2 - thickness - lm8uu_holder_rod_height, 0,  BottomPanel_zoffset])
+      translate([machine_x_dim/2 - thickness - lm8uu_diameter/2, 0,  BottomPanel_zoffset])
       cylinder(r=8/2, h=Z_rod_length);
     }
   }
@@ -1828,10 +1855,10 @@ module ZRods(){
 module ZBars(){
   if (preview_threaded_metal){
     color(threaded_metal_color){
-      translate([-machine_x_dim/2 + thickness + lm8uu_holder_rod_height + z_rod_z_bar_distance, 0, BottomPanel_zoffset + motor_shaft_length])
+      translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, 0, BottomPanel_zoffset + motor_shaft_length])
       cylinder(r=m8_diameter/2, h=Z_bar_length);
 
-      translate([machine_x_dim/2 - thickness - lm8uu_holder_rod_height - z_rod_z_bar_distance, 0, BottomPanel_zoffset + motor_shaft_length])
+      translate([machine_x_dim/2 - thickness - lm8uu_diameter/2 - z_rod_z_bar_distance, 0, BottomPanel_zoffset + motor_shaft_length])
       cylinder(r=m8_diameter/2, h=Z_bar_length);
     }
   }
@@ -1983,6 +2010,8 @@ module XEndMotor(){
   translate([-machine_x_dim/2,0]){
   //lasercut parts:
     XEndMotor_back_face_sheet();
+    XEnd_bearing_sandwich_sheet();
+
     XEndMotor_front_face_sheet();
     XEndMotor_plain_face_sheet();
 
@@ -1992,7 +2021,6 @@ module XEndMotor(){
 
   //plastic parts:
     XEndMotor_ZLink();
-    XEndMotor_lm8uu_holders();
 
   //metal parts:
     XEndMotor_linear_bearings();
@@ -2004,13 +2032,16 @@ module XEndIdler(){
   translate([machine_x_dim/2, 0, 0]){
   //lasercut parts:
     XEndIdler_back_face_sheet();
+
+    rotate([0,0,180])
+    XEnd_bearing_sandwich_sheet();
+
     XEndIdler_front_face_sheet();
     XEndIdler_plain_face_sheet();
     XEndIdler_belt_face_assembly();
 
   //plastic parts:
     XEndIdler_ZLink();
-    XEndIdler_lm8uu_holders();
 
   //metal parts:
     XEndIdler_linear_bearings();
