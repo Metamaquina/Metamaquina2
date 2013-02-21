@@ -1,0 +1,66 @@
+Cmp-Mod V01 Created by CvPcb (2012-nov-02)-testing date = Thu 21 Feb 2013 01:00:05 AM BRT
+
+BeginCmp
+TimeStamp = /512592B6;
+Reference = D1;
+ValeurCmp = GREEN_LED;
+IdModule  = LED-0805;
+EndCmp
+
+BeginCmp
+TimeStamp = /5125922A;
+Reference = P1;
+ValeurCmp = CONN_POWER;
+IdModule  = AK300-2;
+EndCmp
+
+BeginCmp
+TimeStamp = /512596BD;
+Reference = P2;
+ValeurCmp = CONN_2;
+IdModule  = 2PIN_6mm;
+EndCmp
+
+BeginCmp
+TimeStamp = /5125956A;
+Reference = PCB_R1;
+ValeurCmp = 4R;
+IdModule  = SM1206;
+EndCmp
+
+BeginCmp
+TimeStamp = /51259665;
+Reference = PCB_R2;
+ValeurCmp = 4R;
+IdModule  = SM1206;
+EndCmp
+
+BeginCmp
+TimeStamp = /5125966B;
+Reference = PCB_R3;
+ValeurCmp = 4R;
+IdModule  = SM1206;
+EndCmp
+
+BeginCmp
+TimeStamp = /51259671;
+Reference = PCB_R4;
+ValeurCmp = 4R;
+IdModule  = SM1206;
+EndCmp
+
+BeginCmp
+TimeStamp = /512592C5;
+Reference = R1;
+ValeurCmp = 1k;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = /512596CC;
+Reference = TH1;
+ValeurCmp = 100k;
+IdModule  = 0805,0603;
+EndCmp
+
+EndListe
