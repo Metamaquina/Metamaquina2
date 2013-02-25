@@ -29,7 +29,6 @@ lm8uu_length=24;
 sandwich_hexspacer_length = 12; //TODO: check availability
 
 //platic parts
-use <lm8uu-holder.scad>;
 use <belt-clamp.scad>;
 use <bar-clamp.scad>;
 use <coupling.scad>;
@@ -159,9 +158,8 @@ Y_rod_length = RightPanel_basewidth - 2*(bar_cut_length + m8_diameter/2) + 24;
 Y_rod_height = base_bars_Zdistance + base_bars_height + 10.2;//TODO
 BottomPanel_width=60;
 Z_rod_sidepanel_distance = (Z_rods_distance - SidePanels_distance)/2 + thickness;
-lm8uu_holder_rod_height = 14;
 
-YPlatform_height = Y_rod_height + lm8uu_holder_rod_height;
+YPlatform_height = Y_rod_height + lm8uu_diameter/2;
 pcb_height = YPlatform_height + 10;
 BuildPlatform_height = pcb_height+2;
 
@@ -1211,13 +1209,13 @@ module XEnd_back_face(){
        translate([-XPlatform_width/2 - XEnd_extra_width, 0])
        rounded_square([XEnd_width, XPlatform_height], corners = [0, 0, thickness/2, thickness/2], $fn=80);
 
-       //extra area for lm8uu holders
+       //extra area for linear bearings
        circle(r=20);
        translate([0, XPlatform_height])
        circle(r=20);
       }
 
-      //screw holes for lm8uu holders
+      //holes for bearing sandwich hexspacers
       translate([14, XPlatform_height])
       circle(r=m3_diameter/2, $fn=20);
       translate([-14, XPlatform_height])
@@ -1238,22 +1236,24 @@ module XEnd_back_face(){
   }
 }
 
-module xend_bearing_sandwich_plainface(){
-  r = 20;
+module xend_bearing_sandwich_face(){
+  translate([0,XPlatform_height/2])
+  generic_bearing_sandwich_face(H=XPlatform_height);
+}
+
+module generic_bearing_sandwich_plainface(H, r){
   difference(){
     hull(){
-      circle(r=r, $fn=20);
-
-      translate([0, XPlatform_height])
-      circle(r=r, $fn=20);
+      for (j=[-1,1])
+        translate([0, j*H/2])
+        circle(r=r, $fn=20);
     }
 
-    for (i=[-14,14]){
-      translate([i,0])
-      circle(r=m3_diameter/2, $fn=20);
-
-      translate([i, XPlatform_height])
-      circle(r=m3_diameter/2, $fn=20);
+    for (i=[-1,1]){
+      for (j=[-1,1]){
+        translate([i*14, j*H/2])
+        circle(r=m3_diameter/2, $fn=20);
+      }
     }
   }
 }
@@ -1264,17 +1264,17 @@ module LM8UU(){
   cylinder(r=lm8uu_diameter/2,h=lm8uu_length);
 }
 
-module xend_bearing_sandwich_face(){
+
+module generic_bearing_sandwich_face(H, r=20){
   projection(cut=true){
     difference(){
       linear_extrude(height=thickness)
-      xend_bearing_sandwich_plainface();
+      generic_bearing_sandwich_plainface(H, r);
 
       //linear bearings
       translate([0,0,lm8uu_diameter/2 - sandwich_hexspacer_length ]){
-        LM8UU();
-
-        translate([0,XPlatform_height])
+        for (j=[-1,1])
+        translate([0,j*H/2])
         LM8UU();
       }
     }
@@ -1422,7 +1422,7 @@ module XEnd_bearing_sandwich_sheet(){
       rotate([0,90,0])
       rotate([0,0,90]){
         linear_extrude(height=thickness)
-        xend_bearing_sandwich_face();
+        xend_bearing_sandwich_face(H=XPlatform_height);
       }
     }
   }
@@ -2080,13 +2080,87 @@ module BuildPlatform_pcb_curves(){
   }
 }
 
-module YPlatform_sheet(){
+
+module YPlatform_left_sandwich_sheet(){
   if (preview_lasercut){
     color(sheet_color){  
-      translate([0,0,100-15]) /*TODO*/
       linear_extrude(height=thickness)
-      YPlatform_sheet_curves();
+      YPlatform_left_sandwich_face();
     }
+  }
+}
+
+module YPlatform_right_sandwich_sheet(){
+  if (preview_lasercut){
+    color(sheet_color){
+      linear_extrude(height=thickness)
+      YPlatform_right_sandwich_face();
+    }
+  }
+}
+
+YBearings_distance = 100;
+module YPlatform_left_sandwich_face(){
+  generic_bearing_sandwich_face(H=YBearings_distance);
+}
+
+module YPlatform_right_sandwich_outline(){
+  width=40;
+  height=50;
+  r=5;
+  R=25;
+  translate([-width/2,-height/2])
+  rounded_square([width, height], corners=[r,R,r,R]);
+}
+
+module YPlatform_right_sandwich_holes(){
+    translate([14,0])
+    circle(r=m3_diameter/2, $fn=20);
+
+    for (j=[-1,1])
+      translate([-14,j*(50/2 - 5)])
+      circle(r=m3_diameter/2, $fn=20);
+}
+
+module YPlatform_right_sandwich_face(){
+  difference(){
+    projection(cut=true){
+      difference(){
+        linear_extrude(height=thickness)
+        YPlatform_right_sandwich_outline();
+
+        //linear bearing
+        translate([0,0,lm8uu_diameter/2 - sandwich_hexspacer_length ])
+        LM8UU();
+      }
+    }
+
+    YPlatform_right_sandwich_holes();
+  }
+}
+
+module YPlatform_sheet(){
+  translate([0,0,100-15]){ /*TODO*/
+    if (preview_lasercut){
+      color(sheet_color){
+        linear_extrude(height=thickness)
+        YPlatform_sheet_curves();
+      }
+    }
+
+    translate([0,0, -sandwich_hexspacer_length]){
+      YPlatform_hexspacers();
+
+      translate([-Y_rods_distance/2, 0, -thickness])
+      YPlatform_left_sandwich_sheet();
+
+      translate([Y_rods_distance/2, 0, -thickness])
+      YPlatform_right_sandwich_sheet();
+    }
+
+    translate([0,0, -lm8uu_diameter/2])
+    YPlatform_linear_bearings();
+
   }
 }
 
@@ -2109,10 +2183,39 @@ module belt_clamp_holes(){
   }  
 }
 
-module ybushing_holes(){
+module YPlatform_left_sandwich_holes(){
   for (i=[-1,1]){
-    translate([i*14,0])
+    for (j=[-1,1]){
+      translate([i*14,j*YBearings_distance/2])
       circle(r=m3_diameter/2, $fn=20);
+    }
+  }
+}
+
+module YPlatform_hexspacers(){
+  translate([Y_rods_distance/2 + 14, 0])
+  hexspacer(h=sandwich_hexspacer_length);
+
+  for (j=[-1,1]){
+    translate([Y_rods_distance/2 - 14, j*(50/2-5)])
+    hexspacer(h=sandwich_hexspacer_length);
+  }
+
+  for (i=[-1,1]){
+    for (j=[-1,1]){
+      translate([-Y_rods_distance/2 + i*14,j*50])
+      hexspacer(h=sandwich_hexspacer_length);
+    }
+  }
+}
+
+module YPlatform_linear_bearings(){
+  translate([Y_rods_distance/2, 0])
+  LM8UU();
+
+  for (j=[-1,1]){
+    translate([-Y_rods_distance/2, j*50])
+    LM8UU();
   }
 }
 
@@ -2142,13 +2245,11 @@ module YPlatform_sheet_curves(){
       }
     }
 
-    translate([Y_rods_distance/2, 0])
-      ybushing_holes();
+    translate([-Y_rods_distance/2, 0])
+    YPlatform_left_sandwich_holes();
 
-    for (i=[-1,1]){
-      translate([-Y_rods_distance/2,i*50])
-        ybushing_holes();
-    }
+    translate([Y_rods_distance/2, 0])
+    YPlatform_right_sandwich_holes();
 
     for (i=[-1,1]){
       translate([0,i*20])
@@ -2165,16 +2266,11 @@ module BuildVolumePreview(){
   }
 }
 
-module YLinearBearings(){
-  //TODO: implement-me!
-}
-
 module YPlatform(){
   translate([0, YCarPosition, 0]){
     //#BuildVolumePreview();
     BuildPlatform_pcb();
     YPlatform_sheet();
-    YLinearBearings();
   }
   YRods();
   Y_belt();
