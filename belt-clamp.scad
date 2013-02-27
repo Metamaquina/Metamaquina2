@@ -35,7 +35,7 @@ module teeth_for_belt(belt_width=6){
     square([belt_width+2, 1.8], center = true);
 }
 
-module beltclamp(width=28, height=7, r=5, teeth_depth=0.5){
+module beltclamp(width=28, height=6, r=5, teeth_depth=0.5){
   difference(){
     linear_extrude(height=height)
     beltclamp_curves(width, r);

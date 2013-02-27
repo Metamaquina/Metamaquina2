@@ -5,9 +5,17 @@
 // version 3 (or later).
 
 use <Metamaquina2.scad>;
+use <belt-clamp.scad>;
 
 module lasercutter_panel2(){
   % plate_border();
+
+  translate([230,150])
+  for (i=[0:1])
+    for (j=[0:1])
+      translate([i*12,j*30])
+      rotate(90)
+      beltclamp_curves(width=28, r=5);
 
   translate([340,275])
   rotate([0,0,-90])
