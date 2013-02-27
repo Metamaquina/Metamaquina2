@@ -5,7 +5,9 @@
 // Lincensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-module PTFE_liner_2d_outline(){
+use <technical_drawing.scad>;
+
+module PTFE_liner_2d_outline(dimensions=true){
   epsilon = 0.01;
 
   d1 = 6.33;
@@ -22,7 +24,26 @@ module PTFE_liner_2d_outline(){
 
   d5a = 4.5;
   d5b = 3.0;
-  l5 = 1.6;
+  l5 = 2;
+
+  if (dimensions){
+    dimension(0, 8, l3, 8, line_thickness=0.05, fontsize=1);
+    dimension(0, 10, l2, 10, line_thickness=0.05, fontsize=1);
+    dimension(0, 12, l1, 12, line_thickness=0.05, fontsize=1);
+
+    rotate(180)
+    dimension(-l5, 8, 0, 8, line_thickness=0.05, fontsize=1);
+
+    translate([4,0])
+    rotate(90){
+      dimension(-d5a/2, 11, d5a/2, 11, line_thickness=0.05, fontsize=1);
+      dimension(-d5b/2, 9, d5b/2, 9, line_thickness=0.05, fontsize=1);
+    }
+
+    translate([l1,0])
+    rotate(-90)
+    dimension(-d1/2, 8, d1/2, 8, line_thickness=0.05, fontsize=1);
+  }
 
   difference(){
     //exterior outline
@@ -45,8 +66,8 @@ module PTFE_liner_2d_outline(){
 
     //entrance interior bevel    
     hull(){
-      translate([l5,-d5b/2])
-      square([l5,d5b]);
+      translate([l5-epsilon,-d5b/2])
+      square([epsilon,d5b]);
 
       translate([-epsilon,-d5a/2])
       square([epsilon,d5a]);
@@ -61,6 +82,6 @@ module PTFE_liner(){
   PTFE_liner_2d_outline();
 }
 
-//PTFE_liner_2d_outline();
-PTFE_liner();
+PTFE_liner_2d_outline();
+//PTFE_liner();
 
