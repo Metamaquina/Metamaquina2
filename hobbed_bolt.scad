@@ -5,6 +5,8 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
+use <technical_drawing.scad>;
+
 MDF_thickness = 6;
 bearing_thickness = 7; //based on 608zz_bearing.scad
 M8_washer_thickness = 1.5; //based on washer.scad
@@ -25,59 +27,6 @@ echo(str("hobbing position: ", hobbing_position));
 echo(str("bolt_length: ", bolt_length));
 echo(str("screw_length: ", screw_length));
 
-module roundline(x1,y1,x2,y2, color="black", thickness=0.3){
-  color(color){
-    hull(){
-      translate([x1,y1])
-      circle(r=thickness/2, $fn=20);
-
-      translate([x2,y2])
-      circle(r=thickness/2, $fn=20);
-    }
-  }
-}
-
-module line(x1,y1,x2,y2, color="black", thickness=1){
-  angle = atan2(y2-y1, x2-x1);
-  length = sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
-
-  color(color){
-    translate([x1,y1]){
-      rotate([0,0,angle])
-      translate([0,-thickness/2])
-      square([length,thickness]);
-    }
-  }
-}
-
-
-module Square(x1,y1,x2,y2){
-  roundline(x1,y1,x2,y1);
-  roundline(x2,y1,x2,y2);
-  roundline(x2,y2,x1,y2);
-  roundline(x1,y2,x1,y1);
-}
-
-module RegularPolygon(N,r, even_odd=false){
-  if (even_odd){
-    for (i=[1:N/2])
-      roundline(r*cos(2*i*360/N), r*sin(2*i*360/N),
-                r*cos((2*i+1)*360/N), r*sin((2*i+1)*360/N));
-  } else {
-    for (i=[1:N])
-      roundline(r*cos(i*360/N), r*sin(i*360/N),
-                r*cos((i+1)*360/N), r*sin((i+1)*360/N));
-  }
-}
-
-module Hexagon(r){
-  RegularPolygon(6,r);
-}
-
-module Circle(r, even_odd=false){
-  RegularPolygon(60,r, even_odd=even_odd);
-}
-
 module bolt_hex_head_frontal_view(D){
   //ISO standard for NON-STRUCTURAL hexagonal bolt head dimensions:
   e = 1.8 * D;
@@ -95,20 +44,6 @@ module bolt_hex_head_frontal_view(D){
     dimension(-D/2, 10, D/2, 10);
 
     Circle(e/2*sqrt(3)/2);
-  }
-}
-
-module arrow(x,y,angle,length=1, width=0.4, thickness=0.1){
-  translate([x,y])
-  rotate([0,0,angle])
-  hull(){
-    circle(r=thickness, $fn=20);
-
-    translate([length, width/2])
-    circle(r=thickness, $fn=20);
-
-    translate([length, -width/2])
-    circle(r=thickness, $fn=20);
   }
 }
 
@@ -131,42 +66,6 @@ module body(diameter, length){
   dimension(0,-10, length,-10);
 }
 
-module glyph(char, fontsize){
-  scale(fontsize/12){
-    import("font.dxf", layer=char);
-  }
-}
-
-module dimension_label(x, y, string, spacing=0.7, fontsize=2){
-//draw dimension text at coordinate x,y
-
-  text_length = (len(string)+1) * spacing*fontsize;
-  translate([x - text_length/2,y + fontsize/3]){
-    for (i=[0:len(string)-1]){
-      translate([spacing*fontsize*i,0]) glyph(string[i], fontsize);
-      echo(string[i]);
-    }
-
-    translate([len(string)*spacing*fontsize, 0]) glyph("mm", fontsize);
-  }
-}
-
-module dimension(x1,y1, x2,y2, color="blue"){
-  length = round(1000*sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)))/1000.0;
-  angle = atan2(y2-y1, x2-x1);
-
-  color(color){
-    arrow(x1,y1, 0);
-    roundline(x1,y1+1, x1,y1-6);
-
-    arrow(x2,y2, -180);
-    roundline(x2,y2+1, x2,y2-6);
-
-    roundline(x1,y1, x2,y2);
-    dimension_label((x1+x2)/2, (y1+y2)/2, str(length));
-  }
-}
-
 module hobbing(position, diameter, length){
   N=6;
   dimension(0,11, position,11);
@@ -185,7 +84,7 @@ module screw(diameter, length){
 
   Square(bolt_length-length, -diameter/2, bolt_length, diameter/2);
 
-color("black")
+  color("black")
   translate([bolt_length-length, -diameter/2])
   intersection(){
     square([length, diameter]);
@@ -229,7 +128,7 @@ translate([wade_height,0]){
 
 //%wade_block_3d();
 
-module parafuso_trator(){
+module hobbed_bolt(){
   bolt_hex_head_frontal_view(bolt_diameter);
 
   head(bolt_diameter);
@@ -238,4 +137,5 @@ module parafuso_trator(){
   screw(diameter=bolt_diameter, length=screw_length);
 }
 
-parafuso_trator();
+hobbed_bolt();
+
