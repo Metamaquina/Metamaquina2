@@ -2303,7 +2303,7 @@ module nut_cap_assembly(){
               if (angle==180){
                 M8_nut();
               }else{
-                %M8_domed_cap_nut();
+                M8_domed_cap_nut();
               }
             }
           }
