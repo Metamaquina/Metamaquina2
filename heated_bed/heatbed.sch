@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sun 03 Mar 2013 11:04:40 PM BRT
+EESchema Schematic File Version 2  date Mon 04 Mar 2013 01:05:29 AM BRT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -57,78 +57,6 @@ F 3 "" H 3850 5000 60  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L R R1
-U 1 1 512592C5
-P 3850 6050
-F 0 "R1" V 3930 6050 50  0000 C CNN
-F 1 "1k" V 3850 6050 50  0000 C CNN
-F 2 "SM0805" H 3850 6050 60  0000 C CNN
-F 3 "" H 3850 6050 60  0000 C CNN
-	1    3850 6050
-	1    0    0    1   
-$EndComp
-Wire Wire Line
-	2800 6300 5150 6300
-Wire Wire Line
-	2800 4800 5150 4800
-Connection ~ 3850 4800
-Wire Wire Line
-	5150 5300 5150 5800
-Connection ~ 3850 6300
-Wire Wire Line
-	4850 4800 4850 4800
-Connection ~ 4850 4800
-Wire Wire Line
-	4850 5300 4850 5800
-Wire Wire Line
-	4550 5300 4550 5800
-Wire Wire Line
-	4250 5300 4250 5800
-Wire Wire Line
-	4250 4800 4250 4800
-Connection ~ 4250 4800
-Wire Wire Line
-	4550 4800 4550 4800
-Connection ~ 4550 4800
-$Comp
-L R PCB_R2
-U 1 1 51259665
-P 4550 5050
-F 0 "PCB_R2" V 4630 5050 50  0000 C CNN
-F 1 "4R" V 4550 5050 50  0000 C CNN
-F 2 "SM1206" H 4550 5050 60  0000 C CNN
-F 3 "" H 4550 5050 60  0000 C CNN
-	1    4550 5050
-	1    0    0    -1  
-$EndComp
-$Comp
-L R PCB_R3
-U 1 1 5125966B
-P 4850 5050
-F 0 "PCB_R3" V 4930 5050 50  0000 C CNN
-F 1 "4R" V 4850 5050 50  0000 C CNN
-F 2 "SM1206" H 4850 5050 60  0000 C CNN
-F 3 "" H 4850 5050 60  0000 C CNN
-	1    4850 5050
-	1    0    0    -1  
-$EndComp
-$Comp
-L R PCB_R4
-U 1 1 51259671
-P 5150 5050
-F 0 "PCB_R4" V 5230 5050 50  0000 C CNN
-F 1 "4R" V 5150 5050 50  0000 C CNN
-F 2 "SM1206" H 5150 5050 60  0000 C CNN
-F 3 "" H 5150 5050 60  0000 C CNN
-	1    5150 5050
-	1    0    0    -1  
-$EndComp
-Connection ~ 4250 5300
-Connection ~ 4550 5300
-Connection ~ 4850 5300
-Connection ~ 5150 5300
-Connection ~ 5150 4800
-$Comp
 L THERMISTOR TH1
 U 1 1 512596CC
 P 3250 5150
@@ -139,18 +67,6 @@ F 3 "" H 3250 5150 60  0000 C CNN
 	1    3250 5150
 	0    -1   -1   0   
 $EndComp
-Wire Wire Line
-	2800 4800 2800 5050
-Wire Wire Line
-	2800 5350 2800 6300
-Wire Wire Line
-	2800 5150 3000 5150
-Wire Wire Line
-	3500 5150 3600 5150
-Wire Wire Line
-	3600 5150 3600 5250
-Wire Wire Line
-	3600 5250 2800 5250
 $Comp
 L MOUNTING_HOLE MH1
 U 1 1 5133CB70
@@ -206,77 +122,8 @@ F 3 "" H 2450 5200 60  0000 C CNN
 	1    2450 5200
 	-1   0    0    1   
 $EndComp
-Connection ~ 2800 5050
-Connection ~ 2800 5150
-Connection ~ 2800 5250
-Connection ~ 2800 5350
-Wire Wire Line
-	3850 5800 3850 5200
-$Comp
-L R PCB_R41
-U 1 1 5133E699
-P 5150 6050
-F 0 "PCB_R41" V 5230 6050 50  0000 C CNN
-F 1 "4R" V 5150 6050 50  0000 C CNN
-F 2 "SM1206" H 5150 6050 60  0000 C CNN
-F 3 "" H 5150 6050 60  0000 C CNN
-	1    5150 6050
-	1    0    0    -1  
-$EndComp
-Connection ~ 4250 6300
-Connection ~ 4550 6300
-Connection ~ 4850 6300
-Connection ~ 5150 6300
-Connection ~ 4250 5800
-Connection ~ 4550 5800
-Connection ~ 4850 5800
-Connection ~ 5150 5800
 Text Label 4200 5650 1    60   ~ 12
 Heater 1
-$Comp
-L R PCB_R31
-U 1 1 5133E693
-P 4850 6050
-F 0 "PCB_R31" V 4930 6050 50  0000 C CNN
-F 1 "4R" V 4850 6050 50  0000 C CNN
-F 2 "SM1206" H 4850 6050 60  0000 C CNN
-F 3 "" H 4850 6050 60  0000 C CNN
-	1    4850 6050
-	1    0    0    -1  
-$EndComp
-$Comp
-L R PCB_R21
-U 1 1 5133E68D
-P 4550 6050
-F 0 "PCB_R21" V 4630 6050 50  0000 C CNN
-F 1 "4R" V 4550 6050 50  0000 C CNN
-F 2 "SM1206" H 4550 6050 60  0000 C CNN
-F 3 "" H 4550 6050 60  0000 C CNN
-	1    4550 6050
-	1    0    0    -1  
-$EndComp
-$Comp
-L R PCB_R11
-U 1 1 5133E614
-P 4250 6050
-F 0 "PCB_R11" V 4330 6050 50  0000 C CNN
-F 1 "4R" V 4250 6050 50  0000 C CNN
-F 2 "SM1206" H 4250 6050 60  0000 C CNN
-F 3 "" H 4250 6050 60  0000 C CNN
-	1    4250 6050
-	1    0    0    -1  
-$EndComp
-$Comp
-L R PCB_R1
-U 1 1 5125956A
-P 4250 5050
-F 0 "PCB_R1" V 4330 5050 50  0000 C CNN
-F 1 "4R" V 4250 5050 50  0000 C CNN
-F 2 "SM1206" H 4250 5050 60  0000 C CNN
-F 3 "" H 4250 5050 60  0000 C CNN
-	1    4250 5050
-	1    0    0    -1  
-$EndComp
 $Comp
 L THERMISTOR TH2
 U 1 1 51340120
@@ -289,6 +136,54 @@ F 3 "" H 3250 4900 60  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
+	5150 6300 2800 6300
+Wire Wire Line
+	2800 4800 5150 4800
+Connection ~ 3850 4800
+Wire Wire Line
+	5150 4800 5150 6300
+Connection ~ 3850 6300
+Connection ~ 4850 4800
+Wire Wire Line
+	4850 4800 4850 6300
+Wire Wire Line
+	4550 4800 4550 6300
+Wire Wire Line
+	4250 4800 4250 6300
+Connection ~ 4250 4800
+Connection ~ 4550 4800
+Connection ~ 4250 5300
+Connection ~ 4550 5300
+Connection ~ 4850 5300
+Connection ~ 5150 5300
+Connection ~ 5150 4800
+Wire Wire Line
+	2800 4800 2800 5050
+Wire Wire Line
+	2800 5350 2800 6300
+Wire Wire Line
+	2800 5150 3000 5150
+Wire Wire Line
+	3500 5150 3600 5150
+Wire Wire Line
+	3600 5150 3600 5250
+Wire Wire Line
+	3600 5250 2800 5250
+Connection ~ 2800 5050
+Connection ~ 2800 5150
+Connection ~ 2800 5250
+Connection ~ 2800 5350
+Wire Wire Line
+	3850 5800 3850 5200
+Connection ~ 4250 6300
+Connection ~ 4550 6300
+Connection ~ 4850 6300
+Connection ~ 5150 6300
+Connection ~ 4250 5800
+Connection ~ 4550 5800
+Connection ~ 4850 5800
+Connection ~ 5150 5800
+Wire Wire Line
 	3000 5150 3000 4900
 Wire Wire Line
 	3500 4900 3500 5150
@@ -296,4 +191,15 @@ Connection ~ 3500 5150
 Connection ~ 3500 4900
 Connection ~ 3000 4900
 Connection ~ 3000 5150
+$Comp
+L R R1
+U 1 1 512592C5
+P 3850 6050
+F 0 "R1" V 3930 6050 50  0000 C CNN
+F 1 "1k" V 3850 6050 50  0000 C CNN
+F 2 "SM0805" H 3850 6050 60  0000 C CNN
+F 3 "" H 3850 6050 60  0000 C CNN
+	1    3850 6050
+	1    0    0    1   
+$EndComp
 $EndSCHEMATC
