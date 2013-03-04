@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPcb (2012-nov-02)-testing date = Thu 21 Feb 2013 01:00:05 AM BRT
+Cmp-Mod V01 Created by PcbNew date = Sun 03 Mar 2013 09:28:39 PM BRT
 
 BeginCmp
 TimeStamp = /512592B6;
@@ -8,17 +8,38 @@ IdModule  = LED-0805;
 EndCmp
 
 BeginCmp
-TimeStamp = /5125922A;
-Reference = P1;
-ValeurCmp = CONN_POWER;
-IdModule  = AK300-2;
+TimeStamp = /5133CB70;
+Reference = MH1;
+ValeurCmp = MOUNTING_HOLE;
+IdModule  = MountingHole_3mm_RevA_Date21Jun2010;
 EndCmp
 
 BeginCmp
-TimeStamp = /512596BD;
-Reference = P2;
-ValeurCmp = CONN_2;
-IdModule  = 2PIN_6mm;
+TimeStamp = /5133CB7D;
+Reference = MH2;
+ValeurCmp = MOUNTING_HOLE;
+IdModule  = MountingHole_3mm_RevA_Date21Jun2010;
+EndCmp
+
+BeginCmp
+TimeStamp = /5133CB89;
+Reference = MH3;
+ValeurCmp = MOUNTING_HOLE;
+IdModule  = MountingHole_3mm_RevA_Date21Jun2010;
+EndCmp
+
+BeginCmp
+TimeStamp = /5133CB83;
+Reference = MH4;
+ValeurCmp = MOUNTING_HOLE;
+IdModule  = MountingHole_3mm_RevA_Date21Jun2010;
+EndCmp
+
+BeginCmp
+TimeStamp = /5133D6B0;
+Reference = P1;
+ValeurCmp = CONN_4;
+IdModule  = bornier4;
 EndCmp
 
 BeginCmp
@@ -32,21 +53,49 @@ BeginCmp
 TimeStamp = /51259665;
 Reference = PCB_R2;
 ValeurCmp = 4R;
-IdModule  = SM1206;
+IdModule  = Track;
 EndCmp
 
 BeginCmp
 TimeStamp = /5125966B;
 Reference = PCB_R3;
 ValeurCmp = 4R;
-IdModule  = SM1206;
+IdModule  = Track;
 EndCmp
 
 BeginCmp
 TimeStamp = /51259671;
 Reference = PCB_R4;
 ValeurCmp = 4R;
-IdModule  = SM1206;
+IdModule  = Track;
+EndCmp
+
+BeginCmp
+TimeStamp = /5133E614;
+Reference = PCB_R11;
+ValeurCmp = 4R;
+IdModule  = Track;
+EndCmp
+
+BeginCmp
+TimeStamp = /5133E68D;
+Reference = PCB_R21;
+ValeurCmp = 4R;
+IdModule  = Track;
+EndCmp
+
+BeginCmp
+TimeStamp = /5133E693;
+Reference = PCB_R31;
+ValeurCmp = 4R;
+IdModule  = Track;
+EndCmp
+
+BeginCmp
+TimeStamp = /5133E699;
+Reference = PCB_R41;
+ValeurCmp = 4R;
+IdModule  = Track;
 EndCmp
 
 BeginCmp
@@ -60,7 +109,7 @@ BeginCmp
 TimeStamp = /512596CC;
 Reference = TH1;
 ValeurCmp = 100k;
-IdModule  = 0805,0603;
+IdModule  = SM0805;
 EndCmp
 
 EndListe
