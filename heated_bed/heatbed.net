@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/aylons/Insync/aylons@gmail.com/MetaMaquina/code/Metamaquina2/heated_bed/heatbed.sch)
-    (date "Tue 05 Mar 2013 11:58:43 PM BRT")
+    (date "Wed 06 Mar 2013 12:03:25 AM BRT")
     (tool "eeschema (2013-feb-21)-testing"))
   (components
     (comp (ref D1)
@@ -58,7 +58,7 @@
       (libsource (lib device) (part R))
       (sheetpath (names /) (tstamps /))
       (tstamp 512592C5))
-    (comp (ref U1)
+    (comp (ref N1)
       (value AYLONS)
       (libsource (lib aylons_mechanical) (part AYLONS))
       (sheetpath (names /) (tstamps /))

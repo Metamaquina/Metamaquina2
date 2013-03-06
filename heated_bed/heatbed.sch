@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Mon 04 Mar 2013 01:05:29 AM BRT
+EESchema Schematic File Version 2  date Wed 06 Mar 2013 12:02:39 AM BRT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -37,7 +37,7 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Heat Bed for Metamáquina 2"
-Date "4 mar 2013"
+Date "6 mar 2013"
 Rev "0.9"
 Comp "Gustavo Barbosa Monteiro Bruno for Metamáquina"
 Comment1 "Licensed under GNU GPLv3 (or later)"
@@ -160,7 +160,7 @@ Connection ~ 5150 4800
 Wire Wire Line
 	2800 4800 2800 5050
 Wire Wire Line
-	2800 5350 2800 6300
+	2800 6300 2800 5350
 Wire Wire Line
 	2800 5150 3000 5150
 Wire Wire Line
@@ -201,5 +201,16 @@ F 2 "SM0805" H 3850 6050 60  0000 C CNN
 F 3 "" H 3850 6050 60  0000 C CNN
 	1    3850 6050
 	1    0    0    1   
+$EndComp
+$Comp
+L AYLONS N1
+U 1 1 5136AF98
+P 11000 7000
+F 0 "N1" H 10700 7550 60  0000 C CNN
+F 1 "AYLONS" H 10700 7400 60  0000 C CNN
+F 2 "~" H 10900 7100 60  0000 C CNN
+F 3 "~" H 10900 7100 60  0000 C CNN
+	1    11000 7000
+	1    0    0    -1  
 $EndComp
 $EndSCHEMATC

@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPcb (2013-feb-21)-testing date = Tue 05 Mar 2013 11:59:01 PM BRT
+Cmp-Mod V01 Created by CvPcb (2013-feb-21)-testing date = Wed 06 Mar 2013 12:14:32 AM BRT
 
 BeginCmp
 TimeStamp = /512592B6;
@@ -36,6 +36,13 @@ IdModule  = MountingHole_3mm_RevA_Date21Jun2010;
 EndCmp
 
 BeginCmp
+TimeStamp = /5136AF98;
+Reference = N1;
+ValeurCmp = AYLONS;
+IdModule  = Aylons;
+EndCmp
+
+BeginCmp
 TimeStamp = /5133D6B0;
 Reference = P1;
 ValeurCmp = CONN_4;
@@ -61,13 +68,6 @@ TimeStamp = /51340120;
 Reference = TH2;
 ValeurCmp = 100k;
 IdModule  = SM0603;
-EndCmp
-
-BeginCmp
-TimeStamp = /5136AF98;
-Reference = U1;
-ValeurCmp = AYLONS;
-IdModule  = 1PIN_SMD;
 EndCmp
 
 EndListe
