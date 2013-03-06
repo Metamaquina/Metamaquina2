@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by PcbNew date = Sun 03 Mar 2013 09:28:39 PM BRT
+Cmp-Mod V01 Created by CvPcb (2013-feb-21)-testing date = Tue 05 Mar 2013 11:59:01 PM BRT
 
 BeginCmp
 TimeStamp = /512592B6;
@@ -43,62 +43,6 @@ IdModule  = bornier4;
 EndCmp
 
 BeginCmp
-TimeStamp = /5125956A;
-Reference = PCB_R1;
-ValeurCmp = 4R;
-IdModule  = SM1206;
-EndCmp
-
-BeginCmp
-TimeStamp = /51259665;
-Reference = PCB_R2;
-ValeurCmp = 4R;
-IdModule  = Track;
-EndCmp
-
-BeginCmp
-TimeStamp = /5125966B;
-Reference = PCB_R3;
-ValeurCmp = 4R;
-IdModule  = Track;
-EndCmp
-
-BeginCmp
-TimeStamp = /51259671;
-Reference = PCB_R4;
-ValeurCmp = 4R;
-IdModule  = Track;
-EndCmp
-
-BeginCmp
-TimeStamp = /5133E614;
-Reference = PCB_R11;
-ValeurCmp = 4R;
-IdModule  = Track;
-EndCmp
-
-BeginCmp
-TimeStamp = /5133E68D;
-Reference = PCB_R21;
-ValeurCmp = 4R;
-IdModule  = Track;
-EndCmp
-
-BeginCmp
-TimeStamp = /5133E693;
-Reference = PCB_R31;
-ValeurCmp = 4R;
-IdModule  = Track;
-EndCmp
-
-BeginCmp
-TimeStamp = /5133E699;
-Reference = PCB_R41;
-ValeurCmp = 4R;
-IdModule  = Track;
-EndCmp
-
-BeginCmp
 TimeStamp = /512592C5;
 Reference = R1;
 ValeurCmp = 1k;
@@ -110,6 +54,20 @@ TimeStamp = /512596CC;
 Reference = TH1;
 ValeurCmp = 100k;
 IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = /51340120;
+Reference = TH2;
+ValeurCmp = 100k;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5136AF98;
+Reference = U1;
+ValeurCmp = AYLONS;
+IdModule  = 1PIN_SMD;
 EndCmp
 
 EndListe
