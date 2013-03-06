@@ -1246,7 +1246,7 @@ module generic_bearing_sandwich_plainface(H, r){
     hull(){
       for (j=[-1,1])
         translate([0, j*H/2])
-        circle(r=r, $fn=20);
+        circle(r=r, $fn=120);
     }
 
     for (i=[-1,1]){
@@ -1265,14 +1265,14 @@ module LM8UU(){
 }
 
 
-module generic_bearing_sandwich_face(H, r=20){
+module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=0){
   projection(cut=true){
     difference(){
       linear_extrude(height=thickness)
       generic_bearing_sandwich_plainface(H, r);
 
       //linear bearings
-      translate([0,0,lm8uu_diameter/2 - sandwich_hexspacer_length ]){
+      translate([0,0,lm8uu_diameter/2 - (sandwich_hexspacer_length + sandwich_tightening) ]){
         for (j=[-1,1])
         translate([0,j*H/2])
         LM8UU();
@@ -1383,9 +1383,11 @@ module XCarriage_plainface(sandwich=false){
     //holes for hexspacers
     for (i=[-1,1]){
       for (j=[-1,1]){
-        translate([i*(XCarriage_length/2-XCarriage_padding), j*(XPlatform_width/2 - XCarriage_padding)])
+        translate([i*(XCarriage_lm8uu_distance/2), j*(XPlatform_width/2 - XCarriage_padding)])
         circle(r=m3_diameter/2, $fn=20);
       }
+      translate([i*(XCarriage_length/2-XCarriage_padding), 0])
+      circle(r=m3_diameter/2, $fn=20);
     }
   }
 }
@@ -2777,6 +2779,22 @@ module set_of_M3_spacers(w=4, h=4){
     for (y=[1:h]){
       translate([x*3.2*m3_diameter, y*3.2*m3_diameter])
       M3_spacer();
+    }
+  }
+}
+
+module M4_spacer(){
+  difference(){
+    circle(r=m4_diameter*1.5, $fn=30);
+    circle(r=m4_diameter/2, $fn=30);
+  }
+}
+
+module set_of_M4_spacers(w=4, h=4){
+  for (x=[1:w]){
+    for (y=[1:h]){
+      translate([x*3.2*m4_diameter, y*3.2*m4_diameter])
+      M4_spacer();
     }
   }
 }
