@@ -2102,11 +2102,11 @@ module YPlatform_right_sandwich_sheet(){
 }
 
 YBearings_distance = 100;
-module YPlatform_left_sandwich_face(){
+module YPlatform_right_sandwich_face(){
   generic_bearing_sandwich_face(H=YBearings_distance);
 }
 
-module YPlatform_right_sandwich_outline(){
+module YPlatform_left_sandwich_outline(){
   width=40;
   height=50;
   r=5;
@@ -2115,7 +2115,7 @@ module YPlatform_right_sandwich_outline(){
   rounded_square([width, height], corners=[r,R,r,R]);
 }
 
-module YPlatform_right_sandwich_holes(){
+module YPlatform_left_sandwich_holes(){
     translate([14,0])
     circle(r=m3_diameter/2, $fn=20);
 
@@ -2124,12 +2124,12 @@ module YPlatform_right_sandwich_holes(){
       circle(r=m3_diameter/2, $fn=20);
 }
 
-module YPlatform_right_sandwich_face(){
+module YPlatform_left_sandwich_face(){
   difference(){
     projection(cut=true){
       difference(){
         linear_extrude(height=thickness)
-        YPlatform_right_sandwich_outline();
+        YPlatform_left_sandwich_outline();
 
         //linear bearing
         translate([0,0,lm8uu_diameter/2 - sandwich_hexspacer_length ])
@@ -2137,7 +2137,7 @@ module YPlatform_right_sandwich_face(){
       }
     }
 
-    YPlatform_right_sandwich_holes();
+    YPlatform_left_sandwich_holes();
   }
 }
 
@@ -2185,7 +2185,7 @@ module belt_clamp_holes(){
   }  
 }
 
-module YPlatform_left_sandwich_holes(){
+module YPlatform_right_sandwich_holes(){
   for (i=[-1,1]){
     for (j=[-1,1]){
       translate([i*14,j*YBearings_distance/2])
@@ -2195,28 +2195,28 @@ module YPlatform_left_sandwich_holes(){
 }
 
 module YPlatform_hexspacers(){
-  translate([Y_rods_distance/2 + 14, 0])
+  translate([-Y_rods_distance/2 + 14, 0])
   hexspacer(h=sandwich_hexspacer_length);
 
   for (j=[-1,1]){
-    translate([Y_rods_distance/2 - 14, j*(50/2-5)])
+    translate([-Y_rods_distance/2 - 14, j*(50/2-5)])
     hexspacer(h=sandwich_hexspacer_length);
   }
 
   for (i=[-1,1]){
     for (j=[-1,1]){
-      translate([-Y_rods_distance/2 + i*14,j*50])
+      translate([Y_rods_distance/2 + i*14,j*50])
       hexspacer(h=sandwich_hexspacer_length);
     }
   }
 }
 
 module YPlatform_linear_bearings(){
-  translate([Y_rods_distance/2, 0])
+  translate([-Y_rods_distance/2, 0])
   LM8UU();
 
   for (j=[-1,1]){
-    translate([-Y_rods_distance/2, j*50])
+    translate([Y_rods_distance/2, j*50])
     LM8UU();
   }
 }
