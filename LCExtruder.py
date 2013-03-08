@@ -1,5 +1,5 @@
-from pyopenscad import *
-from sp_utils import *
+from solid import *
+from solid.utils import *
 thickness=6
 default_sheet_color = [0.9, 0.7, 0.45, 0.9]
 
