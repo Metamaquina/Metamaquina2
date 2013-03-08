@@ -10,59 +10,49 @@ use <technical_drawing.scad>;
 module PTFE_liner_2d_outline(dimensions=true){
   epsilon = 0.01;
 
-  d1 = 6.33;
   l1 = 46.5;
-
-  d2 = 3.25;
   l2 = 47;
-
-  d3 = d2;
   l3 = 47.5;
-
-  d4 = 3.0;
   l4 = l3 + 1;
-
-  d5a = 4.5;
-  d5b = 3.0;
   l5 = 2;
 
-  if (dimensions){
-    dimension(0, 8, l3, 8, line_thickness=0.05, fontsize=1);
-    dimension(0, 10, l2, 10, line_thickness=0.05, fontsize=1);
-    dimension(0, 12, l1, 12, line_thickness=0.05, fontsize=1);
+  d1 = 6.33;
+  d2 = 3.25;
+  d4 = 3.0;
+  d5a = 4.5;
+  d5b = 3.0;
 
-    rotate(180)
-    dimension(-l5, 8, 0, 8, line_thickness=0.05, fontsize=1);
+  if (dimensions){
+    dimension(0, 8, l2, 8, line_thickness=0.05, fontsize=0.8);
+    dimension(0, 10, l1, 10, line_thickness=0.05, fontsize=0.8);
+
+    translate([l5,0])
+    dimension(-l5, 6, 0, 6, line_thickness=0.05, fontsize=0.8);
 
     translate([4,0])
     rotate(90){
-      dimension(-d5a/2, 11, d5a/2, 11, line_thickness=0.05, fontsize=1);
-      dimension(-d5b/2, 9, d5b/2, 9, line_thickness=0.05, fontsize=1);
+      dimension(-d5a/2, 11, d5a/2, 11, line_thickness=0.05, fontsize=0.8);
+      dimension(-d5b/2, 9, d5b/2, 9, line_thickness=0.05, fontsize=0.8);
     }
 
-    translate([l1,0])
+    translate([l1-1,0])
     rotate(-90)
-    dimension(-d1/2, 8, d1/2, 8, line_thickness=0.05, fontsize=1);
+    dimension(-d1/2, 8, d1/2, 8, line_thickness=0.05, fontsize=0.8);
   }
 
   difference(){
     //exterior outline
-    union(){
-      hull(){
-        translate([0,-d1/2])
-        square([l1,d1]);
+    hull(){
+      translate([0,-d1/2])
+      square([l1,d1]);
 
-        translate([0,-d2/2])
-        square([l2,d2]);
-      }
-
-      translate([0,-d3/2])
-      square([l3,d3]);
+      translate([0,-d2/2])
+      square([l2,d2]);
     }
 
     //interior outline
     translate([0,-d4/2])
-    square([l4,d4]);
+    square([l3,d4]);
 
     //entrance interior bevel    
     hull(){

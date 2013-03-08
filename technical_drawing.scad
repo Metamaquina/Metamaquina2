@@ -78,7 +78,10 @@ module dimension_label(x, y, string, spacing=0.7, fontsize=2){
   }
 }
 
-module arrow(x,y,angle,length=1, width=0.4, thickness=0.1){
+module arrow(x,y,angle, thickness=0.1){
+  length = 10*thickness;
+  width = 4*thickness;
+
   translate([x,y])
   rotate([0,0,angle])
   hull(){
