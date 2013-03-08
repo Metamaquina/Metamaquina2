@@ -93,7 +93,6 @@ function carx_demo(time) = sin(360*time*7)*BuildVolume_X/2;
 function cary_demo(time) = cos(360*time*7)*BuildVolume_Y/2;
 //function carz_demo(time) = (0.5+0.5*sin(360*time))*0.3*BuildVolume_Y/2 + 0.7*BuildVolume_Y/2;
 function carz_demo(time) = time*BuildVolume_Z;
-function extruder_demo(time) = 360*time*5;
 function coupling_demo(time) = (360*carz_demo(time)/1.25)/hack_couplings;
 
 /* Positioning of the extruder assembly */
@@ -1911,117 +1910,18 @@ module ZBars(){
   }
 }
 
-use <gregs_wade.scad>;
-module wade_block(){
-  jhead_mount=256;
-
-  translate([-6.3, 14,0])
-  rotate([90,0,0])
-  render(){
-    wade(hotend_mount=jhead_mount, layer_thickness=0);
-  }
-}
-
-
-hobbed_bolt_z = 38;
-hobbed_bolt_x = 4.5;
-wade_small_x = 44;
-wade_small_z = 40;
-idler_x = -12.5;
-idler_z = 21.7;
-
-//TODO: render from SCAD
-module wade_small(){
-  color(ABS_color)
-  rotate([0,0,49/11*extruder_demo(time)])
-  translate([-15,-60]) //why the hell?!
-  import("stl/wade-small.stl");
-}
-
-//TODO: render from SCAD
-module idler(){
-  color(ABS_color)
-  translate([-18.2,0,-10])
-  import("stl/wade-idler.stl");
-}
-
-//TODO: render from SCAD
-module wade_large(){
-  rotate([0,0,-extruder_demo(time)+0.5]){
-    color(ABS_color)
-    import("stl/MM_wade-large.stl");
-
-    translate([0,0,6])
-    color(metal_color)
-    rotate([0,0,30])
-    M8_nut();
-  }
-}
-
-module hobbed_bolt(){
-  color(metal_color)
-  rotate([90,0,0])
-  translate([0,0,-30])
-  cylinder(h=50, r=m8_diameter/2, $fn=20);
-}
-
-M8_washer_thickness = 1.5;
-wade_block_width=28;
-
-module WadeExtruder(){
-  translate([XCarPosition, 0, 2*thickness + X_rod_height + lm8uu_holder_rod_height]){
-    wade_block();
-
-    translate([hobbed_bolt_x, 0, hobbed_bolt_z]){
-      hobbed_bolt();
-
-      translate([0, wade_block_width/2]){
-        rotate([-90,0,0])
-        M8_washer();
-
-        translate([0, M8_washer_thickness]){
-          rotate([-90,0,0])
-          M8_washer();
-
-          translate([0, M8_washer_thickness])
-          rotate([-90, 0, 0])
-          wade_large();
-        }
-      }
-    }
-
-    translate([wade_small_x, 3, wade_small_z]){
-      rotate([90, 0, 0])
-      rotate([0, 0, -75])
-      NEMA17();
-
-      rotate([-90, 0, 0])
-      translate([0,0,4])
-      wade_small();
-    }
-
-    translate([idler_x, 0, idler_z]){
-      rotate([0, 80, 0])
-      idler();
-    }
-  }
-}
-
 module XCarriage(){
   //lasercut parts:
   translate([XCarPosition, 0, thickness + X_rod_height + lm8uu_holder_rod_height]){
     XCarriage_bottom_sheet();
 
-//    translate([0,0,thickness])
-//    extruder();
+    translate([0,0,thickness])
+    LaserCutExtruder();
   }
 
   //plastic parts:
   XCarriage_lm8uu_holders();
   belt_clamps();
-
-  rotate([0,0,90])
-  WadeExtruder();
 
   //metal parts:
   XCarriage_linear_bearings();
