@@ -1910,6 +1910,11 @@ module ZBars(){
   }
 }
 
+module LaserCutExtruder(){
+  rotate(90)
+  include<lasercut_extruder.scad>;
+}
+
 module XCarriage(){
   //lasercut parts:
   translate([XCarPosition, 0, thickness + X_rod_height + lm8uu_holder_rod_height]){

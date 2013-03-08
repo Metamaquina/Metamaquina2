@@ -101,7 +101,7 @@ def printrbot_extruder():
   )
 
 if __name__ == '__main__':
-  output='printrbot_extruder'
+  output='lasercut_extruder'
   assembly = printrbot_extruder()
   bom = bill_of_materials()
   print bom
