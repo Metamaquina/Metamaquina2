@@ -71,7 +71,6 @@ module dimension_label(x, y, string, spacing=0.7, fontsize=2){
   translate([x - text_length/2,y + fontsize/3]){
     for (i=[0:len(string)-1]){
       translate([spacing*fontsize*i,0]) glyph(string[i], fontsize);
-      echo(string[i]);
     }
 
     translate([len(string)*spacing*fontsize, 0]) glyph("mm", fontsize);
