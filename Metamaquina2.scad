@@ -367,15 +367,15 @@ module HiquaPowerSupply(){
 }
 
 module RodEndTop_face(){
-  RodEnd_face(z_rod_z_bar_distance+12);
+  RodEnd_face(z_rod_z_bar_distance+8);
 }
 
 module RodEndBottom_face(){
-  RodEnd_face(0);
+  RodEnd_face(0, third_hole=false);
 }
 
-module RodEnd_face(L){
-  R=16;
+module RodEnd_face(L, third_hole=true){
+  R=12;
   r=6;
   difference(){
     union(){
@@ -386,12 +386,15 @@ module RodEnd_face(L){
     }
 
     //holes
-    translate([L, -12])
+    translate([L, -(R-4)])
     circle(r=m3_diameter/2, $fn=20);
-    translate([L, 12])
+    translate([L, (R-4)])
     circle(r=m3_diameter/2, $fn=20);
-    translate([-12, 0])
-    circle(r=m3_diameter/2, $fn=20);
+
+    if (third_hole){
+      translate([-(R-4), 0])
+      circle(r=m3_diameter/2, $fn=20);
+    }
   }
 }
 
@@ -685,13 +688,9 @@ module TopPanel_holes(){
   translate([Z_rods_distance/2,0]){
     //holes for Zrod and Zbar
     circle(r=(m8_diameter+epsilon)/2, $fn=20);
-    translate([12, 0]) circle(r=m3_diameter/2, $fn=20);
-    translate([-z_rod_z_bar_distance - 12, -12]) circle(r=m3_diameter/2, $fn=20);
-    translate([-z_rod_z_bar_distance - 12, 12]) circle(r=m3_diameter/2, $fn=20);
-
-// the folowing 2 holes are not strictly necessary, but may be useful
-    translate([0, -12]) circle(r=m3_diameter/2, $fn=20);
-    translate([0, 12]) circle(r=m3_diameter/2, $fn=20);
+    translate([8, 0]) circle(r=m3_diameter/2, $fn=20);
+    translate([-z_rod_z_bar_distance - 8, -8]) circle(r=m3_diameter/2, $fn=20);
+    translate([-z_rod_z_bar_distance - 8, 8]) circle(r=m3_diameter/2, $fn=20);
 
     if (zmotors_on_top){
       translate([-z_rod_z_bar_distance,0]){
@@ -899,9 +898,9 @@ module BottomPanel_holes(){
     //holes for Z rods
     translate([Z_rods_distance/2,0]){
       circle(r=(m8_diameter+epsilon)/2);
-      translate([0, -12]) circle(r=m3_diameter/2, $fn=20);
-      translate([0, 12]) circle(r=m3_diameter/2, $fn=20);
-      translate([12, 0]) circle(r=m3_diameter/2, $fn=20);
+      translate([0, -8]) circle(r=m3_diameter/2, $fn=20);
+      translate([0, 8]) circle(r=m3_diameter/2, $fn=20);
+      //translate([8, 0]) circle(r=m3_diameter/2, $fn=20);
     }
 
     //holes for ZMotors
