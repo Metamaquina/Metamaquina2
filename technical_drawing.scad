@@ -71,14 +71,16 @@ module dimension_label(x, y, string, spacing=0.7, fontsize=2){
   translate([x - text_length/2,y + fontsize/3]){
     for (i=[0:len(string)-1]){
       translate([spacing*fontsize*i,0]) glyph(string[i], fontsize);
-      echo(string[i]);
     }
 
     translate([len(string)*spacing*fontsize, 0]) glyph("mm", fontsize);
   }
 }
 
-module arrow(x,y,angle,length=1, width=0.4, thickness=0.1){
+module arrow(x,y,angle, thickness=0.1){
+  length = 10*thickness;
+  width = 4*thickness;
+
   translate([x,y])
   rotate([0,0,angle])
   hull(){

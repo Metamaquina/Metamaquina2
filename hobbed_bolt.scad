@@ -26,6 +26,7 @@ bolt_length = hobbing_position + MDF_thickness*3/2 + bearing_thickness + screw_l
 echo(str("hobbing position: ", hobbing_position));
 echo(str("bolt_length: ", bolt_length));
 echo(str("screw_length: ", screw_length));
+lt = 0.1;
 
 module bolt_hex_head_frontal_view(D){
   //ISO standard for NON-STRUCTURAL hexagonal bolt head dimensions:
@@ -33,15 +34,15 @@ module bolt_hex_head_frontal_view(D){
   s = 1.6 * D;
 
   translate([-15,0]){
-    dimension(-s/2, 14, s/2, 14);
+    dimension(-s/2, 14, s/2, 14, line_thickness=lt);
     rotate([0,0,90])
-    dimension(-e/2, 12, e/2, 12);
+    dimension(-e/2, 12, e/2, 12, line_thickness=lt);
 
     rotate([0,0,30])
     Hexagon(e/2);
 
     Circle(D/2, even_odd=true);
-    dimension(-D/2, 10, D/2, 10);
+    dimension(-D/2, 10, D/2, 10, line_thickness=lt);
 
     Circle(e/2*sqrt(3)/2);
   }
@@ -58,18 +59,18 @@ module head(D){
   Square(-h, -e/2, 0, e/2);
   Square(-h, -e/4, 0, e/4);
 
-  dimension(-h,16,0,16);
+  dimension(-h,16,0,16, line_thickness=lt);
 }
 
 module body(diameter, length){
   Square(0, -diameter/2, length, diameter/2);
-  dimension(0,-10, length,-10);
+  dimension(0,-10, length,-10, line_thickness=lt);
 }
 
 module hobbing(position, diameter, length){
   N=6;
-  dimension(0,11, position,11);
-  dimension(position-length/2, 12, position+length/2, 12, color="red");
+  dimension(0,11, position,11, line_thickness=lt);
+  dimension(position-length/2, 12, position+length/2, 12, color="red", line_thickness=lt);
 
   translate([position,0]){
     for (i=[0:N])
@@ -80,7 +81,7 @@ module hobbing(position, diameter, length){
 module screw(diameter, length){
   N=10;
   spacing=3;
-  dimension(bolt_length-length,11, bolt_length,11);
+  dimension(bolt_length-length,11, bolt_length,11, line_thickness=lt);
 
   Square(bolt_length-length, -diameter/2, bolt_length, diameter/2);
 
