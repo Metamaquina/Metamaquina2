@@ -10,17 +10,20 @@ use <technical_drawing.scad>;
 module PTFE_liner_2d_outline(dimensions=true){
   epsilon = 0.01;
 
-  l1 = 46.5;
-  l2 = 47;
-  l3 = 47.5;
-  l4 = l3 + 1;
-  l5 = 2;
-
   d1 = 6.33;
   d2 = 3.25;
   d4 = 3.0;
   d5a = 4.5;
   d5b = 3.0;
+
+  l2 = 47;
+  l1 = l2 - (d1-d2)/(2*tan(118/2));
+  l3 = 47.5;
+  l4 = l3 + 1;
+  l5 = 2;
+
+  angulo = 2*atan2((d2-d1)/2,l2-l1);
+  echo(str("angulo = ",angulo," graus"));
 
   if (dimensions){
     dimension(0, 8, l2, 8, line_thickness=0.05, fontsize=0.8);
