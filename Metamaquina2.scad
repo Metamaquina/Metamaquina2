@@ -251,7 +251,7 @@ if (preview_metal && render_bolts){
 // 2d shapes for laser-cutting:
 
 hexspacer_length = 35; //considering the height of the connectors and components
-nylonspacer_length = 4;
+nylonspacer_length = 6;
 RAMBo_pcb_thickness = 2;
 M3_bolt_head = 3;
 RAMBo_cover_thickness = 3;
