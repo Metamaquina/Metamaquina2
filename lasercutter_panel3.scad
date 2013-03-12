@@ -11,6 +11,21 @@ module lasercutter_panel3(){
 
   translate([130,150])
   YPlatform_sheet_curves();
+
+  translate([270,30])
+  xend_bearing_sandwich_face();
+
+  translate([320,30])
+  xend_bearing_sandwich_face();
+
+  translate([290,145])
+  XCarriage_sandwich_face();
+
+  translate([270,220])
+  YPlatform_left_sandwich_face();
+
+  translate([370,80])
+  YPlatform_right_sandwich_face();
 }
 
 lasercutter_panel3();
