@@ -633,6 +633,11 @@ module MachineArcPanel_face(){
         }
       }
 
+
+      //Metamaquina logo
+      translate([-170/2, ArcPanel_height - 44])
+        import(file="metamaquina-170mm_X_25mm.dxf");
+
       //tslots for top panel
       translate([0,ArcPanel_height + thickness]){
         translate([-ArcPanel_width/2 + 25, 0])
