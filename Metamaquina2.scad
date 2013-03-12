@@ -14,6 +14,14 @@ use <domed_cap_nuts.scad>;
 use <RAMBo.scad>;
 //use <pulley.scad>;
 
+module TSlot_holes(width=50){
+  t_slot_holes(width=width, thickness=thickness+slot_extra_thickness);
+}
+
+module TSlot_joints(width=50){
+  t_slot_joints(width=width, thickness=thickness, joint_size=5);
+}
+
 epsilon=0.1;
 inch=25.4;
 m3_diameter = 3;
@@ -467,13 +475,13 @@ module MachineSidePanel_face(){
       //tslots for arc panel
       translate([RightPanel_basewidth/2 - ArcPanel_rear_advance + thickness/2, machine_height]){
         translate([0, -50])
-        t_slot_holes(width=50, thickness=thickness);
+        TSlot_holes();
 
         //translate([0, -ArcPanel_height/2 - 25])
-        //t_slot_holes(width=50, thickness=thickness);
+        //TSlot_holes();
 
         translate([0, -ArcPanel_height])
-        t_slot_holes(width=50, thickness=thickness);
+        TSlot_holes();
       }
 
       if (zmotors_on_top){     
@@ -486,17 +494,17 @@ module MachineSidePanel_face(){
     //tslots for top panel
     translate([rear_backtop_advance-20, machine_height+thickness/2])
     rotate([0,0,-90])
-    t_slot_joints(50, thickness, joint_size=5);
+    TSlot_joints();
 
     translate([rear_backtop_advance + RightPanel_topwidth - 50, machine_height+thickness/2])
     rotate([0,0,-90])
-    t_slot_joints(50, thickness, joint_size=5);
+    TSlot_joints();
 
     if (zmotors_on_top){
       //tslot for bottom panel
       translate([RightPanel_basewidth/2 + BottomPanel_width/2, feetheight + thickness/2])
       rotate([0,0,90])
-      t_slot_joints(BottomPanel_width, thickness, joint_size=5);
+      TSlot_joints(BottomPanel_width);
     }
   }
 }
@@ -566,10 +574,10 @@ module TopPanel_holes(){
 
     translate([0,-30-25]){
       translate([-Z_rod_sidepanel_distance + thickness/2, 25])
-        t_slot_holes(width=50, thickness=thickness);
+        TSlot_holes();
 
       translate([-Z_rod_sidepanel_distance + thickness/2, RightPanel_topwidth-5])
-        t_slot_holes(width=50, thickness=thickness);
+        TSlot_holes();
     }
   }
 }
@@ -596,37 +604,37 @@ module MachineArcPanel_face(){
         translate([0,ArcPanel_height + thickness/2]){
           translate([-ArcPanel_width/2, 0])
           rotate([0,0,-90])
-          t_slot_joints(width=50, thickness=thickness);
+          TSlot_joints();
 
           translate([25, 0])
           rotate([0,0,90])
-          t_slot_joints(width=50, thickness=thickness);
+          TSlot_joints();
 
           translate([ArcPanel_width/2, 0])
           rotate([0,0,90])
-          t_slot_joints(width=50, thickness=thickness);
+          TSlot_joints();
         }
 
         //tslots for left panel
         translate([-ArcPanel_width/2 - thickness/2, 0]){
           translate([0, ArcPanel_height - 50])
-          t_slot_joints(width=50, thickness=thickness);
+          TSlot_joints();
 
           //translate([0, ArcPanel_height/2 - 25])
-          //t_slot_joints(width=50, thickness=thickness);
+          //TSlot_joints();
 
-          t_slot_joints(width=50, thickness=thickness);
+          TSlot_joints();
         }
 
         //tslots for right panel
         translate([ArcPanel_width/2 + thickness/2, 0]){
           translate([0, ArcPanel_height - 50])
-          t_slot_joints(width=50, thickness=thickness);
+          TSlot_joints();
 
           //translate([0, ArcPanel_height/2 - 25])
-          //t_slot_joints(width=50, thickness=thickness);
+          //TSlot_joints();
 
-          t_slot_joints(width=50, thickness=thickness);
+          TSlot_joints();
         }
       }
 
@@ -735,15 +743,15 @@ module MachineTopPanel_face(){
     translate([0,ArcPanel_rear_advance - thickness/2]){
       translate([-ArcPanel_width/2, 0])
       rotate([0,0,-90])
-      t_slot_holes(width=50, thickness=thickness);
+      TSlot_holes();
 
       translate([25, 0])
       rotate([0,0,90])
-      t_slot_holes(width=50, thickness=thickness);
+      TSlot_holes();
 
       translate([ArcPanel_width/2, 0])
       rotate([0,0,90])
-      t_slot_holes(width=50, thickness=thickness);
+      TSlot_holes();
     }
 
     TopPanel_holes(); 
@@ -766,7 +774,7 @@ module BottomPanel_holes(){
 
     //tslot holes for side panels
     translate([Z_rods_distance/2 - Z_rod_sidepanel_distance + thickness/2, -BottomPanel_width/2])
-    t_slot_holes(width=BottomPanel_width, thickness=thickness);
+    TSlot_holes(width=BottomPanel_width);
 
     //tslot cuts for side panels
     translate([Z_rods_distance/2 - Z_rod_sidepanel_distance + thickness, -BottomPanel_width/2 -BottomPanel_width/4])
@@ -910,11 +918,11 @@ module XEndMotor_bottom_holes(){
   //tslot holes
 	translate([thickness, XPlatform_width/2 + XEnd_extra_width - thickness])
 	rotate([0,0,-90])
-	t_slot_holes(width=XEnd_box_size, thickness=thickness);
+	TSlot_holes(width=XEnd_box_size);
 
 	translate([thickness, -XPlatform_width/2 + thickness])
 	rotate([0,0,-90])
-	t_slot_holes(width=XEnd_box_size, thickness=thickness);
+	TSlot_holes(width=XEnd_box_size);
 
 }
 
@@ -932,11 +940,11 @@ module XEndIdler_bottom_holes(){
   //tslot holes
 	translate([thickness, -XPlatform_width/2 - XEnd_extra_width + thickness])
 	rotate([0,0,-90])
-	t_slot_holes(width=XEnd_box_size, thickness=thickness);
+	TSlot_holes(width=XEnd_box_size);
 
 	translate([thickness, XPlatform_width/2 - thickness])
 	rotate([0,0,-90])
-	t_slot_holes(width=XEnd_box_size, thickness=thickness);
+	TSlot_holes(width=XEnd_box_size);
 
 }
 
@@ -976,13 +984,13 @@ module XEnd_plain_face(){
         //bottom
         rotate([0, 0, -90])
         translate([thickness/2, 0])
-        t_slot_joints(XEnd_box_size, thickness, joint_size=5);
+        TSlot_joints(XEnd_box_size);
 
         translate([XEnd_box_size + thickness/2, 0])
-        t_slot_joints(XPlatform_height - thickness, thickness, joint_size=5);
+        TSlot_joints(XPlatform_height - thickness);
 
         translate([-thickness/2, 0])
-        t_slot_joints(XPlatform_height - thickness, thickness, joint_size=5);
+        TSlot_joints(XPlatform_height - thickness);
       }
 
     //bottom tslot
@@ -1078,11 +1086,11 @@ module XEnd_back_face(){
       circle(r=m3_diameter/2, $fn=20);
 
       translate([XPlatform_width/2 - thickness, thickness]){
-        t_slot_holes(width=XPlatform_height - thickness, thickness=thickness);
+        TSlot_holes(width=XPlatform_height - thickness);
       }
 
       translate([-XPlatform_width/2 - XEnd_extra_width + thickness, thickness]){
-        t_slot_holes(width=XPlatform_height - thickness, thickness=thickness);
+        TSlot_holes(width=XPlatform_height - thickness);
       }
     }
   }
@@ -1156,11 +1164,11 @@ module XEnd_front_face(){
     square([belt_width+6, 2*(IdlerRadius+4)], center=true);
 
     translate([XPlatform_width/2 - thickness, thickness]){
-      t_slot_holes(width=XPlatform_height - thickness, thickness=thickness);
+      TSlot_holes(width=XPlatform_height - thickness);
     }
 
     translate([-XPlatform_width/2 - XEnd_extra_width + thickness, thickness]){
-      t_slot_holes(width=XPlatform_height - thickness, thickness=thickness);
+      TSlot_holes(width=XPlatform_height - thickness);
     }
   }
 }

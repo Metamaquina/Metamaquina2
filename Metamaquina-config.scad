@@ -1,5 +1,8 @@
-/*Thickness of acrylic or plywood sheets to use. Be sure to use a value slightly larger than the nominal material thickness in order to be tolerant to variations on the material's actual thickness*/
-thickness = 6 + 0.5; //6mm thick sheets
+/*Thickness of acrylic or plywood sheets to use.*/
+thickness = 6; //millimiters
+
+/*This value is added to the thickness value when drawing cuts for connecting perpendicular sheets together*/
+slot_extra_thickness = 0.5;
 
 /*z motor placement in the original Prusa was on top. Our design uses the z motors in the bottom of the machine, but if you want them on top, you can set this variable to true. */
 zmotors_on_top = false;

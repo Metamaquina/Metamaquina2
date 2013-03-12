@@ -36,8 +36,6 @@ module t_slot_joints(width, thickness, joint_size=5){
 
   translate([0, 3*width/4])
   square([thickness, joint_size], center=true);
-
-//  square([1, width]);
 }
 
 module t_slot_bolt_washer_nut(diameter, length){
