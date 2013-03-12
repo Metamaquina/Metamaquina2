@@ -3,7 +3,6 @@
 // version 3 (or later).
 
 include <Metamaquina-config.scad>;
-include <RAMBo.scad>;
 
 //utils
 use <tslot.scad>;
@@ -12,6 +11,7 @@ use <608zz_bearing.scad>;
 use <washer.scad>;
 use <nut.scad>;
 use <domed_cap_nuts.scad>;
+use <RAMBo.scad>;
 //use <pulley.scad>;
 
 epsilon=0.1;
@@ -24,6 +24,8 @@ m8_washer_height = 1.5; //TODO: check the datasheets
 lm8uu_diameter = 15;
 lm8uu_length=24;
 sandwich_hexspacer_length = 12; //TODO: check availability
+RAMBo_x = 1;
+RAMBo_y = 133;
 
 //platic parts
 use <belt-clamp.scad>;

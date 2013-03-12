@@ -3,9 +3,8 @@
 // version 3 (or later).
 
 include <Metamaquina-config.scad>;
+use <rounded_square.scad>;
 
-RAMBo_x = 1;
-RAMBo_y = 133;
 hexspacer_length = 35; //considering the height of the connectors and components
 nylonspacer_length = 6;
 RAMBo_pcb_thickness = 2;
