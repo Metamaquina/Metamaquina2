@@ -808,26 +808,22 @@ module Y_belt(){
   	color(rubber_color){
       translate([2.5, 0, 66])
       rotate([0,0,-90])
-      rotate([90,0,0])
-//      belt(-machine_x_dim/2 + thickness + XEnd_box_size/2, XMotor_height, 6, machine_x_dim/2 - thickness - XEnd_box_size/2, XIdler_height, IdlerRadius);
-      belt(RightPanel_basewidth/2 - bar_cut_length, 0, IdlerRadius, -RightPanel_basewidth/2 + bar_cut_length, 0, IdlerRadius);
-    }
-  }
-}
+      rotate([90,0,0]){
+        belt(bearings = [
+              [/*x:*/ RightPanel_basewidth/2 - bar_cut_length,
+               /*y:*/ 0,
+               /*r:*/ IdlerRadius],
 
-module Y_belt_old(){
-  front_h=60;
-  rear_h=40;
+              [/*x:*/ -RightPanel_basewidth/2 + bar_cut_length,
+               /*y:*/ 0,
+               /*r:*/ IdlerRadius],
 
-  front_x = 10 -RightPanel_basewidth/2;
-  rear_x = 20 + RightPanel_basewidth/2;
-
-  if (preview_rubber){
-    color(rubber_color){
-      rotate([0,90,0])
-      rotate([0,0,90])
-      linear_extrude(height=10)
-      polygon(points=[[front_x, front_h], [front_x, front_h-3], [rear_x, rear_h-3], [rear_x, rear_h]]);
+              [/*x:*/ -RightPanel_basewidth/2 + bar_cut_length + 30,
+               /*y:*/ -base_bars_Zdistance,
+               /*r:*/ IdlerRadius]
+             ],
+             belt_width = belt_width);
+      }
     }
   }
 }
@@ -1546,48 +1542,46 @@ module coupling_pair(){
   }
 }
 
-module belt_curve(r){
-  rotate([-90,0])
+module belt(bearings, belt_width=5){
   linear_extrude(height=belt_width){
     difference(){
-      circle(r=r+2);
-      circle(r=r);
-      translate([0,-2*r]) square([2*r,4*r]);
+      hull(){
+        for (b=bearings){
+          assign(x=b[0], y=b[1], r=b[2]){
+    		    translate([x,y])
+            circle(r=r+2);
+          }
+        }
+      }
+      hull(){
+        for (b=bearings){
+          assign(x=b[0], y=b[1], r=b[2]){
+		        translate([x,y])
+            circle(r=r);
+          }
+        }
+      }
     }
   }
-}
-
-module belt(x1,y1,r1,x2,y2,r2){
-  linear_extrude(height=5)
-    difference(){
-      hull(){
-		    translate([x1,y1])
-        circle(r=r1+2);
-
-		    translate([x2,y2])
-        circle(r=r2+2);
-      }
-      hull(){
-		    translate([x1,y1])
-        circle(r=r1);
-
-		    translate([x2,y2])
-        circle(r=r2);
-      }
-    }
 }
 
 module Xbelt(){
   if (preview_rubber){
   	color(rubber_color){
-      translate([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + thickness])
-      rotate([90,0,0])
-      belt(/* x1: */ -machine_x_dim/2 + thickness + XEnd_box_size/2,
-           /* y1: */ XMotor_height,
-           /* r1: */ 6,
-           /* x2: */ machine_x_dim/2 - thickness - XEnd_box_size/2,
-           /* y2: */ XIdler_height,
-           /* r2: */ IdlerRadius);
+      translate([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + thickness]){
+        rotate([90,0,0]){
+          belt(bearings = [
+                [/*x:*/ -machine_x_dim/2 + thickness + XEnd_box_size/2,
+                 /*y:*/ XMotor_height,
+                 /*r:*/ 6],
+
+                [/*x:*/ machine_x_dim/2 - thickness - XEnd_box_size/2,
+                 /*y:*/ XIdler_height,
+                 /*r:*/ IdlerRadius]
+               ],
+               belt_width = belt_width);
+        }
+      }
     }
   }
 }
@@ -1598,7 +1592,9 @@ module belt_clamps(){
   if (preview_ABS){
     color(ABS_color){
       for (i=[-1,1])
-      translate([XCarPosition + i*(XCarriage_lm8uu_distance/2+10),  XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width/2, belt_clamp_height + 2*thickness + X_rod_height + lm8uu_diameter/2])
+      translate([XCarPosition + i*(XCarriage_lm8uu_distance/2+10),
+                 XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width/2,
+                 belt_clamp_height + 2*thickness + X_rod_height + lm8uu_diameter/2])
       rotate([0,0,90])
       rotate([180,0,0])
       beltclamp();
