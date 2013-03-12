@@ -633,8 +633,6 @@ module MachineArcPanel_face(){
         }
       }
 
-      arcpanel_holes_for_extruder_wires();
-
       //tslots for top panel
       translate([0,ArcPanel_height + thickness]){
         translate([-ArcPanel_width/2 + 25, 0])
@@ -684,20 +682,6 @@ module MachineArcPanel_face(){
         t_slot_shape(3,16);
       }
     }
-  }
-}
-
-module arcpanel_holes_for_extruder_wires(){
-  translate([0,105]){
-    translate([0,20])
-    rotate([0,0,90])
-    zip_tie_holes();
-
-    translate([-10,0])
-    zip_tie_holes();
-
-    translate([-120,0])
-    zip_tie_holes();
   }
 }
 
