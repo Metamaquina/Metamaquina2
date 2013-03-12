@@ -125,7 +125,7 @@ XEnd_extra_width = 30;
 XEnd_box_size = lm8uu_diameter/2 + z_rod_z_bar_distance + ZLink_rod_height;
 
 //height of the bottom panel acrylic/plywood sheet:
-BottomPanel_zoffset = feetheight + NEMA17_length + 5;
+BottomPanel_zoffset = feetheight + NEMA17_length;
 
 Z_rod_length = machine_height - BottomPanel_zoffset + thickness;
 Z_bar_length = thickness + machine_height - BottomPanel_zoffset - motor_shaft_length;
