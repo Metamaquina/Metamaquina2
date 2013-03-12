@@ -1100,7 +1100,7 @@ module LM8UU(){
 }
 
 
-module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=0){
+module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=1){
   projection(cut=true){
     difference(){
       linear_extrude(height=thickness)
