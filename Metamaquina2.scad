@@ -751,10 +751,6 @@ module BottomPanel_holes(){
     translate([Z_rods_distance/2 - z_rod_z_bar_distance, 0])
     NEMA17_holes();
 
-    //tslot holes for side panels
-    translate([Z_rods_distance/2 - Z_rod_sidepanel_distance + thickness/2, -BottomPanel_width/2])
-    TSlot_holes(width=BottomPanel_width);
-
     //tslot cuts for side panels
     translate([Z_rods_distance/2 - Z_rod_sidepanel_distance + thickness, -BottomPanel_width/2 -BottomPanel_width/4])
     rotate([0,0,90])
