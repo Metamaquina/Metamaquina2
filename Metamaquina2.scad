@@ -711,14 +711,14 @@ module top_hole_for_extruder_wires(){
 
 //!MachineTopPanel_face();
 module MachineTopPanel_face(){
-  sidewidth=95;
+  sidewidth=78;
   difference(){
     union(){
       translate([-machine_x_dim/2,-30])
-      rounded_square([sidewidth, 60], corners=[30, 12, 0, 0]);
+      rounded_square([sidewidth, 60], corners=[30, 2, 0, 0]);
 
       translate([machine_x_dim/2 - sidewidth,-30])
-      rounded_square([sidewidth, 60], corners=[12, 30, 0, 0]);
+      rounded_square([sidewidth, 60], corners=[2, 30, 0, 0]);
 
       translate([0,60]){
         translate([-machine_x_dim/2,-30])
@@ -728,8 +728,8 @@ module MachineTopPanel_face(){
         rounded_square([sidewidth, 100], corners=[0, 0, 0, sidewidth], $fn=90);
       }
 
-      translate([0,120])
-      rounded_square([Z_rods_distance - 2*Z_rod_sidepanel_distance + 8*thickness, 75], corners=[10,10,10,10], center=true);
+      translate([0,127])
+      rounded_square([Z_rods_distance - 2*Z_rod_sidepanel_distance + 8*thickness, 61], corners=[10,10,10,10], center=true);
     }
 
     top_hole_for_extruder_wires();    
