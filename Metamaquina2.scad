@@ -22,11 +22,6 @@ module TSlot_joints(width=50){
   t_slot_joints(width=width, thickness=thickness, joint_size=5);
 }
 
-epsilon=0.1;
-inch=25.4;
-m3_diameter = 3;
-m4_diameter = 4;
-m8_diameter = 8;
 m8_nut_height = 6.3; //TODO: check the datasheets
 m8_washer_height = 1.5; //TODO: check the datasheets
 lm8uu_diameter = 15;

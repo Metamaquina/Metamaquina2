@@ -42,3 +42,9 @@ ABS_color = [0.95, 0.95, 0.85];
 sheet_color = [0.9, 0.3, 0.3, 1];
 peek_color = "beige";
 
+epsilon=0.1;
+inch=25.4;
+m3_diameter = 3;
+m4_diameter = 4;
+m8_diameter = 8;
+
