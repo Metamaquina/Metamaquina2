@@ -2,11 +2,8 @@
 // Lincensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-/*Thickness of acrylic or plywood sheets to use. Be sure to use a value slightly larger than the nominal material thickness in order to be tolerant to variations on the material's actual thickness*/
-thickness = 6 + 0.5; //6mm thick sheets
-
-/*z motor placement in the original Prusa was on top. Our design uses the z motors in the bottom of the machine, but if you want them on top, you can set this variable to true. */
-zmotors_on_top = false;
+include <Metamaquina-config.scad>;
+include <RAMBo.scad>;
 
 //utils
 use <tslot.scad>;
@@ -32,56 +29,6 @@ sandwich_hexspacer_length = 12; //TODO: check availability
 use <belt-clamp.scad>;
 use <bar-clamp.scad>;
 use <coupling.scad>;
-
-//rendering configs:
-render_calibration_guide = false;
-
-//*
-preview_lasercut=true;
-preview_pcb=true;
-preview_ABS=true;
-preview_PLA=true;
-preview_metal=true;
-preview_threaded_metal=true;
-preview_rubber=true;
-preview_nozzle=true;
-preview_peek=true;
-preview_powersupply=true;
-//*/
-
-/*
-preview_lasercut=false;
-preview_pcb=false;
-preview_ABS=false;
-preview_PLA=false;
-preview_metal=false;
-preview_threaded_metal=false;
-preview_rubber=true;
-preview_nozzle=false;
-preview_peek=false;
-preview_powersupply=false;
-//*/
-
-render_bolts = false;
-render_build_volume=false;
-render_xplatform=true;
-
-rubber_color = [0.1, 0.1, 0.1];
-nozzle_color = "gold";
-pcb_color = [1.0, 0.0, 0.0];
-threaded_metal_color = [0.6, 0.6, 0.6];
-metal_color = [0.7, 0.7, 0.7];
-powersupply_color = metal_color;
-PLA_color = [0.95, 0.35, 0.35];
-ABS_color = [0.95, 0.95, 0.85];
-//sheet_color = [0.95, 0.8, 0.65];
-sheet_color = [0.9, 0.3, 0.3, 1];
-peek_color = "beige";
-
-/* Desired build volume: */
-BuildVolume_X=200;
-BuildVolume_Y=200;
-BuildVolume_Z=150;
 
 //For the actual build volume we avoid using the marginal
 //region around the heated bed
@@ -250,95 +197,6 @@ if (preview_metal && render_bolts){
 
 // 2d shapes for laser-cutting:
 
-hexspacer_length = 35; //considering the height of the connectors and components
-nylonspacer_length = 6;
-RAMBo_pcb_thickness = 2;
-M3_bolt_head = 3;
-RAMBo_cover_thickness = 3;
-RAMBo_thickness = nylonspacer_length + RAMBo_pcb_thickness + hexspacer_length + RAMBo_cover_thickness + M3_bolt_head;
-RAMBo_border = 3.7;
-RAMBo_width = 103;
-RAMBo_height = 104;
-
-module RAMBo_holes(){
-  translate([RAMBo_border, RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
-
-  translate([RAMBo_border, RAMBo_height-RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
-
-  translate([RAMBo_width-RAMBo_border, RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
-
-  translate([RAMBo_width-RAMBo_border, RAMBo_height-RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
-}
-
-module RAMBo_pcb(){
-  color("dark green")
-  linear_extrude(height=RAMBo_pcb_thickness)
-  difference(){
-    square([RAMBo_width, RAMBo_height]);
-    RAMBo_holes();
-  }
-}
-
-white_nylon_color = [1, 1, 0.8];
-module nylonspacer(D=8, d=m4_diameter, h=nylonspacer_length){
-  color(white_nylon_color)
-  linear_extrude(height=h)
-  difference(){
-    circle(r=D/2, $fn=20);
-    circle(r=d/2, $fn=20);
-  }
-}
-
-module hexspacer(D=8, d=m3_diameter, h=hexspacer_length){
-  color(metal_color)
-  linear_extrude(height=h)
-  difference(){
-    circle(r=D/2, $fn=6);
-    circle(r=d/2, $fn=20);
-  }
-}
-
-acrylic_color = [1, 0.5, 0.5, 0.7];//red-transparent
-module RAMBo_cover(){
-  color(acrylic_color)
-  linear_extrude(height=RAMBo_cover_thickness)
-  difference(){
-    rounded_square([RAMBo_width, RAMBo_height], corners=[3,3,3,3]);
-    RAMBo_holes();
-  }
-  //TODO: Add logo / labels ?
-}
-
-module RAMBo(){
-  for (x=[RAMBo_border, RAMBo_width-RAMBo_border]){
-    for (y=[RAMBo_border, RAMBo_height-RAMBo_border]){
-      translate([x,y]){
-        nylonspacer();
-
-        translate([0,0,nylonspacer_length+RAMBo_pcb_thickness]){
-          hexspacer();
-          translate([0,0,hexspacer_length+RAMBo_cover_thickness]){
-            //bolt head
-            color("grey")
-            cylinder(r=3, h=M3_bolt_head, $fn=20);
-          }
-        }
-      }
-    }
-  }
-
-  translate([0,0,nylonspacer_length]){
-    RAMBo_pcb();
-
-    translate([0,0,RAMBo_pcb_thickness + hexspacer_length])
-    RAMBo_cover();    
-  }
-}
-
 //This is based on measurements of
 // a HIQUA power supply
 PowerSupply_width=110;
@@ -457,9 +315,6 @@ module holes_for_motor_wires(){
   }
 
 }
-
-RAMBo_x = 1;
-RAMBo_y = 133;
 
 //!MachineLeftPanel_face();
 module MachineLeftPanel_face(){
@@ -1662,13 +1517,6 @@ module XEndIdler_belt_face_assembly(){
     }
   }
 
-}
-
-module RAMBo_volume(){
-//This is the space that is required for the RAMBo Electronics.
-//We must make sure there's enough space so that the electronics doesn't
-//take up part of the printer's max build volume.
-  %cube([RAMBo_width, RAMBo_height, RAMBo_thickness]);
 }
 
 module Z_couplings(){
