@@ -1589,8 +1589,8 @@ module Xbelt(){
 //!Xbelt();
 
 module belt_clamps(){
-  if (preview_ABS){
-    color(ABS_color){
+  if (preview_lasercut){
+    color(sheet_color){
       for (i=[-1,1])
       translate([XCarPosition + i*(XCarriage_lm8uu_distance/2+10),
                  XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width/2,
