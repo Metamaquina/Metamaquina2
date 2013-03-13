@@ -37,8 +37,8 @@ module lasercutter_panel2(){
     rotate([0,0,90]){
       XEnd_front_face();//Motor
 
-      translate([125,0])
-      XEnd_front_face();//Idler
+      translate([90,0])
+      mirror([1,0]) XEnd_front_face();//Idler <-- this is mirrored so that the laser burnt side ends up turned to the same side (eighter exterior or interior) for both XEnds
     }
   }
 

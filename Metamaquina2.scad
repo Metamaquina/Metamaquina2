@@ -633,6 +633,11 @@ module MachineArcPanel_face(){
         }
       }
 
+
+      //Metamaquina logo
+      translate([-170/2, ArcPanel_height - 44])
+        import(file="metamaquina-170mm_X_25mm.dxf");
+
       //tslots for top panel
       translate([0,ArcPanel_height + thickness]){
         translate([-ArcPanel_width/2 + 25, 0])
@@ -750,10 +755,6 @@ module BottomPanel_holes(){
     //holes for ZMotors
     translate([Z_rods_distance/2 - z_rod_z_bar_distance, 0])
     NEMA17_holes();
-
-    //tslot holes for side panels
-    translate([Z_rods_distance/2 - Z_rod_sidepanel_distance + thickness/2, -BottomPanel_width/2])
-    TSlot_holes(width=BottomPanel_width);
 
     //tslot cuts for side panels
     translate([Z_rods_distance/2 - Z_rod_sidepanel_distance + thickness, -BottomPanel_width/2 -BottomPanel_width/4])
@@ -1104,7 +1105,7 @@ module LM8UU(){
 }
 
 
-module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=0){
+module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=1){
   projection(cut=true){
     difference(){
       linear_extrude(height=thickness)
@@ -1802,9 +1803,12 @@ module XCarriage(){
 
       for (i=[-1,1]){
         for (j=[-1,1]){
-          translate([i*(XCarriage_length/2 - XCarriage_padding), j*(XPlatform_width/2-XCarriage_padding)])
+          translate([i*(XCarriage_lm8uu_distance/2), j*(XPlatform_width/2-XCarriage_padding)])
           hexspacer(h=sandwich_hexspacer_length);
         }
+
+        translate([i*(XCarriage_length/2-XCarriage_padding), 0])
+        hexspacer(h=sandwich_hexspacer_length);
       }
 
       translate([0,0,-thickness])
