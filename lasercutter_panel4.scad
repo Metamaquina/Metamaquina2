@@ -1,4 +1,4 @@
-// Lasercutter Panel #1 for manufacturing the Metamaquina 2 desktop 3d printer
+// Lasercutter Panel #4 for manufacturing the Metamaquina 2 desktop 3d printer
 //
 // (c) 2013 Felipe C. da S. Sanches <fsanches@metamaquina.com.br>
 // Lincensed under the terms of the GNU General Public License
@@ -6,6 +6,7 @@
 
 use <RAMBo.scad>;
 
+//This is intended to be lasercut in acrylic
 module lasercutter_panel4(){
   %plate_border();
 
