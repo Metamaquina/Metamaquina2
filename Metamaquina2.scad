@@ -1803,9 +1803,12 @@ module XCarriage(){
 
       for (i=[-1,1]){
         for (j=[-1,1]){
-          translate([i*(XCarriage_length/2 - XCarriage_padding), j*(XPlatform_width/2-XCarriage_padding)])
+          translate([i*(XCarriage_lm8uu_distance/2), j*(XPlatform_width/2-XCarriage_padding)])
           hexspacer(h=sandwich_hexspacer_length);
         }
+
+        translate([i*(XCarriage_length/2-XCarriage_padding), 0])
+        hexspacer(h=sandwich_hexspacer_length);
       }
 
       translate([0,0,-thickness])
