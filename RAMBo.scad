@@ -16,14 +16,19 @@ RAMBo_width = 103;
 RAMBo_height = 104;
 
 acrylic_color = [1, 0.5, 0.5, 0.7];//red-transparent
-module RAMBo_cover(){
-  color(acrylic_color)
-  linear_extrude(height=RAMBo_cover_thickness)
+module RAMBo_cover_curves(border=0){
   difference(){
-    rounded_square([RAMBo_width, RAMBo_height], corners=[3,3,3,3]);
+    translate([-border,-border])
+    rounded_square([RAMBo_width+2*border, RAMBo_height+2*border], corners=[3,3,3,3]);
     RAMBo_holes();
   }
   //TODO: Add logo / labels ?
+}
+
+module RAMBo_cover(){
+  color(acrylic_color)
+  linear_extrude(height=RAMBo_cover_thickness)
+  RAMBo_cover_curves();
 }
 
 module RAMBo(){
