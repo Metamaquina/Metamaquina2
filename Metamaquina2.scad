@@ -8,6 +8,8 @@ thickness = 6 + 0.5; //6mm thick sheets
 /*z motor placement in the original Prusa was on top. Our design uses the z motors in the bottom of the machine, but if you want them on top, you can set this variable to true. */
 zmotors_on_top = false;
 
+use <lasercut_extruder.scad>;
+
 //utils
 use <tslot.scad>;
 use <rounded_square.scad>;
@@ -1862,11 +1864,6 @@ module ZBars(){
   }
 }
 
-module LaserCutExtruder(){
-  rotate(90)
-  include<lasercut_extruder.scad>;
-}
-
 XCarriage_height = thickness + X_rod_height + lm8uu_diameter/2;
 
 module XCarriage(){
@@ -1887,7 +1884,7 @@ module XCarriage(){
     }
 
     translate([0,0,thickness])
-    LaserCutExtruder();
+    lasercut_extruder();
   }
 
   //plastic parts:
