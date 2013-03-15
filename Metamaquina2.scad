@@ -2,11 +2,7 @@
 // Lincensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-/*Thickness of acrylic or plywood sheets to use. Be sure to use a value slightly larger than the nominal material thickness in order to be tolerant to variations on the material's actual thickness*/
-thickness = 6 + 0.5; //6mm thick sheets
-
-/*z motor placement in the original Prusa was on top. Our design uses the z motors in the bottom of the machine, but if you want them on top, you can set this variable to true. */
-zmotors_on_top = false;
+include <Metamaquina-config.scad>;
 
 use <lasercut_extruder.scad>;
 
@@ -17,73 +13,29 @@ use <608zz_bearing.scad>;
 use <washer.scad>;
 use <nut.scad>;
 use <domed_cap_nuts.scad>;
+use <RAMBo.scad>;
 //use <pulley.scad>;
 
-epsilon=0.1;
-inch=25.4;
-m3_diameter = 3;
-m4_diameter = 4;
-m8_diameter = 8;
+module TSlot_holes(width=50){
+  t_slot_holes(width=width, thickness=thickness+slot_extra_thickness);
+}
+
+module TSlot_joints(width=50){
+  t_slot_joints(width=width, thickness=thickness, joint_size=5);
+}
+
 m8_nut_height = 6.3; //TODO: check the datasheets
 m8_washer_height = 1.5; //TODO: check the datasheets
 lm8uu_diameter = 15;
 lm8uu_length=24;
 sandwich_hexspacer_length = 12; //TODO: check availability
+RAMBo_x = 1;
+RAMBo_y = 133;
 
 //platic parts
 use <belt-clamp.scad>;
 use <bar-clamp.scad>;
 use <coupling.scad>;
-
-//rendering configs:
-render_calibration_guide = false;
-
-//*
-preview_lasercut=true;
-preview_pcb=true;
-preview_ABS=true;
-preview_PLA=true;
-preview_metal=true;
-preview_threaded_metal=true;
-preview_rubber=true;
-preview_nozzle=true;
-preview_peek=true;
-preview_powersupply=true;
-//*/
-
-/*
-preview_lasercut=false;
-preview_pcb=false;
-preview_ABS=false;
-preview_PLA=false;
-preview_metal=false;
-preview_threaded_metal=false;
-preview_rubber=true;
-preview_nozzle=false;
-preview_peek=false;
-preview_powersupply=false;
-//*/
-
-render_bolts = false;
-render_build_volume=false;
-render_xplatform=true;
-
-rubber_color = [0.1, 0.1, 0.1];
-nozzle_color = "gold";
-pcb_color = [1.0, 0.0, 0.0];
-threaded_metal_color = [0.6, 0.6, 0.6];
-metal_color = [0.7, 0.7, 0.7];
-powersupply_color = metal_color;
-PLA_color = [0.95, 0.35, 0.35];
-ABS_color = [0.95, 0.95, 0.85];
-//sheet_color = [0.95, 0.8, 0.65];
-sheet_color = [0.9, 0.3, 0.3, 1];
-peek_color = "beige";
-
-/* Desired build volume: */
-BuildVolume_X=200;
-BuildVolume_Y=200;
-BuildVolume_Z=150;
 
 //For the actual build volume we avoid using the marginal
 //region around the heated bed
@@ -177,7 +129,7 @@ XEnd_extra_width = 30;
 XEnd_box_size = lm8uu_diameter/2 + z_rod_z_bar_distance + ZLink_rod_height;
 
 //height of the bottom panel acrylic/plywood sheet:
-BottomPanel_zoffset = feetheight + NEMA17_length + 5;
+BottomPanel_zoffset = feetheight + NEMA17_length;
 
 Z_rod_length = machine_height - BottomPanel_zoffset + thickness;
 Z_bar_length = thickness + machine_height - BottomPanel_zoffset - motor_shaft_length;
@@ -250,95 +202,6 @@ if (preview_metal && render_bolts){
 }
 
 // 2d shapes for laser-cutting:
-
-hexspacer_length = 35; //considering the height of the connectors and components
-nylonspacer_length = 4;
-RAMBo_pcb_thickness = 2;
-M3_bolt_head = 3;
-RAMBo_cover_thickness = 3;
-RAMBo_thickness = nylonspacer_length + RAMBo_pcb_thickness + hexspacer_length + RAMBo_cover_thickness + M3_bolt_head;
-RAMBo_border = 3.7;
-RAMBo_width = 103;
-RAMBo_height = 104;
-
-module RAMBo_holes(){
-  translate([RAMBo_border, RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
-
-  translate([RAMBo_border, RAMBo_height-RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
-
-  translate([RAMBo_width-RAMBo_border, RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
-
-  translate([RAMBo_width-RAMBo_border, RAMBo_height-RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
-}
-
-module RAMBo_pcb(){
-  color("dark green")
-  linear_extrude(height=RAMBo_pcb_thickness)
-  difference(){
-    square([RAMBo_width, RAMBo_height]);
-    RAMBo_holes();
-  }
-}
-
-white_nylon_color = [1, 1, 0.8];
-module nylonspacer(D=8, d=m4_diameter, h=nylonspacer_length){
-  color(white_nylon_color)
-  linear_extrude(height=h)
-  difference(){
-    circle(r=D/2, $fn=20);
-    circle(r=d/2, $fn=20);
-  }
-}
-
-module hexspacer(D=8, d=m3_diameter, h=hexspacer_length){
-  color(metal_color)
-  linear_extrude(height=h)
-  difference(){
-    circle(r=D/2, $fn=6);
-    circle(r=d/2, $fn=20);
-  }
-}
-
-acrylic_color = [1, 0.5, 0.5, 0.7];//red-transparent
-module RAMBo_cover(){
-  color(acrylic_color)
-  linear_extrude(height=RAMBo_cover_thickness)
-  difference(){
-    rounded_square([RAMBo_width, RAMBo_height], corners=[3,3,3,3]);
-    RAMBo_holes();
-  }
-  //TODO: Add logo / labels ?
-}
-
-module RAMBo(){
-  for (x=[RAMBo_border, RAMBo_width-RAMBo_border]){
-    for (y=[RAMBo_border, RAMBo_height-RAMBo_border]){
-      translate([x,y]){
-        nylonspacer();
-
-        translate([0,0,nylonspacer_length+RAMBo_pcb_thickness]){
-          hexspacer();
-          translate([0,0,hexspacer_length+RAMBo_cover_thickness]){
-            //bolt head
-            color("grey")
-            cylinder(r=3, h=M3_bolt_head, $fn=20);
-          }
-        }
-      }
-    }
-  }
-
-  translate([0,0,nylonspacer_length]){
-    RAMBo_pcb();
-
-    translate([0,0,RAMBo_pcb_thickness + hexspacer_length])
-    RAMBo_cover();    
-  }
-}
 
 //This is based on measurements of
 // a HIQUA power supply
@@ -458,9 +321,6 @@ module holes_for_motor_wires(){
   }
 
 }
-
-RAMBo_x = 5;
-RAMBo_y = 133;
 
 //!MachineLeftPanel_face();
 module MachineLeftPanel_face(){
@@ -611,13 +471,13 @@ module MachineSidePanel_face(){
       //tslots for arc panel
       translate([RightPanel_basewidth/2 - ArcPanel_rear_advance + thickness/2, machine_height]){
         translate([0, -50])
-        t_slot_holes(width=50, thickness=thickness);
+        TSlot_holes();
 
         //translate([0, -ArcPanel_height/2 - 25])
-        //t_slot_holes(width=50, thickness=thickness);
+        //TSlot_holes();
 
         translate([0, -ArcPanel_height])
-        t_slot_holes(width=50, thickness=thickness);
+        TSlot_holes();
       }
 
       if (zmotors_on_top){     
@@ -630,17 +490,17 @@ module MachineSidePanel_face(){
     //tslots for top panel
     translate([rear_backtop_advance-20, machine_height+thickness/2])
     rotate([0,0,-90])
-    t_slot_joints(50, thickness, joint_size=5);
+    TSlot_joints();
 
     translate([rear_backtop_advance + RightPanel_topwidth - 50, machine_height+thickness/2])
     rotate([0,0,-90])
-    t_slot_joints(50, thickness, joint_size=5);
+    TSlot_joints();
 
     if (zmotors_on_top){
       //tslot for bottom panel
       translate([RightPanel_basewidth/2 + BottomPanel_width/2, feetheight + thickness/2])
       rotate([0,0,90])
-      t_slot_joints(BottomPanel_width, thickness, joint_size=5);
+      TSlot_joints(BottomPanel_width);
     }
   }
 }
@@ -710,10 +570,10 @@ module TopPanel_holes(){
 
     translate([0,-30-25]){
       translate([-Z_rod_sidepanel_distance + thickness/2, 25])
-        t_slot_holes(width=50, thickness=thickness);
+        TSlot_holes();
 
       translate([-Z_rod_sidepanel_distance + thickness/2, RightPanel_topwidth-5])
-        t_slot_holes(width=50, thickness=thickness);
+        TSlot_holes();
     }
   }
 }
@@ -740,41 +600,44 @@ module MachineArcPanel_face(){
         translate([0,ArcPanel_height + thickness/2]){
           translate([-ArcPanel_width/2, 0])
           rotate([0,0,-90])
-          t_slot_joints(width=50, thickness=thickness);
+          TSlot_joints();
 
           translate([25, 0])
           rotate([0,0,90])
-          t_slot_joints(width=50, thickness=thickness);
+          TSlot_joints();
 
           translate([ArcPanel_width/2, 0])
           rotate([0,0,90])
-          t_slot_joints(width=50, thickness=thickness);
+          TSlot_joints();
         }
 
         //tslots for left panel
         translate([-ArcPanel_width/2 - thickness/2, 0]){
           translate([0, ArcPanel_height - 50])
-          t_slot_joints(width=50, thickness=thickness);
+          TSlot_joints();
 
           //translate([0, ArcPanel_height/2 - 25])
-          //t_slot_joints(width=50, thickness=thickness);
+          //TSlot_joints();
 
-          t_slot_joints(width=50, thickness=thickness);
+          TSlot_joints();
         }
 
         //tslots for right panel
         translate([ArcPanel_width/2 + thickness/2, 0]){
           translate([0, ArcPanel_height - 50])
-          t_slot_joints(width=50, thickness=thickness);
+          TSlot_joints();
 
           //translate([0, ArcPanel_height/2 - 25])
-          //t_slot_joints(width=50, thickness=thickness);
+          //TSlot_joints();
 
-          t_slot_joints(width=50, thickness=thickness);
+          TSlot_joints();
         }
       }
 
-      arcpanel_holes_for_extruder_wires();
+
+      //Metamaquina logo
+      translate([-170/2, ArcPanel_height - 44])
+        import(file="metamaquina-170mm_X_25mm.dxf");
 
       //tslots for top panel
       translate([0,ArcPanel_height + thickness]){
@@ -828,20 +691,6 @@ module MachineArcPanel_face(){
   }
 }
 
-module arcpanel_holes_for_extruder_wires(){
-  translate([0,105]){
-    translate([0,20])
-    rotate([0,0,90])
-    zip_tie_holes();
-
-    translate([-10,0])
-    zip_tie_holes();
-
-    translate([-120,0])
-    zip_tie_holes();
-  }
-}
-
 module top_hole_for_extruder_wires(){
   translate([0,120])
   rotate([0,0,90])
@@ -852,14 +701,14 @@ module top_hole_for_extruder_wires(){
 
 //!MachineTopPanel_face();
 module MachineTopPanel_face(){
-  sidewidth=95;
+  sidewidth=78;
   difference(){
     union(){
       translate([-machine_x_dim/2,-30])
-      rounded_square([sidewidth, 60], corners=[30, 12, 0, 0]);
+      rounded_square([sidewidth, 60], corners=[30, 2, 0, 0]);
 
       translate([machine_x_dim/2 - sidewidth,-30])
-      rounded_square([sidewidth, 60], corners=[12, 30, 0, 0]);
+      rounded_square([sidewidth, 60], corners=[2, 30, 0, 0]);
 
       translate([0,60]){
         translate([-machine_x_dim/2,-30])
@@ -869,8 +718,8 @@ module MachineTopPanel_face(){
         rounded_square([sidewidth, 100], corners=[0, 0, 0, sidewidth], $fn=90);
       }
 
-      translate([0,120])
-      rounded_square([Z_rods_distance - 2*Z_rod_sidepanel_distance + 8*thickness, 75], corners=[10,10,10,10], center=true);
+      translate([0,127])
+      rounded_square([Z_rods_distance - 2*Z_rod_sidepanel_distance + 8*thickness, 61], corners=[10,10,10,10], center=true);
     }
 
     top_hole_for_extruder_wires();    
@@ -879,15 +728,15 @@ module MachineTopPanel_face(){
     translate([0,ArcPanel_rear_advance - thickness/2]){
       translate([-ArcPanel_width/2, 0])
       rotate([0,0,-90])
-      t_slot_holes(width=50, thickness=thickness);
+      TSlot_holes();
 
       translate([25, 0])
       rotate([0,0,90])
-      t_slot_holes(width=50, thickness=thickness);
+      TSlot_holes();
 
       translate([ArcPanel_width/2, 0])
       rotate([0,0,90])
-      t_slot_holes(width=50, thickness=thickness);
+      TSlot_holes();
     }
 
     TopPanel_holes(); 
@@ -907,10 +756,6 @@ module BottomPanel_holes(){
     //holes for ZMotors
     translate([Z_rods_distance/2 - z_rod_z_bar_distance, 0])
     NEMA17_holes();
-
-    //tslot holes for side panels
-    translate([Z_rods_distance/2 - Z_rod_sidepanel_distance + thickness/2, -BottomPanel_width/2])
-    t_slot_holes(width=BottomPanel_width, thickness=thickness);
 
     //tslot cuts for side panels
     translate([Z_rods_distance/2 - Z_rod_sidepanel_distance + thickness, -BottomPanel_width/2 -BottomPanel_width/4])
@@ -952,26 +797,22 @@ module Y_belt(){
   	color(rubber_color){
       translate([2.5, 0, 66])
       rotate([0,0,-90])
-      rotate([90,0,0])
-//      belt(-machine_x_dim/2 + thickness + XEnd_box_size/2, XMotor_height, 6, machine_x_dim/2 - thickness - XEnd_box_size/2, XIdler_height, IdlerRadius);
-      belt(RightPanel_basewidth/2 - bar_cut_length, 0, IdlerRadius, -RightPanel_basewidth/2 + bar_cut_length, 0, IdlerRadius);
-    }
-  }
-}
+      rotate([90,0,0]){
+        belt(bearings = [
+              [/*x:*/ RightPanel_basewidth/2 - bar_cut_length,
+               /*y:*/ 0,
+               /*r:*/ IdlerRadius],
 
-module Y_belt_old(){
-  front_h=60;
-  rear_h=40;
+              [/*x:*/ -RightPanel_basewidth/2 + bar_cut_length,
+               /*y:*/ 0,
+               /*r:*/ IdlerRadius],
 
-  front_x = 10 -RightPanel_basewidth/2;
-  rear_x = 20 + RightPanel_basewidth/2;
-
-  if (preview_rubber){
-    color(rubber_color){
-      rotate([0,90,0])
-      rotate([0,0,90])
-      linear_extrude(height=10)
-      polygon(points=[[front_x, front_h], [front_x, front_h-3], [rear_x, rear_h-3], [rear_x, rear_h]]);
+              [/*x:*/ -RightPanel_basewidth/2 + bar_cut_length + 30,
+               /*y:*/ -base_bars_Zdistance,
+               /*r:*/ IdlerRadius]
+             ],
+             belt_width = belt_width);
+      }
     }
   }
 }
@@ -1058,11 +899,11 @@ module XEndMotor_bottom_holes(){
   //tslot holes
 	translate([thickness, XPlatform_width/2 + XEnd_extra_width - thickness])
 	rotate([0,0,-90])
-	t_slot_holes(width=XEnd_box_size, thickness=thickness);
+	TSlot_holes(width=XEnd_box_size);
 
 	translate([thickness, -XPlatform_width/2 + thickness])
 	rotate([0,0,-90])
-	t_slot_holes(width=XEnd_box_size, thickness=thickness);
+	TSlot_holes(width=XEnd_box_size);
 
 }
 
@@ -1080,11 +921,11 @@ module XEndIdler_bottom_holes(){
   //tslot holes
 	translate([thickness, -XPlatform_width/2 - XEnd_extra_width + thickness])
 	rotate([0,0,-90])
-	t_slot_holes(width=XEnd_box_size, thickness=thickness);
+	TSlot_holes(width=XEnd_box_size);
 
 	translate([thickness, XPlatform_width/2 - thickness])
 	rotate([0,0,-90])
-	t_slot_holes(width=XEnd_box_size, thickness=thickness);
+	TSlot_holes(width=XEnd_box_size);
 
 }
 
@@ -1124,13 +965,13 @@ module XEnd_plain_face(){
         //bottom
         rotate([0, 0, -90])
         translate([thickness/2, 0])
-        t_slot_joints(XEnd_box_size, thickness, joint_size=5);
+        TSlot_joints(XEnd_box_size);
 
         translate([XEnd_box_size + thickness/2, 0])
-        t_slot_joints(XPlatform_height - thickness, thickness, joint_size=5);
+        TSlot_joints(XPlatform_height - thickness);
 
         translate([-thickness/2, 0])
-        t_slot_joints(XPlatform_height - thickness, thickness, joint_size=5);
+        TSlot_joints(XPlatform_height - thickness);
       }
 
     //bottom tslot
@@ -1226,11 +1067,11 @@ module XEnd_back_face(){
       circle(r=m3_diameter/2, $fn=20);
 
       translate([XPlatform_width/2 - thickness, thickness]){
-        t_slot_holes(width=XPlatform_height - thickness, thickness=thickness);
+        TSlot_holes(width=XPlatform_height - thickness);
       }
 
       translate([-XPlatform_width/2 - XEnd_extra_width + thickness, thickness]){
-        t_slot_holes(width=XPlatform_height - thickness, thickness=thickness);
+        TSlot_holes(width=XPlatform_height - thickness);
       }
     }
   }
@@ -1265,7 +1106,7 @@ module LM8UU(){
 }
 
 
-module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=0){
+module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=1){
   projection(cut=true){
     difference(){
       linear_extrude(height=thickness)
@@ -1304,11 +1145,11 @@ module XEnd_front_face(){
     square([belt_width+6, 2*(IdlerRadius+4)], center=true);
 
     translate([XPlatform_width/2 - thickness, thickness]){
-      t_slot_holes(width=XPlatform_height - thickness, thickness=thickness);
+      TSlot_holes(width=XPlatform_height - thickness);
     }
 
     translate([-XPlatform_width/2 - XEnd_extra_width + thickness, thickness]){
-      t_slot_holes(width=XPlatform_height - thickness, thickness=thickness);
+      TSlot_holes(width=XPlatform_height - thickness);
     }
   }
 }
@@ -1665,13 +1506,6 @@ module XEndIdler_belt_face_assembly(){
 
 }
 
-module RAMBo_volume(){
-//This is the space that is required for the RAMBo Electronics.
-//We must make sure there's enough space so that the electronics doesn't
-//take up part of the printer's max build volume.
-  %cube([RAMBo_width, RAMBo_height, RAMBo_thickness]);
-}
-
 module Z_couplings(){
   if (preview_ABS){
     color(ABS_color){
@@ -1697,48 +1531,46 @@ module coupling_pair(){
   }
 }
 
-module belt_curve(r){
-  rotate([-90,0])
+module belt(bearings, belt_width=5){
   linear_extrude(height=belt_width){
     difference(){
-      circle(r=r+2);
-      circle(r=r);
-      translate([0,-2*r]) square([2*r,4*r]);
+      hull(){
+        for (b=bearings){
+          assign(x=b[0], y=b[1], r=b[2]){
+    		    translate([x,y])
+            circle(r=r+2);
+          }
+        }
+      }
+      hull(){
+        for (b=bearings){
+          assign(x=b[0], y=b[1], r=b[2]){
+		        translate([x,y])
+            circle(r=r);
+          }
+        }
+      }
     }
   }
-}
-
-module belt(x1,y1,r1,x2,y2,r2){
-  linear_extrude(height=5)
-    difference(){
-      hull(){
-		    translate([x1,y1])
-        circle(r=r1+2);
-
-		    translate([x2,y2])
-        circle(r=r2+2);
-      }
-      hull(){
-		    translate([x1,y1])
-        circle(r=r1);
-
-		    translate([x2,y2])
-        circle(r=r2);
-      }
-    }
 }
 
 module Xbelt(){
   if (preview_rubber){
   	color(rubber_color){
-      translate([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + thickness])
-      rotate([90,0,0])
-      belt(/* x1: */ -machine_x_dim/2 + thickness + XEnd_box_size/2,
-           /* y1: */ XMotor_height,
-           /* r1: */ 6,
-           /* x2: */ machine_x_dim/2 - thickness - XEnd_box_size/2,
-           /* y2: */ XIdler_height,
-           /* r2: */ IdlerRadius);
+      translate([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + thickness]){
+        rotate([90,0,0]){
+          belt(bearings = [
+                [/*x:*/ -machine_x_dim/2 + thickness + XEnd_box_size/2,
+                 /*y:*/ XMotor_height,
+                 /*r:*/ 6],
+
+                [/*x:*/ machine_x_dim/2 - thickness - XEnd_box_size/2,
+                 /*y:*/ XIdler_height,
+                 /*r:*/ IdlerRadius]
+               ],
+               belt_width = belt_width);
+        }
+      }
     }
   }
 }
@@ -1746,10 +1578,12 @@ module Xbelt(){
 //!Xbelt();
 
 module belt_clamps(){
-  if (preview_ABS){
-    color(ABS_color){
+  if (preview_lasercut){
+    color(sheet_color){
       for (i=[-1,1])
-      translate([XCarPosition + i*(XCarriage_lm8uu_distance/2+10),  XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width/2, belt_clamp_height + 2*thickness + X_rod_height + lm8uu_diameter/2])
+      translate([XCarPosition + i*(XCarriage_lm8uu_distance/2+10),
+                 XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width/2,
+                 belt_clamp_height + 2*thickness + X_rod_height + lm8uu_diameter/2])
       rotate([0,0,90])
       rotate([180,0,0])
       beltclamp();
@@ -1874,9 +1708,12 @@ module XCarriage(){
 
       for (i=[-1,1]){
         for (j=[-1,1]){
-          translate([i*(XCarriage_length/2 - XCarriage_padding), j*(XPlatform_width/2-XCarriage_padding)])
+          translate([i*(XCarriage_lm8uu_distance/2), j*(XPlatform_width/2-XCarriage_padding)])
           hexspacer(h=sandwich_hexspacer_length);
         }
+
+        translate([i*(XCarriage_length/2-XCarriage_padding), 0])
+        hexspacer(h=sandwich_hexspacer_length);
       }
 
       translate([0,0,-thickness])
