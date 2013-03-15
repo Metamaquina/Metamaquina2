@@ -4,6 +4,10 @@
 // Lincensed under the terms of the GNU General Public License
 // version 3 (or later).
 
+use <NEMA.scad>;
+motor_position = [45,35];
+motor_angle = -24;
+
 thickness = 6;
 moduleault_sheet_color = [0.9, 0.7, 0.45, 0.9];
 
@@ -112,6 +116,11 @@ module lasercut_extruder(){
     }
 
     nozzle();
+
+    translate([motor_position[0], -thickness/2, motor_position[1]])
+    rotate([-90,0])
+    rotate(motor_angle)
+    NEMA17();
   }
 }
 
