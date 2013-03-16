@@ -57,6 +57,159 @@ module handle_sheet(c=default_sheet_color){
   }
 }
 
+m3_diameter = 3;
+module slice4_face(){
+  NEMA_holes_distance = 15.5;
+  k=3;
+  nozzle_hole_width = 14;
+
+  difference(){
+    slice4_plainface();
+
+    //cuts for attaching the nozzle holder
+    translate([-nozzle_hole_width/2,0])
+    square([nozzle_hole_width,10]);
+
+    for (i=[-1,1])
+    translate([i*nozzle_hole_width/2,5])
+    circle(r=m3_diameter/2, $fn=20);
+
+    translate(motor_position){
+      rotate(-motor_angle){
+        circle(r=12);
+
+        for (i=[-1,1]){
+          for (j=[-1,1]){
+            translate([i*NEMA_holes_distance, j*NEMA_holes_distance])
+            hull()
+            rotate(motor_angle){
+              for (x=[-k,k]){
+                translate([x,0])
+                  circle(r=m3_diameter/2, $fn=30);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+module slice5_face(){
+  m3_washer_diameter = 5;
+  NEMA_holes_distance = 15.5;
+  k=3;
+
+  difference(){
+    slice4_plainface();
+
+    translate(motor_position){
+      rotate(-motor_angle){
+        circle(r=12);
+
+        for (i=[-1,1]){
+          for (j=[-1,1]){
+            translate([i*NEMA_holes_distance, j*NEMA_holes_distance])
+            hull()
+            rotate(motor_angle){
+              for (x=[-k,k]){
+                translate([x,0])
+                  circle(r=m3_washer_diameter/2, $fn=30);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+module slice4_plainface(){
+  r=5;
+  H=58;
+  epsilon = 0.21;
+  NEMA_side = 48;
+
+  translate([0,r]){
+    hull(){
+      for (i=[-1,1]){
+        translate([i*32,0])
+        circle(r=r, $fn=40);
+      }
+    }
+  }
+
+  hull(){
+    translate([15,0])
+    square([epsilon, H]);
+
+    translate(motor_position)
+    rotate(-motor_angle)
+    translate([-NEMA_side/2,-NEMA_side/2])
+    rounded_square([NEMA_side,NEMA_side], corners=[r,r,r,r]);
+  }
+
+  difference(){
+    union(){
+      translate([-23/2,0])
+      square([15+23/2,hobbed_bolt_position[1]]);
+
+      translate([-4,hobbed_bolt_position[1]])
+      square([15+4,H-hobbed_bolt_position[1]]);
+    }
+
+    translate(hobbed_bolt_position)
+    circle(r=8/2, $fn=20);
+
+    translate(hobbed_bolt_position - [14,0])
+    circle(r=23/2, $fn=20);
+  }
+
+  translate([-23/2 - 1.5*r, 0])
+  rounded_square([1.5*r, hobbed_bolt_position[1] - 23/2], corners=[0,0,r,0]);
+
+}
+
+module slice4(){
+  color("red")
+  translate([0,0,3*thickness])
+  linear_extrude(height=thickness)
+  slice4_face();
+}
+
+module slice5(){
+  color("red")
+  translate([0,0,4*thickness])
+  linear_extrude(height=thickness)
+  slice5_face();
+}
+
+//!testing();
+module testing(){
+//  slice4_face();
+
+  rotate(90)
+  translate([-37,2.5*thickness])
+  rotate([90,0]){
+    sheet("slice4", 3*thickness);
+  }
+
+  rotate(90)
+  translate([0,2.5*thickness])
+  rotate([90,0]){
+    slice5();
+    slice4();
+  }
+
+  rotate(90)
+  translate([motor_position[0], -thickness/2, motor_position[1]])
+  rotate([-90,0])
+  rotate(motor_angle)
+  {
+    NEMA17();
+  }
+}
+
 module sheet(name, height=0, c=default_sheet_color){
   color(c)
   translate([0,0,height])
@@ -98,6 +251,11 @@ module extruder_block(){
     sheet("slice3", 2*thickness);
     sheet("slice4", 3*thickness);
     sheet("slice5", 4*thickness);
+
+    translate([37,0]){
+      slice4();
+      //slice5();
+    }    
   }
 }
 
