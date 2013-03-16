@@ -5,14 +5,16 @@
 // version 3 (or later).
 
 use <NEMA.scad>;
+use <rounded_square.scad>;
 use <thingiverse/12789/TZ_Huxley_extruder_gears.scad>;
 
 motor_position = [45.5,35];
 motor_angle = -24;
 hobbed_bolt_position = [3,36.5];
-
 thickness = 6;
-moduleault_sheet_color = [0.9, 0.7, 0.45, 0.9];
+HandleWidth = 5*thickness;
+HandleHeight = 30;
+default_sheet_color = [0.9, 0.7, 0.45, 0.9];
 
 module bolt_head(r, h){
   difference(){
@@ -32,11 +34,22 @@ module bolt(dia, length){
   }
 }
 
-module handle_face(){
-  square([28,20]);
+module handle_face(r=5, width=HandleWidth, height=HandleHeight){
+  difference(){
+    translate([-width/2,0])
+    rounded_square([width, height], corners=[0,0,r,r]);
+
+    for (i=[-1,1]){
+      translate([i*(width/2+2), 2*height/3]) circle(r=6);
+      hull(){
+        translate([i*HandleWidth/6,10]) circle(r=4/2, $fn=20);
+        translate([i*HandleWidth/6,4]) circle(r=4/2, $fn=20);
+      }
+    }
+  }
 }
 
-module handle_sheet(c=moduleault_sheet_color){
+module handle_sheet(c=default_sheet_color){
   color(c){
     linear_extrude(height=thickness){
       handle_face();
@@ -44,7 +57,7 @@ module handle_sheet(c=moduleault_sheet_color){
   }
 }
 
-module sheet(name, height=0, c=moduleault_sheet_color){
+module sheet(name, height=0, c=default_sheet_color){
   color(c)
   translate([0,0,height])
   linear_extrude(height=thickness)
@@ -56,12 +69,11 @@ module handle(){
   handle_bolt_length = 70;
 
   union(){
-    handle_sheet();
-    sheet("handle");
-    translate([9,5,handle_bolt_length - nut_height]){
+    handle_sheet(width=HandleWidth);
+    translate([-HandleWidth/6,5,handle_bolt_length - nut_height]){
       bolt(4, handle_bolt_length);
     }
-    translate([20,5,handle_bolt_length - nut_height]){
+    translate([HandleWidth/6,5,handle_bolt_length - nut_height]){
       bolt(4, handle_bolt_length);
     }
   }
@@ -110,7 +122,7 @@ module lasercut_extruder(){
       idler();
     }
 
-    translate([7,14,58]){
+    translate([7,0,58]){
       rotate([0,-90,0]){
         rotate([0,0,-90]){
           handle();
