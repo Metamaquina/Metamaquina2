@@ -28,8 +28,7 @@
  * -- 
  *     DeuxVis - device@ymail.com */
 
-include <MCAD/teardrop.scad>
-include <MCAD/involute_gears.scad>
+use <MCAD/involute_gears.scad>
 
 /* Herringbone gear module, adapted from MCAD/involute_gears */
 module herringbone_gear( teeth=12, circles=0, shaft=5 ) {
@@ -69,33 +68,36 @@ module herringbone_gear( teeth=12, circles=0, shaft=5 ) {
     );
 }
 
-module extruder_gear(){
- difference() {
+module extruder_gear(teeth=67, circles=8, shaft=8.2){
+  render()
   union() {
     //gear
-    herringbone_gear( teeth=67, circles=4, shaft=8.2 );
-
-    //M8 hobbed bolt head fit washer
     difference() {
-      translate( [0, 0, 5] ) cylinder( r=11, h=6 );
+      herringbone_gear( teeth=teeth, circles=0, shaft=shaft, $fn=120 );
+
+      translate([0,0,1])
+      cylinder(r1=25, r2=30, h=5);
+
+      for (i=[1:circles])
+      rotate(i*360/circles)
+      translate([17.5,0,-5.1])
+      cylinder(r1=4, r2=6, h=6.2);
+    }
+    //M8 hobbed bolt head fit washer
+    translate([0,0,-5])
+    difference() {
+      translate( [0, 0, 5] ) cylinder( r1=11, r2=8, h=6 );
       translate( [0, 0, 4.5] ) cylinder( r=6.6, h=7, $fn=6 );
     }
   }
-
-  //teardrop shaped holes should leave access to motor mounting screws
-  for(i=[0:3])
-    rotate( [0, 0, i*360/4+45] )
-      translate( [40.5, 0] )
-        rotate( [0, 90, 0] ) teardrop( 9.5, 11, 90 );
- }
 }
 
-module motor_gear(shaft_diameter=5){
+module motor_gear(teeth=13, shaft_diameter=5){
  union() difference() {	 
   union() {
 
     //gear
-    herringbone_gear( teeth=13, $fn=80 );
+    herringbone_gear( teeth=teeth, $fn=80 );
 
     translate( [0, 0, 13] )
     mirror( [0, 0, 1] )

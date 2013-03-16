@@ -5,8 +5,11 @@
 // version 3 (or later).
 
 use <NEMA.scad>;
-motor_position = [45,35];
+use <thingiverse/12789/TZ_Huxley_extruder_gears.scad>;
+
+motor_position = [45.5,35];
 motor_angle = -24;
+hobbed_bolt_position = [3,36.5];
 
 thickness = 6;
 moduleault_sheet_color = [0.9, 0.7, 0.45, 0.9];
@@ -117,10 +120,20 @@ module lasercut_extruder(){
 
     nozzle();
 
+    translate([hobbed_bolt_position[0], -5*thickness/2 -8, hobbed_bolt_position[1]])
+    rotate([90,0])
+    extruder_gear(teeth=37);
+
     translate([motor_position[0], -thickness/2, motor_position[1]])
     rotate([-90,0])
     rotate(motor_angle)
-    NEMA17();
+    {
+      NEMA17();
+
+      translate([0,0,-20])
+      color("grey")
+      motor_gear(teeth=11);
+    }
   }
 }
 
