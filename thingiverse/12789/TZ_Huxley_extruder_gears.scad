@@ -68,12 +68,13 @@ module herringbone_gear( teeth=12, circles=0, shaft=5 ) {
     );
 }
 
-module extruder_gear(teeth=67, circles=8, shaft=8.2){
+module extruder_gear(teeth=37, circles=8, shaft=8.2){
   render()
+  translate([0,0,5])
   union() {
     //gear
     difference() {
-      herringbone_gear( teeth=teeth, circles=0, shaft=shaft, $fn=120 );
+      herringbone_gear( teeth=teeth, circles=0, shaft=shaft, $fn=40 );
 
       translate([0,0,1])
       cylinder(r1=25, r2=30, h=5);
@@ -92,42 +93,47 @@ module extruder_gear(teeth=67, circles=8, shaft=8.2){
   }
 }
 
-module motor_gear(teeth=13, shaft_diameter=5){
- union() difference() {	 
-  union() {
+module motor_gear(teeth=11, shaft_diameter=5){
+  render()
+  translate([0,0,5])
+  rotate([180,0])
+  difference() {
+    union() {
+      //gear
+      herringbone_gear( teeth=teeth, $fn=50 );
 
-    //gear
-    herringbone_gear( teeth=teeth, $fn=80 );
+      translate( [0, 0, 13] )
+      mirror( [0, 0, 1] )
+      difference() {
+        //base
+        rotate_extrude($fn=120) {
+          square( [9, 9] );
+          square( [10, 7] );
+          translate( [9, 7] ) circle( 1, $fn=50 );
+        }
 
-    translate( [0, 0, 13] )
-    mirror( [0, 0, 1] )
-    difference() {
-      //base
-      rotate_extrude($fn=120) {
-        square( [9, 9] );
-        square( [10, 7] );
-        translate( [9, 7] ) circle( 1, $fn=50 );
-      }
-
-      //captive nut and grub holes
-      translate( [0, 20, 4] ) rotate( [90, 0, 0] ) union() {
-        //enterance
-        translate( [0, -3, 14.5] ) cube( [5.4, 6, 2.4], center=true );
-        //nut
-        translate( [0, 0, 13.3] ) rotate( [0, 0, 30] ) cylinder( r=3.12, h=2.4, $fn=6 );
-        //grub hole
-        translate( [0, 0, 9] ) cylinder( r=1.5, h=10, $fn=20 );
+        //captive nut and grub holes
+        translate( [0, 20, 4] ) rotate( [90, 0, 0] ) union() {
+          //enterance
+          translate( [0, -3, 14.5] ) cube( [5.4, 6, 2.4], center=true );
+          //nut
+          translate( [0, 0, 13.3] ) rotate( [0, 0, 30] ) cylinder( r=3.12, h=2.4, $fn=6 );
+          //grub hole
+          translate( [0, 0, 9] ) cylinder( r=1.5, h=10, $fn=20 );
+        }
       }
     }
-  }
 
-  //shaft hole
-  translate( [0, 0, -6] )
-  cylinder( r=shaft_diameter/2, h=20, $fn=20 );
- }
+    //shaft hole
+    translate( [0, 0, -6] )
+    cylinder( r=shaft_diameter/2, h=20, $fn=20 );
+  }
 }
 
 extruder_gear();
-//translate( [-28, 0, 0] )
-//motor_gear();
+
+translate( [60, 0, 0] )
+translate([0,0,10])
+rotate([180,0])
+motor_gear();
 
