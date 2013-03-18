@@ -10,7 +10,7 @@ module lasercutter_panel3(){
   % plate_border();
 
   translate([130,150])
-  YPlatform_sheet_curves();
+  YPlatform_face();
 
   translate([270,30])
   xend_bearing_sandwich_face();
