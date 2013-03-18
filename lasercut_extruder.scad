@@ -140,7 +140,7 @@ module slice2_face(){
 }
 
 module slice3_face(){
-  extruder_slice(idler_axis=true);
+  extruder_slice(idler_axis=true, filament_channel=true, mount_holes=true);
 }
 
 m3_diameter = 3;
@@ -152,7 +152,7 @@ module slice5_face(){
   extruder_slice(bearing_slot=true, idler_axis=false, handle_lock=true);
 }
 
-module extruder_slice(motor_holder=false, bearing_slot=false, filament_guide=false, idler_axis=false, bottom_screw_holes=false, handle_lock=false, nozzle_holder=false){
+module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=false, mount_holes=false, idler_axis=false, bottom_screw_holes=false, handle_lock=false, nozzle_holder=false){
   r=5;
   H=58;
   epsilon = 0.21;
@@ -189,6 +189,18 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_guide=fal
 
       difference(){
         union(){
+
+          if (bearing_slot){
+            translate(hobbed_bolt_position){
+              intersection(){
+                circle(r=18);
+                
+                translate([0,-18])
+                square([18,2*18]);
+              }
+            }
+          }
+
           translate([-23/2,0]){
             if (idler_axis)
               square([idler_axis_width,hobbed_bolt_position[1]]);
@@ -268,7 +280,7 @@ module slice1(){
 }
 
 module slice2(){
-  color("red")
+  color("blue")
   translate([0,0,1*thickness])
   linear_extrude(height=thickness)
   slice2_face();
@@ -303,7 +315,7 @@ module testing(){
   translate([-37,2.5*thickness])
   rotate([90,0]){
     //sheet("slice4", 3*thickness);
-    sheet("slice5", 3.9*thickness);
+    //sheet("slice5", 3.9*thickness);
   }
 
   rotate(90)
