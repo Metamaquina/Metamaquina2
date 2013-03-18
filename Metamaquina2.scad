@@ -15,14 +15,6 @@ use <RAMBo.scad>;
 use <NEMA.scad>;
 //use <pulley.scad>;
 
-module TSlot_holes(width=50){
-  t_slot_holes(width=width, thickness=thickness+slot_extra_thickness);
-}
-
-module TSlot_joints(width=50){
-  t_slot_joints(width=width, thickness=thickness, joint_size=5);
-}
-
 m8_nut_height = 6.3; //TODO: check the datasheets
 m8_washer_height = 1.5; //TODO: check the datasheets
 lm8uu_diameter = 15;

@@ -7,6 +7,8 @@
 use <NEMA.scad>;
 use <rounded_square.scad>;
 use <thingiverse/12789/TZ_Huxley_extruder_gears.scad>;
+use <tslot.scad>;
+include <Metamaquina-config.scad>;
 
 motor_position = [45.5,35];
 motor_angle = -24;
@@ -56,6 +58,68 @@ module handle_sheet(c=default_sheet_color){
     }
   }
 }
+
+module M3_hole(){
+  circle(r=m3_diameter/2, $fn=20);
+}
+
+module M4_hole(){
+  circle(r=m4_diameter/2, $fn=20);
+}
+
+//!idler_side_face();
+module idler_side_face(){
+  R=23;
+  rotate(90)
+  union(){
+    difference(){
+      hull(){
+        rounded_square([2*R,R], corners=[0,R,R,0]);
+        circle(r=6);
+      }
+
+      M3_hole();
+
+      translate([R*(1+1/2),R+thickness])
+      rotate(-180)
+      t_slot_shape(3, 16);
+    }
+    translate([R,R+thickness/2])
+    rotate(-90)
+    TSlot_joints(width=R);
+  }
+}
+//!idler_side_face();
+module idler_back_face(){
+  R=23;
+  difference(){
+    translate([-3*thickness,0])
+    rounded_square([6*thickness,R+5], corners=[5,5,5,5]);
+
+    for (i=[-1,1])
+      translate([i*HandleWidth/6,R])
+      hull(){
+        M4_hole();
+        translate([0,-5]) M4_hole();      
+      }
+
+    for (i=[-1,1])
+      translate([i*2*thickness,0])
+      TSlot_holes(width=R);
+  }
+}
+
+module idler_back_sheet(){
+  color("grey")
+  linear_extrude(height=thickness)
+  idler_back_face();
+}
+
+module idler_side_sheet(){
+  linear_extrude(height=thickness)
+  idler_side_face();
+}
+
 
 module handlelock(){
   r=3;
@@ -281,12 +345,18 @@ module handle(){
 }
 
 module idler(){
+  R=23;
   rotate([90,0]){
-    sheet("idler");
-    sheet("idler",4*thickness);
-    translate([9.5,35,-2.5]){
-      rotate([0,-90,0]){
-        sheet("idler2",thickness);
+    translate([25,21]){
+      idler_side_sheet();
+      translate([0,0,4*thickness])
+      idler_side_sheet();
+    
+      translate([-R, R, 5*thickness/2]){
+        rotate([0,-90,0]){
+          //sheet("idler2",thickness);
+          idler_back_sheet();
+        }
       }
     }
   }
