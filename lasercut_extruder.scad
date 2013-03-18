@@ -10,6 +10,8 @@ use <thingiverse/12789/TZ_Huxley_extruder_gears.scad>;
 use <tslot.scad>;
 include <Metamaquina-config.scad>;
 
+mount_holes_distance = 40; //TODO: XRods_distance + 7
+
 motor_position = [45.5,35];
 motor_angle = -24;
 hobbed_bolt_position = [3,36.5];
@@ -153,7 +155,7 @@ module slice5_face(){
 }
 
 module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=false, mount_holes=false, idler_axis=false, bottom_screw_holes=false, handle_lock=false, nozzle_holder=false){
-  r=5;
+  base_thickness = 10;
   H=58;
   epsilon = 0.21;
   NEMA_side = 48;
@@ -166,11 +168,11 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
   difference(){
     union(){
       //base
-      translate([0,r]){
+      translate([0,base_thickness/2]){
         hull(){
           for (i=[-1,1]){
             translate([i*32,0])
-            circle(r=r, $fn=40);
+            circle(r=base_thickness/2, $fn=40);
           }
         }
       }
@@ -183,7 +185,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
           translate(motor_position)
           rotate(-motor_angle)
           translate([-NEMA_side/2,-NEMA_side/2])
-          rounded_square([NEMA_side,NEMA_side], corners=[r,r,r,r]);
+          rounded_square([NEMA_side,NEMA_side], corners=[5,5,5,5]);
         }
       }
 
@@ -232,6 +234,12 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
       }
     }
 
+  if (mount_holes){
+    for (i=[-1,1])
+      translate([i*mount_holes_distance/2, 0])
+      square([m4_diameter, base_thickness]);
+  }
+
   //////////////////
 
   if (nozzle_holder){
@@ -266,9 +274,9 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
       }
     }
   ///////////////
-    //holes for m3 screws to pack all 5 slices together
+    //holes for m3x30 screws to pack all 5 slices together
     for (i=[-1,1])
-      translate([i*32, r])
+      translate([i*32, base_thickness/2])
       circle(r=m3_diameter/2, $fn=20);
   }
 }
