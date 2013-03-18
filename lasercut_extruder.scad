@@ -57,12 +57,22 @@ module handle_sheet(c=default_sheet_color){
   }
 }
 
+module handlelock(){
+  r=3;
+  translate([1,52]){
+    hull(){
+      rounded_square([11,15], corners=[r,r,r,r], $fn=30);
+      translate([10,-11]) circle(r=1, $fn=40);
+    }
+  }
+}
+
 module slice1_face(){
   extruder_slice(bearing_slot=true, idler_axis=false, handle_lock=true);
 }
 
 module slice2_face(){
-  extruder_slice(idler_axis=true, handle_lock=true);
+  extruder_slice(idler_axis=true);
 }
 
 module slice3_face(){
@@ -121,6 +131,9 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_guide=fal
 
             translate([idler_axis_width,0])
             square([15 - idler_axis_width + 23/2,hobbed_bolt_position[1]]);
+
+            if (handle_lock)
+              handlelock();
           }
 
           translate([-4,hobbed_bolt_position[1]])
@@ -205,7 +218,7 @@ module slice3(){
 }
 
 module slice4(){
-  color("red")
+  color("green")
   translate([0,0,3*thickness])
   linear_extrude(height=thickness)
   slice4_face();
@@ -226,7 +239,7 @@ module testing(){
   translate([-37,2.5*thickness])
   rotate([90,0]){
     //sheet("slice4", 3*thickness);
-    //sheet("slice5", 4.1*thickness);
+    sheet("slice5", 3.9*thickness);
   }
 
   rotate(90)
