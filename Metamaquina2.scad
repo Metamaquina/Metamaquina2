@@ -1179,6 +1179,34 @@ module XCarriage_sandwich_face(){
   }
 }
 
+module M3_hole(){
+  circle(r=m3_diameter/2, $fn=20);
+}
+
+m25_diameter = 2.5;
+module M25_hole(){
+  circle(r=m25_diameter/2, $fn=20);
+}
+
+microswitch_holes_distance = 10; //TODO: measure this.
+module XEndstopHolder(){
+  difference(){
+    hull(){
+      for (j=[-1,1]){
+        translate([52,10*j])
+        circle(r=5);
+
+        translate([40,15*j])
+        circle(r=5);
+      }
+    }
+
+    for (j=[-1,1])
+      translate([52,j*microswitch_holes_distance/2])
+      M25_hole();
+  }
+}
+
 module XCarriage_plainface(sandwich=false){
   difference(){
     if (sandwich){
@@ -1187,6 +1215,9 @@ module XCarriage_plainface(sandwich=false){
     } else {
       translate([-XCarriage_length/2, -XPlatform_width/2])
       rounded_square([XCarriage_length, XCarriage_width], corners=[10,10,10,10]);
+
+      XEndstopHolder();
+      mirror([1,0]) XEndstopHolder();
     }
 
     hull(){
