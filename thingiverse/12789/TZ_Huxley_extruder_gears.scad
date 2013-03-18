@@ -68,7 +68,7 @@ module herringbone_gear( teeth=12, circles=0, shaft=5 ) {
     );
 }
 
-module extruder_gear(teeth=37, circles=8, shaft=8.2){
+module extruder_gear(teeth=37, circles=8, shaft=8.6){
   render()
   translate([0,0,5])
   union() {
@@ -84,11 +84,12 @@ module extruder_gear(teeth=37, circles=8, shaft=8.2){
       translate([17.5,0,-5.1])
       cylinder(r1=4, r2=6, h=6.2);
     }
+
     //M8 hobbed bolt head fit washer
     translate([0,0,-5])
     difference() {
       translate( [0, 0, 5] ) cylinder( r1=11, r2=8, h=6 );
-      translate( [0, 0, 4.5] ) cylinder( r=6.6, h=7, $fn=6 );
+      translate( [0, 0, 4.5] ) cylinder( r=12.9/sqrt(3), h=7, $fn=6 );
     }
   }
 }
