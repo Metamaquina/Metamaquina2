@@ -99,8 +99,8 @@ module idler_side_face(){
 module idler_back_face(){
   R=23;
   difference(){
-    translate([-3*thickness,0])
-    rounded_square([6*thickness,R+5], corners=[5,5,5,5]);
+    translate([-5*thickness/2,0])
+    rounded_square([5*thickness,R+5], corners=[0,0,5,5]);
 
     for (i=[-1,1])
       translate([i*HandleWidth/6,R])
