@@ -82,11 +82,15 @@ module idler_side_face(){
 
       M3_hole();
 
-      translate([R*(1+1/2),R+thickness])
+      //cur for the idler_back_face
+      translate([R,R-thickness])
+      square([R,thickness]);
+
+      translate([R*(1+1/2),R])
       rotate(-180)
-      t_slot_shape(3, 16);
+      t_slot_shape(3, 12);
     }
-    translate([R,R+thickness/2])
+    translate([R,R-thickness/2])
     rotate(-90)
     TSlot_joints(width=R);
   }
@@ -351,7 +355,7 @@ module sheet(name, height=0, c=default_sheet_color){
 
 module handle(){
   nut_height = 3;
-  handle_bolt_length = 70;
+  handle_bolt_length = 50;
 
   union(){
     handle_sheet(width=HandleWidth);
@@ -372,7 +376,7 @@ module idler(){
       translate([0,0,4*thickness])
       idler_side_sheet();
     
-      translate([-R, R, 5*thickness/2]){
+      translate([-R+thickness, R, 5*thickness/2]){
         rotate([0,-90,0]){
           //sheet("idler2",thickness);
           idler_back_sheet();
