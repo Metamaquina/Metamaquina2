@@ -29,11 +29,11 @@
  *     DeuxVis - device@ymail.com */
 
 use <MCAD/involute_gears.scad>
+gear_thickness = 10;
 
 /* Herringbone gear module, adapted from MCAD/involute_gears */
-module herringbone_gear( teeth=12, circles=0, shaft=5 ) {
+module herringbone_gear( teeth=12, shaft=5, gear_thickness=10 ) {
   twist=200;
-  height=10;
   pressure_angle=30;
 
   gear(
@@ -41,13 +41,13 @@ module herringbone_gear( teeth=12, circles=0, shaft=5 ) {
     circular_pitch=320,
 		pressure_angle=pressure_angle,
 		clearance = 0.2,
-		gear_thickness = height/2,
-		rim_thickness = height/2,
+		gear_thickness = gear_thickness/2,
+		rim_thickness = gear_thickness/2,
 		rim_width = 1,
 		hub_thickness = height/2,
 		hub_diameter=1,
 		bore_diameter=shaft,
-		circles=circles,
+		circles=0,
 		twist=twist/teeth
   );
 
@@ -57,40 +57,50 @@ module herringbone_gear( teeth=12, circles=0, shaft=5 ) {
 		  circular_pitch=320,
 		  pressure_angle=pressure_angle,
 		  clearance = 0.2,
-		  gear_thickness = height/2,
-		  rim_thickness = height/2,
+		  gear_thickness = gear_thickness/2,
+		  rim_thickness = gear_thickness/2,
 		  rim_width = 1,
-		  hub_thickness = height/2,
+		  hub_thickness = gear_thickness/2,
 		  hub_diameter=1,
 		  bore_diameter=shaft,
-		  circles=circles,
+		  circles=0,
 		  twist=twist/teeth
     );
 }
 
 module extruder_gear(teeth=37, circles=8, shaft=8.6){
-  render()
-  translate([0,0,5])
-  union() {
-    //gear
-    difference() {
-      herringbone_gear( teeth=teeth, circles=0, shaft=shaft, $fn=40 );
+  body_thickness = 4;
+  hub_thickness = 8;
 
-      translate([0,0,1])
-      cylinder(r1=25, r2=30, h=5);
+  difference(){
+    union() {
+      //hub
+      translate([0,0,-0.01])
+      cylinder( r1=15, r2=9, h=hub_thickness );
 
-      for (i=[1:circles])
-      rotate(i*360/circles)
-      translate([17.5,0,-5.1])
-      cylinder(r1=4, r2=6, h=6.2);
+      difference(){
+        //gear
+        translate([0,0,gear_thickness/2])
+        herringbone_gear( gear_thickness=gear_thickness, teeth=teeth, shaft=shaft, $fn=40 );
+
+        //central cut to make the gear thin
+        translate([0,0,body_thickness])
+        cylinder(r1=26, r2=29, h=gear_thickness - body_thickness + 0.01);
+      }
+
     }
+
+    for (i=[1:circles])
+      rotate(i*360/circles)
+      translate([19,0,-0.01])
+      cylinder(r1=4, r2=7, h=body_thickness+0.02);
 
     //M8 hobbed bolt head fit washer
-    translate([0,0,-5])
-    difference() {
-      translate( [0, 0, 5] ) cylinder( r1=11, r2=8, h=6 );
-      translate( [0, 0, 4.5] ) cylinder( r=12.9/sqrt(3), h=7, $fn=6 );
-    }
+    translate( [0, 0, 2.5 -0.01] )
+    cylinder( r=12.9/sqrt(3), h=10, $fn=6 );
+
+    translate( [0, 0, -0.1] )
+    cylinder( r=shaft/2, h=10, $fn=20 );
   }
 }
 
