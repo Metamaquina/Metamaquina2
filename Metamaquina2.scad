@@ -1255,12 +1255,19 @@ module XCarriage_plainface(sandwich=false){
       mirror([1,0]) XEndstopHolder();
     }
 
+    //central hole for extruder nozzle
     hull(){
       translate([-(num_extruders-1)*extra_extruder_length/2,0])
       circle(r=XCarriage_nozzle_hole_radius);
 
       translate([(num_extruders-1)*extra_extruder_length/2,0])
       circle(r=XCarriage_nozzle_hole_radius);
+    }
+
+    //hole for extruder wiring
+    if (!sandwich){
+      translate([-25,-10])
+      rounded_square([25,20], corners=[5,5,5,5]);
     }
 
     //holes for attaching the wade extruder
