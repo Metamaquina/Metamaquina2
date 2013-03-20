@@ -801,6 +801,30 @@ module Y_belt(){
   }
 }
 
+module YEndstopHolder_face(){
+  width = 25;
+  height = 20;
+  r = 5;
+  translate([-width/2,0])
+  difference(){
+    union(){
+      rounded_square([width,height], corners=[0,0,r,r]);
+
+      translate([width,-thickness/2])
+      rotate(90)
+      TSlot_joints(width);
+    }
+
+    translate([width/2,-thickness])
+    t_slot_shape(3,16);
+  }
+}
+
+module YEndstopHolder_sheet(){
+  linear_extrude(height=thickness)
+  YEndstopHolder_face();
+}
+
 //!MachineBottomPanel_face();
 module MachineBottomPanel_face(){
   render(){
@@ -821,6 +845,25 @@ module MachineBottomPanel_face(){
 
       translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness + 16, 24])
       heatedbed_bottompanel_hole();
+
+      //holes for YMIN endstop
+      translate([30, 0]){
+      for (i=[-1,1])
+        translate([-10,24])
+          circle(r=m3_diameter, $fn=20);
+        for (i=[-1,1])
+          translate([i*microswitch_holes_distance/2,10])
+            M25_hole();
+      }
+
+      //holes for YMAX endstop
+      translate([-30, 0]){
+        translate([-10,-24])
+          circle(r=m3_diameter, $fn=20);
+        for (i=[-1,1])
+          translate([i*microswitch_holes_distance/2,-10])
+            M25_hole();
+      }
 
     }
   }
@@ -1171,6 +1214,34 @@ module XCarriage_sandwich_face(){
   }
 }
 
+module M3_hole(){
+  circle(r=m3_diameter/2, $fn=20);
+}
+
+m25_diameter = 2.5;
+module M25_hole(){
+  circle(r=m25_diameter/2, $fn=20);
+}
+
+microswitch_holes_distance = 10; //TODO: measure this.
+module XEndstopHolder(){
+  difference(){
+    hull(){
+      for (j=[-1,1]){
+        translate([52,10*j])
+        circle(r=5);
+
+        translate([40,15*j])
+        circle(r=5);
+      }
+    }
+
+    for (j=[-1,1])
+      translate([52,j*microswitch_holes_distance/2])
+      M25_hole();
+  }
+}
+
 module XCarriage_plainface(sandwich=false){
   difference(){
     if (sandwich){
@@ -1179,6 +1250,9 @@ module XCarriage_plainface(sandwich=false){
     } else {
       translate([-XCarriage_length/2, -XPlatform_width/2])
       rounded_square([XCarriage_length, XCarriage_width], corners=[10,10,10,10]);
+
+      XEndstopHolder();
+      mirror([1,0]) XEndstopHolder();
     }
 
     hull(){
@@ -1854,13 +1928,17 @@ module YPlatform_left_sandwich_face(){
 }
 
 module YPlatform_sheet(){
-  translate([0,0,100-15]){ /*TODO*/
     if (preview_lasercut){
-      color(sheet_color){
+      color("green"){
         linear_extrude(height=thickness)
-        YPlatform_sheet_curves();
+        YPlatform_face();
       }
     }
+}
+
+module YPlatform_subassembly(){
+  translate([0,0,100-15]){ /*TODO*/
+    YPlatform_sheet();
 
     translate([0,0, -sandwich_hexspacer_length]){
       YPlatform_hexspacers();
@@ -1875,10 +1953,18 @@ module YPlatform_sheet(){
     translate([0,0, -lm8uu_diameter/2])
     YPlatform_linear_bearings();
 
+    translate([-30,80])
+    rotate([-90,0])
+    YEndstopHolder_sheet();
+
+    translate([30,-80])
+    rotate([-90,0])
+    YEndstopHolder_sheet();
+
   }
 }
 
-module YPlatform_sheet_curves_generic(){
+module YPlatform_face_generic(){
   difference(){
     rounded_square([HeatedBed_X, HeatedBed_Y + 35], corners=[10,10,10,10], center=true);
     for (i=[-1,1]){
@@ -1933,8 +2019,8 @@ module YPlatform_linear_bearings(){
   }
 }
 
-//!YPlatform_sheet_curves();
-module YPlatform_sheet_curves(){
+//!YPlatform_face();
+module YPlatform_face(){
   difference(){
     translate([-110,-110 - 30])
     rounded_square([220, 220 + 30], corners=[5,5,5,5]);
@@ -1970,6 +2056,15 @@ module YPlatform_sheet_curves(){
         belt_clamp_holes();
     }
 
+    
+    translate([-30 + 25/2, 80 + thickness/2])
+    rotate(90)
+    TSlot_holes(width=25);
+
+    translate([30 + 25/2, -80 + thickness/2])
+    rotate(90)
+    TSlot_holes(width=25);
+
   }
 }
 
@@ -1984,7 +2079,7 @@ module YPlatform(){
   translate([0, YCarPosition, 0]){
     //#BuildVolumePreview();
     BuildPlatform_pcb();
-    YPlatform_sheet();
+    YPlatform_subassembly();
   }
   YRods();
   Y_belt();
