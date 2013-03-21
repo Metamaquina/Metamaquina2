@@ -11,7 +11,8 @@ use <tslot.scad>;
 include <Metamaquina-config.scad>;
 
 mount_holes_distance = 40; //TODO: XRods_distance + 7
-
+idler_axis_position = [-12,21];
+idler_bearing_position = idler_axis_position + [0.4,15.6];
 motor_position = [45.5,35];
 motor_angle = -24;
 hobbed_bolt_position = [3,36.5];
@@ -81,6 +82,10 @@ module idler_side_face(){
       }
 
       M3_hole();
+
+      rotate(-90)
+      translate(idler_bearing_position - idler_axis_position)
+      circle(r=7.3/2);
 
       //cur for the idler_back_face
       translate([R,R-thickness])
@@ -368,39 +373,61 @@ module handle(){
   }
 }
 
+module idler_bolt_subassembly(){
+  length=30;
+  h=5;
+
+  //bolt body
+  translate([0,0,-length])
+  cylinder(r=7.3/2, h=length, $fn=30);
+
+  //bolt head
+  translate([0,0,-length-h])
+  cylinder(r=7.3, h=h, $fn=6);
+}
+
 module idler(){
   R=23;
+
+  color("grey")
+  rotate([90,0])
+    translate([0,0,5*thickness])
+    translate(idler_bearing_position)
+    idler_bolt_subassembly();
+
   rotate([90,0]){
-    translate([25,21]){
+    translate(idler_axis_position){
       idler_side_sheet();
+
+//      translate([-24,-21,-10])
+//      sheet("idler",thickness);
+
       translate([0,0,4*thickness])
       idler_side_sheet();
     
-      translate([-R+thickness, R, 5*thickness/2]){
-        rotate([0,-90,0]){
-          //sheet("idler2",thickness);
-          idler_back_sheet();
-        }
-      }
+      translate([-R+thickness, R, 5*thickness/2])
+      rotate([0,-90,0])
+      idler_back_sheet();
     }
   }
 }
 
 module extruder_block(){
   rotate([90,0]){
-    //sheet("slice1");
-    //sheet("slice2", thickness);
-    //sheet("slice3", 2*thickness);
-    //sheet("slice4", 3*thickness);
-    //sheet("slice5", 4*thickness);
 
     translate([37,0]){
-      slice1();
-      slice2();
-      slice3();
-      slice4();
-      slice5();
-    }    
+      //sheet("slice1");
+      //sheet("slice2", thickness);
+      //sheet("slice3", 2*thickness);
+      //sheet("slice4", 3*thickness);
+      //sheet("slice5", 4*thickness);
+    }
+
+    slice1();
+    slice2();
+    slice3();
+    slice4();
+    slice5();
   }
 }
 
@@ -421,7 +448,7 @@ washer_thickness = 1.5;
 module lasercut_extruder(){
   rotate(90)
   union(){
-    translate([-37,2.5*thickness]){
+    translate([0,2.5*thickness]){
       extruder_block();
       idler();
     }
