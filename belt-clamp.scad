@@ -2,7 +2,7 @@
 // Adapted for eighter laser cutting or 3d printing.
 //
 // (c) 2013 Felipe C. da S. Sanches <fsanches@metamaquina.com.br>
-// Lincensed under the terms of the GNU General Public License
+// Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
 //2d shape (good for the lasercutter)

@@ -1,7 +1,7 @@
 // Reimplementation of Brook Drum's lasercut extruder
 //
 // (c) 2013 Felipe C. da S. Sanches <fsanches@metamaquina.com.br>
-// Lincensed under the terms of the GNU General Public License
+// Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
 use <NEMA.scad>;
