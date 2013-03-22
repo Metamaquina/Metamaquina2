@@ -1130,7 +1130,7 @@ module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=1){
       generic_bearing_sandwich_plainface(H, r);
 
       //linear bearings
-      translate([0,0,lm8uu_diameter/2 - (sandwich_hexspacer_length + sandwich_tightening) ]){
+      translate([0,0,lm8uu_diameter/2 - (sandwich_hexspacer_length + sandwich_tightening)]){
         for (j=[-1,1])
         translate([0,j*H/2])
         LM8UU();
@@ -1917,7 +1917,7 @@ module YPlatform_left_sandwich_holes(){
       circle(r=m3_diameter/2, $fn=20);
 }
 
-module YPlatform_left_sandwich_face(){
+module YPlatform_left_sandwich_face(sandwich_tightening=1){
   difference(){
     projection(cut=true){
       difference(){
@@ -1925,7 +1925,7 @@ module YPlatform_left_sandwich_face(){
         YPlatform_left_sandwich_outline();
 
         //linear bearing
-        translate([0,0,lm8uu_diameter/2 - sandwich_hexspacer_length ])
+        translate([0,0,lm8uu_diameter/2 - (sandwich_hexspacer_length + sandwich_tightening)])
         LM8UU();
       }
     }
