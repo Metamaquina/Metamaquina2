@@ -44,7 +44,7 @@ module herringbone_gear( teeth=12, shaft=5, gear_thickness=10 ) {
 		gear_thickness = gear_thickness/2,
 		rim_thickness = gear_thickness/2,
 		rim_width = 1,
-		hub_thickness = height/2,
+		hub_thickness = gear_thickness/2,
 		hub_diameter=1,
 		bore_diameter=shaft,
 		circles=0,
