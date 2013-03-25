@@ -548,7 +548,9 @@ module TopPanel_holes(){
       }
     } else {
       translate([-z_rod_z_bar_distance,0]){
-        circle(r=(m8_diameter+epsilon)/2, $fn=20);
+        //This hole's diameter is considerably larger than the threaded rod diameter
+        // in order to allow slightly bent rods to freely move. Otherwise, we would potentially have more whobble as a result of a tightly fixed rod.
+        circle(r=(m8_diameter+4)/2, $fn=20);
       }
     }
 
