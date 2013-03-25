@@ -29,6 +29,7 @@ hobbing_width = 16;
 screw_length = 24;
 bolt_length = 50;
 hobbing_width = 6;
+hobbing_depth = 1;
 
 echo(str("hobbing position: ", hobbing_position));
 echo(str("bolt_length: ", bolt_length));
@@ -70,7 +71,8 @@ module head(D){
 }
 
 module body(diameter, length){
-  Square(0, -diameter/2, length, diameter/2);
+  Square(0, -diameter/2, hobbing_position - hobbing_width/2, diameter/2);
+  Square(hobbing_position + hobbing_width/2, -diameter/2, length, diameter/2);
   dimension(0,-10, length,-10, line_thickness=lt);
 }
 
@@ -135,13 +137,12 @@ translate([wade_height,0]){
 }
 
 //%wade_block_3d();
-
 module hobbed_bolt(){
   bolt_hex_head_frontal_view(bolt_diameter);
 
   head(bolt_diameter);
   body(diameter=bolt_diameter, length=bolt_length);
-  hobbing(position=hobbing_position, diameter=bolt_diameter, length=hobbing_width);
+  hobbing(position=hobbing_position, diameter=bolt_diameter-2*hobbing_depth, length=hobbing_width);
   screw(diameter=bolt_diameter, length=screw_length);
 }
 
