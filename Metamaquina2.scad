@@ -49,14 +49,6 @@ YCarPosition = cary_demo(time);
 ZCarPosition = carz_demo(time);
 
 //-------------------------
-//RepRap standards:
-
-X_rods_distance = 50;
-X_rods_diameter=8;
-z_rod_z_bar_distance = 30;
-Y_rods_distance = 140;
-
-//-------------------------
 
 //machine configs:
 
@@ -1169,9 +1161,8 @@ module beltclamp_holes(){
 }
 
 module wade_holes(){
-  translate([0,25])  
-  circle(r=m4_diameter/2, $fn=20);
-  translate([0,-25])  
+  for (i=[-1,1])
+  translate([0,i*extruder_mount_holes_distance/2])  
   circle(r=m4_diameter/2, $fn=20);
 }
 
@@ -1261,11 +1252,8 @@ module XCarriage_plainface(sandwich=false){
     }
 
     //holes for attaching the wade extruder
-    translate([-(num_extruders-1)*extra_extruder_length/2,0])
     wade_holes();
-    translate([(num_extruders-1)*extra_extruder_length/2,0])
-    wade_holes();
-
+    
     //holes for hexspacers
     for (i=[-1,1]){
       for (j=[-1,1]){

@@ -56,3 +56,15 @@ m3_diameter = 3;
 m4_diameter = 4;
 m8_diameter = 8;
 
+//-------------------------
+//RepRap standards:
+
+X_rods_distance = 50;
+X_rods_diameter=8;
+z_rod_z_bar_distance = 30;
+Y_rods_distance = 140;
+
+//-------------------------
+extruder_mount_holes_distance = X_rods_distance + 14;
+
+

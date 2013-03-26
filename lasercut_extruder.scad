@@ -9,12 +9,13 @@ use <rounded_square.scad>;
 use <thingiverse/12789/TZ_Huxley_extruder_gears.scad>;
 use <tslot.scad>;
 include <Metamaquina-config.scad>;
+use <Metamaquina2.scad>;
 
-mount_holes_distance = 40; //TODO: XRods_distance + 7
+extruder_mount_holes_distance = X_rods_distance + 14;
 idler_axis_position = [-12,21];
 idler_bearing_position = idler_axis_position + [0.4,15.6];
 motor_position = [45.5,35];
-motor_angle = -24;
+motor_angle = 0;
 hobbed_bolt_position = [3,36.5];
 thickness = 6;
 HandleWidth = 5*thickness;
@@ -165,7 +166,7 @@ module slice5_face(){
 
 module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=false, mount_holes=false, idler_axis=false, bottom_screw_holes=false, handle_lock=false, nozzle_holder=false){
   base_thickness = 10;
-  r=base_thickness;
+  r=base_thickness/2;
   H=58;
   epsilon = 0.21;
   NEMA_side = 48;
@@ -174,6 +175,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
   nozzle_hole_width = 14;
   608zz_diameter = 22;
   idler_axis_width = 7;
+  base_length = extruder_mount_holes_distance+12;
 
   difference(){
     union(){
@@ -181,7 +183,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
       translate([0,base_thickness/2]){
         hull(){
           for (i=[-1,1]){
-            translate([i*32,0])
+            translate([i*base_length/2,0])
             circle(r=base_thickness/2, $fn=40);
           }
         }
@@ -246,8 +248,8 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
 
   if (mount_holes){
     for (i=[-1,1])
-      translate([i*mount_holes_distance/2, 0])
-      square([m4_diameter, base_thickness]);
+      translate([i*extruder_mount_holes_distance/2, base_thickness/2])
+      square([m4_diameter, base_thickness], center=true);
   }
 
   //////////////////
@@ -286,7 +288,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
   ///////////////
     //holes for m3x30 screws to pack all 5 slices together
     for (i=[-1,1])
-      translate([i*32, base_thickness/2])
+      translate([i*base_length/2, base_thickness/2])
       circle(r=m3_diameter/2, $fn=20);
   }
 }
@@ -304,6 +306,7 @@ module slice2(){
   slice2_face();
 }
 
+//!slice3();
 module slice3(){
   color("red")
   translate([0,0,2*thickness])
@@ -447,6 +450,9 @@ module nozzle(length=50){
 
 washer_thickness = 1.5;
 module lasercut_extruder(){
+  translate([0,0,-thickness])
+    %XCarriage_bottom_sheet();
+
   rotate(90)
   union(){
     translate([0,2.5*thickness]){
