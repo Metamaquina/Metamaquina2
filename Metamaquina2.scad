@@ -886,9 +886,6 @@ module XPlatform_bottom_face(){
 	    	square([XEnd_box_size+thickness, XEnd_width]);
 	    }
 
-      translate([-150, 0])
-      holes_for_XMIN_endstop();
-
       //hole for extruder nozzle:
       square([nozzle_hole_length, nozzle_hole_width], center=true);
       translate([nozzle_hole_length/2,0]) circle(r=nozzle_hole_width/2);
@@ -902,16 +899,6 @@ module XPlatform_bottom_face(){
 	    XEndMotor_bottom_holes();
     }
   }
-}
-
-module holes_for_XMIN_endstop(d=12, r=3){
-  translate([0,15])
-  rotate([0,0,90])
-  zip_tie_holes(d=5);
-
-  translate([0,65])
-  rotate([0,0,90])
-  zip_tie_holes(d=5);
 }
 
 module XEndMotor_bottom_holes(){
