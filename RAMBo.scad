@@ -78,8 +78,9 @@ module RAMBo_holes(){
   circle(r=m4_diameter/2, $fn=20);
 }
 
+dark_green = [0,0.2,0];
 module RAMBo_pcb(){
-  color("dark green")
+  color(dark_green)
   linear_extrude(height=RAMBo_pcb_thickness)
   difference(){
     square([RAMBo_width, RAMBo_height]);
