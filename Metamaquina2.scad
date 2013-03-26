@@ -2019,12 +2019,8 @@ module YPlatform_linear_bearings(){
 //!YPlatform_face();
 module YPlatform_face(){
   difference(){
-    translate([-110,-110 - 30])
-    rounded_square([220, 220 + 30], corners=[5,5,5,5]);
-
-    //Metamaquina logo
-    translate([-170/2,-110 - 25])
-      import(file="metamaquina-170mm_X_25mm.dxf");
+    translate([-110,-110])
+    rounded_square([220, 220], corners=[5,5,5,5]);
 
     //corner holes
     for (i=[-1,1]){
