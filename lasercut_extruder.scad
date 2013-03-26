@@ -165,6 +165,7 @@ module slice5_face(){
 
 module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=false, mount_holes=false, idler_axis=false, bottom_screw_holes=false, handle_lock=false, nozzle_holder=false){
   base_thickness = 10;
+  r=base_thickness;
   H=58;
   epsilon = 0.21;
   NEMA_side = 48;
