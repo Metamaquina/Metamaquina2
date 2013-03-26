@@ -13,6 +13,7 @@ use <nut.scad>;
 use <domed_cap_nuts.scad>;
 use <RAMBo.scad>;
 use <NEMA.scad>;
+use <mm2logo.scad>;
 //use <pulley.scad>;
 
 m8_nut_height = 6.3; //TODO: check the datasheets
@@ -621,9 +622,9 @@ module MachineArcPanel_face(){
       }
 
 
-      //Metamaquina logo
-      translate([-170/2, ArcPanel_height - 44])
-        import(file="metamaquina-170mm_X_25mm.dxf");
+      //Metamaquina2 logo
+      translate([-191/2, ArcPanel_height - 44])
+        MM2_logo();
 
       //tslots for top panel
       translate([0,ArcPanel_height + thickness]){
