@@ -17,6 +17,9 @@ use <mm2logo.scad>;
 use <endstop.scad>;
 //use <pulley.scad>;
 
+use <ZLink.scad>;
+include <ZLink-params.scad>;
+
 m8_nut_height = 6.3; //TODO: check the datasheets
 m8_washer_height = 1.5; //TODO: check the datasheets
 lm8uu_diameter = 15;
@@ -99,12 +102,6 @@ BuildPlatform_height = pcb_height+2;
 
 //machine_x_dim is the actual width of the whole machine
 machine_x_dim = Z_rods_distance+2*(lm8uu_diameter/2+thickness);
-XPlatform_height = 45;
-
-//ZLink-specific parameters:
-ZLink_rod_height = 11*sqrt(3)/2;
-dx_z_threaded = 14;
-Zlink_hole_height = thickness + (XPlatform_height-thickness)/2;
 
 XEnd_extra_width = 30;
 XEnd_box_size = lm8uu_diameter/2 + z_rod_z_bar_distance + ZLink_rod_height;
@@ -1138,10 +1135,9 @@ module XEnd_front_face(){
     circle(r=X_rods_diameter/2);
 
     //screw holes for z-axis threaded bar
-    translate([dx_z_threaded, Zlink_hole_height])
-    circle(r=m3_diameter/2, $fn=20);
-    translate([-dx_z_threaded, Zlink_hole_height])
-    circle(r=m3_diameter/2, $fn=20);
+    for (i=[-1,1])
+      translate([i*dx_z_threaded, thickness+Zlink_hole_height])
+      circle(r=m3_diameter/2, $fn=20);
 
     //hole for belt
   	translate([-XPlatform_width/2 - XEnd_extra_width + belt_offset - 5, XIdler_height])
@@ -1662,26 +1658,17 @@ module XCarriage_linear_bearings(){
   }
 }
 
-use <ZLink.scad>;
-module ZLink(){
-  if (preview_ABS){
-    color(ABS_color){
-      z_threaded_bar_link();
-    }
-  }
-}
-
 module XEndMotor_ZLink(){
-  translate([thickness + lm8uu_diameter/2 + z_rod_z_bar_distance + ZLink_rod_height, 0, thickness + (XPlatform_height-thickness)/2])
-  rotate([0,0,-90])
-  rotate([90,0,0])
+  translate([thickness + lm8uu_diameter/2 + z_rod_z_bar_distance + ZLink_rod_height, 0, thickness + Zlink_hole_height])
+  rotate([0,0,90])
+  rotate([-90,0,0])
   ZLink();
 }
 
 module XEndIdler_ZLink(){
-  translate([-thickness - lm8uu_diameter/2 - z_rod_z_bar_distance - ZLink_rod_height, 0, thickness + (XPlatform_height-thickness)/2])
-  rotate([0,0,90])
-  rotate([90,0,0])
+  translate([-thickness - lm8uu_diameter/2 - z_rod_z_bar_distance - ZLink_rod_height, 0, thickness + Zlink_hole_height])
+  rotate([0,0,-90])
+  rotate([-90,0,0])
   ZLink();
 }
 
