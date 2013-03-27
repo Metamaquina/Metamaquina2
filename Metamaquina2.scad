@@ -14,6 +14,7 @@ use <domed_cap_nuts.scad>;
 use <RAMBo.scad>;
 use <NEMA.scad>;
 use <mm2logo.scad>;
+use <endstop.scad>;
 //use <pulley.scad>;
 
 m8_nut_height = 6.3; //TODO: check the datasheets
@@ -76,6 +77,9 @@ Z_rods_distance = SidePanels_distance + 2*(z_rod_z_bar_distance + NEMA17_width/2
 
 //TODO: machine_width = ?;
 machine_height = BuildVolume_Z + 207.2; //why?
+
+z_max_endstop_x = RightPanel_basewidth/2 - 40;
+z_max_endstop_y = machine_height - 25;
 
 baseh = 35;
 ArcPanel_rear_advance = 105;
@@ -1204,7 +1208,6 @@ module M25_hole(){
   circle(r=m25_diameter/2, $fn=20);
 }
 
-microswitch_holes_distance = 10; //TODO: measure this.
 module XEndstopHolder(){
   difference(){
     hull(){
@@ -1377,6 +1380,9 @@ module MachineLeftPanel_sheet(){
 
       translate([RAMBo_x, RAMBo_y, thickness])
       RAMBo();
+
+      translate([z_max_endstop_x, z_max_endstop_y, thickness])      
+      z_max_endstop();
     }
   }
 }

@@ -49,6 +49,7 @@ ABS_color = [0.95, 0.95, 0.85];
 //sheet_color = [0.95, 0.8, 0.65];
 sheet_color = [0.9, 0.3, 0.3, 1];
 peek_color = "beige";
+dark_grey = [0.3, 0.3, 0.3];
 
 epsilon=0.1;
 inch=25.4;
@@ -66,5 +67,6 @@ Y_rods_distance = 140;
 
 //-------------------------
 extruder_mount_holes_distance = X_rods_distance + 14;
+microswitch_holes_distance = 10; //TODO: measure this.
 
 
