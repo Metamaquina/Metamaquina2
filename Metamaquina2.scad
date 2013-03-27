@@ -738,7 +738,7 @@ module BottomPanel_holes(){
 
     //holes for ZMotors
     translate([Z_rods_distance/2 - z_rod_z_bar_distance, 0])
-    NEMA17_holes();
+    NEMA17_holes(r=27/2); //This should be large enough to let the coupling pass through the hole
 
     //tslot cuts for side panels
     translate([Z_rods_distance/2 - Z_rod_sidepanel_distance + thickness, -BottomPanel_width/2 -BottomPanel_width/4])
