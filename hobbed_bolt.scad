@@ -28,7 +28,7 @@ hobbing_width = 16;
 // but these are the measures of the bolt we got from our supplier
 screw_length = 24;
 bolt_length = 50;
-hobbing_width = 6;
+hobbing_width = 7.5;
 hobbing_depth = 1;
 
 echo(str("hobbing position: ", hobbing_position));
