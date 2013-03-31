@@ -81,7 +81,9 @@ Z_rods_distance = SidePanels_distance + 2*(z_rod_z_bar_distance + NEMA17_width/2
 //TODO: machine_width = ?;
 machine_height = BuildVolume_Z + 207.2; //why?
 
-z_max_endstop_x = RightPanel_basewidth/2 - 40;
+XZStage_offset = 20;
+XZStage_position = RightPanel_basewidth/2 + XZStage_offset;
+z_max_endstop_x = XZStage_position - 40;
 z_max_endstop_y = machine_height - 25;
 
 baseh = 35;
@@ -144,10 +146,10 @@ X_rod_height = XMotor_height + PulleyRadius - lm8uu_diameter/2 - 2*thickness;
 RightPanel_backwidth = 55;
 RightPanel_backheight = machine_height - RightPanel_baseheight;
 
-rear_backtop_advance = RightPanel_basewidth/2 - (XPlatform_width/2 + XEnd_extra_width + 10) - RightPanel_backwidth;
+rear_backtop_advance = XZStage_position - (XPlatform_width/2 + XEnd_extra_width + 10) - RightPanel_backwidth;
 
 RightPanel_topheight = 35;
-RightPanel_topwidth = RightPanel_basewidth/2 + 30 - rear_backtop_advance;
+RightPanel_topwidth = XZStage_position + 30 - rear_backtop_advance;
 
 module bar_cut(l=2*bar_cut_length){
     translate([-l/2,0]) circle(r=m8_diameter/2);
@@ -357,7 +359,7 @@ module MachineRightPanel_face(){
     MachineSidePanel_face();
 
     if (HIQUA_POWERSUPPLY){
-      translate([rear_backtop_advance+RightPanel_backwidth - PowerSupply_width, powersupply_Yposition])
+      translate([rear_backtop_advance+RightPanel_backwidth - PowerSupply_width - XZStage_offset, powersupply_Yposition])
       HiquaPowerSupply_holes();
     }
 
@@ -406,7 +408,7 @@ module MachineSidePanel_face(){
       //cut for attaching bottom panel
       if (zmotors_on_top){
         //in case ZMotors are installed on the top
-        translate([RightPanel_basewidth/2, feetheight]){
+        translate([XZStage_position, feetheight]){
           translate([BottomPanel_width/2 + BottomPanel_width/4, thickness/2])
           circle(r=m3_diameter/2, $fn=20);
 
@@ -418,7 +420,7 @@ module MachineSidePanel_face(){
         }
       } else {
         //in case ZMotors are installed on the bottom
-        translate([RightPanel_basewidth/2, BottomPanel_zoffset]){
+        translate([XZStage_position, BottomPanel_zoffset]){
           translate([BottomPanel_width/2 + BottomPanel_width/4, thickness/2])
           circle(r=m3_diameter/2, $fn=20);
 
@@ -430,7 +432,7 @@ module MachineSidePanel_face(){
         }
 
         //hole for z motors wiring
-        translate([RightPanel_basewidth/2 - 12, feetheight-5])
+        translate([XZStage_position - 12, feetheight-5])
         rounded_square([24, 24+5], corners=[5,5,5,5]);
 
       }
@@ -447,7 +449,7 @@ module MachineSidePanel_face(){
       }
 
       //tslots for arc panel
-      translate([RightPanel_basewidth/2 - ArcPanel_rear_advance + thickness/2, machine_height]){
+      translate([XZStage_position - ArcPanel_rear_advance + thickness/2, machine_height]){
         translate([0, -50])
         TSlot_holes();
 
@@ -460,7 +462,7 @@ module MachineSidePanel_face(){
 
       if (zmotors_on_top){     
         //tslot for bottom panel
-        translate([RightPanel_basewidth/2,feetheight])
+        translate([XZStage_position,feetheight])
         t_slot_shape(3, 16);
       }
     }
@@ -476,7 +478,7 @@ module MachineSidePanel_face(){
 
     if (zmotors_on_top){
       //tslot for bottom panel
-      translate([RightPanel_basewidth/2 + BottomPanel_width/2, feetheight + thickness/2])
+      translate([XZStage_position + BottomPanel_width/2, feetheight + thickness/2])
       rotate([0,0,90])
       TSlot_joints(BottomPanel_width);
     }
@@ -1313,23 +1315,23 @@ module YMotorHolder(){
 }
 
 module RodEnd_ZTopLeft_sheet(){
-  translate([-Z_rods_distance/2, 0, machine_height+thickness])
+  translate([-Z_rods_distance/2, -XZStage_offset, machine_height+thickness])
   RodEndTop_sheet();
 }
 
 module RodEnd_ZTopRight_sheet(){
-  translate([Z_rods_distance/2, 0, machine_height+thickness])
+  translate([Z_rods_distance/2, -XZStage_offset, machine_height+thickness])
   rotate([0,0,180])
   RodEndTop_sheet();
 }
 
 module RodEnd_ZBottomLeft_sheet(){
-  translate([-Z_rods_distance/2, 0, BottomPanel_zoffset - thickness])
+  translate([-Z_rods_distance/2, -XZStage_offset, BottomPanel_zoffset - thickness])
   RodEndBottom_sheet();
 }
 
 module RodEnd_ZBottomRight_sheet(){
-  translate([Z_rods_distance/2, 0, BottomPanel_zoffset - thickness])
+  translate([Z_rods_distance/2, -XZStage_offset, BottomPanel_zoffset - thickness])
   rotate([0,0,180])
   RodEndBottom_sheet();
 }
@@ -1386,7 +1388,7 @@ module MachineLeftPanel_sheet(){
 module MachineTopPanel_sheet(){
   if( preview_lasercut ){
     color(sheet_color){
-      translate([0,0,machine_height])
+      translate([0,-XZStage_offset,machine_height])
       linear_extrude(height=thickness)
       MachineTopPanel_face();
     }
@@ -1396,7 +1398,7 @@ module MachineTopPanel_sheet(){
 module MachineBottomPanel_sheet(){
   if( preview_lasercut ){
     color(sheet_color){
-      translate([0,0,BottomPanel_zoffset])
+      translate([0,-XZStage_offset,BottomPanel_zoffset])
       linear_extrude(height=thickness)
       MachineBottomPanel_face();
     }
@@ -1406,7 +1408,7 @@ module MachineBottomPanel_sheet(){
 module MachineArcPanel_sheet(){
   if( preview_lasercut ){
     color(sheet_color){
-      translate([0,ArcPanel_rear_advance, machine_height - ArcPanel_height])
+      translate([0,ArcPanel_rear_advance-XZStage_offset, machine_height - ArcPanel_height])
       rotate([90,0,0])
       linear_extrude(height=thickness)
       MachineArcPanel_face();
@@ -1544,10 +1546,10 @@ module XEndIdler_belt_face_assembly(){
 module Z_couplings(){
   if (preview_ABS){
     color(ABS_color){
-      translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, 0, BottomPanel_zoffset + motor_shaft_length])
+      translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
       coupling_pair();
 
-      translate([machine_x_dim/2 - thickness - lm8uu_diameter/2 - z_rod_z_bar_distance, 0, BottomPanel_zoffset + motor_shaft_length])
+      translate([machine_x_dim/2 - thickness - lm8uu_diameter/2 - z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
       coupling_pair();
     }
   }
@@ -1703,10 +1705,10 @@ module YRods(){
 module ZRods(){
   if (preview_metal){
     color(metal_color){
-      translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2, 0, BottomPanel_zoffset])
+      translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2, -XZStage_offset, BottomPanel_zoffset])
       cylinder(r=8/2, h=Z_rod_length);
 
-      translate([machine_x_dim/2 - thickness - lm8uu_diameter/2, 0,  BottomPanel_zoffset])
+      translate([machine_x_dim/2 - thickness - lm8uu_diameter/2, -XZStage_offset,  BottomPanel_zoffset])
       cylinder(r=8/2, h=Z_rod_length);
     }
   }
@@ -1715,10 +1717,10 @@ module ZRods(){
 module ZBars(){
   if (preview_threaded_metal){
     color(threaded_metal_color){
-      translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, 0, BottomPanel_zoffset + motor_shaft_length])
+      translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
       cylinder(r=m8_diameter/2, h=Z_bar_length);
 
-      translate([machine_x_dim/2 - thickness - lm8uu_diameter/2 - z_rod_z_bar_distance, 0, BottomPanel_zoffset + motor_shaft_length])
+      translate([machine_x_dim/2 - thickness - lm8uu_diameter/2 - z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
       cylinder(r=m8_diameter/2, h=Z_bar_length);
     }
   }
@@ -2423,9 +2425,9 @@ module YMotor(){
 }
 
 module ZMotors(){
-  translate([Z_rods_distance/2 - z_rod_z_bar_distance, 0, BottomPanel_zoffset])
+  translate([Z_rods_distance/2 - z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset])
   rotate([180,0,0]) NEMA17();
-  translate([-Z_rods_distance/2 + z_rod_z_bar_distance, 0, BottomPanel_zoffset])
+  translate([-Z_rods_distance/2 + z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset])
   rotate([180,0,0]) NEMA17();
 }
 
@@ -2500,7 +2502,7 @@ module Metamaquina2(){
   RearAssembly();
 
   if (render_xplatform){
-    translate([0,0, BuildPlatform_height + ZCarPosition + nozzle_tip_distance])
+    translate([0,-XZStage_offset, BuildPlatform_height + ZCarPosition + nozzle_tip_distance])
       XPlatform();
   }
 
@@ -2508,7 +2510,7 @@ module Metamaquina2(){
   ZAxis();
 
   if (HIQUA_POWERSUPPLY){
-    translate([SidePanels_distance/2, RightPanel_basewidth/2 - (rear_backtop_advance+RightPanel_backwidth), powersupply_Yposition])
+    translate([SidePanels_distance/2, RightPanel_basewidth/2 + XZStage_offset - (rear_backtop_advance+RightPanel_backwidth), powersupply_Yposition])
     HiquaPowerSupply();
   }
 }
