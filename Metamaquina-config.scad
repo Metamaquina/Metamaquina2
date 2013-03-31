@@ -47,7 +47,8 @@ powersupply_color = metal_color;
 PLA_color = [0.95, 0.35, 0.35];
 ABS_color = [0.95, 0.95, 0.85];
 //sheet_color = [0.95, 0.8, 0.65];
-sheet_color = [0.9, 0.3, 0.3, 1];
+sheet_color = [227/230, 190/230, 151/230];
+//sheet_color = [0.9, 0.3, 0.3, 1];
 peek_color = "beige";
 dark_grey = [0.3, 0.3, 0.3];
 
