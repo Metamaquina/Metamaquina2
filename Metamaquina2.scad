@@ -1933,11 +1933,11 @@ module YPlatform_subassembly(){
     translate([0,0, -lm8uu_diameter/2])
     YPlatform_linear_bearings();
 
-    translate([-30,80])
+    translate([30,80])
     rotate([-90,0])
     YEndstopHolder_sheet();
 
-    translate([30,-80])
+    translate([-30,-80])
     rotate([-90,0])
     YEndstopHolder_sheet();
 
@@ -2033,11 +2033,11 @@ module YPlatform_face(){
     }
 
     
-    translate([-30 + 25/2, 80 + thickness/2])
+    translate([30 + 25/2, 80 + thickness/2])
     rotate(90)
     TSlot_holes(width=25);
 
-    translate([30 + 25/2, -80 + thickness/2])
+    translate([-30 + 25/2, -80 + thickness/2])
     rotate(90)
     TSlot_holes(width=25);
 
