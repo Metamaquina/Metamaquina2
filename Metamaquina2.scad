@@ -278,10 +278,10 @@ module YMotorHolder_face(){
 
 module holes_for_motor_wires(){
   height=40;
-  x=100;
-  heights = [60,130,200];
+  x=120;
+  heights = [60,120,180];
 
-  translate([200, height])
+  translate([210, height])
   zip_tie_holes();
 
   translate([x+20, height])
@@ -311,9 +311,9 @@ module MachineLeftPanel_face(){
     RAMBo_holes();
 
     holes_for_motor_wires();
-    holes_for_z_endstop_wires();
-    holes_for_x_motor_and_endstop_wires();
-    holes_for_endstops();
+    //holes_for_z_endstop_wires();
+    //holes_for_x_motor_and_endstop_wires();
+    //holes_for_endstops();
   }
 }
 
