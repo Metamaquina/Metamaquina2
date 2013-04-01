@@ -46,8 +46,8 @@ module lasercutter_panel2(){
   rotate([0,0,90])
   YMotorHolder_face();
 
-  translate([370,350])
-  rotate([0,0,90])
+  translate([330,355])
+  rotate([0,0,-90])
   render() XCarriage_bottom_face();
 
   translate([240,470]){
