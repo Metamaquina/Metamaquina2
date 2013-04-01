@@ -1,9 +1,9 @@
 // (c) 2013 Felipe C. da S. Sanches <fsanches@metamaquina.com.br>
-// Lincensed under the terms of the GNU General Public License
+// Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
 use <Metamaquina2.scad>;
-XPlatform_height = 45;
+include <Metamaquina-config.scad>;
 
 module sandwich_test_panel(){
   translate([320, 50])

@@ -1,5 +1,5 @@
 // (c) 2013 Felipe C. da S. Sanches <fsanches@metamaquina.com.br>
-// Lincensed under the terms of the GNU General Public License
+// Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
 include <Metamaquina-config.scad>;
@@ -14,6 +14,18 @@ RAMBo_thickness = nylonspacer_length + RAMBo_pcb_thickness + hexspacer_length + 
 RAMBo_border = 3.7;
 RAMBo_width = 103;
 RAMBo_height = 104;
+
+module PSU_connector(){
+  //Power supply connector
+
+  //TODO: measure the connector and describe its dimensions:
+  conn_thickness = 10;
+  conn_width = 30;
+  conn_height = 10;
+
+  //TODO: refine shape & details (bevel, connector scews, etc.)
+  cube([conn_thickness, conn_width, conn_height]);
+}
 
 acrylic_color = [1, 0.5, 0.5, 0.7];//red-transparent
 module RAMBo_cover_curves(border=0){
@@ -52,8 +64,13 @@ module RAMBo(){
   translate([0,0,nylonspacer_length]){
     RAMBo_pcb();
 
-    translate([0,0,RAMBo_pcb_thickness + hexspacer_length])
-    RAMBo_cover();    
+    translate([0,0,RAMBo_pcb_thickness]){
+      translate([100,60])
+      PSU_connector();
+
+      translate([0,0,hexspacer_length])
+      RAMBo_cover();
+    }
   }
 }
 
@@ -78,8 +95,9 @@ module RAMBo_holes(){
   circle(r=m4_diameter/2, $fn=20);
 }
 
+dark_green = [0,0.2,0];
 module RAMBo_pcb(){
-  color("dark green")
+  color(dark_green)
   linear_extrude(height=RAMBo_pcb_thickness)
   difference(){
     square([RAMBo_width, RAMBo_height]);
