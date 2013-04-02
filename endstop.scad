@@ -4,9 +4,6 @@
 
 include <Metamaquina-config.scad>;
 
-m25_diameter = 2.5;
-m3_diameter = 3;
-
 module simples_mechanical_endstop(){
   thickness = 5;//TODO
   width = 15;//TODO
