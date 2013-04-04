@@ -310,6 +310,11 @@ module MachineLeftPanel_face(){
     translate([RAMBo_x, RAMBo_y])
     RAMBo_holes();
 
+    translate([z_max_endstop_x, z_max_endstop_y])
+      for (i=[-1,1])
+        translate([endstop_holder_width/2+i*microswitch_holes_distance/2,-endstop_holder_height/2])
+        circle(r=m3_diameter/2, $fn=20);
+
     holes_for_motor_wires();
     //holes_for_z_endstop_wires();
     //holes_for_x_motor_and_endstop_wires();
