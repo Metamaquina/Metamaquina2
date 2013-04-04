@@ -3,6 +3,7 @@
 // version 3 (or later).
 
 include <Metamaquina-config.scad>;
+use <rounded_square.scad>;
 
 module simples_mechanical_endstop(){
   thickness = 5;//TODO
@@ -34,11 +35,6 @@ module z_max_endstop(){
     mechanical_switch();
   }
 }
-
-use <rounded_square.scad>;
-width = 15;//TODO
-height = 8;//TODO
-
 
 wire_coordinate = [width*0.35,height*0.5];
 
