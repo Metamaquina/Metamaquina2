@@ -54,6 +54,7 @@ dark_grey = [0.3, 0.3, 0.3];
 
 epsilon=0.1;
 inch=25.4;
+m25_diameter = 2.5;
 m3_diameter = 3;
 m4_diameter = 4;
 m8_diameter = 8;
@@ -69,6 +70,8 @@ Y_rods_distance = 140;
 //-------------------------
 extruder_mount_holes_distance = X_rods_distance + 14;
 microswitch_holes_distance = 10; //TODO: measure this.
+endstop_holder_width = 15;//TODO
+endstop_holder_height = 8;//TODO
 
 XPlatform_height = 45;
 
