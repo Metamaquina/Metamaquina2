@@ -68,7 +68,21 @@ module herringbone_gear( teeth=12, shaft=5, gear_thickness=10 ) {
     );
 }
 
-module extruder_gear(teeth=37, circles=8, shaft=8.6){
+module sector_hole(){
+	gear_thickness=4;
+	render()
+	rotate([0, 0, -4])
+	intersection(){
+		difference(){
+			cylinder(r=26,h=gear_thickness+2);
+			cylinder(r=12,h=gear_thickness+2);
+		}
+		cube([100, 100, gear_thickness+2]);
+		rotate([0, 0, 90-25]) cube([100, 100, gear_thickness+2]);
+	}
+}
+
+module extruder_gear(teeth=37, circles=12, shaft=8.6){
   body_thickness = 4;
   hub_thickness = 8;
 
@@ -90,10 +104,18 @@ module extruder_gear(teeth=37, circles=8, shaft=8.6){
 
     }
 
-    for (i=[1:circles])
+    for (i=[0:circles-1])
       rotate(i*360/circles)
-      translate([19,0,-0.01])
-      cylinder(r1=4, r2=7, h=body_thickness+0.02);
+      translate([0,0,-0.1])
+      if (i%2==0){
+        sector_hole();
+      }
+      else{
+	rotate(2)
+        translate([12,0,-0.01])
+        scale(0.6)
+        linear_extrude(height=20) import("MM_hole.dxf", layer="eme");
+      }
 
     //M8 hobbed bolt head fit washer
     translate( [0, 0, 2.5 -0.01] )
@@ -147,4 +169,3 @@ translate( [60, 0, 0] )
 translate([0,0,10])
 rotate([180,0])
 motor_gear();
-
