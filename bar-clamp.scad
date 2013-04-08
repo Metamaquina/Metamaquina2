@@ -40,8 +40,8 @@ module barclamp(){
   	translate([outer_diameter, outer_diameter, -1])
     cylinder(h = 20, r = threaded_rod_diameter/2, $fn = 18);
 
-  	translate([17, 17, 7.5])
-    rotate([90, 0, 0])
+  	translate([17, 17, outer_diameter])
+    rotate([90, 00, 00])
     cylinder(h = 20, r = threaded_rod_diameter/2, $fn = 20);
   }
 }

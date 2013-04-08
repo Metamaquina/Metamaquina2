@@ -118,7 +118,7 @@ module motor_gear(teeth=11, shaft_diameter=5){
       difference() {
         //base
         rotate_extrude($fn=120) {
-          square( [9, 9] );
+          square( [9, 8] );
           square( [10, 7] );
           translate( [9, 7] ) circle( 1, $fn=50 );
         }

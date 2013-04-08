@@ -11,7 +11,7 @@ MDF_thickness = 6;
 bearing_thickness = 7; //based on 608zz_bearing.scad
 M8_washer_thickness = 1.5; //based on washer.scad
 wade_large_thickness = 2.5; //based on wade_big.stl (using projection(cut=true))
-M8_nut_thickness = 6; //based on nut.scad
+M8_nut_thickness = 6; //based on nuts.scad
 
 bolt_diameter = 7.7; //The hobbed bolt diameter must not be any greater than 7.7 
          // otherwise it wont fit in the 608zz bearing.
