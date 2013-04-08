@@ -11,7 +11,7 @@ MDF_thickness = 6;
 bearing_thickness = 7; //based on 608zz_bearing.scad
 M8_washer_thickness = 1.5; //based on washer.scad
 wade_large_thickness = 2.5; //based on wade_big.stl (using projection(cut=true))
-M8_nut_thickness = 6; //based on nut.scad
+M8_nut_thickness = 6; //based on nuts.scad
 
 bolt_diameter = 7.7; //The hobbed bolt diameter must not be any greater than 7.7 
          // otherwise it wont fit in the 608zz bearing.
@@ -28,7 +28,8 @@ hobbing_width = 16;
 // but these are the measures of the bolt we got from our supplier
 screw_length = 24;
 bolt_length = 50;
-hobbing_width = 6;
+hobbing_width = 7.5;
+hobbing_depth = 1;
 
 echo(str("hobbing position: ", hobbing_position));
 echo(str("bolt_length: ", bolt_length));
@@ -70,7 +71,8 @@ module head(D){
 }
 
 module body(diameter, length){
-  Square(0, -diameter/2, length, diameter/2);
+  Square(0, -diameter/2, hobbing_position - hobbing_width/2, diameter/2);
+  Square(hobbing_position + hobbing_width/2, -diameter/2, length, diameter/2);
   dimension(0,-10, length,-10, line_thickness=lt);
 }
 
@@ -135,13 +137,12 @@ translate([wade_height,0]){
 }
 
 //%wade_block_3d();
-
 module hobbed_bolt(){
   bolt_hex_head_frontal_view(bolt_diameter);
 
   head(bolt_diameter);
   body(diameter=bolt_diameter, length=bolt_length);
-  hobbing(position=hobbing_position, diameter=bolt_diameter, length=hobbing_width);
+  hobbing(position=hobbing_position, diameter=bolt_diameter-2*hobbing_depth, length=hobbing_width);
   screw(diameter=bolt_diameter, length=screw_length);
 }
 

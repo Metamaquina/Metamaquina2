@@ -3,7 +3,7 @@
 // version 3 (or later).
 
 use <Metamaquina2.scad>;
-XPlatform_height = 45;
+include <Metamaquina-config.scad>;
 
 module sandwich_test_panel(){
   translate([320, 50])

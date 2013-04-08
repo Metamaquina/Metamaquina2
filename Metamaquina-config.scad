@@ -47,12 +47,31 @@ powersupply_color = metal_color;
 PLA_color = [0.95, 0.35, 0.35];
 ABS_color = [0.95, 0.95, 0.85];
 //sheet_color = [0.95, 0.8, 0.65];
-sheet_color = [0.9, 0.3, 0.3, 1];
+sheet_color = [227/230, 190/230, 151/230];
+//sheet_color = [0.9, 0.3, 0.3, 1];
 peek_color = "beige";
+dark_grey = [0.3, 0.3, 0.3];
 
 epsilon=0.1;
 inch=25.4;
+m25_diameter = 2.5;
 m3_diameter = 3;
 m4_diameter = 4;
 m8_diameter = 8;
+
+//-------------------------
+//RepRap standards:
+
+X_rods_distance = 50;
+X_rods_diameter=8;
+z_rod_z_bar_distance = 30;
+Y_rods_distance = 140;
+
+//-------------------------
+extruder_mount_holes_distance = X_rods_distance + 14;
+microswitch_holes_distance = 10; //TODO: measure this.
+endstop_holder_width = 15;//TODO
+endstop_holder_height = 8;//TODO
+
+XPlatform_height = 45;
 

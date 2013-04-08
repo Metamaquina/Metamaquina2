@@ -4,7 +4,8 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-m3_diameter=3;
+include <Metamaquina-config.scad>;
+
 module t_slot_holes(width, thickness, joint_size=5){
   translate([0, width/2])
   circle(r=m3_diameter/2, $fn=20);
