@@ -1,4 +1,5 @@
-// (c) 2013 Felipe C. da S. Sanches <fsanches@metamaquina.com.br>
+// (c) 2013 Felipe C. da S. Sanches <fsanches@metamaquina.com.br>,
+// Rafael H. de L. Moretti <moretti@metamaquina.com.br>
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
@@ -14,17 +15,30 @@ RAMBo_thickness = nylonspacer_length + RAMBo_pcb_thickness + hexspacer_length + 
 RAMBo_border = 3.7;
 RAMBo_width = 103;
 RAMBo_height = 104;
+epsilon = 0.05;
 
 module PSU_connector(){
   //Power supply connector
 
-  //TODO: measure the connector and describe its dimensions:
-  conn_thickness = 10;
-  conn_width = 30;
-  conn_height = 10;
+  //Connector dimensions
+  conn_thickness = 9.8;
+  conn_width = 30.5;
+  conn_height = 15.1;
+  epsilon = 0.05;
 
-  //TODO: refine shape & details (bevel, connector scews, etc.)
-  cube([conn_thickness, conn_width, conn_height]);
+  //Bolt slots
+  bolt_diameter = 3.5;
+  bolts_offset = -2.3;
+
+  difference() {
+    cube([conn_thickness, conn_width, conn_height]);
+
+    for (i = [1 : 6]) {
+      translate([conn_thickness/2,bolts_offset + 5*i,-epsilon]) {
+       cylinder(conn_height+2*epsilon,r=bolt_diameter/2, $fn=20);
+       }
+    }
+  }
 }
 
 acrylic_color = [1, 0.5, 0.5, 0.7];//red-transparent

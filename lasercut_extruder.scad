@@ -148,23 +148,23 @@ module slice1_face(){
 }
 
 module slice2_face(){
-  extruder_slice(idler_axis=true);
+  extruder_slice(nozzle_holder2=true, idler_axis=true);
 }
 
 module slice3_face(){
-  extruder_slice(idler_axis=true, filament_channel=true, mount_holes=true);
+  extruder_slice(nozzle_holder=true, idler_axis=true, filament_channel=true, mount_holes=true);
 }
 
 m3_diameter = 3;
 module slice4_face(){
-  extruder_slice(motor_holder=true, idler_axis=true);
+  extruder_slice(nozzle_holder2=true, motor_holder=true, idler_axis=true);
 }
 
 module slice5_face(){
   extruder_slice(bearing_slot=true, idler_axis=false, handle_lock=true);
 }
 
-module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=false, mount_holes=false, idler_axis=false, bottom_screw_holes=false, handle_lock=false, nozzle_holder=false){
+module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=false, mount_holes=false, idler_axis=false, bottom_screw_holes=false, handle_lock=false, nozzle_holder=false, nozzle_holder2=false){
   base_thickness = 10;
   r=base_thickness/2;
   H=58;
@@ -172,7 +172,8 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
   NEMA_side = 48;
   NEMA_holes_distance = 15.5;
   k=3;
-  nozzle_hole_width = 14;
+  nozzle_hole_width = 16;
+  nozzle_hole_width2 = 14;
   608zz_diameter = 22;
   idler_axis_width = 7;
   base_length = extruder_mount_holes_distance+12;
@@ -256,12 +257,28 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
 
   if (nozzle_holder){
     //cuts for attaching the nozzle holder
-    translate([-nozzle_hole_width/2,0])
+    translate([-nozzle_hole_width/2-0.3,0])
     square([nozzle_hole_width,10]);
+  }
 
-    for (i=[-1,1])
-    translate([i*nozzle_hole_width/2,5])
+  if (nozzle_holder2){
+    //cuts for attaching the nozzle holder
+    translate([-nozzle_hole_width2/2-0.3,0])
+    square([nozzle_hole_width2,10]);
+  }
+
+  for (i=[-1,1])
+    translate([i*nozzle_hole_width2/2-0.3,5])
     circle(r=m3_diameter/2, $fn=20);
+
+  if (filament_channel){
+    translate([-1.9,0]){
+      square([3.2,70]);
+      translate([-10,40]) square([10,30]);
+    }
+
+    //I'm not sure why the original Printrbot LC extruder had these cuts:
+    translate(hobbed_bolt_position) translate([4,0]) rotate(90+45) square(12.5);
   }
 
   ///////////////
@@ -335,6 +352,7 @@ module testing(){
   rotate(90)
   translate([-37,2.5*thickness])
   rotate([90,0]){
+    //sheet("slice3", 1.9*thickness);
     //sheet("slice4", 3*thickness);
     //sheet("slice5", 3.9*thickness);
   }
@@ -344,6 +362,7 @@ module testing(){
   rotate([90,0]){
     slice5();
     slice4();
+    slice3();
   }
 
   rotate(90)
@@ -403,9 +422,6 @@ module idler(){
     translate(idler_axis_position){
       idler_side_sheet();
 
-//      translate([-24,-21,-10])
-//      sheet("idler",thickness);
-
       translate([0,0,4*thickness])
       idler_side_sheet();
     
@@ -418,15 +434,6 @@ module idler(){
 
 module extruder_block(){
   rotate([90,0]){
-
-    translate([37,0]){
-      //sheet("slice1");
-      //sheet("slice2", thickness);
-      //sheet("slice3", 2*thickness);
-      //sheet("slice4", 3*thickness);
-      //sheet("slice5", 4*thickness);
-    }
-
     slice1();
     slice2();
     slice3();
