@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Wed 06 Mar 2013 12:02:39 AM BRT
+EESchema Schematic File Version 2  date Mon 08 Apr 2013 08:47:42 PM BRT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -29,7 +29,6 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:aylons_mechanical
 LIBS:heatbed-cache
 EELAYER 27 0
 EELAYER END
