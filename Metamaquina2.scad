@@ -1300,7 +1300,7 @@ module XCarriage_bottom_face(){
     XCarriage_plainface();
 
     //holes for beltclamps
-    translate ([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width/2]){
+    translate ([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width]){
       for (i=[-1,1])
         translate([i*(XCarriage_lm8uu_distance/2+10), 0])
         beltclamp_holes();
@@ -1667,7 +1667,7 @@ module belt_clamps(){
     color(sheet_color){
       for (i=[-1,1])
       translate([XCarPosition + i*(XCarriage_lm8uu_distance/2+10),
-                 XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width/2,
+                 XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width,
                  belt_clamp_height + 2*thickness + X_rod_height + lm8uu_diameter/2])
       rotate([0,0,90])
       rotate([180,0,0])
