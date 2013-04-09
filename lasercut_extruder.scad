@@ -4,6 +4,8 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
+idler_angle = 0;
+
 use <NEMA.scad>;
 use <608zz_bearing.scad>;
 use <rounded_square.scad>;
@@ -423,10 +425,6 @@ module idler_bolt_subassembly(){
   //bolt body
   translate([0,0,-length])
   cylinder(r=7.3/2, h=length, $fn=30);
-
-  //bolt head
-  translate([0,0,-length-h])
-  cylinder(r=7.3, h=h, $fn=6);
 }
 
 module idler(){
@@ -440,7 +438,9 @@ module idler(){
     idler_bolt_subassembly();
 
   rotate([90,0]){
-    translate(idler_axis_position){
+    translate(idler_axis_position)
+    rotate(-idler_angle)
+    {
       translate([0,0,-0.5])
       idler_side_sheet();
 
@@ -449,7 +449,7 @@ module idler(){
       translate([0,0,-0.5 + thickness]){
         idler_spacer_sheet();
 
-        translate([0,0, thickness]) 608zz_bearing(true);
+        translate([0,0, thickness]) color("red") 608zz_bearing(true);
 
         translate([0,0,bearing_thickness + thickness])
         idler_spacer_sheet();
@@ -478,13 +478,19 @@ module extruder_block(){
 //JHead MKIV nozzle
 module nozzle(length=50){
   color([0.2,0.2,0.2]){
-    translate([0,0,5])
-    cylinder(r=8,h=5);
+    difference(){
+      union(){
+        translate([0,0,5])
+        cylinder(r=8,h=5);
 
-    cylinder(r=6,h=5);
+        cylinder(r=6,h=5);
 
-    translate([0,0,-length+10])
-    cylinder(r=8,h=length-10);
+        translate([0,0,-length+10])
+        cylinder(r=8,h=length-10);
+      }
+      translate([0,0,-length])
+      cylinder(r=3/2,h=length+11, $fn=30);
+    }
   }
 }
 
@@ -513,6 +519,20 @@ module lasercut_extruder(){
     translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
     rotate([90,0])
     extruder_gear(teeth=37);
+
+    //hobbed_bolt
+    color("green")
+    translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]])
+    rotate([90,0])
+    cylinder(r=7.2/2, h=5*thickness, $fn=40);
+
+    translate([hobbed_bolt_position[0], -3*thickness/2, hobbed_bolt_position[1]])
+    rotate([90,0])
+    608zz_bearing(true);
+
+    translate([hobbed_bolt_position[0], 3*thickness/2+7, hobbed_bolt_position[1]])
+    rotate([90,0])
+    608zz_bearing(true);
 
     translate([motor_position[0], -thickness/2, motor_position[1]])
     rotate([-90,0])
