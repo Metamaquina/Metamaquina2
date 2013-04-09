@@ -1,4 +1,5 @@
-#Kicad temp failes
+#Kicad temp files
 /heated_bed/*.bak
 *kicad_pcb-bak
 $*.sch
+/heated_bed/gerbers/*

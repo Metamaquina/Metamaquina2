@@ -1,10 +1,10 @@
-Cmp-Mod V01 Created by CvPcb (2013-feb-21)-testing date = Wed 06 Mar 2013 12:14:32 AM BRT
+Cmp-Mod V01 Created by PcbNew date = Sat 23 Mar 2013 04:26:24 PM BRT
 
 BeginCmp
 TimeStamp = /512592B6;
 Reference = D1;
 ValeurCmp = GREEN_LED;
-IdModule  = LED-0805;
+IdModule  = LED-0805_manual;
 EndCmp
 
 BeginCmp
@@ -53,7 +53,7 @@ BeginCmp
 TimeStamp = /512592C5;
 Reference = R1;
 ValeurCmp = 1k;
-IdModule  = SM0805;
+IdModule  = SM0805-manual;
 EndCmp
 
 BeginCmp

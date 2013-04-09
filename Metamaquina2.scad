@@ -8,13 +8,14 @@ use <lasercut_extruder.scad>;
 use <tslot.scad>;
 use <rounded_square.scad>;
 use <608zz_bearing.scad>;
-use <washer.scad>;
-use <nut.scad>;
+use <washers.scad>;
+use <nuts.scad>;
 use <domed_cap_nuts.scad>;
 use <RAMBo.scad>;
 use <NEMA.scad>;
 use <mm2logo.scad>;
 use <endstop.scad>;
+use <jhead.scad>;
 //use <pulley.scad>;
 
 use <ZLink.scad>;
@@ -35,8 +36,8 @@ use <coupling.scad>;
 
 //For the actual build volume we avoid using the marginal
 //region around the heated bed
-HeatedBed_X = BuildVolume_X + 15;
-HeatedBed_Y = BuildVolume_Y + 15;
+HeatedBed_X = BuildVolume_X + 20; // 220 mm
+HeatedBed_Y = BuildVolume_Y + 15; // 215 mm
 
 hack_couplings = 5; // for astethical purposes, the z-couplings are animated rotating <hack_couplings> times slower than the correct mechanical behaviour
 
@@ -824,8 +825,12 @@ module YEndstopHolder_face(){
 }
 
 module YEndstopHolder_sheet(){
-  linear_extrude(height=thickness)
-  YEndstopHolder_face();
+  if( preview_lasercut ){
+    color(sheet_color){
+      linear_extrude(height=thickness)
+      YEndstopHolder_face();
+    }
+  }
 }
 
 //!MachineBottomPanel_face();
@@ -1765,7 +1770,7 @@ module XCarriage(){
 
   //nozzle:
   translate([XCarPosition, 0, XCarriage_height + thickness])
-  J_head();
+  J_head_assembly();
 }
 
 module XPlatform(){
@@ -1846,7 +1851,7 @@ module BuildPlatform_pcb_curves(){
     square([HeatedBed_X, HeatedBed_Y], center=true);
     for (i=[-1,1]){
       for (j=[-1,1]){
-        translate([i*(HeatedBed_X/2 - 4), j*(HeatedBed_Y/2 - 4)])
+        translate([i*(HeatedBed_X/2 - (1.6 + m3_diameter/2)), j*(HeatedBed_Y/2 - (1.5 + m3_diameter/2))])
         circle(r=m3_diameter/2, $fn=20);
       }
     }
@@ -1914,7 +1919,7 @@ module YPlatform_left_sandwich_face(sandwich_tightening=1){
 
 module YPlatform_sheet(){
     if (preview_lasercut){
-      color("green"){
+      color(sheet_color){
         linear_extrude(height=thickness)
         YPlatform_face();
       }
@@ -1995,25 +2000,29 @@ module YPlatform_hexspacers(){
 }
 
 module YPlatform_linear_bearings(){
-  translate([-Y_rods_distance/2, 0])
-  LM8UU();
+  if (preview_metal){
+    color(metal_color){
+      translate([-Y_rods_distance/2, 0])
+      LM8UU();
 
-  for (j=[-1,1]){
-    translate([Y_rods_distance/2, j*50])
-    LM8UU();
+      for (j=[-1,1]){
+        translate([Y_rods_distance/2, j*50])
+        LM8UU();
+      }
+    }
   }
 }
 
 //!YPlatform_face();
 module YPlatform_face(){
   difference(){
-    translate([-110,-110])
-    rounded_square([220, 220], corners=[5,5,5,5]);
+    translate([-(HeatedBed_X+5)/2,-(HeatedBed_Y+5)/2])
+    rounded_square([HeatedBed_X+5, HeatedBed_Y+5], corners=[5,5,5,5]);
 
     //corner holes
     for (i=[-1,1]){
       for (j=[-1,1]){
-        translate([i*(210/2), j*(210/2)])
+        translate([i*((HeatedBed_X-5-m3_diameter/2)/2), j*((HeatedBed_Y-5-m3_diameter/2)/2)]) //was 210/2
         circle(r=m3_diameter/2, $fn=20);
       }
     }
