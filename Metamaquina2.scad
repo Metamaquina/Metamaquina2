@@ -215,6 +215,10 @@ module RodEndTop_face(){
   RodEnd_face(z_rod_z_bar_distance+8);
 }
 
+module SecondaryRodEndTop_face(){
+  SecondaryRodEnd_face(z_rod_z_bar_distance+8);
+}
+
 module RodEndBottom_face(){
   RodEnd_face(0, third_hole=false);
 }
@@ -240,6 +244,20 @@ module RodEnd_face(L, third_hole=true){
       translate([-(R-4), 0])
       circle(r=m3_diameter/2, $fn=20);
     }
+  }
+}
+
+//!SecondaryRodEnd_face(z_rod_z_bar_distance+8);
+module SecondaryRodEnd_face(L, third_hole=true){
+  R=12;
+  r=6;
+  difference(){
+    RodEnd_face(L, third_hole=true);
+
+    circle(r=m8_diameter/2, $fn=20);
+
+    translate([L-8,0])
+    circle(r=m8_diameter/2 + 2, $fn=20);
   }
 }
 
@@ -1329,10 +1347,21 @@ module RodEnd_ZTopLeft_sheet(){
   RodEndTop_sheet();
 }
 
+module SecondaryRodEnd_ZTopLeft_sheet(){
+  translate([-Z_rods_distance/2, -XZStage_offset, machine_height-thickness])
+  SecondaryRodEndTop_sheet();
+}
+
 module RodEnd_ZTopRight_sheet(){
   translate([Z_rods_distance/2, -XZStage_offset, machine_height+thickness])
   rotate([0,0,180])
   RodEndTop_sheet();
+}
+
+module SecondaryRodEnd_ZTopRight_sheet(){
+  translate([Z_rods_distance/2, -XZStage_offset, machine_height-thickness])
+  rotate([0,0,180])
+  SecondaryRodEndTop_sheet();
 }
 
 module RodEnd_ZBottomLeft_sheet(){
@@ -1351,6 +1380,15 @@ module RodEndTop_sheet(){
     color(sheet_color){
       linear_extrude(height=thickness)
       RodEndTop_face();
+    }
+  }
+}
+
+module SecondaryRodEndTop_sheet(){
+  if( preview_lasercut ){
+    color(sheet_color){
+      linear_extrude(height=thickness)
+      SecondaryRodEndTop_face();
     }
   }
 }
@@ -2420,7 +2458,9 @@ module LaserCutPanels(){
   MachineBottomPanel_sheet();
 
   RodEnd_ZTopLeft_sheet();
+  SecondaryRodEnd_ZTopLeft_sheet();
   RodEnd_ZTopRight_sheet();
+  SecondaryRodEnd_ZTopRight_sheet();
   RodEnd_ZBottomLeft_sheet();
   RodEnd_ZBottomRight_sheet();
 }

@@ -26,6 +26,12 @@ module lasercutter_panel3(){
 
   translate([370,80])
   YPlatform_right_sandwich_face();
+
+  translate([310,200])
+  YEndstopHolder_face();
+
+  translate([310,230])
+  YEndstopHolder_face();
 }
 
 lasercutter_panel3();
