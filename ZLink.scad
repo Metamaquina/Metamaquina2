@@ -10,7 +10,7 @@
 include <Metamaquina-config.scad>;
 include <ZLink-params.scad>;
 
-module ZLink(clearance = 0.2){
+module ZLink(clearance = 0.2, hull_size=0){
   if (preview_ABS){
     color(ABS_color){
       difference(){
@@ -49,7 +49,7 @@ module ZLink(clearance = 0.2){
 		        circle($fn=6, r=10);
 			    hull(){
 				    for (i=[-1,1])
-				    translate([0,i*2.5])
+				    translate([0,i*hull_size/2])
 			        circle($fn=20, r=(8+clearance)/2);
 			    }
 	        }
