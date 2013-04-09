@@ -876,7 +876,10 @@ module MachineBottomPanel_face(){
       translate([30, 0]){
       for (i=[-1,1])
         translate([-10,24])
-          circle(r=m3_diameter, $fn=20);
+          hull()
+            for (j=[-1,1])
+              translate([-5,-5+j*5])
+              circle(r=m3_diameter, $fn=20);
         for (i=[-1,1])
           translate([i*microswitch_holes_distance/2,10])
             M25_hole();
@@ -885,7 +888,10 @@ module MachineBottomPanel_face(){
       //holes for YMAX endstop
       translate([-30, 0]){
         translate([-10,-24])
-          circle(r=m3_diameter, $fn=20);
+          hull()
+            for (j=[-1,1])
+              translate([-5,5+j*5])
+              circle(r=m3_diameter, $fn=20);
         for (i=[-1,1])
           translate([i*microswitch_holes_distance/2,-10])
             M25_hole();
