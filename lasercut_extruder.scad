@@ -5,6 +5,7 @@
 // version 3 (or later).
 
 use <NEMA.scad>;
+use <608zz_bearing.scad>;
 use <rounded_square.scad>;
 use <thingiverse/12789/TZ_Huxley_extruder_gears.scad>;
 use <tslot.scad>;
@@ -104,9 +105,13 @@ module idler_side_face(){
 //!idler_side_face();
 module idler_back_face(){
   R=23;
+  rounding = 5;
+  idler_width = 5*thickness + 1;
+  idler_height = R+rounding;
+
   difference(){
-    translate([-5*thickness/2,0])
-    rounded_square([5*thickness,R+5], corners=[0,0,5,5]);
+    translate([-idler_width/2,0])
+    rounded_square([idler_width,idler_height], corners=[0,0,rounding,rounding]);
 
     for (i=[-1,1])
       translate([i*HandleWidth/6,R])
@@ -116,22 +121,37 @@ module idler_back_face(){
       }
 
     for (i=[-1,1])
-      translate([i*2*thickness,0])
+      translate([i*(2*thickness+0.5),0])
       TSlot_holes(width=R);
   }
 }
 
 module idler_back_sheet(){
-  color("grey")
+  color(sheet_color)
   linear_extrude(height=thickness)
   idler_back_face();
 }
 
 module idler_side_sheet(){
+  color(sheet_color)
   linear_extrude(height=thickness)
   idler_side_face();
 }
 
+module idler_spacer_sheet(){
+  color("green")
+  linear_extrude(height=thickness)
+  idler_spacer_face();
+}
+
+module idler_spacer_face(){
+  d = 8.3;
+  D = 16;
+  difference(){
+    circle(r=D/2,$fn=40);
+    circle(r=d/2,$fn=40);
+  }
+}
 
 module handlelock(){
   r=3;
@@ -411,6 +431,7 @@ module idler_bolt_subassembly(){
 
 module idler(){
   R=23;
+  bearing_thickness = 7;
 
   color("grey")
   rotate([90,0])
@@ -420,9 +441,21 @@ module idler(){
 
   rotate([90,0]){
     translate(idler_axis_position){
+      translate([0,0,-0.5])
       idler_side_sheet();
 
-      translate([0,0,4*thickness])
+
+      translate(idler_bearing_position - idler_axis_position)
+      translate([0,0,-0.5 + thickness]){
+        idler_spacer_sheet();
+
+        translate([0,0, thickness]) 608zz_bearing(true);
+
+        translate([0,0,bearing_thickness + thickness])
+        idler_spacer_sheet();
+      }
+
+      translate([0,0,4*thickness+0.5])
       idler_side_sheet();
     
       translate([-R+thickness, R, 5*thickness/2])
