@@ -8,7 +8,7 @@ use <lasercut_extruder.scad>;
 use <tslot.scad>;
 use <rounded_square.scad>;
 use <608zz_bearing.scad>;
-use <washer.scad>;
+use <washers.scad>;
 use <nuts.scad>;
 use <domed_cap_nuts.scad>;
 use <RAMBo.scad>;
