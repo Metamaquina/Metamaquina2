@@ -1,4 +1,5 @@
 // (c) 2013 Felipe C. da S. Sanches <fsanches@metamaquina.com.br>
+// (c) 2013 Rafael H. de L. Moretti <moretti@metamaquina.com.br>
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
