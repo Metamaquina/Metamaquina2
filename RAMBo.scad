@@ -30,6 +30,7 @@ module PSU_connector(){
   bolt_diameter = 3.5;
   bolts_offset = -2.3;
 
+  color(black_plastic_color)
   difference() {
     cube([conn_thickness, conn_width, conn_height]);
 

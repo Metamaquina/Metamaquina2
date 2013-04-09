@@ -51,6 +51,8 @@ sheet_color = [227/230, 190/230, 151/230];
 //sheet_color = [0.9, 0.3, 0.3, 1];
 peek_color = "beige";
 dark_grey = [0.3, 0.3, 0.3];
+green_plastic_color = [0.7,0.8,0,7];
+black_plastic_color = [0.3,0.3,0.3];
 
 epsilon=0.1;
 inch=25.4;

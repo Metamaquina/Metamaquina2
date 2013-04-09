@@ -15,6 +15,7 @@ use <RAMBo.scad>;
 use <NEMA.scad>;
 use <mm2logo.scad>;
 use <endstop.scad>;
+use <jhead.scad>;
 //use <pulley.scad>;
 
 use <ZLink.scad>;
@@ -824,8 +825,12 @@ module YEndstopHolder_face(){
 }
 
 module YEndstopHolder_sheet(){
-  linear_extrude(height=thickness)
-  YEndstopHolder_face();
+  if( preview_lasercut ){
+    color(sheet_color){
+      linear_extrude(height=thickness)
+      YEndstopHolder_face();
+    }
+  }
 }
 
 //!MachineBottomPanel_face();
@@ -1765,7 +1770,7 @@ module XCarriage(){
 
   //nozzle:
   translate([XCarPosition, 0, XCarriage_height + thickness])
-  J_head();
+  J_head_assembly();
 }
 
 module XPlatform(){
@@ -1914,7 +1919,7 @@ module YPlatform_left_sandwich_face(sandwich_tightening=1){
 
 module YPlatform_sheet(){
     if (preview_lasercut){
-      color("green"){
+      color(sheet_color){
         linear_extrude(height=thickness)
         YPlatform_face();
       }
@@ -1995,12 +2000,16 @@ module YPlatform_hexspacers(){
 }
 
 module YPlatform_linear_bearings(){
-  translate([-Y_rods_distance/2, 0])
-  LM8UU();
+  if (preview_metal){
+    color(metal_color){
+      translate([-Y_rods_distance/2, 0])
+      LM8UU();
 
-  for (j=[-1,1]){
-    translate([Y_rods_distance/2, j*50])
-    LM8UU();
+      for (j=[-1,1]){
+        translate([Y_rods_distance/2, j*50])
+        LM8UU();
+      }
+    }
   }
 }
 

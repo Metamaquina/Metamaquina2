@@ -539,7 +539,7 @@ module lasercut_extruder(){
     extruder_gear(teeth=37);
 
     //hobbed_bolt
-    color("green")
+    color(metal_color)
     translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]])
     rotate([90,0])
     cylinder(r=7.2/2, h=5*thickness, $fn=40);
