@@ -40,10 +40,10 @@ module lasercutter_panel3(){
   translate([330,210])
   endstop_spacer_sheet2();
 
-  translate([360,240])
+  translate([355,240])
   endstop_spacer_sheet1();
 
-  translate([360,210])
+  translate([355,210])
   endstop_spacer_sheet2();
 }
 
