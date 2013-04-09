@@ -1,0 +1,9 @@
+O funcionamento correto desta placa depende da resistência das suas trilhas. Portanto:
+
+* A placa DEVE ter densidade de cobre de 1oz.
+* A placa NÃO deve passar por eletrodeposição ANTES da máscara de solda.
+
+Outras informações:
+* Os pads devem ser metalizados por HAL.
+* A camada da frente não tem conexão elétrica com nenhuma trilha. Sua função é distribuir calor, portanto a placa deve ser 2 camadas, como nos gerbers.
+* Não é necessário metalizar os furos, nem os do conector.
