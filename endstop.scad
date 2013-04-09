@@ -34,7 +34,7 @@ module z_max_endstop(){
   }
 }
 
-wire_coordinate = [endstop_holder_width*0.35,endstop_holder_height*0.5];
+wire_coordinate = [endstop_holder_width*0.4,endstop_holder_height*0.1];
 
 module oblongo(L=10,d=3){
   hull(){
@@ -45,51 +45,55 @@ module oblongo(L=10,d=3){
 }
 
 module endstop_spacer_sheet1(){
-  r = 3;
   color(sheet_color)
-  linear_extrude(height=thickness){
-    translate([0,-endstop_holder_height])
-    difference(){
-      translate([-2,-endstop_holder_height])
-      rounded_square([endstop_holder_width+4,3*endstop_holder_height], corners=[r,r,r,r], $fn=30);
+  linear_extrude(height=thickness)
+  endstop_spacer_face1();
+}
 
-      translate(wire_coordinate)
-      oblongo(endstop_holder_width);
+module endstop_spacer_face1(){
+  r = 3;
+  translate([0,-endstop_holder_height])
+  difference(){
+    translate([-2,-endstop_holder_height])
+    rounded_square([endstop_holder_width+4,3*endstop_holder_height], corners=[r,r,r,r], $fn=30);
 
-      for (i=[-1,1])
-        translate([endstop_holder_width/2+i*microswitch_holes_distance/2, endstop_holder_height+2])
-        circle(r=m25_diameter, $fn=20);
+    translate(wire_coordinate)
+    oblongo(endstop_holder_width);
 
-      for (i=[-1,1])
-        translate([endstop_holder_width/2+i*microswitch_holes_distance/2, -endstop_holder_height/2])
-        circle(r=m3_diameter/2, $fn=20);
+    for (i=[-1,1])
+      translate([endstop_holder_width/2+i*microswitch_holes_distance/2, endstop_holder_height+2])
+      circle(r=m25_diameter, $fn=20);
 
-    }
+    for (i=[-1,1])
+      translate([endstop_holder_width/2+i*microswitch_holes_distance/2, -endstop_holder_height/2])
+      circle(r=m3_diameter/2, $fn=20);
   }
 }
 
 module endstop_spacer_sheet2(){
-  r = 3;
   color(sheet_color)
-  linear_extrude(height=thickness){
-    translate([0,-endstop_holder_height])
-    difference(){
-      translate([-2,-endstop_holder_height])
-      rounded_square([endstop_holder_width+4,3*endstop_holder_height], corners=[r,r,r,r], $fn=30);
+  linear_extrude(height=thickness)
+  endstop_spacer_face2();
+}
 
-      translate(wire_coordinate)
-      rotate(90)
-      oblongo(endstop_holder_width);
+module endstop_spacer_face2(){
+  r = 3;
+  translate([0,-endstop_holder_height])
+  difference(){
+    translate([-2,-endstop_holder_height])
+    rounded_square([endstop_holder_width+4,3*endstop_holder_height], corners=[r,r,r,r], $fn=30);
 
-      for (i=[-1,1])
-        translate([endstop_holder_width/2+i*microswitch_holes_distance/2, endstop_holder_height+2])
-        circle(r=m25_diameter/2, $fn=20);
+    translate(wire_coordinate)
+    rotate(90)
+    oblongo(endstop_holder_width);
 
-      for (i=[-1,1])
-        translate([endstop_holder_width/2+i*microswitch_holes_distance/2, -endstop_holder_height/2])
-        circle(r=m3_diameter/2, $fn=20);
+    for (i=[-1,1])
+      translate([endstop_holder_width/2+i*microswitch_holes_distance/2, endstop_holder_height+2])
+      circle(r=m25_diameter/2, $fn=20);
 
-    }
+    for (i=[-1,1])
+      translate([endstop_holder_width/2+i*microswitch_holes_distance/2, -endstop_holder_height/2])
+      circle(r=m3_diameter/2, $fn=20);
   }
 }
 

@@ -34,9 +34,12 @@ use <belt-clamp.scad>;
 use <bar-clamp.scad>;
 use <coupling.scad>;
 
+pcbextra = 5; //extra space to the left of the pcb that holds the connector.
+
 //For the actual build volume we avoid using the marginal
 //region around the heated bed
-HeatedBed_X = BuildVolume_X + 20; // 220 mm
+
+HeatedBed_X = BuildVolume_X + 15 + pcbextra; // 220 mm
 HeatedBed_Y = BuildVolume_Y + 15; // 215 mm
 
 hack_couplings = 5; // for astethical purposes, the z-couplings are animated rotating <hack_couplings> times slower than the correct mechanical behaviour
@@ -215,6 +218,10 @@ module RodEndTop_face(){
   RodEnd_face(z_rod_z_bar_distance+8);
 }
 
+module SecondaryRodEndTop_face(){
+  SecondaryRodEnd_face(z_rod_z_bar_distance+8);
+}
+
 module RodEndBottom_face(){
   RodEnd_face(0, third_hole=false);
 }
@@ -240,6 +247,20 @@ module RodEnd_face(L, third_hole=true){
       translate([-(R-4), 0])
       circle(r=m3_diameter/2, $fn=20);
     }
+  }
+}
+
+//!SecondaryRodEnd_face(z_rod_z_bar_distance+8);
+module SecondaryRodEnd_face(L, third_hole=true){
+  R=12;
+  r=6;
+  difference(){
+    RodEnd_face(L, third_hole=true);
+
+    circle(r=m8_diameter/2, $fn=20);
+
+    translate([L-8,0])
+    circle(r=m8_diameter/2 + 2, $fn=20);
   }
 }
 
@@ -858,7 +879,10 @@ module MachineBottomPanel_face(){
       translate([-30, 0]){
       for (i=[-1,1])
         translate([-10,24])
-          circle(r=m3_diameter, $fn=20);
+          hull()
+            for (j=[-1,1])
+              translate([-5,-5+j*5])
+              circle(r=m3_diameter, $fn=20);
         for (i=[-1,1])
           translate([i*microswitch_holes_distance/2,10])
             M25_hole();
@@ -867,7 +891,10 @@ module MachineBottomPanel_face(){
       //holes for YMAX endstop
       translate([30, 0]){
         translate([-10,-24])
-          circle(r=m3_diameter, $fn=20);
+          hull()
+            for (j=[-1,1])
+              translate([-5,5+j*5])
+              circle(r=m3_diameter, $fn=20);
         for (i=[-1,1])
           translate([i*microswitch_holes_distance/2,-10])
             M25_hole();
@@ -1282,7 +1309,7 @@ module XCarriage_bottom_face(){
     XCarriage_plainface();
 
     //holes for beltclamps
-    translate ([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width/2]){
+    translate ([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width]){
       for (i=[-1,1])
         translate([i*(XCarriage_lm8uu_distance/2+10), 0])
         beltclamp_holes();
@@ -1329,10 +1356,21 @@ module RodEnd_ZTopLeft_sheet(){
   RodEndTop_sheet();
 }
 
+module SecondaryRodEnd_ZTopLeft_sheet(){
+  translate([-Z_rods_distance/2, -XZStage_offset, machine_height-thickness])
+  SecondaryRodEndTop_sheet();
+}
+
 module RodEnd_ZTopRight_sheet(){
   translate([Z_rods_distance/2, -XZStage_offset, machine_height+thickness])
   rotate([0,0,180])
   RodEndTop_sheet();
+}
+
+module SecondaryRodEnd_ZTopRight_sheet(){
+  translate([Z_rods_distance/2, -XZStage_offset, machine_height-thickness])
+  rotate([0,0,180])
+  SecondaryRodEndTop_sheet();
 }
 
 module RodEnd_ZBottomLeft_sheet(){
@@ -1351,6 +1389,15 @@ module RodEndTop_sheet(){
     color(sheet_color){
       linear_extrude(height=thickness)
       RodEndTop_face();
+    }
+  }
+}
+
+module SecondaryRodEndTop_sheet(){
+  if( preview_lasercut ){
+    color(sheet_color){
+      linear_extrude(height=thickness)
+      SecondaryRodEndTop_face();
     }
   }
 }
@@ -1629,7 +1676,7 @@ module belt_clamps(){
     color(sheet_color){
       for (i=[-1,1])
       translate([XCarPosition + i*(XCarriage_lm8uu_distance/2+10),
-                 XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width/2,
+                 XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width,
                  belt_clamp_height + 2*thickness + X_rod_height + lm8uu_diameter/2])
       rotate([0,0,90])
       rotate([180,0,0])
@@ -1847,6 +1894,7 @@ module BuildPlatform_pcb(){
 }
 
 module BuildPlatform_pcb_curves(){
+  translate([-pcbextra/2,0])
   difference(){
     square([HeatedBed_X, HeatedBed_Y], center=true);
     for (i=[-1,1]){
@@ -2016,13 +2064,13 @@ module YPlatform_linear_bearings(){
 //!YPlatform_face();
 module YPlatform_face(){
   difference(){
-    translate([-(HeatedBed_X+5)/2,-(HeatedBed_Y+5)/2])
-    rounded_square([HeatedBed_X+5, HeatedBed_Y+5], corners=[5,5,5,5]);
+    translate([-pcbextra-(HeatedBed_X-pcbextra)/2,-(HeatedBed_Y)/2])
+    rounded_square([HeatedBed_X, HeatedBed_Y], corners=[3,3,3,3], $fn=50);
 
     //corner holes
     for (i=[-1,1]){
       for (j=[-1,1]){
-        translate([i*((HeatedBed_X-5-m3_diameter/2)/2), j*((HeatedBed_Y-5-m3_diameter/2)/2)]) //was 210/2
+        translate([-pcbextra/2+i*(HeatedBed_X/2 - (1.6 + m3_diameter/2)), j*(HeatedBed_Y/2 - (1.5 + m3_diameter/2))])
         circle(r=m3_diameter/2, $fn=20);
       }
     }
@@ -2420,7 +2468,9 @@ module LaserCutPanels(){
   MachineBottomPanel_sheet();
 
   RodEnd_ZTopLeft_sheet();
+  SecondaryRodEnd_ZTopLeft_sheet();
   RodEnd_ZTopRight_sheet();
+  SecondaryRodEnd_ZTopRight_sheet();
   RodEnd_ZBottomLeft_sheet();
   RodEnd_ZBottomRight_sheet();
 }

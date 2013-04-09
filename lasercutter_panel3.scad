@@ -5,6 +5,7 @@
 // version 3 (or later).
 
 use <Metamaquina2.scad>;
+use <endstop.scad>;
 
 module lasercutter_panel3(){
   % plate_border();
@@ -26,6 +27,24 @@ module lasercutter_panel3(){
 
   translate([370,80])
   YPlatform_right_sandwich_face();
+
+  translate([310,200])
+  YEndstopHolder_face();
+
+  translate([310,230])
+  YEndstopHolder_face();
+
+  translate([330,240])
+  endstop_spacer_sheet1();
+
+  translate([330,210])
+  endstop_spacer_sheet2();
+
+  translate([355,240])
+  endstop_spacer_sheet1();
+
+  translate([355,210])
+  endstop_spacer_sheet2();
 }
 
 lasercutter_panel3();
