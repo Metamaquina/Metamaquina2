@@ -3,13 +3,11 @@
 // version 3 (or later).
 
 module M3_washer(){
-  //TODO
-  washer(washer_thickness = 1.5, external_diameter = 16, internal_diameter = 8.5);
+  washer(washer_thickness = 0.5, external_diameter = 6.75, internal_diameter = 3.1);
 }
 
 module M4_washer(){
-  //TODO
-  washer(washer_thickness = 1.5, external_diameter = 16, internal_diameter = 8.5);
+  washer(washer_thickness = 0.75, external_diameter = 8.75, internal_diameter = 4.3);
 }
 
 module M8_washer(){
