@@ -4,8 +4,6 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-idler_angle = 0;
-
 use <NEMA.scad>;
 use <608zz_bearing.scad>;
 use <rounded_square.scad>;
@@ -18,7 +16,9 @@ extruder_mount_holes_distance = X_rods_distance + 14;
 idler_axis_position = [-12,21];
 idler_bearing_position = idler_axis_position + [0.4,15.6];
 motor_position = [45.5,35];
-motor_angle = 0;
+motor_angle = 28;
+idler_angle = 0;
+extruder_gear_angle = 40;
 hobbed_bolt_position = [3,36.5];
 thickness = 6;
 HandleWidth = 5*thickness;
@@ -58,8 +58,8 @@ module handle_face(r=5, width=HandleWidth, height=HandleHeight){
   }
 }
 
-module handle_sheet(c=default_sheet_color){
-  color(c){
+module handle_sheet(){
+  color(sheet_color){
     linear_extrude(height=thickness){
       handle_face();
     }
@@ -141,7 +141,7 @@ module idler_side_sheet(){
 }
 
 module idler_spacer_sheet(){
-  color("green")
+  color(sheet_color)
   linear_extrude(height=thickness)
   idler_spacer_face();
 }
@@ -170,7 +170,7 @@ module slice1_face(){
 }
 
 module slice2_face(){
-  extruder_slice(nozzle_holder2=true, idler_axis=true);
+  extruder_slice(nozzle_holder2=true, idler_axis=true, idler_nut_gap=true);
 }
 
 module slice3_face(){
@@ -186,7 +186,7 @@ module slice5_face(){
   extruder_slice(bearing_slot=true, idler_axis=false, handle_lock=true);
 }
 
-module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=false, mount_holes=false, idler_axis=false, bottom_screw_holes=false, handle_lock=false, nozzle_holder=false, nozzle_holder2=false){
+module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=false, mount_holes=false, idler_axis=false, bottom_screw_holes=false, handle_lock=false, nozzle_holder=false, nozzle_holder2=false, idler_nut_gap=false){
   base_thickness = 10;
   r=base_thickness/2;
   H=58;
@@ -230,7 +230,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
           if (bearing_slot){
             translate(hobbed_bolt_position){
               intersection(){
-                circle(r=18);
+                circle(r=16);
                 
                 translate([0,-18])
                 square([18,2*18]);
@@ -268,6 +268,24 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
         rounded_square([1.5*r, hobbed_bolt_position[1] - 23/2], corners=[0,0,r,0]);
       }
     }
+
+  //cut for an M4 washer
+  translate([27,base_thickness])
+  square([10, 1.5]);
+
+  //bolt holes for keeping the 5 extruder sheets together:
+  translate([11, 54])
+  circle(r=m3_diameter/2, $fn=20);
+
+  translate([11, 20])
+  circle(r=m3_diameter/2, $fn=20);
+
+  translate(idler_axis_position)
+  circle(r=m3_diameter/2, $fn=20);
+
+  if (idler_nut_gap)
+    translate(idler_axis_position)
+    circle(r=m3_diameter, $fn=20);
 
   if (mount_holes){
     for (i=[-1,1])
@@ -333,13 +351,13 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
 }
 
 module slice1(){
-  color("red")
+  color(sheet_color)
   linear_extrude(height=thickness)
   slice1_face();
 }
 
 module slice2(){
-  color("blue")
+  color(sheet_color)
   translate([0,0,1*thickness])
   linear_extrude(height=thickness)
   slice2_face();
@@ -347,21 +365,21 @@ module slice2(){
 
 //!slice3();
 module slice3(){
-  color("red")
+  color(sheet_color)
   translate([0,0,2*thickness])
   linear_extrude(height=thickness)
   slice3_face();
 }
 
 module slice4(){
-  color("green")
+  color(sheet_color)
   translate([0,0,3*thickness])
   linear_extrude(height=thickness)
   slice4_face();
 }
 
 module slice5(){
-  color("red")
+  color(sheet_color)
   translate([0,0,4*thickness])
   linear_extrude(height=thickness)
   slice5_face();
@@ -449,7 +467,8 @@ module idler(){
       translate([0,0,-0.5 + thickness]){
         idler_spacer_sheet();
 
-        translate([0,0, thickness]) color("red") 608zz_bearing(true);
+        translate([0,0, thickness])
+        608zz_bearing(true);
 
         translate([0,0,bearing_thickness + thickness])
         idler_spacer_sheet();
@@ -496,9 +515,6 @@ module nozzle(length=50){
 
 washer_thickness = 1.5;
 module lasercut_extruder(){
-  translate([0,0,-thickness])
-    %XCarriage_bottom_sheet();
-
   rotate(90)
   union(){
     translate([0,2.5*thickness]){
@@ -517,7 +533,9 @@ module lasercut_extruder(){
     nozzle();
 
     translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
+    rotate([0,extruder_gear_angle])
     rotate([90,0])
+    color(ABS_color)
     extruder_gear(teeth=37);
 
     //hobbed_bolt
@@ -541,7 +559,7 @@ module lasercut_extruder(){
       NEMA17();
 
       translate([0,0,-2*thickness - 2*washer_thickness])
-      color("grey")
+      color(ABS_color)
       rotate([180,0])
       motor_gear(teeth=11);
     }
@@ -549,4 +567,5 @@ module lasercut_extruder(){
 }
 
 lasercut_extruder();
+%translate([0,0,-thickness]) XCarriage_bottom_sheet();
 
