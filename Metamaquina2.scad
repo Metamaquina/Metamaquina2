@@ -329,8 +329,10 @@ module MachineLeftPanel_face(){
   difference(){
     MachineSidePanel_face();
 
-    translate([RAMBo_x, RAMBo_y])
-    RAMBo_holes();
+    translate([RAMBo_x, RAMBo_y]){
+      RAMBo_holes();
+      RAMBo_wiring_hole();
+    }
 
     translate([z_max_endstop_x, z_max_endstop_y])
       for (i=[-1,1])
