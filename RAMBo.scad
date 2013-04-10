@@ -98,7 +98,10 @@ module RAMBo_volume(){
 
 module RAMBo_wiring_hole(){
   translate([RAMBo_width/2, RAMBo_height/2])
-  circle(r=30, $fn=20);
+  hull()
+  for (i=[-1,1])
+    translate([i*25,0])
+    circle(r=10, $fn=20);
 }
 
 module RAMBo_holes(){
