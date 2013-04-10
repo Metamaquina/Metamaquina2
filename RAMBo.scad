@@ -96,6 +96,14 @@ module RAMBo_volume(){
   %cube([RAMBo_width, RAMBo_height, RAMBo_thickness]);
 }
 
+module RAMBo_wiring_hole(){
+  translate([RAMBo_width/2, RAMBo_height/2])
+  hull()
+  for (i=[-1,1])
+    translate([i*25,0])
+    circle(r=10, $fn=20);
+}
+
 module RAMBo_holes(){
   translate([RAMBo_border, RAMBo_border])
   circle(r=m4_diameter/2, $fn=20);

@@ -5,6 +5,17 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
+module belt_clamp_holder(){
+  r = 5;
+  s = 28 - 2*r;
+  hull(){
+    for (p=[[s,0], [s,s], [0,0]]){
+      translate(p)
+      circle(r=r, $fn=20);
+    }
+  }
+}
+
 //2d shape (good for the lasercutter)
 module beltclamp_curves(width, r){
   d = width/2-r;

@@ -126,9 +126,9 @@ num_extruders = 1;
 extra_extruder_length = 50; //TODO
 XCarriage_padding = 6;
 XCarriage_nozzle_hole_radius = 20;
-//XCarriage_width = XPlatform_width + 25;
+XCarriage_width = XPlatform_width + 22;
 //XCarriage_width = XPlatform_width;
-XCarriage_width = XEnd_width;
+//XCarriage_width = XEnd_width;
 XCarriage_length = 82 + (num_extruders-1) * extra_extruder_length;
 XCarriage_lm8uu_distance = XCarriage_length - 30;
 
@@ -329,8 +329,10 @@ module MachineLeftPanel_face(){
   difference(){
     MachineSidePanel_face();
 
-    translate([RAMBo_x, RAMBo_y])
-    RAMBo_holes();
+    translate([RAMBo_x, RAMBo_y]){
+      RAMBo_holes();
+      RAMBo_wiring_hole();
+    }
 
     translate([z_max_endstop_x, z_max_endstop_y])
       for (i=[-1,1])
@@ -910,7 +912,7 @@ module XPlatform_bottom_face(){
     difference(){
 	    union(){
 	    	translate([-machine_x_dim/2 + thickness, -XPlatform_width/2])
-	      square([machine_x_dim - 2 * thickness, XCarriage_width]);
+	      square([machine_x_dim - 2 * thickness, XEnd_width]);
 
 	    	translate([-machine_x_dim/2 + thickness, -XPlatform_width/2])
 	    	square([XEnd_box_size+thickness, XEnd_width]);
@@ -1268,7 +1270,16 @@ module XCarriage_plainface(sandwich=false){
       rounded_square([XCarriage_length, XPlatform_width], corners=[10,10,10,10]);
     } else {
       translate([-XCarriage_length/2, -XPlatform_width/2])
-      rounded_square([XCarriage_length, XCarriage_width], corners=[10,10,10,10]);
+      rounded_square([XCarriage_length, XPlatform_width], corners=[10,10,0,0]);
+
+      //belt_clamp_area
+      translate([29,43])
+      belt_clamp_holder();
+
+      //belt_clamp_area
+      translate([-29,43])
+      mirror([1,0])
+      belt_clamp_holder();
 
       XEndstopHolder();
       mirror([1,0]) XEndstopHolder();
@@ -1304,13 +1315,14 @@ module XCarriage_plainface(sandwich=false){
   }
 }
 
+//!XCarriage_bottom_face();
 module XCarriage_bottom_face(){
   difference(){
     XCarriage_plainface();
 
     //holes for beltclamps
     translate ([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width]){
-      for (i=[-1,1])
+      for (i=[-1.3,1.3])
         translate([i*(XCarriage_lm8uu_distance/2+10), 0])
         beltclamp_holes();
     }
@@ -1674,7 +1686,7 @@ module Xbelt(){
 module belt_clamps(){
   if (preview_lasercut){
     color(sheet_color){
-      for (i=[-1,1])
+      for (i=[-1.3,1.3])
       translate([XCarPosition + i*(XCarriage_lm8uu_distance/2+10),
                  XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width,
                  belt_clamp_height + 2*thickness + X_rod_height + lm8uu_diameter/2])
