@@ -277,6 +277,9 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
   translate([11, 54])
   circle(r=m3_diameter/2, $fn=20);
 
+  translate([-25, base_thickness/2])
+  circle(r=m3_diameter/2, $fn=20);
+
   translate([11, 20])
   circle(r=m3_diameter/2, $fn=20);
 
@@ -343,7 +346,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
       }
     }
   ///////////////
-    //holes for m3x30 screws to pack all 5 slices together
+    //holes for m3x35 screws to pack all 5 slices together
     for (i=[-1,1])
       translate([i*base_length/2, base_thickness/2])
       circle(r=m3_diameter/2, $fn=20);
