@@ -16,6 +16,12 @@ module lasercutter_panel1(){
   rotate([0,0,180])
   MachineRightPanel_face();
 
+  translate([280,335])
+  set_of_M3_spacers(h=3, w=7);
+
+  translate([450,5])
+  set_of_M3_spacers(h=10, w=2);
+
   translate([24,0]){
     translate([145,165])
     set_of_M3_spacers(h=2, w=6);

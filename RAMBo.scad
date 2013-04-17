@@ -30,6 +30,7 @@ module PSU_connector(){
   bolt_diameter = 3.5;
   bolts_offset = -2.3;
 
+  color(black_plastic_color)
   difference() {
     cube([conn_thickness, conn_width, conn_height]);
 
@@ -93,6 +94,14 @@ module RAMBo_volume(){
 //We must make sure there's enough space so that the electronics doesn't
 //take up part of the printer's max build volume.
   %cube([RAMBo_width, RAMBo_height, RAMBo_thickness]);
+}
+
+module RAMBo_wiring_hole(){
+  translate([RAMBo_width/2, RAMBo_height/2])
+  hull()
+  for (i=[-1,1])
+    translate([i*25,0])
+    circle(r=10, $fn=20);
 }
 
 module RAMBo_holes(){

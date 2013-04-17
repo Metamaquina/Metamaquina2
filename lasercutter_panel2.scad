@@ -46,19 +46,20 @@ module lasercutter_panel2(){
   rotate([0,0,90])
   YMotorHolder_face();
 
-  translate([370,350])
-  rotate([0,0,90])
+  translate([330,358])
+  rotate([0,0,-90])
   render() XCarriage_bottom_face();
 
-  translate([240,470]){
+  translate([190,470]){
     for (i=[0:1]){
       translate([i*25,0]) RodEndBottom_face();
     }
   }
 
-  translate([240,400]){
-    for (i=[0:1]){
-      translate([0,i*35]) RodEndTop_face();
+  translate([240,440]){
+    for (i=[-1,1]){
+      translate([0,i*15]) RodEndTop_face();
+      translate([0,i*45]) SecondaryRodEndTop_face();
     }
   }
 

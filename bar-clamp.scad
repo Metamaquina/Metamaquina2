@@ -8,6 +8,8 @@
 // http://www.reprap.org/wiki/Prusa_Mendel
 // http://github.com/prusajr/PrusaMendel
 
+// (c) 2013 Rafael H. de L. Moretti <moretti@metamaquina.com.br>
+
 include <configuration.scad>
 
 /**

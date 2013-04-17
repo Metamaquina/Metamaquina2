@@ -11,6 +11,7 @@
  *  (thanks GilesBathgate) which is under GPL CC license.
  *
  * Copyright (C) 2011  Guy 'DeuxVis' P.
+ * Copyright (C) 2013  Rafael H. de L. Moretti
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

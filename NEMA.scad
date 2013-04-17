@@ -12,7 +12,7 @@ module NEMA17(){
       translate([-NEMA17_width/2, -NEMA17_height/2, -0.1])
       intersection(){
         cube([NEMA17_width, NEMA17_height, NEMA17_length]);
-        translate ([NEMA17_width/2, NEMA17_height/2]) cylinder(r=0.8*NEMA17_width*sqrt(2)/2, h=100);
+        translate ([NEMA17_width/2, NEMA17_height/2]) cylinder(r=0.87*NEMA17_width*sqrt(2)/2, h=100);
       }
     }
   }
