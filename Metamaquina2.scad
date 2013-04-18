@@ -257,7 +257,7 @@ module SecondaryRodEnd_face(L, third_hole=true){
   difference(){
     RodEnd_face(L, third_hole=true);
 
-    circle(r=m8_diameter/2, $fn=20);
+    circle(r=(m8_diameter+epsilon)/2, $fn=20);
 
     translate([L-8,0])
     circle(r=m8_diameter/2 + 2, $fn=20);
@@ -557,7 +557,7 @@ module MachineSidePanel_plainface(){
 module TopPanel_holes(){
   translate([Z_rods_distance/2,0]){
     //holes for Zrod and Zbar
-    circle(r=(m8_diameter+epsilon)/2, $fn=20);
+    circle(r=(m8_diameter+2*epsilon)/2, $fn=20);
     translate([8, 0]) circle(r=m3_diameter/2, $fn=20);
     translate([-z_rod_z_bar_distance - 8, -8]) circle(r=m3_diameter/2, $fn=20);
     translate([-z_rod_z_bar_distance - 8, 8]) circle(r=m3_diameter/2, $fn=20);
@@ -758,7 +758,7 @@ module MachineTopPanel_face(){
 module BottomPanel_holes(){
     //holes for Z rods
     translate([Z_rods_distance/2,0]){
-      circle(r=(m8_diameter+epsilon)/2);
+      circle(r=(m8_diameter+2*epsilon)/2);
       translate([0, -8]) circle(r=m3_diameter/2, $fn=20);
       translate([0, 8]) circle(r=m3_diameter/2, $fn=20);
       //translate([8, 0]) circle(r=m3_diameter/2, $fn=20);
