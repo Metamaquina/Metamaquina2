@@ -1259,7 +1259,16 @@ module XEndstopHolder(){
 
     for (j=[-1,1])
       translate([52,j*microswitch_holes_distance/2])
-      M25_hole();
+
+      //these long mount holes are meant to let
+      // one freely adjust the mount position
+      // of the microswitches
+      hull(){
+        M25_hole();
+
+        translate([-8,0])
+        M25_hole();
+      }
   }
 }
 
