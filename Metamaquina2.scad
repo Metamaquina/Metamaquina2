@@ -34,13 +34,14 @@ use <belt-clamp.scad>;
 use <bar-clamp.scad>;
 use <coupling.scad>;
 
-pcbextra = 5; //extra space to the left of the pcb that holds the connector.
+pcbextra = 5; //extra space to the rear of the pcb that holds the connector.
+rods_diameter_clearance = 0.1 //extra room for the X and Z rods
 
 //For the actual build volume we avoid using the marginal
 //region around the heated bed
 
-HeatedBed_X = BuildVolume_X + 15 + pcbextra; // 220 mm
-HeatedBed_Y = BuildVolume_Y + 15; // 215 mm
+HeatedBed_X = BuildVolume_X + 15; // 215 mm
+HeatedBed_Y = BuildVolume_Y + 15 + pcbextra; // 220 mm
 
 hack_couplings = 5; // for astethical purposes, the z-couplings are animated rotating <hack_couplings> times slower than the correct mechanical behaviour
 
@@ -257,7 +258,7 @@ module SecondaryRodEnd_face(L, third_hole=true){
   difference(){
     RodEnd_face(L, third_hole=true);
 
-    circle(r=m8_diameter/2, $fn=20);
+    circle(r=(m8_diameter + rods_diameter_clearance)/2, $fn=20);
 
     translate([L-8,0])
     circle(r=m8_diameter/2 + 2, $fn=20);
@@ -557,7 +558,7 @@ module MachineSidePanel_plainface(){
 module TopPanel_holes(){
   translate([Z_rods_distance/2,0]){
     //holes for Zrod and Zbar
-    circle(r=(m8_diameter+epsilon)/2, $fn=20);
+    circle(r=(m8_diameter + 2*rods_diameter_clearance)/2, $fn=20);
     translate([8, 0]) circle(r=m3_diameter/2, $fn=20);
     translate([-z_rod_z_bar_distance - 8, -8]) circle(r=m3_diameter/2, $fn=20);
     translate([-z_rod_z_bar_distance - 8, 8]) circle(r=m3_diameter/2, $fn=20);
@@ -758,7 +759,7 @@ module MachineTopPanel_face(){
 module BottomPanel_holes(){
     //holes for Z rods
     translate([Z_rods_distance/2,0]){
-      circle(r=(m8_diameter+epsilon)/2);
+      circle(r=(m8_diameter + 2*rods_diameter_clearance)/2);
       translate([0, -8]) circle(r=m3_diameter/2, $fn=20);
       translate([0, 8]) circle(r=m3_diameter/2, $fn=20);
       //translate([8, 0]) circle(r=m3_diameter/2, $fn=20);
@@ -1170,10 +1171,10 @@ module XEnd_front_face(){
 	  
     //holes for x-axis rods
     translate([X_rods_distance/2, X_rod_height + thickness])
-    circle(r=X_rods_diameter/2);
+    circle(r=(X_rods_diameter + rods_diameter_clearance)/2);
 
     translate([-X_rods_distance/2, X_rod_height + thickness])
-    circle(r=X_rods_diameter/2);
+    circle(r=(X_rods_diameter + rods_diameter_clearance)/2);
 
     //screw holes for z-axis threaded bar
     for (i=[-1,1])
@@ -1915,7 +1916,7 @@ module BuildPlatform_pcb(){
 }
 
 module BuildPlatform_pcb_curves(){
-  translate([-pcbextra/2,0])
+  translate([0,pcbextra/2])
   difference(){
     square([HeatedBed_X, HeatedBed_Y], center=true);
     for (i=[-1,1]){
@@ -2085,13 +2086,13 @@ module YPlatform_linear_bearings(){
 //!YPlatform_face();
 module YPlatform_face(){
   difference(){
-    translate([-pcbextra-(HeatedBed_X-pcbextra)/2,-(HeatedBed_Y)/2])
+    translate([-(HeatedBed_X)/2,pcbextra-(HeatedBed_Y+pcbextra)/2])
     rounded_square([HeatedBed_X, HeatedBed_Y], corners=[3,3,3,3], $fn=50);
 
     //corner holes
     for (i=[-1,1]){
       for (j=[-1,1]){
-        translate([-pcbextra/2+i*(HeatedBed_X/2 - (1.6 + m3_diameter/2)), j*(HeatedBed_Y/2 - (1.5 + m3_diameter/2))])
+        translate([i*(HeatedBed_X/2 - (1.6 + m3_diameter/2)), j*(-pcbextra/2+HeatedBed_Y/2 - (1.5 + m3_diameter/2))])
         circle(r=m3_diameter/2, $fn=20);
       }
     }
@@ -2099,7 +2100,7 @@ module YPlatform_face(){
     //holes for the heated bed wiring
     for (i=[-1,1]){
       for (j=[-1,1]){
-        translate([-95+i*5, j*5])
+        translate([i*5, pcbextra+95+j*5])
         circle(r=m3_diameter/2, $fn=20);
       }
     }
