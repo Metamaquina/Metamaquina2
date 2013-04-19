@@ -36,6 +36,7 @@ use <coupling.scad>;
 
 pcbextra = 5; //extra space to the rear of the pcb that holds the connector.
 rods_diameter_clearance = 0.1 //extra room for the X and Z rods
+spacers_clearance = 0.1 // extra room for the spacers hole diameter
 
 //For the actual build volume we avoid using the marginal
 //region around the heated bed
@@ -2539,10 +2540,11 @@ module ZRodCap_face(l=15.5, hole=true){
   }
 }
 
+//!M3_spacer();
 module M3_spacer(){
   difference(){
     circle(r=m3_diameter*1.5, $fn=30);
-    circle(r=m3_diameter/2, $fn=30);
+    circle(r=(m3_diameter + spacers_clearance)/2, $fn=30);
   }
 }
 
@@ -2555,10 +2557,11 @@ module set_of_M3_spacers(w=4, h=4){
   }
 }
 
+//!M4_spacer();
 module M4_spacer(){
   difference(){
     circle(r=m4_diameter*1.5, $fn=30);
-    circle(r=m4_diameter/2, $fn=30);
+    circle(r=(m4_diameter + spacers_clearance)/2, $fn=30);
   }
 }
 
