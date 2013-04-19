@@ -443,8 +443,8 @@ module MachineSidePanel_face(){
           translate([BottomPanel_width/2 + BottomPanel_width/4, thickness/2])
           circle(r=m3_diameter/2, $fn=20);
 
-          translate([-BottomPanel_width/2, 0])
-          square([BottomPanel_width, thickness]);
+          translate([-BottomPanel_width/2, -slot_extra_thickness/2])
+          square([BottomPanel_width, thickness + slot_extra_thickness]);
 
           translate([-BottomPanel_width/2 - BottomPanel_width/4, thickness/2])
           circle(r=m3_diameter/2, $fn=20);
@@ -455,8 +455,8 @@ module MachineSidePanel_face(){
           translate([BottomPanel_width/2 + BottomPanel_width/4, thickness/2])
           circle(r=m3_diameter/2, $fn=20);
 
-          translate([-BottomPanel_width/2, 0])
-          square([BottomPanel_width, thickness]);
+          translate([-BottomPanel_width/2, -slot_extra_thickness/2])
+          square([BottomPanel_width, thickness + slot_extra_thickness]);
 
           translate([-BottomPanel_width/2 - BottomPanel_width/4, thickness/2])
           circle(r=m3_diameter/2, $fn=20);
