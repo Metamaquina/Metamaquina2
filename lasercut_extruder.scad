@@ -165,25 +165,50 @@ module handlelock(){
   }
 }
 
+module slice_numbering(n){
+  translate([-22,3])
+  for (i=[1:n])
+    translate([i, 0])
+    square([0.1,1]);
+}
+
 module slice1_face(){
-  extruder_slice(bearing_slot=true, idler_axis=false, handle_lock=true);
+  difference(){
+    extruder_slice(bearing_slot=true, idler_axis=false, handle_lock=true);
+    slice_numbering(1);
+  }
 }
 
 module slice2_face(){
-  extruder_slice(nozzle_holder2=true, idler_axis=true, idler_nut_gap=true);
+  difference(){
+    extruder_slice(nozzle_holder2=true, idler_axis=true, idler_nut_gap=true);
+    slice_numbering(2);
+  }
 }
 
 module slice3_face(){
-  extruder_slice(nozzle_holder=true, idler_axis=true, filament_channel=true, mount_holes=true);
+  difference(){
+    extruder_slice(nozzle_holder=true, idler_axis=true, filament_channel=true, mount_holes=true);
+    slice_numbering(3);
+
+    translate([40,0])
+    slice_numbering(3);
+  }
 }
 
 m3_diameter = 3;
 module slice4_face(){
-  extruder_slice(nozzle_holder2=true, motor_holder=true, idler_axis=true);
+  difference(){
+    extruder_slice(nozzle_holder2=true, motor_holder=true, idler_axis=true);
+    slice_numbering(4);
+  }
 }
 
 module slice5_face(){
-  extruder_slice(bearing_slot=true, idler_axis=false, handle_lock=true);
+  difference(){
+    extruder_slice(bearing_slot=true, idler_axis=false, handle_lock=true);
+    slice_numbering(5);
+  }
 }
 
 module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=false, mount_holes=false, idler_axis=false, bottom_screw_holes=false, handle_lock=false, nozzle_holder=false, nozzle_holder2=false, idler_nut_gap=false){
