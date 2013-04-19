@@ -35,8 +35,8 @@ use <bar-clamp.scad>;
 use <coupling.scad>;
 
 pcbextra = 5; //extra space to the rear of the pcb that holds the connector.
-rods_diameter_clearance = 0.1 //extra room for the X and Z rods
-spacers_clearance = 0.1 // extra room for the spacers hole diameter
+rods_diameter_clearance = 0.1; //extra room for the X and Z rods
+spacers_clearance = 0.1; // extra room for the spacers hole diameter
 
 //For the actual build volume we avoid using the marginal
 //region around the heated bed
