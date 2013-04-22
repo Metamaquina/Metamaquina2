@@ -78,12 +78,18 @@ module M4_hole(){
 //!idler_side_face();
 module idler_side_face(){
   R=23;
+
   rotate(90)
   union(){
     difference(){
       hull(){
         rounded_square([2*R,R], corners=[0,R,R,0]);
+
         circle(r=6);
+
+//The following code is a quick hack to make the idler side a bit larger so that the idler's small threaded rod is better attached to the lasercut sheet and also to give more room to a larger bolt (M3x16 instead of M3x12)
+        translate([2,-2.5])
+        rounded_square([2*R,R], corners=[0,R,R,0]);
       }
 
       M3_hole();
@@ -94,11 +100,11 @@ module idler_side_face(){
 
       //cur for the idler_back_face
       translate([R,R-thickness])
-      square([R,thickness]);
+      square([50,thickness]);
 
       translate([R*(1+1/2),R])
       rotate(-180)
-      t_slot_shape(3, 12);
+      t_slot_shape(3, 16);
     }
     translate([R,R-thickness/2])
     rotate(-90)
@@ -110,7 +116,7 @@ module idler_back_face(){
   R=23;
   rounding = 5;
   idler_width = 5*thickness + 1;
-  idler_height = R+rounding;
+  idler_height = R+2+rounding;
 
   difference(){
     translate([-idler_width/2,0])
@@ -293,7 +299,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
       }
 
       if (idler_axis){
-        translate([-23/2 - 1.5*r, 0])
+        translate([-9 - 1.5*r, 0])
         rounded_square([1.5*r, hobbed_bolt_position[1] - 23/2], corners=[0,0,r,0]);
       }
     }
@@ -315,9 +321,10 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
   translate(idler_axis_position)
   circle(r=m3_diameter/2, $fn=20);
 
-  if (idler_nut_gap)
-    translate(idler_axis_position)
-    circle(r=m3_diameter, $fn=20);
+  if (idler_nut_gap){
+    translate(idler_axis_position - [10,5])
+    rounded_square([15,15], corners=[5,5,5,5]);
+  }
 
   if (mount_holes){
     for (i=[-1,1])
