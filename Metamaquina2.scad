@@ -92,6 +92,9 @@ XZStage_position = RightPanel_basewidth/2 + XZStage_offset;
 z_max_endstop_x = XZStage_position - 40;
 z_max_endstop_y = machine_height - 25;
 
+z_min_endstop_x = XZStage_position - 40 - 20;
+z_min_endstop_y = 85;
+
 baseh = 35;
 ArcPanel_rear_advance = 105;
 horiz_bars_length = SidePanels_distance + 2*(m8_nut_height + m8_washer_height);
@@ -340,6 +343,15 @@ module MachineLeftPanel_face(){
       for (i=[-1,1])
         translate([endstop_holder_width/2+i*microswitch_holes_distance/2,-endstop_holder_height/2])
         circle(r=m3_diameter/2, $fn=20);
+
+    translate([z_min_endstop_x, z_min_endstop_y])
+      for (i=[-1,1])
+        translate([endstop_holder_width/2+i*microswitch_holes_distance/2,-endstop_holder_height/2])
+        hull(){
+            circle(r=m3_diameter/2, $fn=20);
+            translate([0,-8])
+            circle(r=m3_diameter/2, $fn=20);
+        }
 
     holes_for_motor_wires();
     //holes_for_z_endstop_wires();
@@ -1461,6 +1473,9 @@ module MachineLeftPanel_sheet(){
 
       translate([z_max_endstop_x, z_max_endstop_y, thickness])      
       z_max_endstop();
+
+      translate([z_min_endstop_x, z_min_endstop_y, thickness])      
+      z_min_endstop();
     }
   }
 }

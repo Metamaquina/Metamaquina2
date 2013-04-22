@@ -34,6 +34,16 @@ module z_max_endstop(){
   }
 }
 
+module z_min_endstop(){
+  endstop_spacer_sheet1();
+
+  translate([0,0,thickness])
+  endstop_spacer_sheet2();
+
+  translate([0,0,2*thickness])
+  mechanical_switch();
+}
+
 wire_coordinate = [endstop_holder_width*0.4,endstop_holder_height*0.1];
 
 module oblongo(L=10,d=3){
