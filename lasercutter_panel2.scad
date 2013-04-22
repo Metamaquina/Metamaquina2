@@ -10,7 +10,7 @@ use <belt-clamp.scad>;
 module lasercutter_panel2(){
   % plate_border();
 
-  translate([230,150])
+  translate([410,350])
   for (i=[0:1])
     for (j=[0:1])
       translate([i*12,j*30])

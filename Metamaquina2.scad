@@ -781,13 +781,13 @@ module BottomPanel_holes(){
 
     translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness,0]){
       translate([16,0])
-      zip_tie_holes();
+      zip_tie_holes(d=16);
 
       translate([60,0])
-      zip_tie_holes();
+      zip_tie_holes(d=16);
     }
 
-    zip_tie_holes();
+    zip_tie_holes(d=16);
 }
 
 module heatedbed_bottompanel_hole(){
@@ -868,9 +868,9 @@ module MachineBottomPanel_face(){
       }
 
       //cut off some unnecessary material
-      translate([0,BottomPanel_width/2 + 30])
+      translate([0,BottomPanel_width/2 + 42])
       rounded_square([Z_rods_distance - 2*Z_rod_sidepanel_distance - 60, BottomPanel_width], corners=[30,30,30,30], center=true);
-      translate([0,-BottomPanel_width/2 - 30])
+      translate([0,-BottomPanel_width/2 - 42])
       rounded_square([Z_rods_distance - 2*Z_rod_sidepanel_distance - 60, BottomPanel_width], corners=[30,30,30,30], center=true);
 
       BottomPanel_holes();
@@ -879,21 +879,9 @@ module MachineBottomPanel_face(){
       translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness + 16, 24])
       heatedbed_bottompanel_hole();
 
-      //holes for YMIN endstop
-      translate([30, 0]){
-      for (i=[-1,1])
-        translate([-10,24])
-          hull()
-            for (j=[-1,1])
-              translate([-5,-5+j*5])
-              circle(r=m3_diameter, $fn=20);
-        for (i=[-1,1])
-          translate([i*microswitch_holes_distance/2,10])
-            M25_hole();
-      }
-
       //holes for YMAX endstop
-      translate([-30, 0]){
+      translate([30, -12]){
+      for (i=[-1,1])
         translate([-10,-24])
           hull()
             for (j=[-1,1])
@@ -901,6 +889,18 @@ module MachineBottomPanel_face(){
               circle(r=m3_diameter, $fn=20);
         for (i=[-1,1])
           translate([i*microswitch_holes_distance/2,-10])
+            M25_hole();
+      }
+
+      //holes for YMIN endstop
+      translate([-30, +12]){
+        translate([-10,24])
+          hull()
+            for (j=[-1,1])
+              translate([-5,-5+j*5])
+              circle(r=m3_diameter, $fn=20);
+        for (i=[-1,1])
+          translate([i*microswitch_holes_distance/2,10])
             M25_hole();
       }
 
@@ -2014,11 +2014,11 @@ module YPlatform_subassembly(){
     translate([0,0, -lm8uu_diameter/2])
     YPlatform_linear_bearings();
 
-    translate([30,80])
+    translate([30,90])
     rotate([-90,0])
     YEndstopHolder_sheet();
 
-    translate([-30,-80])
+    translate([-30,-90 - thickness])
     rotate([-90,0])
     YEndstopHolder_sheet();
 
@@ -2118,11 +2118,11 @@ module YPlatform_face(){
     }
 
     
-    translate([30 + 25/2, 80 + thickness/2])
+    translate([30 + 25/2, 90 + thickness/2])
     rotate(90)
     TSlot_holes(width=25);
 
-    translate([-30 + 25/2, -80 + thickness/2])
+    translate([-30 + 25/2, -90 - thickness/2])
     rotate(90)
     TSlot_holes(width=25);
 
