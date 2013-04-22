@@ -24,6 +24,7 @@ thickness = 6;
 HandleWidth = 5*thickness;
 HandleHeight = 30;
 default_sheet_color = [0.9, 0.7, 0.45, 0.9];
+position_of_holder_for_extruder_wires=[15,45];
 
 module bolt_head(r, h){
   difference(){
@@ -238,6 +239,9 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
       }
 
       if (motor_holder){
+        translate(position_of_holder_for_extruder_wires)
+        rounded_square([20,30], corners=[5,5,5,5]);
+
         hull(){
           translate([15,0])
           square([epsilon, H]);
@@ -351,6 +355,12 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
 
   ///////////////
     if (motor_holder){
+      for (i=[-1,1])
+        for (j=[-1,1])
+          translate(position_of_holder_for_extruder_wires)
+          translate([10+i*5, 20+j*5])
+          circle(r=m3_diameter/2, $fn=20);
+
       translate(motor_position){
         rotate(-motor_angle){
           circle(r=12);
