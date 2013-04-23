@@ -720,7 +720,7 @@ module top_hole_for_extruder_wires(){
   translate([0,120])
   rotate([0,0,90])
   hull(){
-    zip_tie_holes(d=16, r=4);
+    zip_tie_holes(d=16, r=8);
   }
 }
 
