@@ -341,7 +341,7 @@ module MachineLeftPanel_face(){
 
     translate([z_max_endstop_x, z_max_endstop_y])
       for (i=[-1,1])
-        translate([endstop_holder_width/2+i*microswitch_holes_distance/2,-endstop_holder_height/2])
+        translate([-endstop_holder_width/2+i*microswitch_holes_distance/2,16-endstop_holder_height/2])
         circle(r=m3_diameter/2, $fn=20);
 
     translate([z_min_endstop_x, z_min_endstop_y])
@@ -349,7 +349,7 @@ module MachineLeftPanel_face(){
         translate([endstop_holder_width/2+i*microswitch_holes_distance/2,-endstop_holder_height/2])
         hull(){
             circle(r=m3_diameter/2, $fn=20);
-            translate([0,-8])
+            translate([0,-16])
             circle(r=m3_diameter/2, $fn=20);
         }
 
