@@ -957,6 +957,16 @@ module XEndMotor_bottom_holes(){
   translate([0, -20])
   rounded_square([sandwich_hexspacer_length + 3*thickness + r, 40], corners=[0,r,0,r]);
 
+  //These 2 pairs of ziptie holes
+  // are meant to hold the XMotor cable in place 
+  translate([20, 55])
+  rotate(90)
+  zip_tie_holes();
+
+  translate([32, 45])
+  rotate(90)
+  zip_tie_holes();
+
   //hole for M8 nut&rod
   translate([thickness + XEnd_box_size - ZLink_rod_height, 0])
   rotate([0,0,360/12]) circle(r=8.5, $fn=6);
