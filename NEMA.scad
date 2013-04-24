@@ -7,7 +7,7 @@ include <NEMA-dimensions.scad>;
 use <rounded_square.scad>;
 
 module NEMA17(){
-  if (preview_rubber){
+  if (render_rubber){
     color(rubber_color){
       translate([-NEMA17_width/2, -NEMA17_height/2, -0.1])
       intersection(){
@@ -17,7 +17,7 @@ module NEMA17(){
     }
   }
 
-  if (preview_metal){
+  if (render_metal){
     color(metal_color){
       translate([0, 0, -motor_shaft_length])
       cylinder(r=motor_shaft_diameter/2, h=motor_shaft_length);

@@ -8,7 +8,8 @@ use <rounded_square.scad>;
 module simples_mechanical_endstop(){
   thickness = 5;//TODO
 
-  color(dark_grey)
+  if (render_rubber)
+  color(rubber_color)
   cube([endstop_holder_width, endstop_holder_height, thickness]);
 
   color(metal_color){
@@ -111,7 +112,8 @@ module mechanical_switch(){
   thickness = 5;//TODO
   metal_thickness = 1;
 
-  color(dark_grey)
+  if (render_rubber)
+  color(rubber_color)
   linear_extrude(height=thickness){
     difference(){
       square([endstop_holder_width, endstop_holder_height]);
@@ -122,6 +124,7 @@ module mechanical_switch(){
     }
   }
 
+  if (render_metal)
   color(metal_color)
   translate([2, endstop_holder_height+3, 1]){
     linear_extrude(height=thickness-2){

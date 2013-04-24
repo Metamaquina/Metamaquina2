@@ -30,7 +30,8 @@ module PSU_connector(){
   bolt_diameter = 3.5;
   bolts_offset = -2.3;
 
-  color(black_plastic_color)
+  if (render_rubber)
+  color(rubber_color)
   difference() {
     cube([conn_thickness, conn_width, conn_height]);
 
@@ -53,9 +54,11 @@ module RAMBo_cover_curves(border=0){
 }
 
 module RAMBo_cover(){
-  color(acrylic_color)
-  linear_extrude(height=RAMBo_cover_thickness)
-  RAMBo_cover_curves();
+  if (render_acrylic){
+    color(acrylic_color)
+    linear_extrude(height=RAMBo_cover_thickness)
+    RAMBo_cover_curves();
+  }
 }
 
 module RAMBo(){
@@ -68,7 +71,8 @@ module RAMBo(){
           hexspacer();
           translate([0,0,hexspacer_length+RAMBo_cover_thickness]){
             //bolt head
-            color("grey")
+            if (render_metal)
+            color(metal_color)
             cylinder(r=3, h=M3_bolt_head, $fn=20);
           }
         }
@@ -118,32 +122,39 @@ module RAMBo_holes(){
   circle(r=m4_diameter/2, $fn=20);
 }
 
-dark_green = [0,0.2,0];
 module RAMBo_pcb(){
-  color(dark_green)
-  linear_extrude(height=RAMBo_pcb_thickness)
-  difference(){
-    square([RAMBo_width, RAMBo_height]);
-    RAMBo_holes();
+  if (render_pcb){
+    color(pcb_color){
+      linear_extrude(height=RAMBo_pcb_thickness){
+        difference(){
+          square([RAMBo_width, RAMBo_height]);
+          RAMBo_holes();
+        }
+      }
+    }
   }
 }
 
 white_nylon_color = [1, 1, 0.8];
 module nylonspacer(D=8, d=m4_diameter, h=nylonspacer_length){
-  color(white_nylon_color)
-  linear_extrude(height=h)
-  difference(){
-    circle(r=D/2, $fn=20);
-    circle(r=d/2, $fn=20);
+  if (render_nylon){
+    color(white_nylon_color)
+    linear_extrude(height=h)
+    difference(){
+      circle(r=D/2, $fn=20);
+      circle(r=d/2, $fn=20);
+    }
   }
 }
 
 module hexspacer(D=8, d=m3_diameter, h=hexspacer_length){
-  color(metal_color)
-  linear_extrude(height=h)
-  difference(){
-    circle(r=D/2, $fn=6);
-    circle(r=d/2, $fn=20);
+  if (render_metal){
+    color(metal_color)
+    linear_extrude(height=h)
+    difference(){
+      circle(r=D/2, $fn=6);
+      circle(r=d/2, $fn=20);
+    }
   }
 }
 

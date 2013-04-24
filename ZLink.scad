@@ -11,7 +11,7 @@ include <Metamaquina-config.scad>;
 include <ZLink-params.scad>;
 
 module ZLink(clearance = 0.2, hull_size=0){
-  if (preview_ABS){
+  if (render_ABS){
     color(ABS_color){
       difference(){
         union(){

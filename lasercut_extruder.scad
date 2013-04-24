@@ -36,7 +36,8 @@ module bolt_head(r, h){
 }
 
 module bolt(dia, length){
-  color("silver"){
+  if (render_metal)
+  color(metal_color){
     bolt_head(r=dia, h=dia);
     translate([0,0,-length]){
       cylinder(r=dia/2, h=length, $fn=60);
@@ -494,7 +495,8 @@ module idler(){
   R=23;
   bearing_thickness = 7;
 
-  color("grey")
+  if (render_metal)
+  color(metal_color)
   rotate([90,0])
     translate([0,0,5*thickness])
     translate(idler_bearing_position)
@@ -512,6 +514,7 @@ module idler(){
       translate([0,0,-0.5 + thickness]){
         idler_spacer_sheet();
 
+        if (render_metal)
         translate([0,0, thickness])
         608zz_bearing(true);
 
@@ -541,7 +544,8 @@ module extruder_block(){
 
 //JHead MKIV nozzle
 module nozzle(length=50){
-  color([0.2,0.2,0.2]){
+  if (render_rubber)
+  color(rubber_color){
     difference(){
       union(){
         translate([0,0,5])
@@ -577,25 +581,29 @@ module lasercut_extruder(){
 
     nozzle();
 
-    translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
-    rotate([0,extruder_gear_angle])
-    rotate([90,0])
-    color(ABS_color)
-    extruder_gear(teeth=37);
+    if (render_ABS){
+      color(ABS_color)
+      translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
+      rotate([0,extruder_gear_angle])
+      rotate([90,0])
+      extruder_gear(teeth=37);
+    }
 
     //hobbed_bolt
-    color(metal_color)
-    translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]])
-    rotate([90,0])
-    cylinder(r=7.2/2, h=5*thickness, $fn=40);
+    if (render_metal){
+      color(metal_color)
+      translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]])
+      rotate([90,0])
+      cylinder(r=7.2/2, h=5*thickness, $fn=40);
 
-    translate([hobbed_bolt_position[0], -3*thickness/2, hobbed_bolt_position[1]])
-    rotate([90,0])
-    608zz_bearing(true);
+      translate([hobbed_bolt_position[0], -3*thickness/2, hobbed_bolt_position[1]])
+      rotate([90,0])
+      608zz_bearing(true);
 
-    translate([hobbed_bolt_position[0], 3*thickness/2+7, hobbed_bolt_position[1]])
-    rotate([90,0])
-    608zz_bearing(true);
+      translate([hobbed_bolt_position[0], 3*thickness/2+7, hobbed_bolt_position[1]])
+      rotate([90,0])
+      608zz_bearing(true);
+    }
 
     translate([motor_position[0], -thickness/2, motor_position[1]])
     rotate([-90,0])
@@ -604,9 +612,11 @@ module lasercut_extruder(){
       NEMA17();
 
       translate([0,0,-2*thickness - 2*washer_thickness])
-      color(ABS_color)
-      rotate([180,0])
-      motor_gear(teeth=11);
+      if (render_ABS){
+        color(ABS_color)
+        rotate([180,0])
+        motor_gear(teeth=11);
+      }
     }
   }
 }
