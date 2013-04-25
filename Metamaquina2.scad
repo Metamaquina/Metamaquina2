@@ -1850,8 +1850,9 @@ module XCarriage(){
       XCarriage_sandwich_sheet();
     }
 
-    translate([0,0,thickness])
-    lasercut_extruder();
+    if (render_extruder)
+      translate([0,0,thickness])
+      lasercut_extruder();
   }
 
   //plastic parts:
