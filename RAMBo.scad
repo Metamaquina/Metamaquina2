@@ -102,9 +102,10 @@ module RAMBo_volume(){
 
 module RAMBo_wiring_hole(){
   translate([RAMBo_width/2, RAMBo_height/2])
+  rotate(90)
   hull()
   for (i=[-1,1])
-    translate([i*25,0])
+    translate([i*15,0])
     circle(r=10, $fn=20);
 }
 

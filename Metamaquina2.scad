@@ -39,10 +39,14 @@ use <cable_clips.scad>;
 
 left_cable_clips = [
     //[type, angle, x, y]
-    ["RA13", -0, 80,170],
+    ["RA6", 90, 40,60],
+    ["RA13", -90, 80,170],
     ["RA13", 90, 80,200],
-    ["RA13", 90, 120,230],
-    ["RA13", 0, 120,130]];
+    ["RA13", 180, 120,310],
+    ["RA13", 0, 120,230],
+    ["RA13", 0, 120,130],
+    ["RA13", 180, 120,60],
+    ["RA13", 90, 180,30]];
 
 right_cable_clips = [["RA13", 90, 0,0]];
 botom_cable_clips = [["RA13", 90, 0,0]];
@@ -375,7 +379,7 @@ module MachineLeftPanel_face(){
             circle(r=m3_diameter/2, $fn=20);
         }
 
-    holes_for_motor_wires();
+    //holes_for_motor_wires();
     //holes_for_z_endstop_wires();
     //holes_for_x_motor_and_endstop_wires();
     //holes_for_endstops();
@@ -422,6 +426,15 @@ powersupply_Yposition = base_bars_height*2 + 5;
 module MachineRightPanel_face(){
   difference(){
     MachineSidePanel_face();
+
+    for (clip=right_cable_clips){
+      assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
+        translate([x,y])
+        rotate(angle)
+        rotate([180,0])
+        cable_clip_mount(type);
+      }
+    }
 
     if (HIQUA_POWERSUPPLY){
       translate([rear_backtop_advance+RightPanel_backwidth - PowerSupply_width - XZStage_offset, powersupply_Yposition])
@@ -1476,17 +1489,27 @@ module RodEndBottom_sheet(){
 }
 
 module MachineRightPanel_sheet(){
-  if( render_lasercut ){
-    color(sheet_color){
-      translate([SidePanels_distance/2, RightPanel_basewidth/2, 0])
-      rotate([0,0,-90])
-      rotate([90,0,0])
-      linear_extrude(height=thickness)
-      MachineRightPanel_face();
+  translate([SidePanels_distance/2, RightPanel_basewidth/2, 0])
+  rotate([0,0,-90])
+  rotate([90,0,0]){
+      if( render_lasercut ){
+        color(sheet_color){
+          linear_extrude(height=thickness)
+          MachineRightPanel_face();
+        }
+      }
+
+      for (clip=right_cable_clips){
+        assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
+          translate([x,y, thickness])
+          rotate(angle)
+          cable_clip(type);
+        }
+      }
     }
-  }
 }
 
+//!MachineLeftPanel_sheet();
 module MachineLeftPanel_sheet(){
   if( render_lasercut ){
     translate([-SidePanels_distance/2 + thickness, RightPanel_basewidth/2])
@@ -1497,7 +1520,7 @@ module MachineLeftPanel_sheet(){
         MachineLeftPanel_face();
       }
 
-%      for (clip=left_cable_clips){
+      for (clip=left_cable_clips){
         assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
           translate([x,y])
           rotate(angle)
@@ -1529,11 +1552,20 @@ module MachineTopPanel_sheet(){
 }
 
 module MachineBottomPanel_sheet(){
-  if( render_lasercut ){
-    color(sheet_color){
-      translate([0,-XZStage_offset,BottomPanel_zoffset])
-      linear_extrude(height=thickness)
-      MachineBottomPanel_face();
+  translate([0,-XZStage_offset,BottomPanel_zoffset]){
+      if( render_lasercut ){
+        color(sheet_color){
+          linear_extrude(height=thickness)
+          MachineBottomPanel_face();
+        }
+      }
+
+    for (clip=bottom_cable_clips){
+        assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
+            translate([x,y])
+            rotate(angle)
+            cable_clip_mount(type); 
+        }
     }
   }
 }
