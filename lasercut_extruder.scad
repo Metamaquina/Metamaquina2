@@ -7,7 +7,11 @@
 use <NEMA.scad>;
 use <608zz_bearing.scad>;
 use <rounded_square.scad>;
-use <thingiverse/12789/TZ_Huxley_extruder_gears.scad>;
+
+// Gears
+use <small_extruder_gear.scad>
+use <large_extruder_gear.scad>
+
 use <tslot.scad>;
 include <Metamaquina-config.scad>;
 use <Metamaquina2.scad>;
