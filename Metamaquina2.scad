@@ -34,6 +34,20 @@ use <belt-clamp.scad>;
 use <bar-clamp.scad>;
 use <coupling.scad>;
 
+
+use <cable_clips.scad>;
+
+left_cable_clips = [
+    //[type, angle, x, y]
+    ["RA13", -0, 80,170],
+    ["RA13", 90, 80,200],
+    ["RA13", 90, 120,230],
+    ["RA13", 0, 120,130]];
+
+right_cable_clips = [["RA13", 90, 0,0]];
+botom_cable_clips = [["RA13", 90, 0,0]];
+top_cable_clips = [["RA13", 90, 0,0]];
+
 pcbextra = 5; //extra space to the rear of the pcb that holds the connector.
 rods_diameter_clearance = 0.1; //extra room for the X and Z rods
 spacers_clearance = 0.1; // extra room for the spacers hole diameter
@@ -333,6 +347,14 @@ module holes_for_motor_wires(){
 module MachineLeftPanel_face(){
   difference(){
     MachineSidePanel_face();
+
+    for (clip=left_cable_clips){
+        assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
+            translate([x,y])
+            rotate(angle)
+            cable_clip_mount(type); 
+        }
+    }
 
     translate([RAMBo_x, RAMBo_y]){
       RAMBo_holes();
@@ -1473,6 +1495,15 @@ module MachineLeftPanel_sheet(){
       color(sheet_color){
         linear_extrude(height=thickness)
         MachineLeftPanel_face();
+      }
+
+%      for (clip=left_cable_clips){
+        assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
+          translate([x,y])
+          rotate(angle)
+          rotate([180,0])
+          cable_clip(type);
+        }
       }
 
       translate([RAMBo_x, RAMBo_y, thickness])
