@@ -38,7 +38,7 @@ use <coupling.scad>;
 use <cable_clips.scad>;
 
 left_cable_clips = [
-    //[type, angle, x, y]
+    //[type, angle, y, z]
     ["RA6", 90, 40,60],
     ["RA13", -90, 80,170],
     ["RA13", 90, 80,200],
@@ -48,8 +48,12 @@ left_cable_clips = [
     ["RA13", 180, 120,60],
     ["RA13", 90, 180,30]];
 
-right_cable_clips = [["RA13", 90, 0,0]];
-botom_cable_clips = [["RA13", 90, 0,0]];
+right_cable_clips = [
+    //[type, angle, y, z]
+    ["RA13", 270, 185,35],
+    ["RA13", 270, 120,35]];
+    
+bottom_cable_clips = [["RA13", 90, 0,0]];
 top_cable_clips = [["RA13", 90, 0,0]];
 
 pcbextra = 5; //extra space to the rear of the pcb that holds the connector.
