@@ -35,6 +35,8 @@ use <bar-clamp.scad>;
 use <coupling.scad>;
 
 pcbextra = 5; //extra space to the rear of the pcb that holds the connector.
+rods_diameter_clearance = 0.1; //extra room for the X and Z rods
+spacers_clearance = 0.1; // extra room for the spacers hole diameter
 
 //For the actual build volume we avoid using the marginal
 //region around the heated bed
@@ -89,6 +91,9 @@ XZStage_offset = 20;
 XZStage_position = RightPanel_basewidth/2 + XZStage_offset;
 z_max_endstop_x = XZStage_position - 40;
 z_max_endstop_y = machine_height - 25;
+
+z_min_endstop_x = XZStage_position - 40 - 20;
+z_min_endstop_y = 85;
 
 baseh = 35;
 ArcPanel_rear_advance = 105;
@@ -175,7 +180,7 @@ bolts = [
 
 ];
 
-if (preview_metal && render_bolts){
+if (render_metal && render_bolts){
   color(metal_color){
     for (p = bolts){
       translate([p[0],p[1],p[2]])
@@ -207,8 +212,8 @@ module HiquaPowerSupply_holes(){
 }
 
 module HiquaPowerSupply(){
-  if (preview_powersupply){
-    color(powersupply_color){
+  if (render_metal){
+    color(metal_color){
       cube([PowerSupply_thickness, PowerSupply_width, PowerSupply_height]);
     }
   }
@@ -257,7 +262,7 @@ module SecondaryRodEnd_face(L, third_hole=true){
   difference(){
     RodEnd_face(L, third_hole=true);
 
-    circle(r=m8_diameter/2, $fn=20);
+    circle(r=(m8_diameter + rods_diameter_clearance)/2, $fn=20);
 
     translate([L-8,0])
     circle(r=m8_diameter/2 + 2, $fn=20);
@@ -336,8 +341,17 @@ module MachineLeftPanel_face(){
 
     translate([z_max_endstop_x, z_max_endstop_y])
       for (i=[-1,1])
-        translate([endstop_holder_width/2+i*microswitch_holes_distance/2,-endstop_holder_height/2])
+        translate([-endstop_holder_width/2+i*microswitch_holes_distance/2,16-endstop_holder_height/2])
         circle(r=m3_diameter/2, $fn=20);
+
+    translate([z_min_endstop_x, z_min_endstop_y])
+      for (i=[-1,1])
+        translate([endstop_holder_width/2+i*microswitch_holes_distance/2,-endstop_holder_height/2])
+        hull(){
+            circle(r=m3_diameter/2, $fn=20);
+            translate([0,-16])
+            circle(r=m3_diameter/2, $fn=20);
+        }
 
     holes_for_motor_wires();
     //holes_for_z_endstop_wires();
@@ -441,8 +455,8 @@ module MachineSidePanel_face(){
           translate([BottomPanel_width/2 + BottomPanel_width/4, thickness/2])
           circle(r=m3_diameter/2, $fn=20);
 
-          translate([-BottomPanel_width/2, 0])
-          square([BottomPanel_width, thickness]);
+          translate([-BottomPanel_width/2, -slot_extra_thickness/2])
+          square([BottomPanel_width, thickness + slot_extra_thickness]);
 
           translate([-BottomPanel_width/2 - BottomPanel_width/4, thickness/2])
           circle(r=m3_diameter/2, $fn=20);
@@ -453,8 +467,8 @@ module MachineSidePanel_face(){
           translate([BottomPanel_width/2 + BottomPanel_width/4, thickness/2])
           circle(r=m3_diameter/2, $fn=20);
 
-          translate([-BottomPanel_width/2, 0])
-          square([BottomPanel_width, thickness]);
+          translate([-BottomPanel_width/2, -slot_extra_thickness/2])
+          square([BottomPanel_width, thickness + slot_extra_thickness]);
 
           translate([-BottomPanel_width/2 - BottomPanel_width/4, thickness/2])
           circle(r=m3_diameter/2, $fn=20);
@@ -557,7 +571,7 @@ module MachineSidePanel_plainface(){
 module TopPanel_holes(){
   translate([Z_rods_distance/2,0]){
     //holes for Zrod and Zbar
-    circle(r=(m8_diameter+epsilon)/2, $fn=20);
+    circle(r=(m8_diameter + 2*rods_diameter_clearance)/2, $fn=20);
     translate([8, 0]) circle(r=m3_diameter/2, $fn=20);
     translate([-z_rod_z_bar_distance - 8, -8]) circle(r=m3_diameter/2, $fn=20);
     translate([-z_rod_z_bar_distance - 8, 8]) circle(r=m3_diameter/2, $fn=20);
@@ -704,10 +718,7 @@ module MachineArcPanel_face(){
 
 module top_hole_for_extruder_wires(){
   translate([0,120])
-  rotate([0,0,90])
-  hull(){
-    zip_tie_holes(d=16, r=4);
-  }
+  circle(r=8, $fn=30);
 }
 
 //!MachineTopPanel_face();
@@ -758,7 +769,7 @@ module MachineTopPanel_face(){
 module BottomPanel_holes(){
     //holes for Z rods
     translate([Z_rods_distance/2,0]){
-      circle(r=(m8_diameter+epsilon)/2);
+      circle(r=(m8_diameter + 2*rods_diameter_clearance)/2);
       translate([0, -8]) circle(r=m3_diameter/2, $fn=20);
       translate([0, 8]) circle(r=m3_diameter/2, $fn=20);
       //translate([8, 0]) circle(r=m3_diameter/2, $fn=20);
@@ -779,13 +790,13 @@ module BottomPanel_holes(){
 
     translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness,0]){
       translate([16,0])
-      zip_tie_holes();
+      zip_tie_holes(d=16);
 
       translate([60,0])
-      zip_tie_holes();
+      zip_tie_holes(d=16);
     }
 
-    zip_tie_holes();
+    zip_tie_holes(d=16);
 }
 
 module heatedbed_bottompanel_hole(){
@@ -804,7 +815,7 @@ module zip_tie_holes(d=12, r=m3_diameter/2){
 }
 
 module Y_belt(){
-  if (preview_rubber){
+  if (render_rubber){
   	color(rubber_color){
       translate([2.5, 0, 66])
       rotate([0,0,-90])
@@ -848,7 +859,7 @@ module YEndstopHolder_face(){
 }
 
 module YEndstopHolder_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       linear_extrude(height=thickness)
       YEndstopHolder_face();
@@ -866,9 +877,9 @@ module MachineBottomPanel_face(){
       }
 
       //cut off some unnecessary material
-      translate([0,BottomPanel_width/2 + 30])
+      translate([0,BottomPanel_width/2 + 42])
       rounded_square([Z_rods_distance - 2*Z_rod_sidepanel_distance - 60, BottomPanel_width], corners=[30,30,30,30], center=true);
-      translate([0,-BottomPanel_width/2 - 30])
+      translate([0,-BottomPanel_width/2 - 42])
       rounded_square([Z_rods_distance - 2*Z_rod_sidepanel_distance - 60, BottomPanel_width], corners=[30,30,30,30], center=true);
 
       BottomPanel_holes();
@@ -877,21 +888,9 @@ module MachineBottomPanel_face(){
       translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness + 16, 24])
       heatedbed_bottompanel_hole();
 
-      //holes for YMIN endstop
-      translate([30, 0]){
-      for (i=[-1,1])
-        translate([-10,24])
-          hull()
-            for (j=[-1,1])
-              translate([-5,-5+j*5])
-              circle(r=m3_diameter, $fn=20);
-        for (i=[-1,1])
-          translate([i*microswitch_holes_distance/2,10])
-            M25_hole();
-      }
-
       //holes for YMAX endstop
-      translate([-30, 0]){
+      translate([30, -12]){
+      for (i=[-1,1])
         translate([-10,-24])
           hull()
             for (j=[-1,1])
@@ -899,6 +898,18 @@ module MachineBottomPanel_face(){
               circle(r=m3_diameter, $fn=20);
         for (i=[-1,1])
           translate([i*microswitch_holes_distance/2,-10])
+            M25_hole();
+      }
+
+      //holes for YMIN endstop
+      translate([-30, +12]){
+        translate([-10,24])
+          hull()
+            for (j=[-1,1])
+              translate([-5,-5+j*5])
+              circle(r=m3_diameter, $fn=20);
+        for (i=[-1,1])
+          translate([i*microswitch_holes_distance/2,10])
             M25_hole();
       }
 
@@ -942,6 +953,16 @@ module XEndMotor_bottom_holes(){
   //hole for lm8uu holder
   translate([0, -20])
   rounded_square([sandwich_hexspacer_length + 3*thickness + r, 40], corners=[0,r,0,r]);
+
+  //These 2 pairs of ziptie holes
+  // are meant to hold the XMotor cable in place 
+  translate([20, 55])
+  rotate(90)
+  zip_tie_holes();
+
+  translate([32, 45])
+  rotate(90)
+  zip_tie_holes();
 
   //hole for M8 nut&rod
   translate([thickness + XEnd_box_size - ZLink_rod_height, 0])
@@ -1170,10 +1191,10 @@ module XEnd_front_face(){
 	  
     //holes for x-axis rods
     translate([X_rods_distance/2, X_rod_height + thickness])
-    circle(r=X_rods_diameter/2);
+    circle(r=(X_rods_diameter + rods_diameter_clearance)/2);
 
     translate([-X_rods_distance/2, X_rod_height + thickness])
-    circle(r=X_rods_diameter/2);
+    circle(r=(X_rods_diameter + rods_diameter_clearance)/2);
 
     //screw holes for z-axis threaded bar
     for (i=[-1,1])
@@ -1208,7 +1229,7 @@ module wade_holes(){
 }
 
 module XCarriage_sandwich_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       linear_extrude(height=thickness)
       XCarriage_sandwich_face();
@@ -1259,7 +1280,16 @@ module XEndstopHolder(){
 
     for (j=[-1,1])
       translate([52,j*microswitch_holes_distance/2])
-      M25_hole();
+
+      //these long mount holes are meant to let
+      // one freely adjust the mount position
+      // of the microswitches
+      hull(){
+        M25_hole();
+
+        translate([-8,0])
+        M25_hole();
+      }
   }
 }
 
@@ -1342,7 +1372,7 @@ module XEnd_bearing_sandwich_sheet(){
     }
   }
 
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       translate([thickness + sandwich_hexspacer_length,0])
       rotate([0,90,0])
@@ -1355,7 +1385,7 @@ module XEnd_bearing_sandwich_sheet(){
 }
 
 module YMotorHolder(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       linear_extrude(height=thickness)
       YMotorHolder_face();
@@ -1397,7 +1427,7 @@ module RodEnd_ZBottomRight_sheet(){
 }
 
 module RodEndTop_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       linear_extrude(height=thickness)
       RodEndTop_face();
@@ -1406,7 +1436,7 @@ module RodEndTop_sheet(){
 }
 
 module SecondaryRodEndTop_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       linear_extrude(height=thickness)
       SecondaryRodEndTop_face();
@@ -1415,7 +1445,7 @@ module SecondaryRodEndTop_sheet(){
 }
 
 module RodEndBottom_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       linear_extrude(height=thickness)
       RodEndBottom_face();
@@ -1424,7 +1454,7 @@ module RodEndBottom_sheet(){
 }
 
 module MachineRightPanel_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       translate([SidePanels_distance/2, RightPanel_basewidth/2, 0])
       rotate([0,0,-90])
@@ -1436,7 +1466,7 @@ module MachineRightPanel_sheet(){
 }
 
 module MachineLeftPanel_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     translate([-SidePanels_distance/2 + thickness, RightPanel_basewidth/2])
     rotate([0,0,-90])
     rotate([90,0,0]){
@@ -1450,12 +1480,15 @@ module MachineLeftPanel_sheet(){
 
       translate([z_max_endstop_x, z_max_endstop_y, thickness])      
       z_max_endstop();
+
+      translate([z_min_endstop_x, z_min_endstop_y, thickness])      
+      z_min_endstop();
     }
   }
 }
 
 module MachineTopPanel_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       translate([0,-XZStage_offset,machine_height])
       linear_extrude(height=thickness)
@@ -1465,7 +1498,7 @@ module MachineTopPanel_sheet(){
 }
 
 module MachineBottomPanel_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       translate([0,-XZStage_offset,BottomPanel_zoffset])
       linear_extrude(height=thickness)
@@ -1475,7 +1508,7 @@ module MachineBottomPanel_sheet(){
 }
 
 module MachineArcPanel_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       translate([0,ArcPanel_rear_advance-XZStage_offset, machine_height - ArcPanel_height])
       rotate([90,0,0])
@@ -1486,7 +1519,7 @@ module MachineArcPanel_sheet(){
 }
 
 module XCarriage_bottom_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       linear_extrude(height=thickness)
       XCarriage_bottom_face();
@@ -1495,7 +1528,7 @@ module XCarriage_bottom_sheet(){
 }
 
 module XPlatform_bottom_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
 	    linear_extrude(height=thickness)
 	    XPlatform_bottom_face();
@@ -1504,7 +1537,7 @@ module XPlatform_bottom_sheet(){
 }
 
 module XEndMotor_back_face_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
 	    translate([thickness, 0, 0])
 	    rotate([0,-90,0])
@@ -1516,7 +1549,7 @@ module XEndMotor_back_face_sheet(){
 }
 
 module XEndMotor_front_face_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
 	    translate([XEnd_box_size + 2*thickness, 0, 0])
 	    rotate([0,-90,0])
@@ -1528,7 +1561,7 @@ module XEndMotor_front_face_sheet(){
 }
 
 module XEndIdler_back_face_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
 	    rotate([0,-90,0])
 	    rotate([0,0,-90])
@@ -1539,7 +1572,7 @@ module XEndIdler_back_face_sheet(){
 }
 
 module XEndIdler_front_face_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
 	    translate([- XEnd_box_size - thickness, 0, 0])
 	    rotate([0,-90,0])
@@ -1551,7 +1584,7 @@ module XEndIdler_front_face_sheet(){
 }
 
 module XEndMotor_plain_face_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       translate([thickness, -XPlatform_width/2 + 1.5*thickness, thickness])
       rotate([90,0,0])
@@ -1562,7 +1595,7 @@ module XEndMotor_plain_face_sheet(){
 }
 
 module XEndMotor_belt_face_assembly(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       translate([0, thickness])
       linear_extrude(height=thickness)
@@ -1577,7 +1610,7 @@ module XEndMotor_belt_face_assembly(){
 }
 
 module XEndIdler_plain_face_sheet(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       translate([- thickness - XEnd_box_size, -XPlatform_width/2 + 1.5*thickness, thickness])
       rotate([90,0,0])
@@ -1588,7 +1621,7 @@ module XEndIdler_plain_face_sheet(){
 }
   
 module XEndIdler_belt_face_assembly(){
-  if( preview_lasercut ){
+  if( render_lasercut ){
     color(sheet_color){
       translate([- thickness - XEnd_box_size, XPlatform_width/2 + XEnd_extra_width - 0.5*thickness, thickness])
       rotate([90,0,0])
@@ -1598,9 +1631,9 @@ module XEndIdler_belt_face_assembly(){
   }
 
 
-  //TODO: positioning of this bearing
+  //TODO: implement XEndIdler bearing subassembly
 
-  if (true || preview_metal){
+  if (render_metal){
     color(metal_color){
       translate([-XEnd_box_size/2 - thickness, XPlatform_width/2 + XEnd_extra_width -2.5* thickness, XIdler_height])
       rotate([90,0,0]){
@@ -1613,7 +1646,7 @@ module XEndIdler_belt_face_assembly(){
 }
 
 module Z_couplings(){
-  if (preview_ABS){
+  if (render_ABS){
     color(ABS_color){
       translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
       coupling_pair();
@@ -1661,7 +1694,7 @@ module belt(bearings, belt_width=5){
 }
 
 module Xbelt(){
-  if (preview_rubber){
+  if (render_rubber){
   	color(rubber_color){
       translate([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + thickness]){
         rotate([90,0,0]){
@@ -1684,7 +1717,7 @@ module Xbelt(){
 //!Xbelt();
 
 module belt_clamps(){
-  if (preview_lasercut){
+  if (render_lasercut){
     color(sheet_color){
       for (i=[-1.3,1.3])
       translate([XCarPosition + i*(XCarriage_lm8uu_distance/2+10),
@@ -1698,7 +1731,7 @@ module belt_clamps(){
 }
 
 module XEndMotor_linear_bearings(){
-  if (preview_metal){
+  if (render_metal){
     color(metal_color){
 	    translate([thickness + lm8uu_diameter/2, 0, -12]){
         cylinder(r=lm8uu_diameter/2, h=lm8uu_length);
@@ -1715,7 +1748,7 @@ module XEndIdler_linear_bearings(){
 }
 
 module XCarriage_linear_bearings(){
-  if (preview_metal){
+  if (render_metal){
     color(metal_color){
       translate([XCarPosition, 0, thickness + X_rod_height])
       for (i=[-1,1]){
@@ -1744,7 +1777,7 @@ module XEndIdler_ZLink(){
 }
 
 module XRods(){
-  if (preview_metal){
+  if (render_metal){
     color(metal_color){
       translate([0, -X_rods_distance/2, thickness + X_rod_height])
       rotate([0,90,0])
@@ -1758,7 +1791,7 @@ module XRods(){
 }
 
 module YRods(){
-  if (preview_metal){
+  if (render_metal){
     color(metal_color){
       translate([Y_rods_distance/2, -Y_rod_length/2, Y_rod_height])
       rotate([-90,0,0])
@@ -1772,7 +1805,7 @@ module YRods(){
 }
 
 module ZRods(){
-  if (preview_metal){
+  if (render_metal){
     color(metal_color){
       translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2, -XZStage_offset, BottomPanel_zoffset])
       cylinder(r=8/2, h=Z_rod_length);
@@ -1784,7 +1817,7 @@ module ZRods(){
 }
 
 module ZBars(){
-  if (preview_threaded_metal){
+  if (render_threaded_metal){
     color(threaded_metal_color){
       translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
       cylinder(r=m8_diameter/2, h=Z_bar_length);
@@ -1847,7 +1880,7 @@ module XPlatform(){
 }
 
 module XEndMotor_pulley(){
-  if (preview_ABS){
+  if (render_ABS){
     color(ABS_color){
       translate([XEnd_box_size/2, XMotor_height])
       import("pulley.stl");
@@ -1898,7 +1931,7 @@ module XEndIdler(){
 }
 
 module BuildPlatform_pcb(){
-  if(preview_pcb)
+  if(render_pcb)
   color(pcb_color)
   translate([0,0,pcb_height])
   linear_extrude(height=2)
@@ -1920,7 +1953,7 @@ module BuildPlatform_pcb_curves(){
 
 
 module YPlatform_left_sandwich_sheet(){
-  if (preview_lasercut){
+  if (render_lasercut){
     color(sheet_color){  
       linear_extrude(height=thickness)
       YPlatform_left_sandwich_face();
@@ -1929,7 +1962,7 @@ module YPlatform_left_sandwich_sheet(){
 }
 
 module YPlatform_right_sandwich_sheet(){
-  if (preview_lasercut){
+  if (render_lasercut){
     color(sheet_color){
       linear_extrude(height=thickness)
       YPlatform_right_sandwich_face();
@@ -1978,7 +2011,7 @@ module YPlatform_left_sandwich_face(sandwich_tightening=1){
 }
 
 module YPlatform_sheet(){
-    if (preview_lasercut){
+    if (render_lasercut){
       color(sheet_color){
         linear_extrude(height=thickness)
         YPlatform_face();
@@ -2003,11 +2036,11 @@ module YPlatform_subassembly(){
     translate([0,0, -lm8uu_diameter/2])
     YPlatform_linear_bearings();
 
-    translate([30,80])
+    translate([30,90])
     rotate([-90,0])
     YEndstopHolder_sheet();
 
-    translate([-30,-80])
+    translate([-30,-90 - thickness])
     rotate([-90,0])
     YEndstopHolder_sheet();
 
@@ -2060,7 +2093,7 @@ module YPlatform_hexspacers(){
 }
 
 module YPlatform_linear_bearings(){
-  if (preview_metal){
+  if (render_metal){
     color(metal_color){
       translate([-Y_rods_distance/2, 0])
       LM8UU();
@@ -2107,11 +2140,11 @@ module YPlatform_face(){
     }
 
     
-    translate([30 + 25/2, 80 + thickness/2])
+    translate([30 + 25/2, 90 + thickness/2])
     rotate(90)
     TSlot_holes(width=25);
 
-    translate([-30 + 25/2, -80 + thickness/2])
+    translate([-30 + 25/2, -90 - thickness/2])
     rotate(90)
     TSlot_holes(width=25);
 
@@ -2141,7 +2174,7 @@ module bearing_assembly(rear){
   washer_thickness = 1.5;
   mudguard_washer_thickness = 2;
 
-  if (preview_metal){
+  if (render_metal){
     color(metal_color){
 
       //translate([belt_x,0])
@@ -2184,7 +2217,7 @@ module bar_clamp_assembly(){
   barclamp_thickness = 13.5; //TODO
 
   rotate([0,90,0]){
-    if (preview_metal){
+    if (render_metal){
       color(metal_color){
         for (angle=[0,180]){
           rotate([0,angle]){
@@ -2199,7 +2232,7 @@ module bar_clamp_assembly(){
       }
     }
 
-    if (preview_PLA){
+    if (render_PLA){
       color(PLA_color)
       //barclamp
       translate([-17, 6.7, -barclamp_thickness/2])
@@ -2216,7 +2249,7 @@ module nut_cap_assembly(){
 
   rotate([0,90,0]){
   translate([0,0,-thickness/2])
-    if (preview_metal){
+    if (render_metal){
       color(metal_color){
         for (angle=[0,180]){
           rotate([0,angle]){
@@ -2240,7 +2273,7 @@ module nut_cap_assembly(){
 module FrontBars(){
   translate([0, -RightPanel_basewidth/2 + bar_cut_length, base_bars_Zdistance + base_bars_height]){
 
-    if (preview_metal){
+    if (render_metal){
       color(metal_color){
           //front top bar
           rotate([0,90,0])
@@ -2266,7 +2299,7 @@ module FrontBars(){
 
   translate([0, -RightPanel_basewidth/2 + bar_cut_length + 30,base_bars_height]){
 
-    if (preview_metal){
+    if (render_metal){
       color(metal_color){
         //front bottom bar
         rotate([0,90,0])
@@ -2288,7 +2321,7 @@ module RearBars(){
   translate([0, RightPanel_basewidth/2 - bar_cut_length, base_bars_Zdistance + base_bars_height]){
 
     //rear top bar
-    if (preview_metal){
+    if (render_metal){
       color(metal_color){
         rotate([0,90,0])
         cylinder(r=m8_diameter/2, h=horiz_bars_length, center=true);
@@ -2315,7 +2348,7 @@ module RearBars(){
   translate([0, RightPanel_basewidth/2 - bar_cut_length - 30, base_bars_height]){
 
     //rear bottom bar
-    if (preview_metal){
+    if (render_metal){
       color(metal_color){
         rotate([0,90,0])
         cylinder(r=m8_diameter/2, h=horiz_bars_length, center=true);
@@ -2529,10 +2562,11 @@ module ZRodCap_face(l=15.5, hole=true){
   }
 }
 
+//!M3_spacer();
 module M3_spacer(){
   difference(){
     circle(r=m3_diameter*1.5, $fn=30);
-    circle(r=m3_diameter/2, $fn=30);
+    circle(r=(m3_diameter + spacers_clearance)/2, $fn=30);
   }
 }
 
@@ -2545,10 +2579,11 @@ module set_of_M3_spacers(w=4, h=4){
   }
 }
 
+//!M4_spacer();
 module M4_spacer(){
   difference(){
     circle(r=m4_diameter*1.5, $fn=30);
-    circle(r=m4_diameter/2, $fn=30);
+    circle(r=(m4_diameter + spacers_clearance)/2, $fn=30);
   }
 }
 
