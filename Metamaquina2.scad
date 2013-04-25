@@ -16,8 +16,7 @@ use <NEMA.scad>;
 use <mm2logo.scad>;
 use <endstop.scad>;
 use <jhead.scad>;
-//use <pulley.scad>;
-
+use <belt-clamp.scad>;
 use <ZLink.scad>;
 include <ZLink-params.scad>;
 
@@ -30,11 +29,8 @@ RAMBo_x = 1;
 RAMBo_y = 133;
 
 //platic parts
-use <belt-clamp.scad>;
 use <bar-clamp.scad>;
-use <coupling.scad>;
-
-
+use <coupling.scad>;//TODO: update couplings to metal parts model
 use <cable_clips.scad>;
 
 left_cable_clips = [
@@ -50,11 +46,12 @@ left_cable_clips = [
 
 right_cable_clips = [
     //[type, angle, y, z]
-    ["RA13", 270, 185,35],
-    ["RA13", 270, 120,35]];
+    ["RA13", 90, 185,35],
+    ["RA13", 90, 120,35]];
     
-bottom_cable_clips = [["RA13", 90, 0,0]];
-top_cable_clips = [["RA13", 90, 0,0]];
+bottom_cable_clips = [["RA13", -90, -100,0], ["RA13", 90, 0,0], ["RA13", -90, 100,0]];
+
+top_cable_clips = [["RA13", 90, -70,130]];
 
 pcbextra = 5; //extra space to the rear of the pcb that holds the connector.
 rods_diameter_clearance = 0.1; //extra room for the X and Z rods
@@ -783,6 +780,14 @@ module MachineTopPanel_face(){
       rounded_square([Z_rods_distance - 2*Z_rod_sidepanel_distance + 8*thickness, 61], corners=[10,10,10,10], center=true);
     }
 
+    for (clip=top_cable_clips){
+      assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
+        translate([x,y])
+        rotate(angle)
+        cable_clip_mount(type); 
+      }
+    }
+
     top_hole_for_extruder_wires();    
 
     //tslots for arc panel
@@ -920,6 +925,15 @@ module MachineBottomPanel_face(){
       rounded_square([Z_rods_distance - 2*Z_rod_sidepanel_distance - 60, BottomPanel_width], corners=[30,30,30,30], center=true);
       translate([0,-BottomPanel_width/2 - 42])
       rounded_square([Z_rods_distance - 2*Z_rod_sidepanel_distance - 60, BottomPanel_width], corners=[30,30,30,30], center=true);
+
+      for (clip=bottom_cable_clips){
+          assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
+              translate([x,y])
+              rotate(angle)
+              rotate([180,0])
+              cable_clip_mount(type); 
+          }
+      }
 
       BottomPanel_holes();
       mirror([1,0,0]) BottomPanel_holes();
@@ -1546,11 +1560,21 @@ module MachineLeftPanel_sheet(){
 }
 
 module MachineTopPanel_sheet(){
-  if( render_lasercut ){
-    color(sheet_color){
-      translate([0,-XZStage_offset,machine_height])
-      linear_extrude(height=thickness)
-      MachineTopPanel_face();
+  translate([0,-XZStage_offset,machine_height]){
+    if( render_lasercut ){
+      color(sheet_color){
+        linear_extrude(height=thickness)
+        MachineTopPanel_face();
+      }
+    }
+
+    for (clip=top_cable_clips){
+      assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
+        translate([x,y])
+        rotate(angle)
+        rotate([180,0])
+        cable_clip(type); 
+      }
     }
   }
 }
@@ -1568,7 +1592,8 @@ module MachineBottomPanel_sheet(){
         assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
             translate([x,y])
             rotate(angle)
-            cable_clip_mount(type); 
+            rotate([180,0])
+            cable_clip(type); 
         }
     }
   }
