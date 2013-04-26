@@ -1,3 +1,8 @@
+module mm_logo(){
+  translate([-10,-6])
+  import("MM_logo_small.dxf");
+}
+
 module MM2_logo(){
   difference(){
     import("metamaquina-2.dxf");

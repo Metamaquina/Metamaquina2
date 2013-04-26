@@ -1140,11 +1140,6 @@ module XEndMotor_belt_face(){
   }
 }
 
-module mm_logo(){
-  translate([-10,-6])
-  import("MM_logo_small.dxf");
-}
-
 //!XEndIdler_back_face();
 module XEndIdler_back_face(){
   mirror([1,0])
