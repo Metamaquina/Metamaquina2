@@ -451,16 +451,17 @@ module MachineRightPanel_face(){
     }
 
     //zip-tie holes for RAMBo power wires
+    // not necessary anymore (spiral tube or contractile mesh)
     translate([30 + feetwidth,feetheight*2.5]){
-      translate([10,-3])
-      rotate([0,0,90])
-      zip_tie_holes();
+      //translate([10,-3])
+      //rotate([0,0,90])
+      //zip_tie_holes();
 
-      translate([20,2])
-      zip_tie_holes(d=10);
+      //translate([20,2])
+      //zip_tie_holes(d=10);
 
-      translate([120,10])
-      zip_tie_holes();
+      //translate([120,10])
+      //zip_tie_holes();
     }
     
 
@@ -833,14 +834,16 @@ module BottomPanel_holes(){
     t_slot_shape(3,16);
 
     translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness,0]){
+      // motor wires
       translate([16,0])
       zip_tie_holes(d=16);
 
-      translate([60,0])
-      zip_tie_holes(d=16);
+      //not necessary anymore (spiral tube or contractile mesh)
+      //translate([60,0])
+      //zip_tie_holes(d=16);
     }
-
-    zip_tie_holes(d=16);
+    //not necessary anymore (spiral tube or contractile mesh)
+    //zip_tie_holes(d=16);
 }
 
 module heatedbed_bottompanel_hole(){
