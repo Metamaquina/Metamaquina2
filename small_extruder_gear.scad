@@ -11,7 +11,6 @@ use <gears.scad>
 module motor_gear(teeth=11, shaft_diameter=5){
   render()
   translate([0,0,5])
-  rotate([180,0])
   difference() {
     union() {
       //gear
