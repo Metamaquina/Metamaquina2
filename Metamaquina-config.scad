@@ -38,7 +38,7 @@ render_calibration_guide = false;
 render_build_volume=false;
 render_xplatform=true;
 render_bolts = false; //work-in-progress
-render_extruder = false;
+render_extruder = true;
 
 //Colors
 dark_green = [0,0.2,0];
