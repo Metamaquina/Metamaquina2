@@ -4,8 +4,10 @@
 
 include <Metamaquina-config.scad>;
 include <NEMA-dimensions.scad>;
+use <utils.scad>;
 use <lasercut_extruder.scad>;
 use <tslot.scad>;
+use <heated_bed.scad>;
 use <rounded_square.scad>;
 use <608zz_bearing.scad>;
 use <washers.scad>;
@@ -2028,25 +2030,9 @@ module XEndIdler(){
 
 module BuildPlatform_pcb(){
   if(render_pcb)
-  color(pcb_color)
   translate([0,0,pcb_height])
-  linear_extrude(height=2)
-  BuildPlatform_pcb_curves();
+  heated_bed();
 }
-
-module BuildPlatform_pcb_curves(){
-  translate([0,pcbextra/2])
-  difference(){
-    square([HeatedBed_X, HeatedBed_Y], center=true);
-    for (i=[-1,1]){
-      for (j=[-1,1]){
-        translate([i*(HeatedBed_X/2 - (1.6 + m3_diameter/2)), j*(HeatedBed_Y/2 - (1.5 + m3_diameter/2))])
-        circle(r=m3_diameter/2, $fn=20);
-      }
-    }
-  }
-}
-
 
 module YPlatform_left_sandwich_sheet(){
   if (render_lasercut){
@@ -2205,16 +2191,7 @@ module YPlatform_linear_bearings(){
 //!YPlatform_face();
 module YPlatform_face(){
   difference(){
-    translate([-(HeatedBed_X)/2,pcbextra-(HeatedBed_Y+pcbextra)/2])
-    rounded_square([HeatedBed_X, HeatedBed_Y], corners=[3,3,3,3], $fn=50);
-
-    //corner holes
-    for (i=[-1,1]){
-      for (j=[-1,1]){
-        translate([i*(HeatedBed_X/2 - (1.6 + m3_diameter/2)), j*(-pcbextra/2+HeatedBed_Y/2 - (1.5 + m3_diameter/2))])
-        circle(r=m3_diameter/2, $fn=20);
-      }
-    }
+    heated_bed_pcb_curves(width = 227, height = 224, connector_holes=false);
 
     //holes for the heated bed wiring
     for (i=[-1,1]){
@@ -2254,6 +2231,7 @@ module BuildVolumePreview(){
   }
 }
 
+//!YPlatform();
 module YPlatform(){
   translate([0, YCarPosition, 0]){
     //#BuildVolumePreview();
