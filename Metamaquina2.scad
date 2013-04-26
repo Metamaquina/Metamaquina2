@@ -757,7 +757,7 @@ module MachineArcPanel_face(){
 
 module top_hole_for_extruder_wires(){
   translate([0,120])
-  circle(r=8, $fn=30);
+  circle(r=10, $fn=30); //enough for the motor wire connector
 }
 
 //!MachineTopPanel_face();
@@ -770,7 +770,9 @@ module MachineTopPanel_face(){
 
       translate([machine_x_dim/2 - sidewidth,-30])
       rounded_square([sidewidth, 60], corners=[2, 30, 0, 0]);
-
+                              
+      //%translate([-5,112]) square([10.20,15.20]);
+      
       translate([0,60]){
         translate([-machine_x_dim/2,-30])
         rounded_square([sidewidth, 100], corners=[0, 0, sidewidth, 0], $fn=90);
@@ -792,7 +794,7 @@ module MachineTopPanel_face(){
     }
 
     top_hole_for_extruder_wires();    
-
+    
     //tslots for arc panel
     translate([0,ArcPanel_rear_advance - thickness/2]){
       translate([-ArcPanel_width/2, 0])
