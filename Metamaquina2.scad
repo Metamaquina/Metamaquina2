@@ -372,6 +372,21 @@ module MachineLeftPanel_face(){
       RAMBo_wiring_hole();
     }
 
+    translate([120,180]){
+        //hole for the XMotor wire. Should be large enough to let the
+        //motor connector to pass through it. 
+        hull(){
+            for (i=[-1,1])
+                translate([i*NEMA17_connector_width/2, 0])
+                circle(r=NEMA17_connector_height/2+1, $fn=20);
+        }
+
+        //and a zip tie to kepp it in place:
+        translate([0,-10])
+        rotate(90)
+        zip_tie_holes();
+    }
+
     translate([z_max_endstop_x, z_max_endstop_y])
       for (i=[-1,1])
         translate([-endstop_holder_width/2+i*microswitch_holes_distance/2,16-endstop_holder_height/2])
