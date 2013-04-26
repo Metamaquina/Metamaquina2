@@ -37,7 +37,7 @@ use <cable_clips.scad>;
 
 left_cable_clips = [
     //[type, angle, y, z]
-    ["RA6", 90, 40,60],
+    ["RA6", 90, 65,30],
     ["RA13", -90, 80,170],
     ["RA13", 90, 80,200],
     ["RA13", 180, 120,310],
@@ -293,7 +293,7 @@ module SecondaryRodEnd_face(L, third_hole=true){
 module YMotorHolder_face(){
   r = 12;
   H = (50-2*r)*sqrt(2) + 2*r;
-  hack=r*0.8;
+  hack=r*0.8; //this should be refactored using hull();
 
   render(){
     difference(){
@@ -319,6 +319,10 @@ module YMotorHolder_face(){
       rotate([0,0,30]) circle(r=m8_diameter/2, $fn=20);
       translate([base_bars_height + base_bars_Zdistance,30])
       rotate([0,0,30]) circle(r=m8_diameter/2, $fn=20);
+
+      translate([25,25])
+      rotate(-45)
+      zip_tie_holes();
     }
   }
 }
@@ -2556,6 +2560,7 @@ module FrontAssembly(){
   //FrontBottomBars();
 }
 
+//!YMotorAssembly();
 module YMotorAssembly(){
   YMotorHolder();
   rotate([180,0])
