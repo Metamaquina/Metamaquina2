@@ -2,8 +2,9 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-include <Metamaquina2.h>;
 include <lm8uu_bearing.h>;
+include <colors.h>;
+include <render.h>;
 
 module LM8UU(){
   if (render_metal){

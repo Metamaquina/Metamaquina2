@@ -5,6 +5,7 @@
 include <Metamaquina2.h>;
 
 //utils
+include <colors.h>;
 use <utils.scad>;
 use <mm2logo.scad>;
 use <rounded_square.scad>;
