@@ -1,3 +1,9 @@
+// $fa is the minimum angle for a fragment. Even a huge circle does not have more fragments than 360 divided by this number. The default value is 12 (i.e. 30 fragments for a full circle). The minimum allowed value is 0.01.
+$fa = 0.01;
+
+// $fs is the minimum size of a fragment. Because of this variable very small circles have a smaller number of fragments than specified using $fa. The default value is 2. The minimum allowed value is 0.01.
+$fs = 0.5;
+
 //rendering configs:
 render_lasercut=true;
 render_pcb=true;

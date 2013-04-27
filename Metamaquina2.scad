@@ -268,13 +268,13 @@ module RodEnd_face(L, third_hole=true){
 
     //holes
     translate([L, -(R-4)])
-    circle(r=m3_diameter/2, $fn=20);
+    M3_hole();
     translate([L, (R-4)])
-    circle(r=m3_diameter/2, $fn=20);
+    M3_hole();
 
     if (third_hole){
       translate([-(R-4), 0])
-      circle(r=m3_diameter/2, $fn=20);
+      M3_hole();
     }
   }
 }
@@ -286,10 +286,10 @@ module SecondaryRodEnd_face(L, third_hole=true){
   difference(){
     RodEnd_face(L, third_hole=true);
 
-    circle(r=(m8_diameter + rods_diameter_clearance)/2, $fn=20);
+    circle(r=(m8_diameter + rods_diameter_clearance)/2);
 
     translate([L-8,0])
-    circle(r=m8_diameter/2 + 2, $fn=20);
+    circle(r=m8_diameter/2 + 2);
   }
 }
 
@@ -319,9 +319,9 @@ module YMotorHolder_face(){
 
       //holes for rear bars
       translate([base_bars_height,0])
-      rotate([0,0,30]) circle(r=m8_diameter/2, $fn=20);
+      rotate([0,0,30]) circle(r=m8_diameter/2);
       translate([base_bars_height + base_bars_Zdistance,30])
-      rotate([0,0,30]) circle(r=m8_diameter/2, $fn=20);
+      rotate([0,0,30]) circle(r=m8_diameter/2);
 
       translate([25,25])
       rotate(-45)
@@ -381,7 +381,7 @@ module MachineLeftPanel_face(){
         hull(){
             for (i=[-1,1])
                 translate([i*NEMA17_connector_width/2, 0])
-                circle(r=NEMA17_connector_height/2+1, $fn=20);
+                circle(r=NEMA17_connector_height/2+1);
         }
 
         //and a zip tie to kepp it in place:
@@ -393,15 +393,15 @@ module MachineLeftPanel_face(){
     translate([z_max_endstop_x, z_max_endstop_y])
       for (i=[-1,1])
         translate([-endstop_holder_width/2+i*microswitch_holes_distance/2,16-endstop_holder_height/2])
-        circle(r=m3_diameter/2, $fn=20);
+        M3_hole();
 
     translate([z_min_endstop_x, z_min_endstop_y])
       for (i=[-1,1])
         translate([endstop_holder_width/2+i*microswitch_holes_distance/2,-endstop_holder_height/2])
         hull(){
-            circle(r=m3_diameter/2, $fn=20);
+            M3_hole();
             translate([0,-16])
-            circle(r=m3_diameter/2, $fn=20);
+            M3_hole();
         }
 
     //holes_for_motor_wires();
@@ -514,25 +514,25 @@ module MachineSidePanel_face(){
         //in case ZMotors are installed on the top
         translate([XZStage_position, feetheight]){
           translate([BottomPanel_width/2 + BottomPanel_width/4, thickness/2])
-          circle(r=m3_diameter/2, $fn=20);
+          M3_hole();
 
           translate([-BottomPanel_width/2, -slot_extra_thickness/2])
           square([BottomPanel_width, thickness + slot_extra_thickness]);
 
           translate([-BottomPanel_width/2 - BottomPanel_width/4, thickness/2])
-          circle(r=m3_diameter/2, $fn=20);
+          M3_hole();
         }
       } else {
         //in case ZMotors are installed on the bottom
         translate([XZStage_position, BottomPanel_zoffset]){
           translate([BottomPanel_width/2 + BottomPanel_width/4, thickness/2])
-          circle(r=m3_diameter/2, $fn=20);
+          M3_hole();
 
           translate([-BottomPanel_width/2, -slot_extra_thickness/2])
           square([BottomPanel_width, thickness + slot_extra_thickness]);
 
           translate([-BottomPanel_width/2 - BottomPanel_width/4, thickness/2])
-          circle(r=m3_diameter/2, $fn=20);
+          M3_hole();
         }
 
         //hole for z motors wiring
@@ -598,7 +598,7 @@ module MachineSidePanel_plainface(){
   H=150;
   k=19;
   union(){
-    hull($fn=80){
+    hull(){
       translate([rear_backtop_advance-k, machine_height-r1]) circle(r=r1);
       translate([r2, RightPanel_baseheight + H]) circle(r=r2);
     }
@@ -632,10 +632,16 @@ module MachineSidePanel_plainface(){
 module TopPanel_holes(){
   translate([Z_rods_distance/2,0]){
     //holes for Zrod and Zbar
-    circle(r=(m8_diameter + 2*rods_diameter_clearance)/2, $fn=20);
-    translate([8, 0]) circle(r=m3_diameter/2, $fn=20);
-    translate([-z_rod_z_bar_distance - 8, -8]) circle(r=m3_diameter/2, $fn=20);
-    translate([-z_rod_z_bar_distance - 8, 8]) circle(r=m3_diameter/2, $fn=20);
+    circle(r = m8_diameter/2 + rods_diameter_clearance);
+
+    translate([8, 0])
+    M3_hole();
+
+    translate([-z_rod_z_bar_distance - 8, -8])
+    M3_hole();
+
+    translate([-z_rod_z_bar_distance - 8, 8])
+    M3_hole();
 
     if (zmotors_on_top){
       translate([-z_rod_z_bar_distance,0]){
@@ -650,7 +656,7 @@ module TopPanel_holes(){
       translate([-z_rod_z_bar_distance,0]){
         //This hole's diameter is considerably larger than the threaded rod diameter
         // in order to allow slightly bent rods to freely move. Otherwise, we would potentially have more whobble as a result of a tightly fixed rod.
-        circle(r=(m8_diameter+4)/2, $fn=20);
+        circle(r=(m8_diameter+4)/2);
       }
     }
 
@@ -779,7 +785,7 @@ module MachineArcPanel_face(){
 
 module top_hole_for_extruder_wires(){
   translate([0,120])
-  circle(r=10, $fn=30); //enough for the motor wire connector
+  circle(r=10); //enough for the motor wire connector
 }
 
 //!MachineTopPanel_face();
@@ -797,10 +803,10 @@ module MachineTopPanel_face(){
       
       translate([0,60]){
         translate([-machine_x_dim/2,-30])
-        rounded_square([sidewidth, 100], corners=[0, 0, sidewidth, 0], $fn=90);
+        rounded_square([sidewidth, 100], corners=[0, 0, sidewidth, 0]);
 
         translate([machine_x_dim/2 - sidewidth,-30])
-        rounded_square([sidewidth, 100], corners=[0, 0, 0, sidewidth], $fn=90);
+        rounded_square([sidewidth, 100], corners=[0, 0, 0, sidewidth]);
       }
 
       translate([0,127])
@@ -841,9 +847,9 @@ module BottomPanel_holes(){
     //holes for Z rods
     translate([Z_rods_distance/2,0]){
       circle(r=(m8_diameter + 2*rods_diameter_clearance)/2);
-      translate([0, -8]) circle(r=m3_diameter/2, $fn=20);
-      translate([0, 8]) circle(r=m3_diameter/2, $fn=20);
-      //translate([8, 0]) circle(r=m3_diameter/2, $fn=20);
+      translate([0, -8]) M3_hole();
+      translate([0, 8]) M3_hole();
+      //translate([8, 0]) M3_hole();
     }
 
     //holes for ZMotors
@@ -883,7 +889,7 @@ module heatedbed_bottompanel_hole(){
 module zip_tie_holes(d=12, r=m3_diameter/2){
   for (i=[-1,1]){
     translate([0,d/2*i])
-    circle(r=r, $fn=30);
+    circle(r=r, $fn=20);
   }
 }
 
@@ -977,7 +983,7 @@ module MachineBottomPanel_face(){
           hull()
             for (j=[-1,1])
               translate([-5,5+j*5])
-              circle(r=m3_diameter, $fn=20);
+              circle(r=m3_diameter, $fn=20);//yes, that's correct
         for (i=[-1,1])
           translate([i*microswitch_holes_distance/2,-10])
             M25_hole();
@@ -989,7 +995,7 @@ module MachineBottomPanel_face(){
           hull()
             for (j=[-1,1])
               translate([-5,-5+j*5])
-              circle(r=m3_diameter, $fn=20);
+              circle(r=m3_diameter, $fn=20);//yes, that's correct
         for (i=[-1,1])
           translate([i*microswitch_holes_distance/2,10])
             M25_hole();
@@ -1187,7 +1193,7 @@ module XEnd_back_face(){
     difference(){
       union(){
        translate([-XPlatform_width/2 - XEnd_extra_width, 0])
-       rounded_square([XEnd_width, XPlatform_height], corners = [0, 0, thickness/2, thickness/2], $fn=80);
+       rounded_square([XEnd_width, XPlatform_height], corners = [0, 0, thickness/2, thickness/2]);
 
        //extra area for linear bearings
        circle(r=20);
@@ -1197,13 +1203,13 @@ module XEnd_back_face(){
 
       //holes for bearing sandwich hexspacers
       translate([14, XPlatform_height])
-      circle(r=m3_diameter/2, $fn=20);
+      M3_hole();
       translate([-14, XPlatform_height])
-      circle(r=m3_diameter/2, $fn=20);
+      M3_hole();
       translate([14, 0])
-      circle(r=m3_diameter/2, $fn=20);
+      M3_hole();
       translate([-14, 0])
-      circle(r=m3_diameter/2, $fn=20);
+      M3_hole();
 
       translate([XPlatform_width/2 - thickness, thickness]){
         TSlot_holes(width=XPlatform_height - thickness);
@@ -1226,13 +1232,13 @@ module generic_bearing_sandwich_plainface(H, r){
     hull(){
       for (j=[-1,1])
         translate([0, j*H/2])
-        circle(r=r, $fn=120);
+        circle(r=r);
     }
 
     for (i=[-1,1]){
       for (j=[-1,1]){
         translate([i*14, j*H/2])
-        circle(r=m3_diameter/2, $fn=20);
+        M3_hole();
       }
     }
   }
@@ -1257,7 +1263,7 @@ module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=1){
 module XEnd_front_face(){
   difference(){
   	translate([-XPlatform_width/2 - XEnd_extra_width, thickness])
-	  rounded_square([XEnd_width, XPlatform_height - thickness], corners=[0,0,thickness/2,thickness/2], $fn=80);
+	  rounded_square([XEnd_width, XPlatform_height - thickness], corners=[0,0,thickness/2,thickness/2]);
 	  
     //holes for x-axis rods
     translate([X_rods_distance/2, X_rod_height + thickness])
@@ -1269,7 +1275,7 @@ module XEnd_front_face(){
     //screw holes for z-axis threaded bar
     for (i=[-1,1])
       translate([i*dx_z_threaded, thickness+Zlink_hole_height])
-      circle(r=m3_diameter/2, $fn=20);
+      M3_hole();
 
     //hole for belt
   	translate([-XPlatform_width/2 - XEnd_extra_width + belt_offset - 5, XIdler_height])
@@ -1287,9 +1293,9 @@ module XEnd_front_face(){
 
 module beltclamp_holes(){
   translate([0,9])  
-  circle(r=m3_diameter/2, $fn=20);
+  M3_hole();
   translate([0,-9])  
-  circle(r=m3_diameter/2, $fn=20);
+  M3_hole();
 }
 
 module wade_holes(){
@@ -1407,10 +1413,10 @@ module XCarriage_plainface(sandwich=false){
     for (i=[-1,1]){
       for (j=[-1,1]){
         translate([i*(XCarriage_lm8uu_distance/2), j*(XPlatform_width/2 - XCarriage_padding)])
-        circle(r=m3_diameter/2, $fn=20);
+        M3_hole();
       }
       translate([i*(XCarriage_length/2-XCarriage_padding), 0])
-      circle(r=m3_diameter/2, $fn=20);
+      M3_hole();
     }
   }
 }
@@ -1751,7 +1757,7 @@ module XEndIdler_belt_face_assembly(){
     color(metal_color){
       translate([-XEnd_box_size/2 - thickness, XPlatform_width/2 + XEnd_extra_width -2.5* thickness, XIdler_height])
       rotate([90,0,0]){
-        cylinder(r=4, h=80, center=true, $fn=40);
+        cylinder(r=4, h=80, center=true);
         608zz_bearing(true);
       }
     }
@@ -2083,11 +2089,11 @@ module YPlatform_left_sandwich_outline(){
 
 module YPlatform_left_sandwich_holes(){
     translate([14,0])
-    circle(r=m3_diameter/2, $fn=20);
+    M3_hole();
 
     for (j=[-1,1])
       translate([-14,j*(50/2 - 5)])
-      circle(r=m3_diameter/2, $fn=20);
+      M3_hole();
 }
 
 module YPlatform_left_sandwich_face(sandwich_tightening=1){
@@ -2150,7 +2156,7 @@ module YPlatform_face_generic(){
     for (i=[-1,1]){
       for (j=[-1,1]){
         translate([i*(HeatedBed_X/2 - 4), j*(HeatedBed_Y/2 - 4)])
-        circle(r=m3_diameter/2, $fn=20);
+        M3_hole();
       }
     }
   }
@@ -2159,7 +2165,7 @@ module YPlatform_face_generic(){
 module belt_clamp_holes(){
   for (i=[-1,1]){
     translate([i*9,0])
-      circle(r=m3_diameter/2, $fn=20);
+      M3_hole();
   }  
 }
 
@@ -2167,7 +2173,7 @@ module YPlatform_right_sandwich_holes(){
   for (i=[-1,1]){
     for (j=[-1,1]){
       translate([i*14,j*YBearings_distance/2])
-      circle(r=m3_diameter/2, $fn=20);
+      M3_hole();
     }
   }
 }
@@ -2212,7 +2218,7 @@ module YPlatform_face(){
     for (i=[-1,1]){
       for (j=[-1,1]){
         translate([i*5, 100+j*5])
-        circle(r=m3_diameter/2, $fn=20);
+        M3_hole();
       }
     }
 
@@ -2460,7 +2466,7 @@ module M8Nut(){
   linear_extrude(height = m8_nut_height){
     difference(){
       circle(r=14.5/2, $fn=6);
-      circle(r=m8_diameter/2, $fn=20);
+      circle(r=m8_diameter/2);
     }
   }
 }
@@ -2468,8 +2474,8 @@ module M8Nut(){
 module M8Washer(){
   linear_extrude(height = m8_washer_height){
     difference(){
-      circle(r=m8_diameter/2 + 3.6, $fn=20);
-      circle(r=m8_diameter/2, $fn=20);
+      circle(r=m8_diameter/2 + 3.6);
+      circle(r=m8_diameter/2);
     }
   }
 }
@@ -2641,12 +2647,12 @@ module ZRodCap_face(l=15.5, hole=true){
   difference(){
     rounded_square([40,40], corners=[5,5,5,5], center=true);
     if (hole)
-      circle(r=(m8_diameter+epsilon)/2, $fn=20);
+      circle(r=(m8_diameter+epsilon)/2);
 
     for (i=[-l,l]){
       for (j=[-l,l]){
         translate([i,j])
-          circle(r=m3_diameter/2, $fn=20);
+          M3_hole();
       }
     }
   }
