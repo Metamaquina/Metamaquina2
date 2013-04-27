@@ -2,10 +2,9 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-use <ZLink.scad>;
-include <Metamaquina2.h>;
+use <lm8uu_bearing.scad>;
 
-dx_z_threaded = 14;
-ZLink_rod_height = 11*sqrt(3)/2;
-Zlink_hole_height = (XPlatform_height-thickness)/3;
+lm8uu_diameter = 15;
+lm8uu_internal_diameter = 8;
+lm8uu_length = 24;
 

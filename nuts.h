@@ -2,10 +2,8 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-use <ZLink.scad>;
-include <Metamaquina2.h>;
+use <nuts.scad>;
 
-dx_z_threaded = 14;
-ZLink_rod_height = 11*sqrt(3)/2;
-Zlink_hole_height = (XPlatform_height-thickness)/3;
+m8_nut_height = 6.3; //TODO: check the datasheets
+m8_washer_height = 1.5; //TODO: check the datasheets
 

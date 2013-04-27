@@ -3,35 +3,32 @@
 // version 3 (or later).
 
 include <Metamaquina2.h>;
-include <NEMA.h>;
-include <coupling.h>;
 
+//utils
 use <utils.scad>;
-use <lasercut_extruder.scad>;
-use <tslot.scad>;
-use <heated_bed.scad>;
-use <rounded_square.scad>;
-use <608zz_bearing.scad>;
-use <washers.scad>;
-use <nuts.scad>;
-use <domed_cap_nuts.scad>;
-use <RAMBo.scad>;
-use <NEMA.scad>;
 use <mm2logo.scad>;
+use <rounded_square.scad>;
+use <tslot.scad>;
+
+//subassemblies
+use <lasercut_extruder.scad>;
+use <heated_bed.scad>;
+use <RAMBo.scad>;
 use <endstop.scad>;
 use <jhead.scad>;
+
+//parts
+include <NEMA.h>;
+include <coupling.h>;
+include <nuts.h>;
+include <lm8uu_bearing.h>;
+use <608zz_bearing.scad>;
+use <washers.scad>;
+use <domed_cap_nuts.scad>;
 use <belt-clamp.scad>;
 use <cable_clips.scad>;
 
-m8_nut_height = 6.3; //TODO: check the datasheets
-m8_washer_height = 1.5; //TODO: check the datasheets
-lm8uu_diameter = 15;
-lm8uu_length=24;
-sandwich_hexspacer_length = 12; //TODO: check availability
-RAMBo_x = 1;
-RAMBo_y = 133;
-
-//platic parts
+//3d printed parts
 include <ZLink.h>;
 use <bar-clamp.scad>;
 
@@ -55,7 +52,12 @@ bottom_cable_clips = [["RA13", -90, -100,0], ["RA13", 90, 0,0], ["RA13", -90, 10
 
 top_cable_clips = [["RA13", 90, -70,130]];
 
-pcbextra = 5; //extra space to the rear of the pcb that holds the connector.
+bearing_sandwich_spacing = 12;
+
+//coordinates of the RAMBo electronics board
+RAMBo_x = 1;
+RAMBo_y = 133;
+
 rods_diameter_clearance = 0.1; //extra room for the X and Z rods
 spacers_clearance = 0.1; // extra room for the spacers hole diameter
 
@@ -63,7 +65,7 @@ spacers_clearance = 0.1; // extra room for the spacers hole diameter
 //region around the heated bed
 
 HeatedBed_X = BuildVolume_X + 15; // 215 mm
-HeatedBed_Y = BuildVolume_Y + 15 + pcbextra; // 220 mm
+HeatedBed_Y = BuildVolume_Y + 20; // 220 mm
 
 hack_couplings = 5; // for astethical purposes, the z-couplings are animated rotating <hack_couplings> times slower than the correct mechanical behaviour
 
@@ -1031,7 +1033,7 @@ module XEndMotor_bottom_holes(){
 
   //hole for lm8uu holder
   translate([0, -20])
-  rounded_square([sandwich_hexspacer_length + 3*thickness + r, 40], corners=[0,r,0,r]);
+  rounded_square([bearing_sandwich_spacing + 3*thickness + r, 40], corners=[0,r,0,r]);
 
   //These 2 pairs of ziptie holes
   // are meant to hold the XMotor cable in place 
@@ -1063,7 +1065,7 @@ module XEndIdler_bottom_holes(){
 
   //hole for lm8uu holder
   translate([0, -20])
-  rounded_square([sandwich_hexspacer_length + 3*thickness + r, 40], corners=[0,r,0,r]);
+  rounded_square([bearing_sandwich_spacing + 3*thickness + r, 40], corners=[0,r,0,r]);
 
   //hole for M8 nut&rod
   translate([thickness + XEnd_box_size - ZLink_rod_height, 0])
@@ -1235,13 +1237,6 @@ module generic_bearing_sandwich_plainface(H, r){
   }
 }
 
-module LM8UU(){
-  translate([0,12])
-  rotate([90,0])
-  cylinder(r=lm8uu_diameter/2,h=lm8uu_length);
-}
-
-
 module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=1){
   projection(cut=true){
     difference(){
@@ -1249,7 +1244,7 @@ module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=1){
       generic_bearing_sandwich_plainface(H, r);
 
       //linear bearings
-      translate([0,0,lm8uu_diameter/2 - (sandwich_hexspacer_length + sandwich_tightening)]){
+      translate([0,0,lm8uu_diameter/2 - (bearing_sandwich_spacing + sandwich_tightening)]){
         for (j=[-1,1])
         translate([0,j*H/2])
         LM8UU();
@@ -1318,7 +1313,7 @@ module XCarriage_sandwich_face(){
       XCarriage_plainface(true);
 
       //linear bearings
-      translate([0, 0, lm8uu_diameter/2 - sandwich_hexspacer_length]){
+      translate([0, 0, lm8uu_diameter/2 - bearing_sandwich_spacing]){
         for (i=[-1,1]){
           for (j=[-1,1]){
             translate([i*XCarriage_lm8uu_distance/2, j*X_rods_distance/2])
@@ -1447,13 +1442,13 @@ module XEnd_bearing_sandwich_sheet(){
       rotate([0,90,0])
       rotate([0,0,90])
       translate([x,y])
-      hexspacer(h=sandwich_hexspacer_length);
+      hexspacer(h=bearing_sandwich_spacing);
     }
   }
 
   if( render_lasercut ){
     color(sheet_color){
-      translate([thickness + sandwich_hexspacer_length,0])
+      translate([thickness + bearing_sandwich_spacing,0])
       rotate([0,90,0])
       rotate([0,0,90]){
         linear_extrude(height=thickness)
@@ -1849,13 +1844,11 @@ module belt_clamps(){
 }
 
 module XEndMotor_linear_bearings(){
-  if (render_metal){
-    color(metal_color){
-	    translate([thickness + lm8uu_diameter/2, 0, -12]){
-        cylinder(r=lm8uu_diameter/2, h=lm8uu_length);
-        translate([0, 0, XPlatform_height])
-        cylinder(r=lm8uu_diameter/2, h=lm8uu_length);
-      }
+  translate([thickness + lm8uu_diameter/2, 0, XPlatform_height/2]){
+    for (j=[-1,1]){
+        translate([0, 0, j*XPlatform_height/2])
+        rotate([90,0])
+        LM8UU();
     }
   }
 }
@@ -1952,16 +1945,16 @@ module XCarriage(){
   //lasercut parts:
   translate([XCarPosition, 0, XCarriage_height]){
     XCarriage_bottom_sheet();
-    translate([0,0,-sandwich_hexspacer_length]){
+    translate([0,0,-bearing_sandwich_spacing]){
 
       for (i=[-1,1]){
         for (j=[-1,1]){
           translate([i*(XCarriage_lm8uu_distance/2), j*(XPlatform_width/2-XCarriage_padding)])
-          hexspacer(h=sandwich_hexspacer_length);
+          hexspacer(h=bearing_sandwich_spacing);
         }
 
         translate([i*(XCarriage_length/2-XCarriage_padding), 0])
-        hexspacer(h=sandwich_hexspacer_length);
+        hexspacer(h=bearing_sandwich_spacing);
       }
 
       translate([0,0,-thickness])
@@ -2104,7 +2097,7 @@ module YPlatform_left_sandwich_face(sandwich_tightening=1){
         YPlatform_left_sandwich_outline();
 
         //linear bearing
-        translate([0,0,lm8uu_diameter/2 - (sandwich_hexspacer_length + sandwich_tightening)])
+        translate([0,0,lm8uu_diameter/2 - (bearing_sandwich_spacing + sandwich_tightening)])
         LM8UU();
       }
     }
@@ -2126,7 +2119,7 @@ module YPlatform_subassembly(){
   translate([0,0,100-15]){ /*TODO*/
     YPlatform_sheet();
 
-    translate([0,0, -sandwich_hexspacer_length]){
+    translate([0,0, -bearing_sandwich_spacing]){
       YPlatform_hexspacers();
 
       translate([-Y_rods_distance/2, 0, -thickness])
@@ -2180,17 +2173,17 @@ module YPlatform_right_sandwich_holes(){
 
 module YPlatform_hexspacers(){
   translate([-Y_rods_distance/2 + 14, 0])
-  hexspacer(h=sandwich_hexspacer_length);
+  hexspacer(h=bearing_sandwich_spacing);
 
   for (j=[-1,1]){
     translate([-Y_rods_distance/2 - 14, j*(50/2-5)])
-    hexspacer(h=sandwich_hexspacer_length);
+    hexspacer(h=bearing_sandwich_spacing);
   }
 
   for (i=[-1,1]){
     for (j=[-1,1]){
       translate([Y_rods_distance/2 + i*14,j*50])
-      hexspacer(h=sandwich_hexspacer_length);
+      hexspacer(h=bearing_sandwich_spacing);
     }
   }
 }
@@ -2217,7 +2210,7 @@ module YPlatform_face(){
     //holes for the heated bed wiring
     for (i=[-1,1]){
       for (j=[-1,1]){
-        translate([i*5, pcbextra+95+j*5])
+        translate([i*5, 100+j*5])
         circle(r=m3_diameter/2, $fn=20);
       }
     }
