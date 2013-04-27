@@ -19,8 +19,8 @@ use <mm2logo.scad>;
 use <endstop.scad>;
 use <jhead.scad>;
 use <belt-clamp.scad>;
-use <ZLink.scad>;
-include <ZLink-params.scad>;
+include <coupling.h>;
+use <cable_clips.scad>;
 
 m8_nut_height = 6.3; //TODO: check the datasheets
 m8_washer_height = 1.5; //TODO: check the datasheets
@@ -31,9 +31,9 @@ RAMBo_x = 1;
 RAMBo_y = 133;
 
 //platic parts
+use <ZLink.scad>;
+include <ZLink-params.scad>;
 use <bar-clamp.scad>;
-use <coupling.scad>;//TODO: update couplings to metal parts model
-use <cable_clips.scad>;
 
 left_cable_clips = [
     //[type, angle, y, z]
@@ -1766,11 +1766,11 @@ module XEndIdler_belt_face_assembly(){
 module Z_couplings(){
   if (render_ABS){
     color(ABS_color){
-      translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
-      coupling_pair();
+      translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length - coupling_shaft_depth])
+      coupling();
 
-      translate([machine_x_dim/2 - thickness - lm8uu_diameter/2 - z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
-      coupling_pair();
+      translate([machine_x_dim/2 - thickness - lm8uu_diameter/2 - z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length - coupling_shaft_depth])
+      coupling();
     }
   }
 }
