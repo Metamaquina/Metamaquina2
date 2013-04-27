@@ -3,7 +3,7 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-include <Metamaquina-config.scad>;
+include <Metamaquina2.h>;
 use <rounded_square.scad>;
 
 hexspacer_length = 35; //considering the height of the connectors and components

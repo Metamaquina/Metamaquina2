@@ -2,8 +2,8 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-include <Metamaquina-config.scad>;
-include <NEMA-dimensions.scad>;
+include <Metamaquina2.h>;
+include <NEMA.h>;
 use <rounded_square.scad>;
 
 module NEMA17(){

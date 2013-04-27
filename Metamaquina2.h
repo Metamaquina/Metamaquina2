@@ -1,3 +1,5 @@
+use <Metamaquina2.scad>;
+
 /*Thickness of acrylic or plywood sheets to use.*/
 thickness = 6; //millimiters
 

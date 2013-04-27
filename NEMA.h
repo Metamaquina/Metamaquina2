@@ -1,3 +1,5 @@
+use <NEMA.scad>;
+
 //motor dimensions based on Action Motors NEMA17 datasheet
 motor_shaft_length = 24;
 motor_shaft_diameter = 5;

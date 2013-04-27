@@ -2,8 +2,10 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-include <Metamaquina-config.scad>;
-include <NEMA-dimensions.scad>;
+include <Metamaquina2.h>;
+include <NEMA.h>;
+include <coupling.h>;
+
 use <utils.scad>;
 use <lasercut_extruder.scad>;
 use <tslot.scad>;
@@ -19,7 +21,6 @@ use <mm2logo.scad>;
 use <endstop.scad>;
 use <jhead.scad>;
 use <belt-clamp.scad>;
-include <coupling.h>;
 use <cable_clips.scad>;
 
 m8_nut_height = 6.3; //TODO: check the datasheets
@@ -31,8 +32,7 @@ RAMBo_x = 1;
 RAMBo_y = 133;
 
 //platic parts
-use <ZLink.scad>;
-include <ZLink-params.scad>;
+include <ZLink.h>;
 use <bar-clamp.scad>;
 
 left_cable_clips = [

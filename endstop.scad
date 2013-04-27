@@ -2,7 +2,7 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-include <Metamaquina-config.scad>;
+include <Metamaquina2.h>;
 use <rounded_square.scad>;
 
 module simples_mechanical_endstop(){

@@ -13,8 +13,7 @@ use <small_extruder_gear.scad>
 use <large_extruder_gear.scad>
 
 use <tslot.scad>;
-include <Metamaquina-config.scad>;
-use <Metamaquina2.scad>;
+include <Metamaquina2.h>;
 
 extruder_mount_holes_distance = X_rods_distance + 14;
 idler_axis_position = [-12,21];

@@ -2,8 +2,7 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-use <Metamaquina2.scad>;
-include <Metamaquina-config.scad>;
+include <Metamaquina2.h>;
 
 module sandwich_test_panel(){
   translate([320, 50])

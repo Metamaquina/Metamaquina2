@@ -7,8 +7,8 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-include <Metamaquina-config.scad>;
-include <ZLink-params.scad>;
+include <Metamaquina2.h>;
+include <ZLink.h>;
 
 module ZLink(clearance = 0.2, hull_size=0){
   if (render_ABS){
