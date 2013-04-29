@@ -12,10 +12,10 @@ use <rounded_square.scad>;
 use <tslot.scad>;
 
 //subassemblies
+include <endstop.h>;
 use <lasercut_extruder.scad>;
 use <heated_bed.scad>;
 use <RAMBo.scad>;
-use <endstop.scad>;
 use <jhead.scad>;
 
 //parts
@@ -391,18 +391,10 @@ module MachineLeftPanel_face(){
     }
 
     translate([z_max_endstop_x, z_max_endstop_y])
-      for (i=[-1,1])
-        translate([-endstop_holder_width/2+i*microswitch_holes_distance/2,16-endstop_holder_height/2])
-        M3_hole();
+    z_max_mount_holes();
 
     translate([z_min_endstop_x, z_min_endstop_y])
-      for (i=[-1,1])
-        translate([endstop_holder_width/2+i*microswitch_holes_distance/2,-endstop_holder_height/2])
-        hull(){
-            M3_hole();
-            translate([0,-16])
-            M3_hole();
-        }
+    z_min_mount_holes();
 
     //holes_for_motor_wires();
     //holes_for_z_endstop_wires();
@@ -982,7 +974,7 @@ module MachineBottomPanel_face(){
         translate([-10,-24])
           hull()
             for (j=[-1,1])
-              translate([-5,5+j*5])
+              translate([-5,7+j*7])
               circle(r=m3_diameter, $fn=20);//yes, that's correct
         for (i=[-1,1])
           translate([i*microswitch_holes_distance/2,-10])
@@ -994,7 +986,7 @@ module MachineBottomPanel_face(){
         translate([-10,24])
           hull()
             for (j=[-1,1])
-              translate([-5,-5+j*5])
+              translate([-5,-7+j*7])
               circle(r=m3_diameter, $fn=20);//yes, that's correct
         for (i=[-1,1])
           translate([i*microswitch_holes_distance/2,10])
@@ -1333,15 +1325,6 @@ module XCarriage_sandwich_face(){
   }
 }
 
-module M3_hole(){
-  circle(r=m3_diameter/2, $fn=20);
-}
-
-m25_diameter = 2.5;
-module M25_hole(){
-  circle(r=m25_diameter/2, $fn=20);
-}
-
 module XEndstopHolder(){
   difference(){
     hull(){
@@ -1624,6 +1607,20 @@ module MachineBottomPanel_sheet(){
             cable_clip(type); 
         }
     }
+
+    //These transparent renderings serve us the purpose of
+    // making sure that these holes are large enough
+    // to let the microswitches in the preassembled wires
+    // pass through:
+    % translate([12.5,-36])
+    rotate([0,90])
+    rotate(90)
+     mechanical_switch();
+
+    % translate([-47.5,22])
+    rotate([0,90])
+    rotate(90)
+     mechanical_switch();
   }
 }
 

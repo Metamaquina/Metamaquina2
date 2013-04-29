@@ -3,7 +3,56 @@
 // version 3 (or later).
 
 include <Metamaquina2.h>;
+include <endstop.h>;
+use <utils.scad>;
 use <rounded_square.scad>;
+
+m3_diameter=3; //TODO: move-me to a header file
+
+module z_max_mount_holes(){
+  //these are the holes for mounting the endstop subassembly
+  for (i=[-1,1])
+    translate([-endstop_holder_width/2+i*microswitch_holes_distance/2,16-endstop_holder_height/2])
+    M3_hole();
+
+  translate([-100,7]){
+      //this is to keep the endstop wiring in place:
+      zip_tie_holes();
+
+      // Since all of the 3d printer wiring will be prepared
+      // in an early assembly stage this hole should be
+      // large enough to let the ZMAX microswitch pass through:
+      translate([-10,0]){
+        hull()
+        zip_tie_holes(r=4);
+
+        //Here is a transparent rendering of a microswitch
+        // for us to make sure it can pass through the hole:
+        %translate([-2.5,-7, -2])
+         rotate([90,0])
+         rotate([0,90])
+         mechanical_switch();
+      }
+    }
+}
+
+module z_min_mount_holes(){    
+  for (i=[-1,1])
+    translate([endstop_holder_width/2+i*microswitch_holes_distance/2,-endstop_holder_height/2])
+    hull(){
+        M3_hole();
+        translate([0,-16])
+        M3_hole();
+    }
+
+  translate([-15,7]){
+    rounded_edge_cut(width=3, height=15.7, r=3/2);
+
+    translate([0,-20])
+    rotate(90)
+    zip_tie_holes();
+  }
+}
 
 module simples_mechanical_endstop(){
   thickness = 5;//TODO
