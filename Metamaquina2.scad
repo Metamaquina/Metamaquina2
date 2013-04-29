@@ -968,46 +968,8 @@ module MachineBottomPanel_face(){
       translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness + 16, 24])
       heatedbed_bottompanel_hole();
 
-      //holes for YMAX endstop
-      translate([30, -12]){
-
-        //M3 mount holes
-        for (i=[-1,1])
-          translate([i*microswitch_holes_distance/2,-24])
-          M3_hole();
-
-        for (i=[-1,1])
-          translate([-10,-24])
-            hull()
-              for (j=[-1,1])
-                translate([-5,7+j*7])
-                circle(r=m3_diameter, $fn=20);
-                //big enough for a microswitch to pass through
-
-        //hole to give room for bolt tips and M25 nuts:
-        translate([0,-10])
-        rotate(90)
-        zip_tie_holes(d=microswitch_holes_distance, r=3);
-
-        //these serve as reference for us
-        // to see where will be the tips of the M2.5 bolts
-        %for (i=[-1,1])
-          translate([i*microswitch_holes_distance/2,-10])
-          M25_hole();
-      }
-
-      //holes for YMIN endstop
-      translate([-30, +12]){
-        translate([-10,24])
-          hull()
-            for (j=[-1,1])
-              translate([-5,-7+j*7])
-              circle(r=m3_diameter, $fn=20);//yes, that's correct
-        for (i=[-1,1])
-          translate([i*microswitch_holes_distance/2,10])
-            M25_hole();
-      }
-
+      y_max_endstop_mount_holes();
+      y_min_endstop_mount_holes();
     }
   }
 }
@@ -1638,7 +1600,11 @@ module MachineBottomPanel_sheet(){
      mechanical_switch();
 
     translate([22.5,-24,thickness])
-    y_endstop();
+    ymax_endstop_subassembly();
+
+    translate([-22.5,24,thickness])
+    rotate(180)
+    ymin_endstop_subassembly();
 
   }
 }

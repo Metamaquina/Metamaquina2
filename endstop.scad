@@ -54,6 +54,43 @@ module z_min_mount_holes(){
   }
 }
 
+module y_max_endstop_mount_holes(){
+  translate([30, -12])
+  y_endstop_mount_holes();
+}
+
+module y_min_endstop_mount_holes(){
+  translate([-30, +12])
+  mirror([0,1])
+  y_endstop_mount_holes();
+}
+
+module y_endstop_mount_holes(){
+  //M3 mount holes
+  for (i=[-1,1])
+    translate([i*microswitch_holes_distance/2,-24])
+    M3_hole();
+
+  for (i=[-1,1])
+    translate([-10,-24])
+      hull()
+        for (j=[-1,1])
+          translate([-5,7+j*7])
+          circle(r=m3_diameter, $fn=20);
+          //big enough for a microswitch to pass through
+
+  //hole to give room for bolt tips and M25 nuts:
+  translate([0,-10])
+  rotate(90)
+  zip_tie_holes(d=microswitch_holes_distance, r=3);
+
+  //these serve as reference for us
+  // to see where will be the tips of the M2.5 bolts
+  %for (i=[-1,1])
+    translate([i*microswitch_holes_distance/2,-10])
+    M25_hole();
+}
+
 module simples_mechanical_endstop(){
   thickness = 5;//TODO
 
@@ -74,28 +111,62 @@ module simples_mechanical_endstop(){
 thickness = 6;
 module z_max_endstop(){
   rotate(180){
-    endstop_spacer_sheet1();
+    color(sheet_color)
+    linear_extrude(height=thickness)
+    endstop_spacer_face1();
 
     translate([0,0,thickness])
-    endstop_spacer_sheet2();
+    color(sheet_color)
+    linear_extrude(height=thickness)
+    endstop_spacer_face2();
 
     translate([0,0,2*thickness])
     mechanical_switch();
   }
 }
 
-module y_endstop(){
-  endstop_spacer_sheet2();
+module ymin_endstop_subassembly(){
+  color(sheet_color)
+  linear_extrude(height=thickness)
+  ymin_endstop_spacer_face();
+
+  translate([0,0,thickness])
+  mechanical_switch();
+}
+
+module ymax_endstop_subassembly(){
+  color(sheet_color)
+  linear_extrude(height=thickness)
+  ymax_endstop_spacer_face();
+
+  translate([0,0,thickness])
+  mechanical_switch();
+}
+
+module YMIN_endstop_spacer_sheet(){
+  color(sheet_color)
+  linear_extrude(height=thickness)
+  endstop_spacer_face2();
+}
+
+module ymax_endstop_subassembly(){
+  color(sheet_color)
+  linear_extrude(height=thickness)
+  endstop_spacer_face2();
 
   translate([0,0,thickness])
   mechanical_switch();
 }
 
 module z_min_endstop(){
-  endstop_spacer_sheet1();
+  color(sheet_color){
+    linear_extrude(height=thickness)
+    zmin_endstop_spacer_face1();
 
-  translate([0,0,thickness])
-  endstop_spacer_sheet2();
+    translate([0,0,thickness])
+    linear_extrude(height=thickness)
+    zmin_endstop_spacer_face2();
+  }
 
   translate([0,0,2*thickness])
   mechanical_switch();
@@ -109,12 +180,6 @@ module oblongo(L=10,d=3){
     translate([L,0])
     circle(r=d/2, $fn=20);  
   }
-}
-
-module endstop_spacer_sheet1(){
-  color(sheet_color)
-  linear_extrude(height=thickness)
-  endstop_spacer_face1();
 }
 
 module endstop_spacer_face1(){
@@ -137,10 +202,46 @@ module endstop_spacer_face1(){
   }
 }
 
-module endstop_spacer_sheet2(){
-  color(sheet_color)
-  linear_extrude(height=thickness)
-  endstop_spacer_face2();
+module ymin_endstop_spacer_face(){
+  difference(){
+    endstop_spacer_face2();
+    import("labels.dxf", layer="ymin");
+  }
+}
+
+module ymax_endstop_spacer_face(){
+  difference(){
+    endstop_spacer_face2();
+    import("labels.dxf", layer="ymax");
+  }
+}
+
+module zmin_endstop_spacer_face1(){
+  difference(){
+    endstop_spacer_face1();
+    import("labels.dxf", layer="zmin");
+  }
+}
+
+module zmin_endstop_spacer_face2(){
+  difference(){
+    endstop_spacer_face2();
+    import("labels.dxf", layer="zmin");
+  }
+}
+
+module zmax_endstop_spacer_face1(){
+  difference(){
+    endstop_spacer_face1();
+    import("labels.dxf", layer="zmax");
+  }
+}
+
+module zmax_endstop_spacer_face2(){
+  difference(){
+    endstop_spacer_face2();
+    import("labels.dxf", layer="zmax");
+  }
 }
 
 module endstop_spacer_face2(){
