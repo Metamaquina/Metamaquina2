@@ -84,6 +84,13 @@ module z_max_endstop(){
   }
 }
 
+module y_endstop(){
+  endstop_spacer_sheet2();
+
+  translate([0,0,thickness])
+  mechanical_switch();
+}
+
 module z_min_endstop(){
   endstop_spacer_sheet1();
 

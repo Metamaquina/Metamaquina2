@@ -970,15 +970,30 @@ module MachineBottomPanel_face(){
 
       //holes for YMAX endstop
       translate([30, -12]){
-      for (i=[-1,1])
-        translate([-10,-24])
-          hull()
-            for (j=[-1,1])
-              translate([-5,7+j*7])
-              circle(r=m3_diameter, $fn=20);//yes, that's correct
+
+        //M3 mount holes
         for (i=[-1,1])
+          translate([i*microswitch_holes_distance/2,-24])
+          M3_hole();
+
+        for (i=[-1,1])
+          translate([-10,-24])
+            hull()
+              for (j=[-1,1])
+                translate([-5,7+j*7])
+                circle(r=m3_diameter, $fn=20);
+                //big enough for a microswitch to pass through
+
+        //hole to give room for bolt tips and M25 nuts:
+        translate([0,-10])
+        rotate(90)
+        zip_tie_holes(d=microswitch_holes_distance, r=3);
+
+        //these serve as reference for us
+        // to see where will be the tips of the M2.5 bolts
+        %for (i=[-1,1])
           translate([i*microswitch_holes_distance/2,-10])
-            M25_hole();
+          M25_hole();
       }
 
       //holes for YMIN endstop
@@ -1621,6 +1636,10 @@ module MachineBottomPanel_sheet(){
     rotate([0,90])
     rotate(90)
      mechanical_switch();
+
+    translate([22.5,-24,thickness])
+    y_endstop();
+
   }
 }
 
