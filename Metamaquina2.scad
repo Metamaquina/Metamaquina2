@@ -372,7 +372,7 @@ module MachineLeftPanel_face(){
 
     translate([RAMBo_x, RAMBo_y]){
       RAMBo_holes();
-      RAMBo_wiring_hole();
+      RAMBo_wiring_holes();
     }
 
     translate([120,180]){
@@ -384,7 +384,7 @@ module MachineLeftPanel_face(){
                 circle(r=NEMA17_connector_height/2+1);
         }
 
-        //and a zip tie to kepp it in place:
+        //and a zip tie to keep it in place:
         translate([0,-10])
         rotate(90)
         zip_tie_holes();

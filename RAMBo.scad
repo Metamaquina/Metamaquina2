@@ -100,13 +100,65 @@ module RAMBo_volume(){
   %cube([RAMBo_width, RAMBo_height, RAMBo_thickness]);
 }
 
-module RAMBo_wiring_hole(){
+module RAMBo_wiring_holes(){
+  //This is a big hole for passing all wires from one side of
+  // the panel to the other side:
   translate([RAMBo_width/2, RAMBo_height/2])
   rotate(90)
   hull()
   for (i=[-1,1])
     translate([i*15,0])
     circle(r=10, $fn=20);
+
+
+  //These are ziptie holes for making sure the individual wires
+  // are kept in place, near their connection point in the RAMBo PCB:
+
+  //X & Y motor cables
+  translate([20,10])
+  rotate(90)
+  zip_tie_holes();
+
+  //Z left and right motor cables
+  translate([50,10])
+  rotate(90)
+  zip_tie_holes();
+
+  //Extruder motor cable
+  translate([80,10])
+  rotate(90)
+  zip_tie_holes();
+
+  //Thermistor cables
+  translate([95,50])
+  zip_tie_holes();
+
+  //Power Supply cables
+  translate([95,85])
+  zip_tie_holes();
+
+  { //Endstop cables
+    //TODO: Choose one before manufacturing:
+
+    // Option 1: This is closer to the connector but may leave the cables exposed in the back of the machine
+#    translate([10,50])
+    zip_tie_holes();
+
+    // Option 2: This is a bit far, but the cables would be less exposed in the upper portion of the pcb mount area
+#    translate([80,95])
+    rotate(90)
+    zip_tie_holes();
+  }
+
+  //Extruder heater cable
+  translate([20,95])
+  rotate(90)
+  zip_tie_holes();
+
+  //HeatedBed heater cable
+  translate([50,95])
+  rotate(90)
+  zip_tie_holes();
 }
 
 module RAMBo_holes(){
