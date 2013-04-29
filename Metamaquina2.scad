@@ -78,9 +78,9 @@ function carz_demo(time) = time*BuildVolume_Z;
 function coupling_demo(time) = (360*carz_demo(time)/1.25)/hack_couplings;
 
 /* Positioning of the extruder assembly */
-XCarPosition = carx_demo(time);
-YCarPosition = cary_demo(time);
-ZCarPosition = carz_demo(time);
+XCarPosition = 0; //carx_demo(time);
+YCarPosition = 0; //cary_demo(time);
+ZCarPosition = 150; //carz_demo(time);
 
 //-------------------------
 
@@ -2236,7 +2236,7 @@ module BuildVolumePreview(){
 
 //!YPlatform();
 module YPlatform(){
-  translate([0, YCarPosition, 0]){
+  translate([0, YCarPosition - XZStage_offset, 0]){
     //#BuildVolumePreview();
     BuildPlatform_pcb();
     YPlatform_subassembly();
