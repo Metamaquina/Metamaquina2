@@ -1822,13 +1822,17 @@ module Xbelt(){
 module belt_clamps(){
   if (render_lasercut){
     color(sheet_color){
-      for (i=[-1.3,1.3])
-      translate([XCarPosition + i*(XCarriage_lm8uu_distance/2+10),
+      for (i=[-1,1])
+      translate([XCarPosition + i*1.3*(XCarriage_lm8uu_distance/2+10),
                  XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width,
                  belt_clamp_height + 2*thickness + X_rod_height + lm8uu_diameter/2])
       rotate([0,0,90])
       rotate([180,0,0])
-      beltclamp();
+      if (i==-1)
+        x_carriage_beltclamp();
+      else
+        mirror([0,1])
+        x_carriage_beltclamp();
     }
   }
 }

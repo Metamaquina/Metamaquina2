@@ -17,7 +17,7 @@ module belt_clamp_holder(){
 }
 
 //2d shape (good for the lasercutter)
-module beltclamp_curves(width, r){
+module beltclamp_curves(width, r, for_x_carriage=false, for_y_platform=false){
   d = width/2-r;
 
   difference(){
@@ -26,6 +26,21 @@ module beltclamp_curves(width, r){
         translate([x, 0])
         circle(r=5, $fn=20);
       }
+
+      if(for_x_carriage){
+        for (x=[-d,0.7*d]){
+          translate([x, 4])
+          circle(r=5, $fn=20);
+        }
+      }
+
+      if (for_y_platform){
+        for (x=[-d,d]){
+          translate([x, 0])
+          circle(r=8, $fn=20);
+        }
+      }
+
     }
 
     //These are holes for M3 bolts, but we want
@@ -58,4 +73,20 @@ module beltclamp(width=28, height=6, r=5, teeth_depth=0.5){
   }
 }
 
-beltclamp();
+module x_carriage_beltclamp(width=28, height=6, r=5){
+  linear_extrude(height=height)
+  beltclamp_curves(width, r, for_x_carriage=true);
+}
+
+module y_platform_beltclamp(width=28, height=6, r=5){
+  linear_extrude(height=height)
+  beltclamp_curves(width, r, for_y_platform=true);
+}
+
+beltclamp(); //for 3d printing
+
+translate ([0,20])
+x_carriage_beltclamp(); //lasercut model
+
+translate ([0,40])
+y_platform_beltclamp(); //lasercut model

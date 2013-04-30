@@ -50,10 +50,19 @@ module lasercutter_panel(){
   translate([908,0]){
     translate([405,170])
     for (i=[0:1])
-      for (j=[0:1])
-        translate([i*12,j*30])
-        rotate(90)
-        beltclamp_curves(width=28, r=5);
+      translate([i*18,0])
+      rotate(90)
+      beltclamp_curves(width=28, r=5, for_y_platform=true);
+
+    translate([372,170]){
+      rotate(90)
+      beltclamp_curves(width=28, r=5, for_x_carriage=true);
+
+      translate([12,0])
+      rotate(90)
+      mirror([0,1])
+      beltclamp_curves(width=28, r=5, for_x_carriage=true);
+    }
 
     translate([338,230])
     mirror([0,1])
@@ -91,9 +100,9 @@ module lasercutter_panel(){
     rotate(-90)
     render() XCarriage_bottom_face();
 
-    translate([340,170]){
+    translate([335,170]){
       for (i=[0:1]){
-        translate([i*25,0]) RodEndBottom_face();
+        translate([i*20,0]) RodEndBottom_face();
       }
     }
 
