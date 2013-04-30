@@ -3,36 +3,40 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-module M8_nut(){
-  nut(r = 4, R = 7, H = 6);
-}
+include <nuts.h>;
 
-module new_M8_nut(){
-  nut(r = 6.75, R = 14.76, H = 6.35);
-}
-
-module M8_locknut(){
-  locknut(r = 6.75, R = 14.76, H1 = 6.4, H = 7.94);
-}
-
-module M8_cap_nut(){
-  cap_nut(r = 6.75, R = 14.76, H1 = 6.35, H = 14.87);
-}
-
-module M4_nut(){
-  nut(r = 3.20, R = 7.875, H = 3.15);
+module M25_nut(){
+  nut(m25_nut_r, R = m25_nut_R, H = m25_nut_height);
 }
 
 module M3_nut(){
-  nut(r = 2.25, R = 6.235, H = 2.23);
+  nut(r = m3_nut_r, R = m3_nut_R, H = m3_nut_height);
 }
 
 module M3_locknut(){
   locknut(r = 2.25, R = 6.235, H1 = 2.23, H = 3.95);
 }
 
-module M25_nut(){
-  nut(r = 1.68, R = 5.68, H = 1.81);
+module M4_nut(){
+  nut(r = m4_nut_r, R = m4_nut_R, H = m4_nut_height);
+}
+
+module M8_nut(){
+  nut(r = m8_nut_r, R = m8_nut_R, H = m8_nut_height);
+}
+
+//TODO: verify this
+module new_M8_nut(){
+  nut(r = 6.75, R = 14.76, H = 6.35);
+}
+
+//TODO: verify this
+module M8_locknut(){
+  locknut(r = 6.75, R = 14.76, H1 = 6.4, H = 7.94);
+}
+
+module M8_cap_nut(){
+  cap_nut(r = m8_capnut_r, R = m8_capnut_R, H1 = m8_capnut_H1, H = m8_capnut_height);
 }
 
 function hypotenuse(a, b) = sqrt(a*a + b*b);

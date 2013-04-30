@@ -21,10 +21,10 @@ use <jhead.scad>;
 //parts
 include <NEMA.h>;
 include <coupling.h>;
+include <washers.h>;
 include <nuts.h>;
 include <lm8uu_bearing.h>;
 use <608zz_bearing.scad>;
-use <washers.scad>;
 use <domed_cap_nuts.scad>;
 use <belt-clamp.scad>;
 use <cable_clips.scad>;
