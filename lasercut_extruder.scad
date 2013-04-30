@@ -14,6 +14,8 @@ use <large_extruder_gear.scad>
 
 use <tslot.scad>;
 include <Metamaquina2.h>;
+include <nuts.h>;
+include <washers.h>;
 
 extruder_mount_holes_distance = X_rods_distance + 14;
 idler_axis_position = [-12,21];
@@ -326,8 +328,8 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
   circle(r=m3_diameter/2, $fn=20);
 
   if (idler_nut_gap){
-    translate(idler_axis_position - [10,5])
-    rounded_square([15,15], corners=[5,5,5,5]);
+    translate(idler_axis_position - [5,4.5])
+    rounded_square([9,15], corners=[4.5,4.5,4.5,4.5]);
   }
 
   if (mount_holes){
@@ -509,9 +511,13 @@ module idler(){
     translate(idler_axis_position)
     rotate(-idler_angle)
     {
-      translate([0,0,-0.5])
-      idler_side_sheet();
+      translate([0,0,-0.5]){
+        idler_side_sheet();
 
+        // we must make sure that the nut_gap
+        // is large enough for this nut to fit inside
+        translate([0,0,thickness]) M3_nut();
+      }
 
       translate(idler_bearing_position - idler_axis_position)
       translate([0,0,-0.5 + thickness]){

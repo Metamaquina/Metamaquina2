@@ -4,6 +4,7 @@
 // version 3 (or later).
 
 include <nuts.h>;
+include <colors.h>;
 
 module M25_nut(){
   nut(m25_nut_r, R = m25_nut_R, H = m25_nut_height);
@@ -44,10 +45,11 @@ epsilon = 0.05;
 
 // Commented lines are not working for all sizes
 module nut(r, R, H){
+  color(metal_color)
   difference(){
     //hexagon
     intersection(){
-      cylinder(r=2*R/sqrt(3), h=H, $fn=6);
+      cylinder(r=R*2/sqrt(3), h=H, $fn=6);
       //sphere(r=hypotenuse(R, H), $fn=60);
       //translate([0,0,H])
       //sphere(r=hypotenuse(R, H), $fn=60);

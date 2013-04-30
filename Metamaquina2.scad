@@ -121,7 +121,7 @@ z_min_endstop_y = 85;
 
 baseh = 35;
 ArcPanel_rear_advance = 105;
-horiz_bars_length = SidePanels_distance + 2*(m8_nut_height + m8_washer_height);
+horiz_bars_length = SidePanels_distance + 2*(m8_nut_height + m8_washer_thickness);
 base_bars_height = 17;
 base_bars_Zdistance = 50;
 
@@ -2478,7 +2478,7 @@ module M8Nut(){
 }
 
 module M8Washer(){
-  linear_extrude(height = m8_washer_height){
+  linear_extrude(height = m8_washer_thickness){
     difference(){
       circle(r=m8_diameter/2 + 3.6);
       circle(r=m8_diameter/2);
@@ -2501,7 +2501,7 @@ module TopFrontNutsAndWashers(){
     rotate([0,90,0])
     M8Washer();
 
-    translate([m8_washer_height,0,0])
+    translate([m8_washer_thickness,0,0])
     rotate([0,90,0])
     M8Nut();
   }
@@ -2511,7 +2511,7 @@ module TopFrontNutsAndWashers(){
     rotate([0,-90,0])
     M8Washer();
 
-    translate([-m8_washer_height,0,0])
+    translate([-m8_washer_thickness,0,0])
     rotate([0,-90,0])
     M8Nut();
   }
@@ -2522,7 +2522,7 @@ module BottomFrontNutsAndWashers(){
     rotate([0,90,0])
     M8Washer();
 
-    translate([m8_washer_height,0,0])
+    translate([m8_washer_thickness,0,0])
     rotate([0,90,0])
     M8Nut();
   }
@@ -2532,7 +2532,7 @@ module BottomFrontNutsAndWashers(){
     rotate([0,-90,0])
     M8Washer();
 
-    translate([-m8_washer_height,0,0])
+    translate([-m8_washer_thickness,0,0])
     rotate([0,-90,0])
     M8Nut();
   }
@@ -2543,7 +2543,7 @@ module TopRearNutsAndWashers(){
     rotate([0,90,0])
     M8Washer();
 
-    translate([m8_washer_height,0,0])
+    translate([m8_washer_thickness,0,0])
     rotate([0,90,0])
     M8Nut();
   }
@@ -2553,7 +2553,7 @@ module TopRearNutsAndWashers(){
     rotate([0,-90,0])
     M8Washer();
 
-    translate([-m8_washer_height,0,0])
+    translate([-m8_washer_thickness,0,0])
     rotate([0,-90,0])
     M8Nut();
   }
@@ -2564,7 +2564,7 @@ module BottomRearNutsAndWashers(){
     rotate([0,90,0])
     M8Washer();
 
-    translate([m8_washer_height,0,0])
+    translate([m8_washer_thickness,0,0])
     rotate([0,90,0])
     M8Nut();
   }
@@ -2574,7 +2574,7 @@ module BottomRearNutsAndWashers(){
     rotate([0,-90,0])
     M8Washer();
 
-    translate([-m8_washer_height,0,0])
+    translate([-m8_washer_thickness,0,0])
     rotate([0,-90,0])
     M8Nut();
   }
