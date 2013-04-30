@@ -966,6 +966,7 @@ module MachineBottomPanel_face(){
       mirror([1,0,0]) BottomPanel_holes();
 
       translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness + 16, 24])
+      rotate(90)
       heatedbed_bottompanel_hole();
 
       y_max_endstop_mount_holes();
@@ -2104,6 +2105,7 @@ module YPlatform_sheet(){
     }
 }
 
+//!YPlatform_subassembly();
 module YPlatform_subassembly(){
   translate([0,0,100-15]){ /*TODO*/
     YPlatform_sheet();
@@ -2196,13 +2198,7 @@ module YPlatform_face(){
   difference(){
     heated_bed_pcb_curves(width = 227, height = 224, connector_holes=false);
 
-    //holes for the heated bed wiring
-    for (i=[-1,1]){
-      for (j=[-1,1]){
-        translate([i*5, 100+j*5])
-        M3_hole();
-      }
-    }
+    holes_for_heated_bed_wiring();
 
     translate([-Y_rods_distance/2, 0])
     YPlatform_left_sandwich_holes();
@@ -2214,7 +2210,6 @@ module YPlatform_face(){
       translate([0,i*20])
         belt_clamp_holes();
     }
-
     
     translate([30 + 25/2, 90 + thickness/2])
     rotate(90)
@@ -2224,6 +2219,31 @@ module YPlatform_face(){
     rotate(90)
     TSlot_holes(width=25);
 
+  }
+}
+
+module holes_for_heated_bed_wiring(){
+  for (i=[-1,1]){
+    for (j=[-1,1]){
+      translate([i*5, 100+j*5])
+      M3_hole();
+    }
+  }
+
+  translate([-80,50])
+  rotate(45)
+  zip_tie_holes();
+
+  translate([-20,70])
+  rotate(45)
+  zip_tie_holes();
+
+  translate([-100,-100])
+  for (i=[-1,1]){
+    for (j=[-1,1]){
+      translate([i*5, 100+j*5])
+      M3_hole();
+    }
   }
 }
 
