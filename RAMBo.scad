@@ -130,12 +130,12 @@ module RAMBo_wiring_holes(){
   zip_tie_holes();
 
   //Thermistor cables
-  translate([95,50])
-  zip_tie_holes();
+  translate([95,52])
+  zip_tie_holes(d=10);
 
   //Power Supply cables
-  translate([95,85])
-  zip_tie_holes();
+  translate([95,80])
+  zip_tie_holes(d=20);
 
   { //Endstop cables
     //TODO: Choose one before manufacturing:
