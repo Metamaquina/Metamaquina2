@@ -17,7 +17,10 @@ module z_max_mount_holes(){
 
   translate([-100,7]){
       //this is to keep the endstop wiring in place:
-      zip_tie_holes();
+      zip_tie_holes(d=8);
+
+      translate([78,0])
+      zip_tie_holes(d=8);
 
       // Since all of the 3d printer wiring will be prepared
       // in an early assembly stage this hole should be
