@@ -976,18 +976,20 @@ module MachineBottomPanel_face(){
 }
 
 //!XPlatform_bottom_face();
-module XPlatform_bottom_face(){
+module XPlatform_bottom_face(remove_frontal_bridge=0){
+  r = 14*remove_frontal_bridge;
+  s = 42*remove_frontal_bridge;
   render(){
     difference(){
 	    union(){
-	    	translate([-machine_x_dim/2 + thickness, -XPlatform_width/2])
-	      square([machine_x_dim - 2 * thickness, XEnd_width]);
+	    	translate([-machine_x_dim/2 + thickness, -XPlatform_width/2+s])
+	      square([machine_x_dim - 2 * thickness, XEnd_width-s]);
 
 	    	translate([-machine_x_dim/2 + thickness, -XPlatform_width/2])
-	    	square([XEnd_box_size+thickness, XEnd_width]);
+	    	rounded_square([XEnd_box_size+thickness+r, XEnd_width], corners=[0,r,0,0]);
 
-	    	translate([+machine_x_dim/2 - 2*thickness - XEnd_box_size, -XPlatform_width/2])
-	    	square([XEnd_box_size+thickness, XEnd_width]);
+	    	translate([+machine_x_dim/2 - 2*thickness - XEnd_box_size - r, -XPlatform_width/2])
+	    	rounded_square([XEnd_box_size+thickness+r, XEnd_width], corners=[r,0,0,0]);
 	    }
 
       //hole for extruder nozzle:
