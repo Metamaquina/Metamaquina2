@@ -163,7 +163,8 @@ module ymax_endstop_subassembly(){
 }
 
 module z_min_endstop(){
-  color(sheet_color){
+  color(sheet_color)
+  translate([15,0]){
     linear_extrude(height=thickness)
     zmin_endstop_spacer_face1();
 
@@ -222,6 +223,7 @@ module ymax_endstop_spacer_face(){
 
 module zmin_endstop_spacer_face1(){
   difference(){
+    mirror([1,0])
     endstop_spacer_face1();
     import("labels.dxf", layer="zmin");
   }
@@ -229,6 +231,7 @@ module zmin_endstop_spacer_face1(){
 
 module zmin_endstop_spacer_face2(){
   difference(){
+    mirror([1,0])
     endstop_spacer_face2();
     import("labels.dxf", layer="zmin");
   }
