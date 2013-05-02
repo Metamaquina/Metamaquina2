@@ -874,11 +874,8 @@ module BottomPanel_holes(){
 }
 
 module heatedbed_bottompanel_hole(){
-    zip_tie_holes();
-    translate([6,0])
-    hull(){
-     zip_tie_holes(r=2);
-    }
+  translate([20,3])
+  heated_bed_wire_passthru_hole();
 }
 
 module zip_tie_holes(d=12, r=m3_diameter/2){
@@ -969,7 +966,6 @@ module MachineBottomPanel_face(){
       mirror([1,0,0]) BottomPanel_holes();
 
       translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness + 16, 24])
-      rotate(90)
       heatedbed_bottompanel_hole();
 
       y_max_endstop_mount_holes();
@@ -2233,15 +2229,25 @@ module holes_for_heated_bed_wiring(){
   rotate(45)
   zip_tie_holes();
 
-  translate([-100,-100])
+  translate([-100,0])
+  heated_bed_wire_passthru_hole();
+}
+
+module heated_bed_wire_passthru_hole(){
   for (i=[-1,1]){
     for (j=[-1,1]){
-      translate([i*5, 100+j*5])
+      translate([i*5, j*10])
       M3_hole();
     }
   }
-}
 
+  hull(){
+    for (i=[-1,1]){
+      translate([i*5, 0])
+        circle(r=5/2);
+    }
+  }
+}
 module BuildVolumePreview(){
   if (render_build_volume){
     translate([-BuildVolume_X/2, -BuildVolume_Y/2, BuildPlatform_height])
