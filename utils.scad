@@ -37,4 +37,11 @@ module rounded_edge_cut(width=10, height=20, r=5){
 
 }
 
-rounded_edge_cut();
+module trapezoid(h, l1, l2, r=0, xoffset=0){
+  hull(){
+    translate([xoffset, h]) circle(r=r);
+    translate([xoffset+l1,h]) circle(r=r);
+    circle(r=r);
+    translate([l2,0]) circle(r=r);
+  }
+}
