@@ -1309,7 +1309,7 @@ module XEndstopHolder(){
   difference(){
     hull(){
       for (j=[-1,1]){
-        translate([52,10*j])
+        translate([51,10*j])
         circle(r=5);
 
         translate([40,15*j])
@@ -1318,7 +1318,7 @@ module XEndstopHolder(){
     }
 
     for (j=[-1,1])
-      translate([52,j*microswitch_holes_distance/2])
+      translate([51,j*microswitch_holes_distance/2])
 
       //these long mount holes are meant to let
       // one freely adjust the mount position
