@@ -48,12 +48,11 @@ module z_min_mount_holes(){
         M3_hole();
     }
 
-  translate([-15,7]){
-    rounded_edge_cut(width=3, height=15.7, r=3/2);
+  translate([-15.5,7]){
+    rounded_edge_cut(width=3, height=15.7, r=3/2, plain_left=true);
 
-    translate([0,-20])
-    rotate(90)
-    zip_tie_holes();
+    translate([5,-15])
+    zip_tie_holes(d=8);
   }
 }
 

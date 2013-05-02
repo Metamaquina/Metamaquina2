@@ -113,11 +113,11 @@ machine_height = BuildVolume_Z + 207.2; //why?
 
 XZStage_offset = 20;
 XZStage_position = RightPanel_basewidth/2 + XZStage_offset;
-z_max_endstop_x = XZStage_position - 40;
+z_max_endstop_x = XZStage_position - 46;
 z_max_endstop_y = machine_height - 25;
 
-z_min_endstop_x = XZStage_position - 40 - 20;
-z_min_endstop_y = 85;
+z_min_endstop_x = z_max_endstop_x - 20;
+z_min_endstop_y = 109;
 
 baseh = 35;
 ArcPanel_rear_advance = 105;
@@ -131,11 +131,14 @@ Y_rod_height = base_bars_Zdistance + base_bars_height + 10.2;//TODO
 BottomPanel_width=60;
 Z_rod_sidepanel_distance = (Z_rods_distance - SidePanels_distance)/2 + thickness;
 
-heatedbed_spring_length = 16; //TODO: 
-heatedbed_spring_compressed_length = 10; //TODO: 
+heatedbed_spring_length = 13; //TODO: 
+heatedbed_spring_compressed_length = 7.4; //TODO: 
+compressed_spring=1;
 
 YPlatform_height = Y_rod_height + lm8uu_diameter/2;
-pcb_height = YPlatform_height + thickness + heatedbed_spring_length;
+pcb_height = YPlatform_height + thickness + 
+heatedbed_spring_compressed_length*compressed_spring + heatedbed_spring_length*(1-compressed_spring);
+
 BuildPlatform_height = pcb_height+2;
 
 //machine_x_dim is the actual width of the whole machine
@@ -363,7 +366,12 @@ module holes_for_motor_wires(){
 //!MachineLeftPanel_face();
 module MachineLeftPanel_face(){
   difference(){
-    MachineSidePanel_face();
+    union(){
+      MachineSidePanel_face();
+      //extra area for mounting the ZMIN endstop:
+      translate([145,66])
+      trapezoid(h=40, l1=50, l2=80, r=10);
+    }
 
     for (clip=left_cable_clips){
         assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){

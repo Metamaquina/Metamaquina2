@@ -16,10 +16,11 @@ module M25_hole(){
   circle(r=m25_diameter/2, $fn=20);
 }
 
-module rounded_edge_cut(width=10, height=20, r=5){
+module rounded_edge_cut(width=10, height=20, r=5, plain_left=false, plain_right=false){
     translate([-width/2,-height])
     rounded_square([width,height], corners=[r,r,0,0]);
 
+    if (!plain_left)
     translate([-width/2-r,-r]){
         difference(){
             square([r,r]);
@@ -27,6 +28,8 @@ module rounded_edge_cut(width=10, height=20, r=5){
         }
     }
 
+
+    if (!plain_right)
     translate([width/2,-r]){
         difference(){
             square([r,r]);
