@@ -13,8 +13,8 @@ use <tslot.scad>;
 
 //subassemblies
 include <endstop.h>;
+include <heated_bed.h>;
 use <lasercut_extruder.scad>;
-use <heated_bed.scad>;
 use <RAMBo.scad>;
 use <jhead.scad>;
 
@@ -131,8 +131,11 @@ Y_rod_height = base_bars_Zdistance + base_bars_height + 10.2;//TODO
 BottomPanel_width=60;
 Z_rod_sidepanel_distance = (Z_rods_distance - SidePanels_distance)/2 + thickness;
 
+heatedbed_spring_length = 16; //TODO: 
+heatedbed_spring_compressed_length = 10; //TODO: 
+
 YPlatform_height = Y_rod_height + lm8uu_diameter/2;
-pcb_height = YPlatform_height + 10;
+pcb_height = YPlatform_height + thickness + heatedbed_spring_length;
 BuildPlatform_height = pcb_height+2;
 
 //machine_x_dim is the actual width of the whole machine
@@ -161,7 +164,7 @@ XCarriage_width = XPlatform_width + 22;
 XCarriage_length = 82 + (num_extruders-1) * extra_extruder_length;
 XCarriage_lm8uu_distance = XCarriage_length - 30;
 
-nozzle_tip_distance = 17; //TODO: calculate this based on nozzle_total_length and XCarriage acrylic/plywood height
+nozzle_tip_distance = 14; //TODO: calculate this based on nozzle_total_length and XCarriage acrylic/plywood height
 
 nozzle_hole_width = 50;
 nozzle_hole_length = machine_x_dim - 2*XEnd_box_size - nozzle_hole_width - 2*thickness - 2*20;
@@ -2703,7 +2706,7 @@ module Metamaquina2(){
   RearAssembly();
 
   if (render_xplatform){
-    translate([0,-XZStage_offset, BuildPlatform_height + ZCarPosition + nozzle_tip_distance])
+    translate([0,-XZStage_offset, BuildPlatform_height + ZCarPosition + nozzle_tip_distance + heated_bed_pcb_thickness + heated_bed_glass_thickness])
       XPlatform();
   }
 

@@ -7,6 +7,7 @@ $fs = 0.5;
 //rendering configs:
 render_lasercut=true;
 render_pcb=true;
+render_glass=true;
 render_ABS=true;
 render_PLA=true;
 render_metal=true;

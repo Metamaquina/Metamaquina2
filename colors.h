@@ -6,6 +6,7 @@ dark_green = [0,0.2,0];
 rubber_color = [0.1, 0.1, 0.1];
 nozzle_color = "gold";
 pcb_color = [1.0, 0.0, 0.0];
+glass_color = [0.6, 0.6, 1, 0.4];
 threaded_metal_color = [0.6, 0.6, 0.6];
 metal_color = [0.7, 0.7, 0.7];
 powersupply_color = metal_color;
