@@ -1397,7 +1397,7 @@ module XCarriage_bottom_face(){
     }
 
     //these are for making sure the motor wires are not broken by the machine's constant movement:
-    translate([-30,20])
+    translate([-30,15])
     rotate(90)
     zip_tie_holes();
   }
