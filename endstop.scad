@@ -74,13 +74,14 @@ module y_endstop_mount_holes(){
     translate([i*microswitch_holes_distance/2,-24])
     M3_hole();
 
-  for (i=[-1,1])
-    translate([-10,-24])
-      hull()
-        for (j=[-1,1])
-          translate([-5,7+j*7])
-          circle(r=m3_diameter, $fn=20);
-          //big enough for a microswitch to pass through
+  //edge cut for inserting the endstop wire
+  translate([-1.5,-30.01])
+  rotate(180)
+  rounded_edge_cut(width=3, height=13, r=3/2);
+
+  //and ziptie holes to keep it in place
+  translate([-12,-20])
+  zip_tie_holes(d=6);
 
   //hole to give room for bolt tips and M25 nuts:
   translate([0,-10])

@@ -1588,20 +1588,6 @@ module MachineBottomPanel_sheet(){
         }
     }
 
-    //These transparent renderings serve us the purpose of
-    // making sure that these holes are large enough
-    // to let the microswitches in the preassembled wires
-    // pass through:
-    % translate([12.5,-36])
-    rotate([0,90])
-    rotate(90)
-     mechanical_switch();
-
-    % translate([-47.5,22])
-    rotate([0,90])
-    rotate(90)
-     mechanical_switch();
-
     translate([22.5,-24,thickness])
     ymax_endstop_subassembly();
 
