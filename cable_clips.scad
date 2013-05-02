@@ -80,8 +80,8 @@ module cable_clip_model(D, H, L, W, W2, clip_thickness){
 
 module hellerman_cable_clip_with_sticker(D, H, L, W, W2, sticker_thickness=1, clip_thickness){
     color("grey")
-    translate([-W/2, -L/2])
-    cube([W, L, sticker_thickness]);
+    translate([-L/2, -W/2])
+    cube([L, W, sticker_thickness]);
 
     color("white")
     translate([0,0,sticker_thickness])
@@ -131,14 +131,14 @@ module cable_clip(type){
 module RA3_cable_clip_mount() clip_mount(L=13, W=13);
 module RA3_cable_clip() hellerman_cable_clip_with_sticker(D=3, H=5, L=13, W=13, W2=5, clip_thickness=1);
 
-module RA6_cable_clip_mount() clip_mount(L=19, W=19);
-module RA6_cable_clip() hellerman_cable_clip_with_sticker(D=6, L=19, H=9, W=19, W2=5, clip_thickness=1.5);
+module RA6_cable_clip_mount() clip_mount(L=20.7, W=11.6);
+module RA6_cable_clip() hellerman_cable_clip_with_sticker(D=6, L=20.7, H=9, W=11.6, W2=5, clip_thickness=1.5);
 
-module RA9_cable_clip_mount() clip_mount(L=19, W=19);
-module RA9_cable_clip() hellerman_cable_clip_with_sticker(D=9, H=12.5, L=19, W=19, W2=7.5, clip_thickness=1.5 /*todo*/);
+module RA9_cable_clip_mount() clip_mount(L=19, W=11.25);
+module RA9_cable_clip() hellerman_cable_clip_with_sticker(D=9, H=12.5, L=19, W=11.25, W2=6.75, clip_thickness=1.5 /*todo*/);
 
-module RA13_cable_clip_mount() clip_mount(L=25, W=25);
-module RA13_cable_clip() hellerman_cable_clip_with_sticker(D=13, H=16.5, L=25, W=25, W2=10, clip_thickness=1.8 /*todo*/);
+module RA13_cable_clip_mount() clip_mount(L=23.3, W=24);
+module RA13_cable_clip() hellerman_cable_clip_with_sticker(D=13, H=16.5, L=23.3, W=24, W2=9.5, clip_thickness=1.8 /*todo*/);
 
 module RA18_cable_clip_mount() clip_mount(L=28.5, W=28.5);
 module RA18_cable_clip() hellerman_cable_clip_with_sticker(D=18, L=28.5, H=23, W=28.5, W2=10, clip_thickness=1.8);

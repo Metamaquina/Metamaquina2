@@ -46,8 +46,8 @@ left_cable_clips = [
 
 right_cable_clips = [
     //[type, angle, y, z]
-    ["RA13", 90, 185,35],
-    ["RA13", 90, 120,35]];
+    ["RA9", 90, 185,35],
+    ["RA9", 90, 120,35]];
     
 bottom_cable_clips = [["RA13", -90, -100,0], ["RA13", 90, 0,0], ["RA13", -90, 100,0]];
 
