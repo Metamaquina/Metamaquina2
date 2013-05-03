@@ -117,7 +117,7 @@ module lasercutter_panel(){
   translate([350,70]){
     translate([-64, 147])
     rotate(-90)
-    YPlatform_face();
+    render() YPlatform_face();
 
     translate([378,55])
     rotate(90){
@@ -181,7 +181,7 @@ module LCExtruder_panel(){
   translate([109,20])
   slice2_face();
 
-  translate([170,95])
+  translate([170,100])
   rotate(180)
   slice3_face();
 
