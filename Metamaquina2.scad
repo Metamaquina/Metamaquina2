@@ -140,7 +140,7 @@ YPlatform_height = Y_rod_height + lm8uu_diameter/2;
 pcb_height = YPlatform_height + thickness + 
 heatedbed_spring_compressed_length*compressed_spring + heatedbed_spring_length*(1-compressed_spring);
 
-BuildPlatform_height = pcb_height+2;
+BuildPlatform_height = pcb_height + heated_bed_pcb_thickness + heated_bed_glass_thickness;
 
 //machine_x_dim is the actual width of the whole machine
 machine_x_dim = Z_rods_distance+2*(lm8uu_diameter/2+thickness);
@@ -2724,9 +2724,7 @@ module Metamaquina2(){
   if (render_xplatform){
     translate([0,
                -XZStage_offset,
-               BuildPlatform_height 
-               + heated_bed_pcb_thickness
-               + heated_bed_glass_thickness
+               BuildPlatform_height
                + ZCarPosition
                + nozzle_tip_distance
 ])
