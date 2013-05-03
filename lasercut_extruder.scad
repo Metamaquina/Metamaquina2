@@ -29,7 +29,7 @@ thickness = 6;
 HandleWidth = 5*thickness;
 HandleHeight = 30;
 default_sheet_color = [0.9, 0.7, 0.45, 0.9];
-position_of_holder_for_extruder_wires=[15,45];
+position_of_holder_for_extruder_wires=[20,52];
 
 module bolt_head(r, h){
   difference(){
