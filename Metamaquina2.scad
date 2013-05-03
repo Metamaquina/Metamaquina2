@@ -24,6 +24,7 @@ include <coupling.h>;
 include <washers.h>;
 include <nuts.h>;
 include <lm8uu_bearing.h>;
+include <jhead.h>;
 use <608zz_bearing.scad>;
 use <domed_cap_nuts.scad>;
 use <belt-clamp.scad>;
@@ -167,8 +168,6 @@ XCarriage_width = XPlatform_width + 22;
 XCarriage_length = 82 + (num_extruders-1) * extra_extruder_length;
 XCarriage_lm8uu_distance = XCarriage_length - 30;
 
-nozzle_tip_distance = 14; //TODO: calculate this based on nozzle_total_length and XCarriage acrylic/plywood height
-
 nozzle_hole_width = 50;
 nozzle_hole_length = machine_x_dim - 2*XEnd_box_size - nozzle_hole_width - 2*thickness - 2*20;
 
@@ -182,6 +181,11 @@ XIdler_height = XMotor_height + PulleyRadius - IdlerRadius;
 X_rod_length = machine_x_dim - 2*thickness;
 X_rod_height = XMotor_height + PulleyRadius - lm8uu_diameter/2 - 2*thickness;
 
+XCarriage_height = thickness + X_rod_height + lm8uu_diameter/2;
+
+nozzle_tip_distance = jhead_length-jhead_instalation_depth - thickness - XCarriage_height;
+echo(str("nozzle_tip_distance:", nozzle_tip_distance));
+ 
 RightPanel_backwidth = 55;
 RightPanel_backheight = machine_height - RightPanel_baseheight;
 
@@ -1928,8 +1932,6 @@ module ZBars(){
   }
 }
 
-XCarriage_height = thickness + X_rod_height + lm8uu_diameter/2;
-
 module XCarriage(){
   //lasercut parts:
   translate([XCarPosition, 0, XCarriage_height]){
@@ -2720,7 +2722,14 @@ module Metamaquina2(){
   RearAssembly();
 
   if (render_xplatform){
-    translate([0,-XZStage_offset, BuildPlatform_height + ZCarPosition + nozzle_tip_distance + heated_bed_pcb_thickness + heated_bed_glass_thickness])
+    translate([0,
+               -XZStage_offset,
+               BuildPlatform_height 
+               + heated_bed_pcb_thickness
+               + heated_bed_glass_thickness
+               + ZCarPosition
+               + nozzle_tip_distance
+])
       XPlatform();
   }
 
