@@ -35,16 +35,22 @@ module lasercutter_panel3(){
   YEndstopHolder_face();
 
   translate([330,240])
-  endstop_spacer_sheet1();
+  zmin_endstop_spacer_face1();
 
   translate([330,210])
-  endstop_spacer_sheet2();
+  zmin_endstop_spacer_face2();
 
   translate([355,240])
-  endstop_spacer_sheet1();
+  zmax_endstop_spacer_face1();
 
   translate([355,210])
-  endstop_spacer_sheet2();
+  zmax_endstop_spacer_face2();
+
+  translate([380,210])
+  ymin_endstop_spacer_face();
+
+  translate([380,240])
+  ymax_endstop_spacer_face();
 }
 
 lasercutter_panel3();

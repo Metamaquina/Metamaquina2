@@ -1,7 +1,7 @@
-include <Metamaquina-config.scad>;
+include <Metamaquina2.h>;
 
 module v4nozzle(){
-  if (preview_nozzle){
+  if (render_nozzle){
     color (nozzle_color){
       scale(25.4)
       difference() {

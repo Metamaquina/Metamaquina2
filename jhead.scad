@@ -1,4 +1,5 @@
-include <Metamaquina-config.scad>;
+include <Metamaquina2.h>;
+include <jhead.h>;
 use <nozzle.scad>;
 
 module J_head_assembly(){
@@ -9,7 +10,7 @@ module J_head_assembly(){
 }
 
 module J_head(){
-  if (preview_peek){
+  if (render_peek){
     color(peek_color){
       translate([0,0,-50+4.76+4.64]){
         cylinder(h=50,r=6);

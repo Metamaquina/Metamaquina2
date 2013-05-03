@@ -7,10 +7,15 @@
 use <NEMA.scad>;
 use <608zz_bearing.scad>;
 use <rounded_square.scad>;
-use <thingiverse/12789/TZ_Huxley_extruder_gears.scad>;
+
+// Gears
+use <small_extruder_gear.scad>
+use <large_extruder_gear.scad>
+
 use <tslot.scad>;
-include <Metamaquina-config.scad>;
-use <Metamaquina2.scad>;
+include <Metamaquina2.h>;
+include <nuts.h>;
+include <washers.h>;
 
 extruder_mount_holes_distance = X_rods_distance + 14;
 idler_axis_position = [-12,21];
@@ -24,6 +29,7 @@ thickness = 6;
 HandleWidth = 5*thickness;
 HandleHeight = 30;
 default_sheet_color = [0.9, 0.7, 0.45, 0.9];
+position_of_holder_for_extruder_wires=[20,52];
 
 module bolt_head(r, h){
   difference(){
@@ -35,7 +41,8 @@ module bolt_head(r, h){
 }
 
 module bolt(dia, length){
-  color("silver"){
+  if (render_metal)
+  color(metal_color){
     bolt_head(r=dia, h=dia);
     translate([0,0,-length]){
       cylinder(r=dia/2, h=length, $fn=60);
@@ -77,12 +84,18 @@ module M4_hole(){
 //!idler_side_face();
 module idler_side_face(){
   R=23;
+
   rotate(90)
   union(){
     difference(){
       hull(){
         rounded_square([2*R,R], corners=[0,R,R,0]);
+
         circle(r=6);
+
+//The following code is a quick hack to make the idler side a bit larger so that the idler's small threaded rod is better attached to the lasercut sheet and also to give more room to a larger bolt (M3x16 instead of M3x12)
+        translate([2,-2.5])
+        rounded_square([2*R,R], corners=[0,R,R,0]);
       }
 
       M3_hole();
@@ -93,11 +106,11 @@ module idler_side_face(){
 
       //cur for the idler_back_face
       translate([R,R-thickness])
-      square([R,thickness]);
+      square([50,thickness]);
 
       translate([R*(1+1/2),R])
       rotate(-180)
-      t_slot_shape(3, 12);
+      t_slot_shape(3, 16);
     }
     translate([R,R-thickness/2])
     rotate(-90)
@@ -109,7 +122,7 @@ module idler_back_face(){
   R=23;
   rounding = 5;
   idler_width = 5*thickness + 1;
-  idler_height = R+rounding;
+  idler_height = R+2+rounding;
 
   difference(){
     translate([-idler_width/2,0])
@@ -165,25 +178,50 @@ module handlelock(){
   }
 }
 
+module slice_numbering(n){
+  translate([-22,3])
+  for (i=[1:n])
+    translate([i, 0])
+    square([0.1,1]);
+}
+
 module slice1_face(){
-  extruder_slice(bearing_slot=true, idler_axis=false, handle_lock=true);
+  difference(){
+    extruder_slice(bearing_slot=true, idler_axis=false, handle_lock=true);
+    slice_numbering(1);
+  }
 }
 
 module slice2_face(){
-  extruder_slice(nozzle_holder2=true, idler_axis=true, idler_nut_gap=true);
+  difference(){
+    extruder_slice(nozzle_holder2=true, idler_axis=true, idler_nut_gap=true);
+    slice_numbering(2);
+  }
 }
 
 module slice3_face(){
-  extruder_slice(nozzle_holder=true, idler_axis=true, filament_channel=true, mount_holes=true);
+  difference(){
+    extruder_slice(nozzle_holder=true, idler_axis=true, filament_channel=true, mount_holes=true);
+    slice_numbering(3);
+
+    translate([40,0])
+    slice_numbering(3);
+  }
 }
 
 m3_diameter = 3;
 module slice4_face(){
-  extruder_slice(nozzle_holder2=true, motor_holder=true, idler_axis=true);
+  difference(){
+    extruder_slice(nozzle_holder2=true, motor_holder=true, idler_axis=true);
+    slice_numbering(4);
+  }
 }
 
 module slice5_face(){
-  extruder_slice(bearing_slot=true, idler_axis=false, handle_lock=true);
+  difference(){
+    extruder_slice(bearing_slot=true, idler_axis=false, handle_lock=true);
+    slice_numbering(5);
+  }
 }
 
 module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=false, mount_holes=false, idler_axis=false, bottom_screw_holes=false, handle_lock=false, nozzle_holder=false, nozzle_holder2=false, idler_nut_gap=false){
@@ -213,6 +251,9 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
       }
 
       if (motor_holder){
+        translate(position_of_holder_for_extruder_wires)
+        rounded_square([20,30], corners=[5,5,5,5]);
+
         hull(){
           translate([15,0])
           square([epsilon, H]);
@@ -264,7 +305,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
       }
 
       if (idler_axis){
-        translate([-23/2 - 1.5*r, 0])
+        translate([-9 - 1.5*r, 0])
         rounded_square([1.5*r, hobbed_bolt_position[1] - 23/2], corners=[0,0,r,0]);
       }
     }
@@ -286,9 +327,10 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
   translate(idler_axis_position)
   circle(r=m3_diameter/2, $fn=20);
 
-  if (idler_nut_gap)
-    translate(idler_axis_position)
-    circle(r=m3_diameter, $fn=20);
+  if (idler_nut_gap){
+    translate(idler_axis_position - [5,4.5])
+    rounded_square([9,15], corners=[4.5,4.5,4.5,4.5]);
+  }
 
   if (mount_holes){
     for (i=[-1,1])
@@ -326,6 +368,12 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
 
   ///////////////
     if (motor_holder){
+      for (i=[-1,1])
+        for (j=[-1,1])
+          translate(position_of_holder_for_extruder_wires)
+          translate([10+i*5, 20+j*5])
+          circle(r=m3_diameter/2, $fn=20);
+
       translate(motor_position){
         rotate(-motor_angle){
           circle(r=12);
@@ -452,7 +500,8 @@ module idler(){
   R=23;
   bearing_thickness = 7;
 
-  color("grey")
+  if (render_metal)
+  color(metal_color)
   rotate([90,0])
     translate([0,0,5*thickness])
     translate(idler_bearing_position)
@@ -462,14 +511,19 @@ module idler(){
     translate(idler_axis_position)
     rotate(-idler_angle)
     {
-      translate([0,0,-0.5])
-      idler_side_sheet();
+      translate([0,0,-0.5]){
+        idler_side_sheet();
 
+        // we must make sure that the nut_gap
+        // is large enough for this nut to fit inside
+        translate([0,0,thickness]) M3_nut();
+      }
 
       translate(idler_bearing_position - idler_axis_position)
       translate([0,0,-0.5 + thickness]){
         idler_spacer_sheet();
 
+        if (render_metal)
         translate([0,0, thickness])
         608zz_bearing(true);
 
@@ -499,7 +553,8 @@ module extruder_block(){
 
 //JHead MKIV nozzle
 module nozzle(length=50){
-  color([0.2,0.2,0.2]){
+  if (render_rubber)
+  color(rubber_color){
     difference(){
       union(){
         translate([0,0,5])
@@ -535,25 +590,29 @@ module lasercut_extruder(){
 
     nozzle();
 
-    translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
-    rotate([0,extruder_gear_angle])
-    rotate([90,0])
-    color(ABS_color)
-    extruder_gear(teeth=37);
+    if (render_ABS){
+      color(ABS_color)
+      translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
+      rotate([0,extruder_gear_angle])
+      rotate([90,0])
+      extruder_gear(teeth=37);
+    }
 
     //hobbed_bolt
-    color(metal_color)
-    translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]])
-    rotate([90,0])
-    cylinder(r=7.2/2, h=5*thickness, $fn=40);
+    if (render_metal){
+      color(metal_color)
+      translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]])
+      rotate([90,0])
+      cylinder(r=7.2/2, h=5*thickness, $fn=40);
 
-    translate([hobbed_bolt_position[0], -3*thickness/2, hobbed_bolt_position[1]])
-    rotate([90,0])
-    608zz_bearing(true);
+      translate([hobbed_bolt_position[0], -3*thickness/2, hobbed_bolt_position[1]])
+      rotate([90,0])
+      608zz_bearing(true);
 
-    translate([hobbed_bolt_position[0], 3*thickness/2+7, hobbed_bolt_position[1]])
-    rotate([90,0])
-    608zz_bearing(true);
+      translate([hobbed_bolt_position[0], 3*thickness/2+7, hobbed_bolt_position[1]])
+      rotate([90,0])
+      608zz_bearing(true);
+    }
 
     translate([motor_position[0], -thickness/2, motor_position[1]])
     rotate([-90,0])
@@ -562,9 +621,11 @@ module lasercut_extruder(){
       NEMA17();
 
       translate([0,0,-2*thickness - 2*washer_thickness])
-      color(ABS_color)
-      rotate([180,0])
-      motor_gear(teeth=11);
+      if (render_ABS){
+        color(ABS_color)
+        rotate([180,0])
+        motor_gear(teeth=11);
+      }
     }
   }
 }

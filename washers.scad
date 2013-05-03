@@ -3,20 +3,30 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
+include <washers.h>;
+
 module M3_washer(){
-  washer(washer_thickness = 0.5, external_diameter = 6.75, internal_diameter = 3.1);
+  washer(washer_thickness = m3_washer_thickness,
+         external_diameter = m3_washer_D,
+         internal_diameter = m3_washer_d);
 }
 
 module M4_washer(){
-  washer(washer_thickness = 0.75, external_diameter = 8.75, internal_diameter = 4.3);
+  washer(washer_thickness = m4_washer_thickness,
+         external_diameter = m4_washer_D,
+         internal_diameter = m4_washer_d);
 }
 
 module M8_washer(){
-  washer(washer_thickness = 1.5, external_diameter = 18, internal_diameter = 8.5);
+  washer(washer_thickness = m8_washer_thickness,
+         external_diameter = m8_washer_D,
+         internal_diameter = m8_washer_d);
 }
 
 module M8_mudguard_washer(){
-  washer(washer_thickness = 2, external_diameter = 32, internal_diameter = 8.5);
+  washer(washer_thickness = m8_mudguard_washer_thickness,
+         external_diameter = m8_mudguard_washer_D,
+         internal_diameter = m8_mudguard_washer_d);
 }
 
 module washer(washer_thickness, external_diameter, internal_diameter){

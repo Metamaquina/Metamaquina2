@@ -4,7 +4,7 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-include <Metamaquina-config.scad>;
+include <Metamaquina2.h>;
 
 module t_slot_holes(width, thickness, joint_size=5){
   translate([0, width/2])

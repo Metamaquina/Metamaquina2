@@ -1,86 +1,36 @@
-// This one is AWESOME design by NOPHEAD
+// (c) 2013 Felipe C. da S. Sanches <fsanches@metamaquina.com.br>,
+// (c) 2013 Rafael H. de L. Moretti <moretti@metamaquina.com.br>
+// Licensed under the terms of the GNU General Public License
+// version 3 (or later).
 
-// PRUSA Mendel  
-// Coupling from nophead
-// GNU GPL v3
-// Josef Průša
-// josefprusa@me.com
-// prusadjs.cz
-// http://www.reprap.org/wiki/Prusa_Mendel
-// http://github.com/prusajr/PrusaMendel
+include <coupling.h>;
 
-include <configuration.scad>
+module coupling(shaft_diameter=5, rod_diameter=8){
+  color(metal_color)
+  difference(){
+    cylinder(r=coupling_diameter/2, h=coupling_length, $fn=60);
 
-/**
- * @id coupling
- * @name Coupling
- * @category Printed
- * @using 4 m3x20
- * @using 4 m3washer
- * @using 4 m3nut
- * @step Place M3 nuts in all nut traps.
- * @step Insert screws with washers on them and tighet it just a bit.
- */
+    translate([0,0,-epsilon])
+      cylinder(r=shaft_diameter/2, h=coupling_shaft_depth+2*epsilon, $fn=20);
 
-/**
- * 20mm long piece of PVC tube. 5mm inside diameter, 8mm outside diameter.
- * @id coupling-tube
- * @name Coupling tube
- * @category Nuts&bolts
- */
+    translate([0,0,coupling_length - coupling_rod_depth - epsilon])
+      cylinder(r=rod_diameter/2, h=coupling_rod_depth+2*epsilon, $fn=20);
 
-holeX = 7.5;
-holeY = 6.5;
+    translate([-coupling_diameter/2 + 2,-1, -epsilon])
+      cube([coupling_diameter, 2, 10*coupling_length+2*epsilon]);
 
-holeR = 3.4;
-nutR = 3.25;
-nutH = 3;
-corner_cut = 26;
+    // Bolt hole 1
+    translate([bolt_offsetx,-bolt_size/2,bolt1_offsetz+bolt_diameter/2])
+    rotate(a=[0,90,90])
+      cylinder(r=bolt_diameter/2, h=bolt_size+2*epsilon, $fn=20);
 
-studding_dia = 8.0;
-shaft_dia = 5.0;
+    // Bolt hole 2
+    translate([bolt_offsetx,-bolt_size/2,coupling_length-bolt2_offsetz-bolt_diameter/2])
+    rotate(a=[0,90,90])
+      cylinder(r=bolt_diameter/2, h=bolt_size+2*epsilon, $fn=20);
 
-module coupling(c){
-    union(){
-        difference(){
-            cube(size = [30,25,8], center = true);
-
-            if(c==1){
-                //slot
-            	*cube(size = [2,40,30], center = true);
-                
-                //nut holes
-            	translate([ holeX,  holeY, nutH/2 - 4.01-3/2]) nut(m3_nut_diameter,3);
-            	translate([ holeX, -holeY, nutH/2 - 4.01-3/2]) nut(m3_nut_diameter,3);
-            	translate([-holeX,  holeY, nutH/2 - 4.01-3/2]) nut(m3_nut_diameter,3);
-            	translate([-holeX, -holeY, nutH/2 - 4.01-3/2]) nut(m3_nut_diameter,3);
-            }
-
-            //shaft groves
-            translate([ -16, 0, 4.5]) rotate([0,90,0]) cylinder(h = 16, r=studding_dia / 2, $fn=16);
-            translate([-0.5, 0, 4.5]) rotate([0,90,0]) cylinder(h = 16, r=shaft_dia / 2,    $fn=16);
-
-            //screw holes
-            translate([ holeX,  holeY, -10]) polyhole(m3_diameter,20);
-            translate([ holeX, -holeY, -10]) polyhole(m3_diameter,20);
-            translate([-holeX,  holeY, -10]) polyhole(m3_diameter,20);
-            translate([-holeX, -holeY, -10]) polyhole(m3_diameter,20);
-
-            //corners
-            rotate([0,0,30])   translate([corner_cut, 0, 0]) cube(size = [20,40,20], center = true);
-            rotate([0,0,-30])  translate([corner_cut, 0, 0]) cube(size = [20,40,20], center = true);
-            rotate([0,0,150])  translate([corner_cut, 0, 0]) cube(size = [20,40,20], center = true);
-            rotate([0,0,-150]) translate([corner_cut, 0, 0]) cube(size = [20,40,20], center = true);
-        }
-        if(c==1){
-            // bridge
-        	translate([ holeX,  holeY, nutH-3.9]) cylinder(h = 0.4, r=nutR+0.1, $fn=6, center=true);
-        	translate([ holeX, -holeY, nutH-3.9]) cylinder(h = 0.4, r=nutR+0.1, $fn=6, center=true);
-        	translate([-holeX,  holeY, nutH-3.9]) cylinder(h = 0.4, r=nutR+0.1, $fn=6, center=true);
-        	translate([-holeX, -holeY, nutH-3.9]) cylinder(h = 0.4, r=nutR+0.1, $fn=6, center=true);
-        }
-    }
+  }
 }
 
-translate([0, 14, 4]) coupling(c=0);
-translate([0, -14, 4]) rotate([0,0,180]) coupling(c=1);
+coupling();
+

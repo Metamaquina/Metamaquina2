@@ -3,7 +3,7 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-include <Metamaquina-config.scad>;
+include <Metamaquina2.h>;
 use <rounded_square.scad>;
 
 hexspacer_length = 35; //considering the height of the connectors and components
@@ -30,7 +30,8 @@ module PSU_connector(){
   bolt_diameter = 3.5;
   bolts_offset = -2.3;
 
-  color(black_plastic_color)
+  if (render_rubber)
+  color(rubber_color)
   difference() {
     cube([conn_thickness, conn_width, conn_height]);
 
@@ -53,9 +54,11 @@ module RAMBo_cover_curves(border=0){
 }
 
 module RAMBo_cover(){
-  color(acrylic_color)
-  linear_extrude(height=RAMBo_cover_thickness)
-  RAMBo_cover_curves();
+  if (render_acrylic){
+    color(acrylic_color)
+    linear_extrude(height=RAMBo_cover_thickness)
+    RAMBo_cover_curves();
+  }
 }
 
 module RAMBo(){
@@ -68,7 +71,8 @@ module RAMBo(){
           hexspacer();
           translate([0,0,hexspacer_length+RAMBo_cover_thickness]){
             //bolt head
-            color("grey")
+            if (render_metal)
+            color(metal_color)
             cylinder(r=3, h=M3_bolt_head, $fn=20);
           }
         }
@@ -96,12 +100,65 @@ module RAMBo_volume(){
   %cube([RAMBo_width, RAMBo_height, RAMBo_thickness]);
 }
 
-module RAMBo_wiring_hole(){
+module RAMBo_wiring_holes(){
+  //This is a big hole for passing all wires from one side of
+  // the panel to the other side:
   translate([RAMBo_width/2, RAMBo_height/2])
+  rotate(90)
   hull()
   for (i=[-1,1])
-    translate([i*25,0])
+    translate([i*15,0])
     circle(r=10, $fn=20);
+
+
+  //These are ziptie holes for making sure the individual wires
+  // are kept in place, near their connection point in the RAMBo PCB:
+
+  //X & Y motor cables
+  translate([20,10])
+  rotate(90)
+  zip_tie_holes();
+
+  //Z left and right motor cables
+  translate([50,10])
+  rotate(90)
+  zip_tie_holes();
+
+  //Extruder motor cable
+  translate([80,10])
+  rotate(90)
+  zip_tie_holes();
+
+  //Thermistor cables
+  translate([95,52])
+  zip_tie_holes(d=10);
+
+  //Power Supply cables
+  translate([95,80])
+  zip_tie_holes(d=20);
+
+  { //Endstop cables
+    //TODO: Choose one before manufacturing:
+
+    // Option 1: This is closer to the connector but may leave the cables exposed in the back of the machine
+#    translate([10,50])
+    zip_tie_holes();
+
+    // Option 2: This is a bit far, but the cables would be less exposed in the upper portion of the pcb mount area
+#    translate([80,95])
+    rotate(90)
+    zip_tie_holes();
+  }
+
+  //Extruder heater cable
+  translate([20,95])
+  rotate(90)
+  zip_tie_holes();
+
+  //HeatedBed heater cable
+  translate([50,95])
+  rotate(90)
+  zip_tie_holes();
 }
 
 module RAMBo_holes(){
@@ -118,32 +175,39 @@ module RAMBo_holes(){
   circle(r=m4_diameter/2, $fn=20);
 }
 
-dark_green = [0,0.2,0];
 module RAMBo_pcb(){
-  color(dark_green)
-  linear_extrude(height=RAMBo_pcb_thickness)
-  difference(){
-    square([RAMBo_width, RAMBo_height]);
-    RAMBo_holes();
+  if (render_pcb){
+    color(pcb_color){
+      linear_extrude(height=RAMBo_pcb_thickness){
+        difference(){
+          square([RAMBo_width, RAMBo_height]);
+          RAMBo_holes();
+        }
+      }
+    }
   }
 }
 
 white_nylon_color = [1, 1, 0.8];
 module nylonspacer(D=8, d=m4_diameter, h=nylonspacer_length){
-  color(white_nylon_color)
-  linear_extrude(height=h)
-  difference(){
-    circle(r=D/2, $fn=20);
-    circle(r=d/2, $fn=20);
+  if (render_nylon){
+    color(white_nylon_color)
+    linear_extrude(height=h)
+    difference(){
+      circle(r=D/2, $fn=20);
+      circle(r=d/2, $fn=20);
+    }
   }
 }
 
 module hexspacer(D=8, d=m3_diameter, h=hexspacer_length){
-  color(metal_color)
-  linear_extrude(height=h)
-  difference(){
-    circle(r=D/2, $fn=6);
-    circle(r=d/2, $fn=20);
+  if (render_metal){
+    color(metal_color)
+    linear_extrude(height=h)
+    difference(){
+      circle(r=D/2, $fn=6);
+      circle(r=d/2, $fn=20);
+    }
   }
 }
 
