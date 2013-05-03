@@ -3,6 +3,7 @@
 // version 3 (or later).
 
 include <Metamaquina2.h>;
+extruder_wiring_radius = 6;//TODO: update this number before manufacturing!
 
 //utils
 include <colors.h>;
@@ -790,9 +791,28 @@ module MachineArcPanel_face(){
   }
 }
 
+//These are auxiliary parts for tightening up the extruder wiring when it passes through the TopPenal hole.
+module top_wiring_hole_aux(r=5, border=4){
+  difference(){
+    hull(){
+      circle(r=10 + border);
+
+      translate([13,0]) circle(r=3/2 + border);
+      translate([-13,0]) circle(r=3/2 + border);
+    }
+    circle(r=r);
+    translate([13,0]) M3_hole();
+    translate([-13,0]) M3_hole();
+  }
+}
+
 module top_hole_for_extruder_wires(){
-  translate([0,120])
-  circle(r=10); //enough for the motor wire connector
+  translate([0,120]){
+    circle(r=10);
+
+    translate([13,0]) M3_hole();
+    translate([-13,0]) M3_hole();
+  }
 }
 
 //!MachineTopPanel_face();
@@ -1561,12 +1581,21 @@ module MachineLeftPanel_sheet(){
   }
 }
 
+//!MachineTopPanel_sheet();
 module MachineTopPanel_sheet(){
   translate([0,-XZStage_offset,machine_height]){
     if( render_lasercut ){
       color(sheet_color){
         linear_extrude(height=thickness)
         MachineTopPanel_face();
+
+        translate([0,120,thickness])
+        linear_extrude(height=thickness)
+        top_wiring_hole_aux(r=extruder_wiring_radius);
+
+        translate([0,120,-thickness])
+        linear_extrude(height=thickness)
+        top_wiring_hole_aux(r=extruder_wiring_radius);
       }
     }
 
