@@ -128,13 +128,12 @@ module lasercutter_panel(){
     rotate(-90)
     render() YPlatform_face();
 
-    translate([378,55])
-    rotate(90){
-      xend_bearing_sandwich_face();
+    translate([370,85])
+    rotate(90) xend_bearing_sandwich_face();
 
-      translate([42,0])
-      xend_bearing_sandwich_face();
-    }
+    translate([228,292])
+    rotate(90)
+    xend_bearing_sandwich_face();
 
     translate([350,160])
     rotate(90)
