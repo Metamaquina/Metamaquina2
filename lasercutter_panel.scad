@@ -20,8 +20,8 @@ module lasercutter_panel(){
     mirror([1,0]) //this is mirrored to place the etchings in the right side of the sheet
     render() MachineLeftPanel_face();
 
-    translate([1230,90])
-    set_of_M3_spacers(h=6, w=9);
+    translate([1215,88])
+    set_of_M3_spacers(h=6, w=11);
 
     translate([242,0]){
       translate([205,222]){
@@ -96,13 +96,22 @@ module lasercutter_panel(){
     mirror([0,1])
     YMotorHolder_face();
 
-    translate([352,300])
+    translate([352,310])
     rotate(-90)
     render() XCarriage_bottom_face();
 
     translate([335,170]){
       for (i=[0:1]){
         translate([i*20,0]) RodEndBottom_face();
+      }
+    }
+
+    translate([415,205]){
+    rotate(90)
+      for (i=[0:1]){
+        translate([i*30,0])
+         rotate(45)
+         top_wiring_hole_aux(r=6);
       }
     }
 
