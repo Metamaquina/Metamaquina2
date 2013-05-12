@@ -1340,16 +1340,16 @@ module XEndstopHolder(){
   difference(){
     hull(){
       for (j=[-1,1]){
-        translate([51,10*j])
+        translate([XCarriage_length/2 + 10,10*j])
         circle(r=5);
 
-        translate([40,15*j])
+        translate([XCarriage_length/2 - 1,15*j])
         circle(r=5);
       }
     }
 
     for (j=[-1,1])
-      translate([51,j*microswitch_holes_distance/2])
+      translate([XCarriage_length/2 + 10,j*microswitch_holes_distance/2])
 
       //these long mount holes are meant to let
       // one freely adjust the mount position
@@ -1373,11 +1373,11 @@ module XCarriage_plainface(sandwich=false){
       rounded_square([XCarriage_length, XPlatform_width], corners=[10,10,0,0]);
 
       //belt_clamp_area
-      translate([29,43])
+      translate([XCarriage_length/2 - 41 + 29,43])
       belt_clamp_holder();
 
       //belt_clamp_area
-      translate([-29,43])
+      translate([-(XCarriage_length/2 - 41) -29,43])
       mirror([1,0])
       belt_clamp_holder();
 
@@ -1400,8 +1400,10 @@ module XCarriage_plainface(sandwich=false){
       rounded_square([25,20], corners=[5,5,5,5]);
     }
 
-    //holes for attaching the wade extruder
-    wade_holes();
+    for (i=[-1,1])
+    translate([i*(num_extruders-1)*extra_extruder_length/2,0])
+      //holes for attaching the wade extruder
+      wade_holes();
     
     //holes for hexspacers
     for (i=[-1,1]){
