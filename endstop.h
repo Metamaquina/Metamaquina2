@@ -4,7 +4,9 @@
 
 use <endstop.scad>;
 
-microswitch_holes_distance = 9.4;
-endstop_holder_width = 15;//TODO
-endstop_holder_height = 8;//TODO
+//Micro Switch KW11-3Z-5-3T - 18MM
+microswitch_holes_distance = 9.5;
+microswitch_width = 20;
+microswitch_height = 10.7;
+microswitch_thickness = 6.3;
 

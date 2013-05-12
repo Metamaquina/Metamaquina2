@@ -12,7 +12,7 @@ m3_diameter=3; //TODO: move-me to a header file
 module z_max_mount_holes(){
   //these are the holes for mounting the endstop subassembly
   for (i=[-1,1])
-    translate([-endstop_holder_width/2+i*microswitch_holes_distance/2,16-endstop_holder_height/2])
+    translate([-microswitch_width/2+i*microswitch_holes_distance/2,16-microswitch_height/2])
     M3_hole();
 
   translate([-100,7]){
@@ -41,7 +41,7 @@ module z_max_mount_holes(){
 
 module z_min_mount_holes(){    
   for (i=[-1,1])
-    translate([endstop_holder_width/2+i*microswitch_holes_distance/2,-endstop_holder_height/2])
+    translate([microswitch_width/2+i*microswitch_holes_distance/2,-microswitch_height/2])
     hull(){
         M3_hole();
         translate([0,-16])
@@ -99,14 +99,14 @@ module simples_mechanical_endstop(){
 
   if (render_rubber)
   color(rubber_color)
-  cube([endstop_holder_width, endstop_holder_height, thickness]);
+  cube([microswitch_width, microswitch_height, thickness]);
 
   color(metal_color){
-    translate([2, endstop_holder_height+3])
+    translate([2, microswitch_height+3])
     rotate(10)
-    cube([endstop_holder_width-2, 1, thickness]);
+    cube([microswitch_width-2, 1, thickness]);
 
-    translate([2, endstop_holder_height])
+    translate([2, microswitch_height])
     cube([1, 4, thickness]);
   }
 }
@@ -176,7 +176,7 @@ module z_min_endstop(){
   mechanical_switch();
 }
 
-wire_coordinate = [endstop_holder_width*0.4,endstop_holder_height*0.1];
+wire_coordinate = [microswitch_width*0.4,microswitch_height*0.1];
 
 module oblongo(L=10,d=3){
   hull(){
@@ -188,20 +188,20 @@ module oblongo(L=10,d=3){
 
 module endstop_spacer_face1(){
   r = 3;
-  translate([0,-endstop_holder_height])
+  translate([0,-microswitch_height])
   difference(){
-    translate([-2,-endstop_holder_height])
-    rounded_square([endstop_holder_width+4,3*endstop_holder_height], corners=[r,r,r,r], $fn=30);
+    translate([-2,-microswitch_height])
+    rounded_square([microswitch_width+4,3*microswitch_height], corners=[r,r,r,r], $fn=30);
 
     translate(wire_coordinate)
-    oblongo(endstop_holder_width);
+    oblongo(microswitch_width);
 
     for (i=[-1,1])
-      translate([endstop_holder_width/2+i*microswitch_holes_distance/2, endstop_holder_height+2])
+      translate([microswitch_width/2+i*microswitch_holes_distance/2, microswitch_height+2])
       circle(r=m25_diameter, $fn=20);
 
     for (i=[-1,1])
-      translate([endstop_holder_width/2+i*microswitch_holes_distance/2, -endstop_holder_height/2])
+      translate([microswitch_width/2+i*microswitch_holes_distance/2, -microswitch_height/2])
       circle(r=m3_diameter/2, $fn=20);
   }
 }
@@ -252,45 +252,44 @@ module zmax_endstop_spacer_face2(){
 
 module endstop_spacer_face2(){
   r = 3;
-  translate([0,-endstop_holder_height])
+  translate([0,-microswitch_height])
   difference(){
-    translate([-2,-endstop_holder_height])
-    rounded_square([endstop_holder_width+4,3*endstop_holder_height], corners=[r,r,r,r], $fn=30);
+    translate([-2,-microswitch_height])
+    rounded_square([microswitch_width+4,3*microswitch_height], corners=[r,r,r,r], $fn=30);
 
     translate(wire_coordinate)
     rotate(90)
-    oblongo(endstop_holder_width);
+    oblongo(microswitch_width);
 
     for (i=[-1,1])
-      translate([endstop_holder_width/2+i*microswitch_holes_distance/2, endstop_holder_height+2])
+      translate([microswitch_width/2+i*microswitch_holes_distance/2, microswitch_height+2])
       circle(r=m25_diameter/2, $fn=20);
 
     for (i=[-1,1])
-      translate([endstop_holder_width/2+i*microswitch_holes_distance/2, -endstop_holder_height/2])
+      translate([microswitch_width/2+i*microswitch_holes_distance/2, -microswitch_height/2])
       circle(r=m3_diameter/2, $fn=20);
   }
 }
 
 module mechanical_switch(){
-  thickness = 5;//TODO
   metal_thickness = 1;
 
   if (render_rubber)
   color(rubber_color)
-  linear_extrude(height=thickness){
+  linear_extrude(height=microswitch_thickness){
     difference(){
-      square([endstop_holder_width, endstop_holder_height]);
+      square([microswitch_width, microswitch_height]);
 
       for (i=[-1,1])
-        translate([endstop_holder_width/2 + i*microswitch_holes_distance/2,2])
+        translate([microswitch_width/2 + i*microswitch_holes_distance/2,2])
         circle(r=m25_diameter/2, $fn=20);
     }
   }
 
   if (render_metal)
   color(metal_color)
-  translate([2, endstop_holder_height+3, 1]){
-    linear_extrude(height=thickness-2){
+  translate([2, microswitch_height+3, 1]){
+    linear_extrude(height=microswitch_thickness-2){
       hull(){
         circle(r=metal_thickness/2, $fn=20);
         translate([0, -3])
@@ -300,7 +299,7 @@ module mechanical_switch(){
       hull(){
         circle(r=metal_thickness/2, $fn=20);
         rotate(10)
-        translate([endstop_holder_width-3,0])
+        translate([microswitch_width-3,0])
         circle(r=metal_thickness/2, $fn=20);
       }
     }
