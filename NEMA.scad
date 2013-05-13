@@ -3,10 +3,12 @@
 // version 3 (or later).
 
 include <Metamaquina2.h>;
+include <BillOfMaterials.h>;
 include <NEMA.h>;
 use <rounded_square.scad>;
 
 module NEMA17(){
+  BillOfMaterials("NEMA17 stepper motor");
   if (render_rubber){
     color(rubber_color){
       translate([-NEMA17_width/2, -NEMA17_height/2, -0.1])

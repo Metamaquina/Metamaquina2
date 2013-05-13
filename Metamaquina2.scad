@@ -1988,6 +1988,12 @@ module XCarriage(){
       lasercut_extruder();
   }
 
+  {
+    //TODO: Add these microswitches to the CAD model
+    BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM"); //XMIN
+    BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM"); //MMAX
+  }
+
   //plastic parts:
   belt_clamps();
 
@@ -2326,12 +2332,12 @@ module bearing_assembly(rear){
               translate([0,0, washer_thickness]){
                 M8_mudguard_washer();
 
-                if (rear){
-                  translate([0,0, mudguard_washer_thickness + i*(thickness + washer_thickness)])
-                  M8_nut();  
-
-                  translate([0,0, mudguard_washer_thickness + i*thickness])
+                if (rear && i==1){
+                  translate([0,0, mudguard_washer_thickness + thickness])
                   M8_washer();
+
+translate([0,0, mudguard_washer_thickness + thickness + washer_thickness])
+                  M8_nut();
                 }else{
                   translate([0,0, mudguard_washer_thickness])
                   M8_nut();

@@ -25,9 +25,12 @@ module t_slot_cuts(width, diameter, length){
 }
 
 module t_slot_shape(diameter, length){
-  BillOfMaterials(str("M",diameter,"x",length," Bolt"));
-  BillOfMaterials(str("M",diameter," nut"));
-  BillOfMaterials(str("M",diameter," washer"));
+  {
+    //TODO: Add these nuts, washers and bolts to the CAD model
+    BillOfMaterials(str("M",diameter,"x",length," Bolt"));
+    BillOfMaterials(str("M",diameter," nut"));
+    BillOfMaterials(str("M",diameter," washer"));
+  }
 
 	translate([-diameter/2, 0])
 	square([diameter, length]);

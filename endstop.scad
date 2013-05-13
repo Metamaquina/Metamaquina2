@@ -3,6 +3,7 @@
 // version 3 (or later).
 
 include <Metamaquina2.h>;
+include <BillOfMaterials.h>;
 include <endstop.h>;
 use <utils.scad>;
 use <rounded_square.scad>;
@@ -34,7 +35,7 @@ module z_max_mount_holes(){
         %translate([-2.5,-7, -2])
          rotate([90,0])
          rotate([0,90])
-         mechanical_switch();
+         mechanical_switch(bom=false);
       }
     }
 }
@@ -152,15 +153,6 @@ module YMIN_endstop_spacer_sheet(){
   endstop_spacer_face2();
 }
 
-module ymax_endstop_subassembly(){
-  color(sheet_color)
-  linear_extrude(height=thickness)
-  endstop_spacer_face2();
-
-  translate([0,0,thickness])
-  mechanical_switch();
-}
-
 module z_min_endstop(){
   color(sheet_color)
   translate([15,0]){
@@ -271,7 +263,10 @@ module endstop_spacer_face2(){
   }
 }
 
-module mechanical_switch(){
+module mechanical_switch(bom=true){
+  if (bom)
+    BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM");
+
   metal_thickness = 1;
 
   if (render_rubber)
