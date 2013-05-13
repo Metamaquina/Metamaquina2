@@ -1,4 +1,5 @@
-module BillOfMaterials(partname){
-  echo(str("BOM: ", partname));
+module BillOfMaterials(partname, quantity=1){
+  for (q =[1:quantity])
+    echo(str("BOM: ", partname));
 }
 

@@ -4,7 +4,11 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
+include <BillOfMaterials.h>;
+
 module 608zz_bearing(details=false){
+  BillOfMaterials("608zz bearing");
+
   if(details){
     608zz_bearing_detailed();
   } else {

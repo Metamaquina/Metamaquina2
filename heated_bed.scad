@@ -3,11 +3,14 @@
 // version 3 (or later).
 
 include <Metamaquina2.h>;
+include <BillOfMaterials.h>;
 include <heated_bed.h>;
 include <colors.h>;
 use <rounded_square.scad>;
 
 module heated_bed_pcb(width = heated_bed_pcb_width, height = heated_bed_pcb_height){
+    BillOfMaterials("Heated bed PCB");
+
     color(pcb_color)
     linear_extrude(height=heated_bed_pcb_thickness)
     heated_bed_pcb_curves(width=width, height=height);
@@ -55,6 +58,8 @@ module heated_bed_silk(width = heated_bed_pcb_width, height = heated_bed_pcb_hei
 }
 
 module heated_bed_glass(){
+  BillOfMaterials(str(heated_bed_glass_thickness, "mm glass for the build platform (",glass_w,"mm x ",glass_h,"mm)"));
+
   if(render_glass)
   color(glass_color)
   translate([-glass_w/2, -glass_h/2, heated_bed_pcb_thickness])
@@ -62,6 +67,13 @@ module heated_bed_glass(){
 }
 
 module heated_bed(){
+  { //TODO: Add these parts to the CAD model
+    BillOfMaterials("Compression Spring CM351 (D=4.5mm, lenght=15.3mm)", 4);
+    BillOfMaterials("M3x20 bolt", 4); //TODO: check this!
+    BillOfMaterials("M3 washer", 4*3);
+    BillOfMaterials("Borboleta M3", 4);
+  }
+
   heated_bed_pcb();
   heated_bed_silk();
   heated_bed_glass();

@@ -5,8 +5,11 @@
 include <lm8uu_bearing.h>;
 include <colors.h>;
 include <render.h>;
+include <BillOfMaterials.h>;
 
 module LM8UU(){
+  BillOfMaterials("LM8UU linear bearing");
+
   if (render_metal){
     color(metal_color){
       translate([0,lm8uu_length/2])

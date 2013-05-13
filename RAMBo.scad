@@ -4,6 +4,7 @@
 // version 3 (or later).
 
 include <Metamaquina2.h>;
+include <BillOfMaterials.h>;
 use <rounded_square.scad>;
 
 hexspacer_length = 35; //considering the height of the connectors and components
@@ -18,6 +19,8 @@ RAMBo_height = 104;
 epsilon = 0.05;
 
 module PSU_connector(){
+  BillOfMaterials("Power supply connector for RAMBo board");
+
   //Power supply connector
 
   //Connector dimensions
@@ -54,6 +57,7 @@ module RAMBo_cover_curves(border=0){
 }
 
 module RAMBo_cover(){
+    BillOfMaterials("Lasercut acrylic RAMBo cover");
   if (render_acrylic){
     color(acrylic_color)
     linear_extrude(height=RAMBo_cover_thickness)
@@ -62,6 +66,15 @@ module RAMBo_cover(){
 }
 
 module RAMBo(){
+  BillOfMaterials("RAMBo board");
+
+  {// TODO: check this!
+  BillOfMaterials(str("Female-female 38mm Hexspacer (CBTS135A)"), 4);
+
+// Or maybe we can use this other one:
+//  BillOfMaterials(str("Female-female 32mm Hexspacer (CBTS130A)"), 4);
+  }
+
   for (x=[RAMBo_border, RAMBo_width-RAMBo_border]){
     for (y=[RAMBo_border, RAMBo_height-RAMBo_border]){
       translate([x,y]){

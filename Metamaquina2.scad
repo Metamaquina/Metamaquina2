@@ -247,6 +247,12 @@ module HiquaPowerSupply_holes(){
 }
 
 module HiquaPowerSupply(){
+  BillOfMaterials("Power Supply");
+
+  {//TODO: Add this to the CAD model
+    BillOfMaterials("Power Supply cable");
+  }
+
   if (render_metal){
     color(metal_color){
       cube([PowerSupply_thickness, PowerSupply_width, PowerSupply_height]);
@@ -1504,6 +1510,12 @@ module RodEnd_ZBottomRight_sheet(){
 }
 
 module RodEndTop_sheet(){
+  {//TODO: Add these parts to the CAD model
+    BillOfMaterials("M3x25 bolt", 3);
+    BillOfMaterials("M3 washer", 3);
+    BillOfMaterials("M3 lock-nut", 3);
+  }
+
   if( render_lasercut ){
     color(sheet_color){
       linear_extrude(height=thickness)
@@ -1522,6 +1534,12 @@ module SecondaryRodEndTop_sheet(){
 }
 
 module RodEndBottom_sheet(){
+  {//TODO: Add these parts to the CAD model
+    BillOfMaterials("M3x20 bolt", 2);
+    BillOfMaterials("M3 washer", 2);
+    BillOfMaterials("M3 lock-nut", 2);
+  }
+
   if( render_lasercut ){
     color(sheet_color){
       linear_extrude(height=thickness)
@@ -1613,6 +1631,13 @@ module MachineTopPanel_sheet(){
 }
 
 module MachineBottomPanel_sheet(){
+  {//TODO: Add these parts to the CAD model
+
+    //to attach the left & right Z Motors
+    BillOfMaterials("M3x10 bolt", 8);
+    BillOfMaterials("M3 washer", 8);
+  }
+
   translate([0,-XZStage_offset,BottomPanel_zoffset]){
       if( render_lasercut ){
         color(sheet_color){
@@ -1850,6 +1875,13 @@ module Xbelt(){
 //!Xbelt();
 
 module belt_clamps(){
+
+  { //TODO: Add these parts to the CAD model
+    BillOfMaterials("M3x20 bolt", 4); //TODO: check this!
+    BillOfMaterials("M3 lock-nut", 4);
+    BillOfMaterials("M3 washer", 4);
+  }
+
   if (render_lasercut){
     color(sheet_color){
       for (i=[-1,1])
@@ -1964,6 +1996,18 @@ module ZBars(){
 }
 
 module XCarriage(){
+  { //Add these parts to the CAD model
+
+    //to keep the bearing sandwich in place
+    BillOfMaterials("M3 lock-nut", 6);
+    BillOfMaterials("M3x30 bolt", 6);
+    BillOfMaterials("M3 washer", 6);
+
+    //to attach the extruder to the XCarriage
+    BillOfMaterials("M4x20 bolt", 2);
+    BillOfMaterials("M4 lock-nut", 2);
+  }
+
   //lasercut parts:
   translate([XCarPosition, 0, XCarriage_height]){
     XCarriage_bottom_sheet();
@@ -1990,8 +2034,11 @@ module XCarriage(){
 
   {
     //TODO: Add these microswitches to the CAD model
-    BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM"); //XMIN
-    BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM"); //MMAX
+    BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM",2 ); //XMIN & XMAX
+
+    BillOfMaterials("M2.5 bolt",4);
+    BillOfMaterials("M2.5 lock-nut",4);
+    BillOfMaterials("M2.5 washer",4);
   }
 
   //plastic parts:
@@ -2019,16 +2066,41 @@ module XPlatform(){
   XRods();
 }
 
-module XEndMotor_pulley(){
-  if (render_ABS){
-    color(ABS_color){
-      translate([XEnd_box_size/2, XMotor_height])
-      import("pulley.stl");
+module GT2_pulley(){
+  BillOfMaterials("GT2 pulley");
+
+  if (render_metal){
+    color(metal_color){
+      //TODO: implement-me!
     }
   }
 }
 
+module XEndMotor_pulley(){
+  translate([XEnd_box_size/2, XMotor_height])
+  GT2_pulley();
+}
+
 module XEndMotor(){
+  { //TODO: Add these parts to the CAD model
+
+    //For the Z-Link
+    BillOfMaterials("Compression Spring CM1516 (D=11.1mm, length=18mm)", 1);
+    BillOfMaterials("M8 nut", 2);
+    BillOfMaterials("M3x12 bolt", 2);
+    BillOfMaterials("M3 nut", 2);
+    BillOfMaterials("M3 washer", 2);
+
+    //to keep the bearing sandwiche in place
+    BillOfMaterials("M3 lock-nut", 4);
+    BillOfMaterials("M3x30 bolt", 4);
+    BillOfMaterials("M3 washer", 4);
+
+    //to attach the X motor
+    BillOfMaterials("M3x10 bolt", 4);
+    BillOfMaterials("M3 washer", 4);
+  }
+
   translate([-machine_x_dim/2,0]){
   //lasercut parts:
     XEndMotor_back_face_sheet();
@@ -2050,6 +2122,28 @@ module XEndMotor(){
 }
 
 module XEndIdler(){
+
+  { //TODO: Add these parts to the CAD model
+
+    //For the Z-Link
+    BillOfMaterials("Compression Spring CM1516 (D=11.1mm, length=18mm)", 1);
+    BillOfMaterials("M8 nut", 2);
+    BillOfMaterials("M3x12 bolt", 2);
+    BillOfMaterials("M3 nut", 2);
+    BillOfMaterials("M3 washer", 2);
+
+    //to keep the bearing sandwiche in place
+    BillOfMaterials("M3 lock-nut", 4);
+    BillOfMaterials("M3x30 bolt", 4);
+    BillOfMaterials("M3 washer", 4);
+
+    //for the idler bearing assembly
+    BillOfMaterials("M3x? bolt", 1);
+    BillOfMaterials("M8 lock-nut", 1);
+    BillOfMaterials("M8 washer", 5);//TODO: check this!
+    BillOfMaterials("M8 mudguard washer", 2);
+  }
+
 
   translate([machine_x_dim/2, 0, 0]){
   //lasercut parts:
@@ -2145,6 +2239,25 @@ module YPlatform_sheet(){
 
 //!YPlatform_subassembly();
 module YPlatform_subassembly(){
+
+  { //Add these parts to the CAD model
+
+    //to keep the left bearing sandwiches in place
+    BillOfMaterials("M3 lock-nut", 3);
+    BillOfMaterials("M3x30 bolt", 3);
+    BillOfMaterials("M3 washer", 3);
+
+    //to keep the right bearing sandwiches in place
+    BillOfMaterials("M3 lock-nut", 4);
+    BillOfMaterials("M3x30 bolt", 4);
+    BillOfMaterials("M3 washer", 4);
+
+    //for the Y belt clamps
+    BillOfMaterials("M3 lock-nut", 4);
+    BillOfMaterials("M3x20 bolt", 4); //TODO: check this!
+    BillOfMaterials("M3 washer", 4);
+  }
+
   translate([0,0,100-15]){ /*TODO*/
     YPlatform_sheet();
 
@@ -2638,6 +2751,7 @@ module YMotorAssembly(){
   rotate([180,0])
   translate([40,-60,-7])
   YMotor();
+  GT2_pulley();
 }
 
 module RearAssembly(){

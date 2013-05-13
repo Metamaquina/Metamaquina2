@@ -4,8 +4,11 @@
 // version 3 (or later).
 
 include <coupling.h>;
+include <BillOfMaterials.h>;
 
 module coupling(shaft_diameter=5, rod_diameter=8){
+  BillOfMaterials("Coupling for the Z axis");
+
   color(metal_color)
   difference(){
     cylinder(r=coupling_diameter/2, h=coupling_length, $fn=60);

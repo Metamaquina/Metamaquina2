@@ -41,6 +41,8 @@ module bolt_head(r, h){
 }
 
 module bolt(dia, length){
+  BillOfMaterials(str("M",dia,"x",length," bolt"));
+
   if (render_metal)
   color(metal_color){
     bolt_head(r=dia, h=dia);
@@ -473,8 +475,15 @@ module sheet(name, height=0, c=default_sheet_color){
 }
 
 module handle(){
+  { //TODO: Add these parts to the CAD model
+    BillOfMaterials("M4 lock nut", 4);
+    BillOfMaterials("M4 washer", 4);//for the lock nuts
+    BillOfMaterials("Compresison Spring CM1678 (6mm x 16.5mm) - TODO:check this!", 2);
+    BillOfMaterials("M4 washer", 2);//for the springs
+  }
+
   nut_height = 3;
-  handle_bolt_length = 50;
+  handle_bolt_length = 70;
 
   union(){
     handle_sheet(width=HandleWidth);
@@ -489,7 +498,7 @@ module handle(){
 
 module idler_bolt_subassembly(){
   length=30;
-  h=5;
+  BillOfMaterials(str("M8 Threaded rod (",length,"mm)"));
 
   //bolt body
   translate([0,0,-length])
@@ -497,6 +506,12 @@ module idler_bolt_subassembly(){
 }
 
 module idler(){
+  { //TODO: Add these parts to the CAD model
+
+    //for the idler axis
+    BillOfMaterials("M3x30 bolt");
+  }
+
   R=23;
   bearing_thickness = 7;
 
@@ -542,6 +557,18 @@ module idler(){
 }
 
 module extruder_block(){
+
+  { //TODO: Add these parts to the CAD model
+    BillOfMaterials("M3x30 bolt", 2); // for attaching the jhead_body
+
+    { // to hold the MDF sheets together
+      BillOfMaterials("M3x35 bolt", 5);
+      BillOfMaterials("M3 washer", 5*3);
+      BillOfMaterials("M3 lock-nut", 5);
+      //TODO: decide wheter we'll use M3x30 or M3x35 in some places here
+    }
+  }
+
   rotate([90,0]){
     slice1();
     slice2();
@@ -571,6 +598,12 @@ module nozzle(length=50){
   }
 }
 
+module hobbed_bolt(){
+  BillOfMaterials("Hobbed bolt");
+  rotate([90,0])
+  cylinder(r=7.2/2, h=5*thickness, $fn=40);
+}
+
 washer_thickness = 1.5;
 module lasercut_extruder(){
   rotate(90)
@@ -598,12 +631,9 @@ module lasercut_extruder(){
       extruder_gear(teeth=37);
     }
 
-    //hobbed_bolt
     if (render_metal){
       color(metal_color)
-      translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]])
-      rotate([90,0])
-      cylinder(r=7.2/2, h=5*thickness, $fn=40);
+      translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]]) hobbed_bolt();
 
       translate([hobbed_bolt_position[0], -3*thickness/2, hobbed_bolt_position[1]])
       rotate([90,0])
