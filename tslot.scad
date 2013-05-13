@@ -5,6 +5,7 @@
 // version 3 (or later).
 
 include <Metamaquina2.h>;
+include <BillOfMaterials.h>;
 
 module t_slot_holes(width, thickness, joint_size=5){
   translate([0, width/2])
@@ -24,6 +25,10 @@ module t_slot_cuts(width, diameter, length){
 }
 
 module t_slot_shape(diameter, length){
+  BillOfMaterials(str("M",diameter,"x",length," Bolt"));
+  BillOfMaterials(str("M",diameter," nut"));
+  BillOfMaterials(str("M",diameter," washer"));
+
 	translate([-diameter/2, 0])
 	square([diameter, length]);
 
