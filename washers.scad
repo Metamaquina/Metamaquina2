@@ -4,26 +4,31 @@
 // version 3 (or later).
 
 include <washers.h>;
+include <BillOfMaterials.h>;
 
 module M3_washer(){
+  BillOfMaterials("M3 washer");
   washer(washer_thickness = m3_washer_thickness,
          external_diameter = m3_washer_D,
          internal_diameter = m3_washer_d);
 }
 
 module M4_washer(){
+  BillOfMaterials("M4 washer");
   washer(washer_thickness = m4_washer_thickness,
          external_diameter = m4_washer_D,
          internal_diameter = m4_washer_d);
 }
 
 module M8_washer(){
+  BillOfMaterials("M8 washer");
   washer(washer_thickness = m8_washer_thickness,
          external_diameter = m8_washer_D,
          internal_diameter = m8_washer_d);
 }
 
 module M8_mudguard_washer(){
+  BillOfMaterials("M8 mudguard washer");
   washer(washer_thickness = m8_mudguard_washer_thickness,
          external_diameter = m8_mudguard_washer_D,
          internal_diameter = m8_mudguard_washer_d);

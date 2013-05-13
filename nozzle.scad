@@ -1,6 +1,15 @@
 include <Metamaquina2.h>;
+include <BillOfMaterials.h>;
 
 module v4nozzle(){
+  BillOfMaterials("JHead nozzle");
+
+  {
+    //TODO: Add these parts to the CAD model
+    BillOfMaterials("extruder thermistor");
+    BillOfMaterials("extruder heater resistance");
+  }
+
   if (render_nozzle){
     color (nozzle_color){
       scale(25.4)
