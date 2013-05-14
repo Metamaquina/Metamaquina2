@@ -20,7 +20,11 @@ include <configuration.scad>
  * @using 2 m8washer
  */ 
 
+include <BillOfMaterials.h>;
+
 module barclamp(){
+  BillOfMaterials(category="3D Printed", partname="Bar Clamp");
+
   outer_diameter = threaded_rod_diameter/2 + 2.4;
 
   difference(){

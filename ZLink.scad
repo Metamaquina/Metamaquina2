@@ -9,8 +9,11 @@
 
 include <Metamaquina2.h>;
 include <ZLink.h>;
+include <BillOfMaterials.h>;
 
 module ZLink(clearance = 0.2, hull_size=0){
+  BillOfMaterials(category="3D Printed", partname="ZLink");
+
   if (render_ABS){
     color(ABS_color){
       difference(){

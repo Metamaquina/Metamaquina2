@@ -6,9 +6,16 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-use <gears.scad>
+use <gears.scad>;
+include <BillOfMaterials.h>;
 
 module motor_gear(teeth=11, shaft_diameter=5){
+  BillOfMaterials(category="3D Printed", partname="Small Extruder Gear");
+
+  {//TODO: Add this part to the CAD model
+    BillOfMaterials("M3x8 grubscrew - TODO");
+  }
+
   render()
   translate([0,0,5])
   difference() {

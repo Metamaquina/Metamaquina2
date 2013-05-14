@@ -6,10 +6,13 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
-use <gears.scad>
-include <gears-params.scad>
+use <gears.scad>;
+include <gears-params.scad>;
+include <BillOfMaterials.h>;
 
 module extruder_gear(teeth=37, circles=12, shaft=8.6){
+  BillOfMaterials(category="3D Printed", partname="Large Extruder Gear");
+
   body_thickness = 4;
   hub_thickness = 8;
 
