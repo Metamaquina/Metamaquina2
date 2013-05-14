@@ -498,7 +498,7 @@ module handle(){
 
 module idler_bolt_subassembly(){
   length=30;
-  BillOfMaterials(str("M8 Threaded rod (",length,"mm)"));
+  BillOfMaterials(str("M8x", length, "mm Threaded Rod"));
 
   //bolt body
   translate([0,0,-length])

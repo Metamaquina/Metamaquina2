@@ -1949,6 +1949,7 @@ module XEndIdler_ZLink(){
 }
 
 module XRods(){
+  BillOfMaterials(str("M8x",X_rod_length,"mm Smooth Rod"), 2);
   if (render_metal){
     color(metal_color){
       translate([0, -X_rods_distance/2, thickness + X_rod_height])
@@ -1963,6 +1964,7 @@ module XRods(){
 }
 
 module YRods(){
+  BillOfMaterials(str("M8x",Y_rod_length,"mm Smooth Rod"), 2);
   if (render_metal){
     color(metal_color){
       translate([Y_rods_distance/2, -Y_rod_length/2, Y_rod_height])
@@ -1977,6 +1979,7 @@ module YRods(){
 }
 
 module ZRods(){
+  BillOfMaterials(str("M8x",Z_rod_length,"mm Smooth Rod"), 2);
   if (render_metal){
     color(metal_color){
       translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2, -XZStage_offset, BottomPanel_zoffset])
@@ -1989,6 +1992,7 @@ module ZRods(){
 }
 
 module ZBars(){
+  BillOfMaterials(str("M8x",Z_bar_length,"mm Threaded Rod"), 2);
   if (render_threaded_metal){
     color(threaded_metal_color){
       translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
@@ -2530,6 +2534,8 @@ module nut_cap_assembly(){
 }
 
 module FrontBars(){
+  BillOfMaterials(str("M8x",horiz_bars_length,"mm Threaded Rod"), 2);
+
   translate([0, -RightPanel_basewidth/2 + bar_cut_length, base_bars_Zdistance + base_bars_height]){
 
     if (render_metal){
@@ -2577,6 +2583,8 @@ module FrontBars(){
 }
 
 module RearBars(){
+  BillOfMaterials(str("M8x",horiz_bars_length,"mm Threaded Rod"), 2);
+
   translate([0, RightPanel_basewidth/2 - bar_cut_length, base_bars_Zdistance + base_bars_height]){
 
     //rear top bar
