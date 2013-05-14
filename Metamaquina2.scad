@@ -1632,6 +1632,13 @@ module MachineLeftPanel_sheet(){
   }
 }
 
+module top_wiring_hole_aux_sheet(r){
+  BillOfMaterials(category="Lasercut wood", partname="Top Wiring Hole Aux Sheet");  
+
+  linear_extrude(height=thickness)
+  top_wiring_hole_aux(r=r);
+}
+
 //!MachineTopPanel_sheet();
 module MachineTopPanel_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Machine Top Panel");
@@ -1649,12 +1656,10 @@ module MachineTopPanel_sheet(){
         MachineTopPanel_face();
 
         translate([0,120,thickness])
-        linear_extrude(height=thickness)
-        top_wiring_hole_aux(r=extruder_wiring_radius);
+        top_wiring_hole_aux_sheet(r=extruder_wiring_radius);
 
         translate([0,120,-thickness])
-        linear_extrude(height=thickness)
-        top_wiring_hole_aux(r=extruder_wiring_radius);
+        top_wiring_hole_aux_sheet(r=extruder_wiring_radius);
       }
     }
 

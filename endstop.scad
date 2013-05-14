@@ -125,9 +125,7 @@ module ymin_endstop_subassembly(){
     BillOfMaterials("M2.5 lock-nut", 2);
   }
 
-  color(sheet_color)
-  linear_extrude(height=thickness)
-  ymin_endstop_spacer_face();
+  ymin_endstop_spacer_sheet();
 
   translate([0,0,thickness])
   mechanical_switch();
@@ -144,9 +142,7 @@ module ymax_endstop_subassembly(){
     BillOfMaterials("M2.5 lock-nut", 2);
   }
 
-  color(sheet_color)
-  linear_extrude(height=thickness)
-  ymax_endstop_spacer_face();
+  ymax_endstop_spacer_sheet();
 
   translate([0,0,thickness])
   mechanical_switch();
@@ -169,14 +165,11 @@ module z_min_endstop(){
     BillOfMaterials("M2.5 lock-nut", 2);
   }
 
-  color(sheet_color)
   translate([15,0]){
-    linear_extrude(height=thickness)
-    zmin_endstop_spacer_face1();
+    zmin_endstop_spacer_sheet1();
 
     translate([0,0,thickness])
-    linear_extrude(height=thickness)
-    zmin_endstop_spacer_face2();
+    zmin_endstop_spacer_sheet2();
   }
 
   translate([0,0,2*thickness])
@@ -195,14 +188,10 @@ module z_max_endstop(){
   }
 
   rotate(180){
-    color(sheet_color)
-    linear_extrude(height=thickness)
-    zmax_endstop_spacer_face1();
+    zmax_endstop_spacer_sheet1();
 
     translate([0,0,thickness])
-    color(sheet_color)
-    linear_extrude(height=thickness)
-    zmax_endstop_spacer_face2();
+    zmax_endstop_spacer_sheet2();
 
     translate([0,0,2*thickness])
     mechanical_switch();
@@ -344,6 +333,54 @@ module mechanical_switch(bom=true){
 
 module optical_endstop(){
   //TODO: implement-me!
+}
+
+module ymin_endstop_spacer_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="YMIN Spacer");
+
+  color(sheet_color)
+  linear_extrude(height=thickness)
+  ymin_endstop_spacer_face();
+}
+
+module ymax_endstop_spacer_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="YMAX Spacer");
+
+  color(sheet_color)
+  linear_extrude(height=thickness)
+  ymax_endstop_spacer_face();
+}
+
+module zmax_endstop_spacer_sheet1(){
+  BillOfMaterials(category="Lasercut wood", partname="ZMAX Spacer #1");
+
+    color(sheet_color)
+    linear_extrude(height=thickness)
+    zmax_endstop_spacer_face1();
+}
+
+module zmax_endstop_spacer_sheet2(){
+  BillOfMaterials(category="Lasercut wood", partname="ZMAX Spacer #2");
+
+    color(sheet_color)
+    linear_extrude(height=thickness)
+    zmax_endstop_spacer_face2();
+}
+
+module zmin_endstop_spacer_sheet1(){
+  BillOfMaterials(category="Lasercut wood", partname="ZMIN Spacer #1");
+
+  color(sheet_color)
+  linear_extrude(height=thickness)
+  zmin_endstop_spacer_face1();
+}
+
+module zmin_endstop_spacer_sheet2(){
+  BillOfMaterials(category="Lasercut wood", partname="ZMIN Spacer #2");
+
+  color(sheet_color)
+  linear_extrude(height=thickness)
+  zmin_endstop_spacer_face2();
 }
 
 z_max_endstop();
