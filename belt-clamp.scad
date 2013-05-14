@@ -5,6 +5,8 @@
 // Licensed under the terms of the GNU General Public License
 // version 3 (or later).
 
+include <BillOfMaterials.h>;
+
 module belt_clamp_holder(){
   r = 5;
   s = 28 - 2*r;
@@ -74,11 +76,15 @@ module beltclamp(width=28, height=6, r=5, teeth_depth=0.5){
 }
 
 module x_carriage_beltclamp(width=28, height=6, r=5){
+  BillOfMaterials(category="Lasercut wood", partname="X Carriage Belt Clamp");
+
   linear_extrude(height=height)
   beltclamp_curves(width, r, for_x_carriage=true);
 }
 
 module y_platform_beltclamp(width=28, height=6, r=5){
+  BillOfMaterials(category="Lasercut wood", partname="Y Platform Belt Clamp");
+
   linear_extrude(height=height)
   beltclamp_curves(width, r, for_y_platform=true);
 }

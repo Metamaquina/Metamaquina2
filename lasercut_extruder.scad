@@ -68,6 +68,8 @@ module handle_face(r=5, width=HandleWidth, height=HandleHeight){
 }
 
 module handle_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Handle");
+
   color(sheet_color){
     linear_extrude(height=thickness){
       handle_face();
@@ -144,18 +146,24 @@ module idler_back_face(){
 }
 
 module idler_back_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Idler Back");
+
   color(sheet_color)
   linear_extrude(height=thickness)
   idler_back_face();
 }
 
 module idler_side_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Idler Side");
+
   color(sheet_color)
   linear_extrude(height=thickness)
   idler_side_face();
 }
 
 module idler_spacer_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Idler Spacer");
+
   color(sheet_color)
   linear_extrude(height=thickness)
   idler_spacer_face();
@@ -404,12 +412,16 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
 }
 
 module slice1(){
+  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #1");
+
   color(sheet_color)
   linear_extrude(height=thickness)
   slice1_face();
 }
 
 module slice2(){
+  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #2");
+
   color(sheet_color)
   translate([0,0,1*thickness])
   linear_extrude(height=thickness)
@@ -418,6 +430,8 @@ module slice2(){
 
 //!slice3();
 module slice3(){
+  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #3");
+
   color(sheet_color)
   translate([0,0,2*thickness])
   linear_extrude(height=thickness)
@@ -425,6 +439,8 @@ module slice3(){
 }
 
 module slice4(){
+  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #4");
+
   color(sheet_color)
   translate([0,0,3*thickness])
   linear_extrude(height=thickness)
@@ -432,6 +448,8 @@ module slice4(){
 }
 
 module slice5(){
+  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #5");
+
   color(sheet_color)
   translate([0,0,4*thickness])
   linear_extrude(height=thickness)

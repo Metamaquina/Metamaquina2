@@ -438,7 +438,7 @@ module holes_for_z_endstop_wires(){
 
     translate([7,0])
     hull()
-    zip_tie_holes(r=2, d=10);
+    zip_tie_holes(r=2, d=10, bom=false);
 
     translate([120,0])
     zip_tie_holes(d=7);
@@ -452,7 +452,7 @@ module holes_for_x_motor_and_endstop_wires(){
   translate([80,240]){
     hull(){
       rotate([0,0,90])
-      zip_tie_holes(d=12, r=2);
+      zip_tie_holes(d=12, r=2, bom=false);
     }
 
     translate([0,10])
@@ -918,7 +918,10 @@ module heatedbed_bottompanel_hole(){
   heated_bed_wire_passthru_hole();
 }
 
-module zip_tie_holes(d=12, r=m3_diameter/2){
+module zip_tie_holes(d=12, r=m3_diameter/2, bom=true){
+  if (bom)
+    BillOfMaterials("Zip tie");
+
   for (i=[-1,1]){
     translate([0,d/2*i])
     circle(r=r, $fn=20);
@@ -972,6 +975,8 @@ module YEndstopHolder_face(){
 }
 
 module YEndstopHolder_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Y Endstop Holder");
+
   if( render_lasercut ){
     color(sheet_color){
       linear_extrude(height=thickness)
@@ -1318,6 +1323,8 @@ module wade_holes(){
 }
 
 module XCarriage_sandwich_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="X Carriage Sandwich");
+
   if( render_lasercut ){
     color(sheet_color){
       linear_extrude(height=thickness)
@@ -1449,6 +1456,8 @@ module XCarriage_bottom_face(){
 // 3d preview of lasercut plates:
 
 module XEnd_bearing_sandwich_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="XEnd bearing sandwich");
+
   translate([thickness,0])
   for (x=[-14,14]){
     for (y=[0,45]){
@@ -1481,33 +1490,45 @@ module YMotorHolder(){
 }
 
 module RodEnd_ZTopLeft_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="RodEnd Z Top Left");
+
   translate([-Z_rods_distance/2, -XZStage_offset, machine_height+thickness])
   RodEndTop_sheet();
 }
 
 module SecondaryRodEnd_ZTopLeft_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Secondary RodEnd Z Top Left");
+
   translate([-Z_rods_distance/2, -XZStage_offset, machine_height-thickness])
   SecondaryRodEndTop_sheet();
 }
 
 module RodEnd_ZTopRight_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="RodEnd Z Top Right");
+
   translate([Z_rods_distance/2, -XZStage_offset, machine_height+thickness])
   rotate([0,0,180])
   RodEndTop_sheet();
 }
 
 module SecondaryRodEnd_ZTopRight_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Secondary RodEnd Z Top Right");
+
   translate([Z_rods_distance/2, -XZStage_offset, machine_height-thickness])
   rotate([0,0,180])
   SecondaryRodEndTop_sheet();
 }
 
 module RodEnd_ZBottomLeft_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="RodEnd Z Bottom Left");
+
   translate([-Z_rods_distance/2, -XZStage_offset, BottomPanel_zoffset - thickness])
   RodEndBottom_sheet();
 }
 
 module RodEnd_ZBottomRight_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="RodEnd Z Bottom Right");
+
   translate([Z_rods_distance/2, -XZStage_offset, BottomPanel_zoffset - thickness])
   rotate([0,0,180])
   RodEndBottom_sheet();
@@ -1553,6 +1574,8 @@ module RodEndBottom_sheet(){
 }
 
 module MachineRightPanel_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Machine Right Panel");
+
   translate([SidePanels_distance/2, RightPanel_basewidth/2, 0])
   rotate([0,0,-90])
   rotate([90,0,0]){
@@ -1575,6 +1598,8 @@ module MachineRightPanel_sheet(){
 
 //!MachineLeftPanel_sheet();
 module MachineLeftPanel_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Machine Left Panel");
+
   if( render_lasercut ){
     translate([-SidePanels_distance/2 + thickness, RightPanel_basewidth/2])
     rotate([0,0,-90])
@@ -1607,6 +1632,8 @@ module MachineLeftPanel_sheet(){
 
 //!MachineTopPanel_sheet();
 module MachineTopPanel_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Machine Top Panel");
+
   {//TODO: Add these parts to the CAD model
     BillOfMaterials("M3x25 bolt", 2);
     BillOfMaterials("M3 washer", 2);
@@ -1641,6 +1668,8 @@ module MachineTopPanel_sheet(){
 }
 
 module MachineBottomPanel_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Machine Bottom Panel");
+
   translate([0,-XZStage_offset,BottomPanel_zoffset]){
       if( render_lasercut ){
         color(sheet_color){
@@ -1669,6 +1698,8 @@ module MachineBottomPanel_sheet(){
 }
 
 module MachineArcPanel_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Machine Arc Panel");
+
   if( render_lasercut ){
     color(sheet_color){
       translate([0,ArcPanel_rear_advance-XZStage_offset, machine_height - ArcPanel_height])
@@ -1680,6 +1711,8 @@ module MachineArcPanel_sheet(){
 }
 
 module XCarriage_bottom_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="X Carriage Bottom");
+
   if( render_lasercut ){
     color(sheet_color){
       linear_extrude(height=thickness)
@@ -1689,6 +1722,8 @@ module XCarriage_bottom_sheet(){
 }
 
 module XPlatform_bottom_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="X Platform Bottom");
+
   if( render_lasercut ){
     color(sheet_color){
 	    linear_extrude(height=thickness)
@@ -1698,6 +1733,8 @@ module XPlatform_bottom_sheet(){
 }
 
 module XEndMotor_back_face_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="XEnd Motor Back");
+
   if( render_lasercut ){
     color(sheet_color){
 	    translate([thickness, 0, 0])
@@ -1710,6 +1747,8 @@ module XEndMotor_back_face_sheet(){
 }
 
 module XEndMotor_front_face_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="XEnd Motor Front");
+
   if( render_lasercut ){
     color(sheet_color){
 	    translate([XEnd_box_size + 2*thickness, 0, 0])
@@ -1722,6 +1761,8 @@ module XEndMotor_front_face_sheet(){
 }
 
 module XEndIdler_back_face_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="XEnd Idler Back");
+
   if( render_lasercut ){
     color(sheet_color){
 	    rotate([0,-90,0])
@@ -1733,6 +1774,8 @@ module XEndIdler_back_face_sheet(){
 }
 
 module XEndIdler_front_face_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="XEnd Idler Front");
+
   if( render_lasercut ){
     color(sheet_color){
 	    translate([- XEnd_box_size - thickness, 0, 0])
@@ -1745,6 +1788,8 @@ module XEndIdler_front_face_sheet(){
 }
 
 module XEndMotor_plain_face_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="XEnd Motor Plain Face");
+
   if( render_lasercut ){
     color(sheet_color){
       translate([thickness, -XPlatform_width/2 + 1.5*thickness, thickness])
@@ -1756,6 +1801,8 @@ module XEndMotor_plain_face_sheet(){
 }
 
 module XEndMotor_belt_face_assembly(){
+  BillOfMaterials(category="Lasercut wood", partname="XEnd Motor Belt Face");
+
   if( render_lasercut ){
     color(sheet_color){
       translate([0, thickness])
@@ -1771,6 +1818,8 @@ module XEndMotor_belt_face_assembly(){
 }
 
 module XEndIdler_plain_face_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="XEnd Idler Plain Face");
+
   if( render_lasercut ){
     color(sheet_color){
       translate([- thickness - XEnd_box_size, -XPlatform_width/2 + 1.5*thickness, thickness])
@@ -1782,6 +1831,8 @@ module XEndIdler_plain_face_sheet(){
 }
   
 module XEndIdler_belt_face_assembly(){
+  BillOfMaterials(category="Lasercut wood", partname="XEnd Idler Belt Face");
+
   if( render_lasercut ){
     color(sheet_color){
       translate([- thickness - XEnd_box_size, XPlatform_width/2 + XEnd_extra_width - 0.5*thickness, thickness])
