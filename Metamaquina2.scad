@@ -24,6 +24,7 @@ include <NEMA.h>;
 include <coupling.h>;
 include <washers.h>;
 include <nuts.h>;
+include <spacer.h>;
 include <lm8uu_bearing.h>;
 include <jhead.h>;
 use <608zz_bearing.scad>;
@@ -62,7 +63,6 @@ RAMBo_x = 1;
 RAMBo_y = 133;
 
 rods_diameter_clearance = 0.1; //extra room for the X and Z rods
-spacers_clearance = 0.1; // extra room for the spacers hole diameter
 
 //For the actual build volume we avoid using the marginal
 //region around the heated bed
@@ -1219,7 +1219,7 @@ module XEnd_back_face(){
        circle(r=20);
       }
 
-      //holes for bearing sandwich hexspacers
+      //holes for bearing sandwich spacers
       translate([14, XPlatform_height])
       M3_hole();
       translate([-14, XPlatform_height])
@@ -1422,7 +1422,7 @@ module XCarriage_plainface(sandwich=false){
       //holes for attaching the wade extruder
       wade_holes();
     
-    //holes for hexspacers
+    //holes for spacers
     for (i=[-1,1]){
       for (j=[-1,1]){
         translate([i*(XCarriage_lm8uu_distance/2), j*(XPlatform_width/2 - XCarriage_padding)])
@@ -1464,7 +1464,7 @@ module XEnd_bearing_sandwich_sheet(){
       rotate([0,90,0])
       rotate([0,0,90])
       translate([x,y])
-      hexspacer(h=bearing_sandwich_spacing);
+      double_M3_lasercut_spacer();
     }
   }
 
@@ -2076,11 +2076,11 @@ module XCarriage(){
       for (i=[-1,1]){
         for (j=[-1,1]){
           translate([i*(XCarriage_lm8uu_distance/2), j*(XPlatform_width/2-XCarriage_padding)])
-          hexspacer(h=bearing_sandwich_spacing);
+          double_M3_lasercut_spacer();
         }
 
         translate([i*(XCarriage_length/2-XCarriage_padding), 0])
-        hexspacer(h=bearing_sandwich_spacing);
+        double_M3_lasercut_spacer();
       }
 
       translate([0,0,-thickness])
@@ -2318,7 +2318,7 @@ module YPlatform_subassembly(){
     YPlatform_sheet();
 
     translate([0,0, -bearing_sandwich_spacing]){
-      YPlatform_hexspacers();
+      YPlatform_spacers();
 
       translate([-Y_rods_distance/2, 0, -thickness])
       YPlatform_left_sandwich_sheet();
@@ -2369,19 +2369,19 @@ module YPlatform_right_sandwich_holes(){
   }
 }
 
-module YPlatform_hexspacers(){
+module YPlatform_spacers(){
   translate([-Y_rods_distance/2 + 14, 0])
-  hexspacer(h=bearing_sandwich_spacing);
+  double_M3_lasercut_spacer();
 
   for (j=[-1,1]){
     translate([-Y_rods_distance/2 - 14, j*(50/2-5)])
-    hexspacer(h=bearing_sandwich_spacing);
+    double_M3_lasercut_spacer();
   }
 
   for (i=[-1,1]){
     for (j=[-1,1]){
       translate([Y_rods_distance/2 + i*14,j*50])
-      hexspacer(h=bearing_sandwich_spacing);
+      double_M3_lasercut_spacer();
     }
   }
 }
@@ -2881,41 +2881,6 @@ module ZRodCap_face(l=15.5, hole=true){
     }
   }
 }
-
-//!M3_spacer();
-module M3_spacer(){
-  difference(){
-    circle(r=m3_diameter*1.5, $fn=30);
-    circle(r=(m3_diameter + spacers_clearance)/2, $fn=30);
-  }
-}
-
-module set_of_M3_spacers(w=4, h=4){
-  for (x=[1:w]){
-    for (y=[1:h]){
-      translate([x*3.2*m3_diameter, y*3.2*m3_diameter])
-      M3_spacer();
-    }
-  }
-}
-
-//!M4_spacer();
-module M4_spacer(){
-  difference(){
-    circle(r=m4_diameter*1.5, $fn=30);
-    circle(r=(m4_diameter + spacers_clearance)/2, $fn=30);
-  }
-}
-
-module set_of_M4_spacers(w=4, h=4){
-  for (x=[1:w]){
-    for (y=[1:h]){
-      translate([x*3.2*m4_diameter, y*3.2*m4_diameter])
-      M4_spacer();
-    }
-  }
-}
-
 
 module plate_border(w=500, h=500, border=2){
   difference(){

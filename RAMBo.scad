@@ -6,9 +6,8 @@
 include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
 use <rounded_square.scad>;
+include <spacer.h>;
 
-hexspacer_length = 35; //considering the height of the connectors and components
-nylonspacer_length = 6;
 RAMBo_pcb_thickness = 2;
 M3_bolt_head = 3;
 RAMBo_cover_thickness = 3;
@@ -73,20 +72,13 @@ module RAMBo(){
     BillOfMaterials("M3x10 bolt",4); //To attach the cover
   }
 
-  {// TODO: check this!
-  BillOfMaterials(str("Female-female 38mm Hexspacer (CBTS135A)"), 4);
-
-// Or maybe we can use this other one:
-//  BillOfMaterials(str("Female-female 32mm Hexspacer (CBTS130A)"), 4);
-  }
-
   for (x=[RAMBo_border, RAMBo_width-RAMBo_border]){
     for (y=[RAMBo_border, RAMBo_height-RAMBo_border]){
       translate([x,y]){
-        nylonspacer();
+        double_M3_lasercut_spacer();
 
-        translate([0,0,nylonspacer_length+RAMBo_pcb_thickness]){
-          hexspacer();
+        translate([0,0,2*thickness+RAMBo_pcb_thickness]){
+          hexspacer_38mm();
           translate([0,0,hexspacer_length+RAMBo_cover_thickness]){
             //bolt head
             if (render_metal)
@@ -207,25 +199,4 @@ module RAMBo_pcb(){
 }
 
 white_nylon_color = [1, 1, 0.8];
-module nylonspacer(D=8, d=m4_diameter, h=nylonspacer_length){
-  if (render_nylon){
-    color(white_nylon_color)
-    linear_extrude(height=h)
-    difference(){
-      circle(r=D/2, $fn=20);
-      circle(r=d/2, $fn=20);
-    }
-  }
-}
-
-module hexspacer(D=8, d=m3_diameter, h=hexspacer_length){
-  if (render_metal){
-    color(metal_color)
-    linear_extrude(height=h)
-    difference(){
-      circle(r=D/2, $fn=6);
-      circle(r=d/2, $fn=20);
-    }
-  }
-}
 
