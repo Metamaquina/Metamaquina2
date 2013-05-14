@@ -113,23 +113,18 @@ module simples_mechanical_endstop(){
 }
 
 thickness = 6;
-module z_max_endstop(){
-  rotate(180){
-    color(sheet_color)
-    linear_extrude(height=thickness)
-    endstop_spacer_face1();
-
-    translate([0,0,thickness])
-    color(sheet_color)
-    linear_extrude(height=thickness)
-    endstop_spacer_face2();
-
-    translate([0,0,2*thickness])
-    mechanical_switch();
-  }
-}
 
 module ymin_endstop_subassembly(){
+  {//TODO: Add these parts to the CAD model
+    BillOfMaterials("M3x16 bolt", 2);
+    BillOfMaterials("M3 washer", 2);
+    BillOfMaterials("M3 lock-nut", 2);
+
+    BillOfMaterials("M2.5x16 bolt", 2);
+    BillOfMaterials("M2.5 washer", 2);
+    BillOfMaterials("M2.5 lock-nut", 2);
+  }
+
   color(sheet_color)
   linear_extrude(height=thickness)
   ymin_endstop_spacer_face();
@@ -139,6 +134,16 @@ module ymin_endstop_subassembly(){
 }
 
 module ymax_endstop_subassembly(){
+  {//TODO: Add these parts to the CAD model
+    BillOfMaterials("M3x16 bolt", 2);
+    BillOfMaterials("M3 washer", 2);
+    BillOfMaterials("M3 lock-nut", 2);
+
+    BillOfMaterials("M2.5x16 bolt", 2);
+    BillOfMaterials("M2.5 washer", 2);
+    BillOfMaterials("M2.5 lock-nut", 2);
+  }
+
   color(sheet_color)
   linear_extrude(height=thickness)
   ymax_endstop_spacer_face();
@@ -154,6 +159,16 @@ module YMIN_endstop_spacer_sheet(){
 }
 
 module z_min_endstop(){
+  {//TODO: Add these parts to the CAD model
+    BillOfMaterials("M3x25 bolt", 2);
+    BillOfMaterials("M3 washer", 2);
+    BillOfMaterials("M3 lock-nut", 2);
+
+    BillOfMaterials("M2.5x16 bolt", 2);
+    BillOfMaterials("M2.5 washer", 2);
+    BillOfMaterials("M2.5 lock-nut", 2);
+  }
+
   color(sheet_color)
   translate([15,0]){
     linear_extrude(height=thickness)
@@ -166,6 +181,32 @@ module z_min_endstop(){
 
   translate([0,0,2*thickness])
   mechanical_switch();
+}
+
+module z_max_endstop(){
+  {//TODO: Add these parts to the CAD model
+    BillOfMaterials("M3x25 bolt", 2);
+    BillOfMaterials("M3 washer", 2);
+    BillOfMaterials("M3 lock-nut", 2);
+
+    BillOfMaterials("M2.5x16 bolt", 2);
+    BillOfMaterials("M2.5 washer", 2);
+    BillOfMaterials("M2.5 lock-nut", 2);
+  }
+
+  rotate(180){
+    color(sheet_color)
+    linear_extrude(height=thickness)
+    zmax_endstop_spacer_face1();
+
+    translate([0,0,thickness])
+    color(sheet_color)
+    linear_extrude(height=thickness)
+    zmax_endstop_spacer_face2();
+
+    translate([0,0,2*thickness])
+    mechanical_switch();
+  }
 }
 
 wire_coordinate = [microswitch_width*0.4,microswitch_height*0.1];

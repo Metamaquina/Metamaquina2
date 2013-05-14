@@ -9,6 +9,12 @@ use <rounded_square.scad>;
 
 module NEMA17(){
   BillOfMaterials("NEMA17 stepper motor");
+
+  {//TODO: Add these parts to the CAD model
+    BillOfMaterials("M3x10 bolt", 4);
+    BillOfMaterials("M3 washer", 4);
+  }
+
   if (render_rubber){
     color(rubber_color){
       translate([-NEMA17_width/2, -NEMA17_height/2, -0.1])

@@ -68,6 +68,11 @@ module RAMBo_cover(){
 module RAMBo(){
   BillOfMaterials("RAMBo board");
 
+  { //TODO: add these parts to the CAD model
+    BillOfMaterials("M3x25 bolt",4); //to mount the RAMBo board in the side panel
+    BillOfMaterials("M3x10 bolt",4); //To attach the cover
+  }
+
   {// TODO: check this!
   BillOfMaterials(str("Female-female 38mm Hexspacer (CBTS135A)"), 4);
 

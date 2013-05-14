@@ -7,8 +7,9 @@ include <colors.h>;
 include <render.h>;
 include <BillOfMaterials.h>;
 
-module LM8UU(){
-  BillOfMaterials("LM8UU linear bearing");
+module LM8UU(bom=true){
+  if (bom)
+    BillOfMaterials("LM8UU linear bearing");
 
   if (render_metal){
     color(metal_color){

@@ -251,6 +251,8 @@ module HiquaPowerSupply(){
 
   {//TODO: Add this to the CAD model
     BillOfMaterials("Power Supply cable");
+    BillOfMaterials("M3x10 bolt", 4);
+    BillOfMaterials("M3 washer", 4);
   }
 
   if (render_metal){
@@ -924,6 +926,8 @@ module zip_tie_holes(d=12, r=m3_diameter/2){
 }
 
 module Y_belt(){
+  BillOfMaterials("GT2 belt for the Y axis");
+
   if (render_rubber){
   	color(rubber_color){
       translate([2.5, 0, 66])
@@ -1263,7 +1267,7 @@ module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=1){
       translate([0,0,lm8uu_diameter/2 - (bearing_sandwich_spacing + sandwich_tightening)]){
         for (j=[-1,1])
         translate([0,j*H/2])
-        LM8UU();
+        LM8UU(bom=false);
       }
     }
   }
@@ -1334,7 +1338,7 @@ module XCarriage_sandwich_face(){
           for (j=[-1,1]){
             translate([i*XCarriage_lm8uu_distance/2, j*X_rods_distance/2])
             rotate([0,0,90])
-            LM8UU();
+            LM8UU(bom=false);
           }
         }
       }
@@ -1603,6 +1607,12 @@ module MachineLeftPanel_sheet(){
 
 //!MachineTopPanel_sheet();
 module MachineTopPanel_sheet(){
+  {//TODO: Add these parts to the CAD model
+    BillOfMaterials("M3x25 bolt", 2);
+    BillOfMaterials("M3 washer", 2);
+    BillOfMaterials("M3 lock-nut", 2);
+  }
+
   translate([0,-XZStage_offset,machine_height]){
     if( render_lasercut ){
       color(sheet_color){
@@ -1631,13 +1641,6 @@ module MachineTopPanel_sheet(){
 }
 
 module MachineBottomPanel_sheet(){
-  {//TODO: Add these parts to the CAD model
-
-    //to attach the left & right Z Motors
-    BillOfMaterials("M3x10 bolt", 8);
-    BillOfMaterials("M3 washer", 8);
-  }
-
   translate([0,-XZStage_offset,BottomPanel_zoffset]){
       if( render_lasercut ){
         color(sheet_color){
@@ -1852,6 +1855,8 @@ module belt(bearings, belt_width=5){
 }
 
 module Xbelt(){
+  BillOfMaterials("GT2 belt for the X axis");
+
   if (render_rubber){
   	color(rubber_color){
       translate([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + thickness]){
@@ -2036,7 +2041,7 @@ module XCarriage(){
     //TODO: Add these microswitches to the CAD model
     BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM",2 ); //XMIN & XMAX
 
-    BillOfMaterials("M2.5 bolt",4);
+    BillOfMaterials("M2.5x16 bolt",4);
     BillOfMaterials("M2.5 lock-nut",4);
     BillOfMaterials("M2.5 washer",4);
   }
@@ -2091,13 +2096,9 @@ module XEndMotor(){
     BillOfMaterials("M3 nut", 2);
     BillOfMaterials("M3 washer", 2);
 
-    //to keep the bearing sandwiche in place
+    //to keep the bearing sandwiches in place
     BillOfMaterials("M3 lock-nut", 4);
     BillOfMaterials("M3x30 bolt", 4);
-    BillOfMaterials("M3 washer", 4);
-
-    //to attach the X motor
-    BillOfMaterials("M3x10 bolt", 4);
     BillOfMaterials("M3 washer", 4);
   }
 
@@ -2220,7 +2221,7 @@ module YPlatform_left_sandwich_face(sandwich_tightening=1){
 
         //linear bearing
         translate([0,0,lm8uu_diameter/2 - (bearing_sandwich_spacing + sandwich_tightening)])
-        LM8UU();
+        LM8UU(bom=false);
       }
     }
 
