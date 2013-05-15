@@ -17,3 +17,5 @@ peek_color = "beige";
 dark_grey = [0.3, 0.3, 0.3];
 green_plastic_color = [0.7,0.8,0,7];
 black_plastic_color = [0.3,0.3,0.3];
+white_nylon_color = [1, 1, 0.8];
+

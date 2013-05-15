@@ -198,5 +198,3 @@ module RAMBo_pcb(){
   }
 }
 
-white_nylon_color = [1, 1, 0.8];
-

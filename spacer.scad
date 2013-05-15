@@ -3,6 +3,8 @@
 // version 3 (or later).
 
 include <spacer.h>;
+include <color.h>;
+include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
 
 spacers_clearance = 0.1; // extra room for the spacers hole diameter
@@ -17,6 +19,7 @@ module double_M3_lasercut_spacer(){
 module M3_spacer(){
   BillOfMaterials("M3 Lasercut spacer");
 
+  color(sheet_color)
   linear_extrude(height=thickness)
   M3_spacer_face();
 }
@@ -40,6 +43,7 @@ module set_of_M3_spacers(w=4, h=4){
 module M4_spacer(){
   BillOfMaterials("M4 Lasercut spacer");
 
+  color(sheet_color)
   linear_extrude(height=thickness)
   M4_spacer_face();
 }
