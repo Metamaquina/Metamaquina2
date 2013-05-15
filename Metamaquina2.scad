@@ -2538,28 +2538,20 @@ module bar_clamp_assembly(){
   barclamp_thickness = 13.5; //TODO
 
   rotate([0,90,0]){
-    if (render_metal){
-      color(metal_color){
-        for (angle=[0,180]){
-          rotate([0,angle]){
-            translate([0,0, barclamp_thickness/2]){
-              M8_washer();
+    for (angle=[0,180]){
+      rotate([0,angle]){
+        translate([0,0, barclamp_thickness/2]){
+          M8_washer();
 
-              translate([0,0, washer_thickness])
-              M8_nut();
-            }
-          }
+          translate([0,0, washer_thickness])
+          M8_nut();
         }
       }
     }
 
-    if (render_PLA){
-      color(PLA_color)
-      //barclamp
-      translate([-17, 6.7, -barclamp_thickness/2])
-      rotate([90,0,0])
-      barclamp();
-    }
+    translate([-17, 6.7, -barclamp_thickness/2])
+    rotate([90,0,0])
+    barclamp();
   }
 }
 

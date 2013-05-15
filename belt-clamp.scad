@@ -6,6 +6,8 @@
 // version 3 (or later).
 
 include <BillOfMaterials.h>;
+include <render.h>;
+include <colors.h>;
 
 module belt_clamp_holder(){
   r = 5;
@@ -63,14 +65,20 @@ module teeth_for_belt(belt_width=6){
 }
 
 module beltclamp(width=28, height=6, r=5, teeth_depth=0.5){
-  render()
-  difference(){
-    linear_extrude(height=height)
-    beltclamp_curves(width, r);
+  BillOfMaterials(category="3D Printed", partname="Belt Clamp");
 
-    translate([0, 0, height-teeth_depth]){
-      linear_extrude(height = teeth_depth+1)
-      teeth_for_belt();
+  if (render_ABS){
+    color(ABS_color){
+      render()
+      difference(){
+        linear_extrude(height=height)
+        beltclamp_curves(width, r);
+
+        translate([0, 0, height-teeth_depth]){
+          linear_extrude(height = teeth_depth+1)
+          teeth_for_belt();
+        }
+      }
     }
   }
 }
@@ -78,15 +86,23 @@ module beltclamp(width=28, height=6, r=5, teeth_depth=0.5){
 module x_carriage_beltclamp(width=28, height=6, r=5){
   BillOfMaterials(category="Lasercut wood", partname="X Carriage Belt Clamp");
 
-  linear_extrude(height=height)
-  beltclamp_curves(width, r, for_x_carriage=true);
+  if (render_lasercut){
+    color(sheet_color){
+      linear_extrude(height=height)
+      beltclamp_curves(width, r, for_x_carriage=true);
+    }
+  }
 }
 
 module y_platform_beltclamp(width=28, height=6, r=5){
   BillOfMaterials(category="Lasercut wood", partname="Y Platform Belt Clamp");
 
-  linear_extrude(height=height)
-  beltclamp_curves(width, r, for_y_platform=true);
+  if (render_lasercut){
+    color(sheet_color){
+      linear_extrude(height=height)
+      beltclamp_curves(width, r, for_y_platform=true);
+    }
+  }
 }
 
 beltclamp(); //for 3d printing
