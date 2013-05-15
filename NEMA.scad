@@ -5,15 +5,12 @@
 include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
 include <NEMA.h>;
+include <bolts.h>;
+include <washers.h>;
 use <rounded_square.scad>;
 
 module NEMA17(){
   BillOfMaterials("NEMA17 stepper motor");
-
-  {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x10 bolt", 4);
-    BillOfMaterials("M3 washer", 4);
-  }
 
   if (render_rubber){
     color(rubber_color){
@@ -90,4 +87,19 @@ module NEMA17_holes(l=15.5, r=12, central_hole=true){
   }
 }
 
-NEMA17();
+module NEMA17_subassembly(l=15.5, r=12, th=thickness){
+  NEMA17();
+
+  for (i=[-l,l]){
+    for (j=[-l,l]){
+      translate([i, j, -th - m3_washer_thickness]){
+        M3_washer();
+
+        rotate([180,0])
+        M3x10();
+      }
+    }
+  }
+}
+
+NEMA17_subassembly();

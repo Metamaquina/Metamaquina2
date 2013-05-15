@@ -16,6 +16,7 @@ use <tslot.scad>;
 include <Metamaquina2.h>;
 include <nuts.h>;
 include <washers.h>;
+include <bolts.h>;
 
 extruder_mount_holes_distance = X_rods_distance + 14;
 idler_axis_position = [-12,21];
@@ -30,27 +31,6 @@ HandleWidth = 5*thickness;
 HandleHeight = 30;
 default_sheet_color = [0.9, 0.7, 0.45, 0.9];
 position_of_holder_for_extruder_wires=[20,52];
-
-module bolt_head(r, h){
-  difference(){
-    cylinder(r=r, h=h, $fn=60);
-    translate([0,0,h/2]){
-      cylinder(r=0.6*r, h=h, $fn=6);
-    }
-  }
-}
-
-module bolt(dia, length){
-  BillOfMaterials(str("M",dia,"x",length," bolt"));
-
-  if (render_metal)
-  color(metal_color){
-    bolt_head(r=dia, h=dia);
-    translate([0,0,-length]){
-      cylinder(r=dia/2, h=length, $fn=60);
-    }
-  }
-}
 
 module handle_face(r=5, width=HandleWidth, height=HandleHeight){
   difference(){
@@ -481,7 +461,7 @@ module testing(){
   rotate([-90,0])
   rotate(motor_angle)
   {
-    NEMA17();
+    NEMA17_subassembly();
   }
 }
 
@@ -666,7 +646,7 @@ module lasercut_extruder(){
     rotate([-90,0])
     rotate(motor_angle)
     {
-      NEMA17();
+      NEMA17_subassembly();
 
       translate([0,0,-2*thickness - 2*washer_thickness])
       if (render_ABS){

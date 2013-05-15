@@ -2850,21 +2850,21 @@ module LaserCutPanels(){
 module XMotor(){
   translate([XEnd_box_size/2, XMotor_height]){
     rotate([-180,0,0])
-    NEMA17();
+    NEMA17_subassembly();
   }
 }
 
 module YMotor(){
   rotate([0,0,-90-45])
   rotate([180,0,0])
-  NEMA17();
+  NEMA17_subassembly();
 }
 
 module ZMotors(){
   translate([Z_rods_distance/2 - z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset])
-  rotate([180,0,0]) rotate(90) NEMA17();
+  rotate([180,0,0]) rotate(90) NEMA17_subassembly();
   translate([-Z_rods_distance/2 + z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset])
-  rotate([180,0,0]) rotate(-90) NEMA17();
+  rotate([180,0,0]) rotate(-90) NEMA17_subassembly();
 }
 
 module ZAxis(){
