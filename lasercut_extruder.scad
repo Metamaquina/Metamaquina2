@@ -29,8 +29,18 @@ hobbed_bolt_position = [3,36.5];
 thickness = 6;
 HandleWidth = 5*thickness;
 HandleHeight = 30;
-default_sheet_color = [0.9, 0.7, 0.45, 0.9];
 position_of_holder_for_extruder_wires=[20,52];
+
+////////////////////
+//TODO: Move this somewhere else:
+module M3_hole(){
+  circle(r=m3_diameter/2, $fn=20);
+}
+
+module M4_hole(){
+  circle(r=m4_diameter/2, $fn=20);
+}
+///////////////////
 
 module handle_face(r=5, width=HandleWidth, height=HandleHeight){
   difference(){
@@ -55,14 +65,6 @@ module handle_sheet(){
       handle_face();
     }
   }
-}
-
-module M3_hole(){
-  circle(r=m3_diameter/2, $fn=20);
-}
-
-module M4_hole(){
-  circle(r=m4_diameter/2, $fn=20);
 }
 
 //!idler_side_face();
@@ -434,42 +436,6 @@ module slice5(){
   translate([0,0,4*thickness])
   linear_extrude(height=thickness)
   slice5_face();
-}
-
-//!testing();
-module testing(){
-//  slice4_face();
-
-  rotate(90)
-  translate([-37,2.5*thickness])
-  rotate([90,0]){
-    //sheet("slice3", 1.9*thickness);
-    //sheet("slice4", 3*thickness);
-    //sheet("slice5", 3.9*thickness);
-  }
-
-  rotate(90)
-  translate([0,2.5*thickness])
-  rotate([90,0]){
-    slice5();
-    slice4();
-    slice3();
-  }
-
-  rotate(90)
-  translate([motor_position[0], -thickness/2, motor_position[1]])
-  rotate([-90,0])
-  rotate(motor_angle)
-  {
-    NEMA17_subassembly();
-  }
-}
-
-module sheet(name, height=0, c=default_sheet_color){
-  color(c)
-  translate([0,0,height])
-  linear_extrude(height=thickness)
-  import("extruder-printrbot-layers.dxf", layer=name);
 }
 
 module handle(){
