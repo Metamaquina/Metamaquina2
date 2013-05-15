@@ -29,5 +29,3 @@ bolt1_offsetz = 3.1;
 bolt2_offsetz = 3.4;
 epsilon = 0.05;
 
-metal_color = [0.8,0.8,0.8];
-

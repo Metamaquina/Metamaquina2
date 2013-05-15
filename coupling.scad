@@ -18,6 +18,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 include <coupling.h>;
+include <colors.h>;
 include <BillOfMaterials.h>;
 
 module coupling(shaft_diameter=5, rod_diameter=8){
