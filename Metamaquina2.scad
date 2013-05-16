@@ -43,6 +43,7 @@ include <nuts.h>;
 include <spacer.h>;
 include <lm8uu_bearing.h>;
 include <jhead.h>;
+include <PowerSupply.h>;
 use <608zz_bearing.scad>;
 use <domed_cap_nuts.scad>;
 use <belt-clamp.scad>;
@@ -242,41 +243,6 @@ if (render_metal && render_bolts){
 }
 
 // 2d shapes for laser-cutting:
-
-//This is based on measurements of
-// a HIQUA power supply
-PowerSupply_width=110;
-PowerSupply_height=198;
-PowerSupply_thickness=50;
-module HiquaPowerSupply_holes(){
-  translate([5, 6])
-  circle(r=5/2, $fn=20);
-
-  translate([6, PowerSupply_height - 22])
-  circle(r=5/2, $fn=20);
-
-  translate([PowerSupply_width - 5, 5])
-  circle(r=5/2, $fn=20);
-
-  translate([PowerSupply_width - 12, PowerSupply_height - 21])
-  circle(r=5/2, $fn=20);
-}
-
-module HiquaPowerSupply(){
-  BillOfMaterials("Power Supply");
-
-  {//TODO: Add this to the CAD model
-    BillOfMaterials("Power Supply cable");
-    BillOfMaterials("M3x10 bolt", 4);
-    BillOfMaterials("M3 washer", 4);
-  }
-
-  if (render_metal){
-    color(metal_color){
-      cube([PowerSupply_thickness, PowerSupply_width, PowerSupply_height]);
-    }
-  }
-}
 
 module RodEndTop_face(){
   RodEnd_face(z_rod_z_bar_distance+8);
