@@ -51,6 +51,13 @@ module oldHiquaPowerSupply(){
   }
 }
 
+metal_sheet_thickness = 1;
+bottom_offset = 11;
+top_offset = 5;
+pcb_thickness = 2;
+pcb_height = 9 - pcb_thickness;
+pcb_bottom_advance = 2;
+
 module HiquaPowerSupply(){
   BillOfMaterials("Power Supply");
 
@@ -60,7 +67,20 @@ module HiquaPowerSupply(){
 
   if (render_metal){
     color(metal_color){
-      cube([PowerSupply_width, PowerSupply_height, PowerSupply_thickness]);
+      cube([PowerSupply_width, PowerSupply_height, metal_sheet_thickness]);
+
+      translate([PowerSupply_width - metal_sheet_thickness, 0])
+      cube([metal_sheet_thickness, PowerSupply_height, PowerSupply_thickness]);
+
+      translate([0,bottom_offset])
+      cube([PowerSupply_width, PowerSupply_height - bottom_offset - top_offset, PowerSupply_thickness]);
+    }
+  }
+
+  if (render_pcb){
+    color(pcb_color){
+      translate([metal_sheet_thickness, -pcb_bottom_advance, pcb_height])
+      cube([PowerSupply_width - 2*metal_sheet_thickness, PowerSupply_height - top_offset, pcb_thickness]);
     }
   }
 }

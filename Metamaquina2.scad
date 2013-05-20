@@ -443,7 +443,8 @@ module holes_for_x_motor_and_endstop_wires(){
   }
 }
 
-powersupply_Yposition = base_bars_height*2 + 5;
+powersupply_Xposition = rear_backtop_advance+RightPanel_backwidth - XZStage_offset - 5;
+powersupply_Yposition = base_bars_height*2 + 40;
 
 //!MachineRightPanel_face();
 module MachineRightPanel_face(){
@@ -460,7 +461,7 @@ module MachineRightPanel_face(){
     }
 
     if (HIQUA_POWERSUPPLY){
-      translate([rear_backtop_advance+RightPanel_backwidth - PowerSupply_width - XZStage_offset, powersupply_Yposition])
+      translate([powersupply_Xposition - PowerSupply_width, powersupply_Yposition])
       HiquaPowerSupply_holes();
     }
 
@@ -1569,7 +1570,7 @@ module MachineRightPanel_sheet(){
       }
 
       if (HIQUA_POWERSUPPLY){
-        translate([(rear_backtop_advance+RightPanel_backwidth) - XZStage_offset, powersupply_Yposition])
+        translate([powersupply_Xposition, powersupply_Yposition])
         rotate([0, 180, 0])
         HiquaPowerSupply_subassembly();
       }
