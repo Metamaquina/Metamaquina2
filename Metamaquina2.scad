@@ -1568,6 +1568,12 @@ module MachineRightPanel_sheet(){
         }
       }
 
+      if (HIQUA_POWERSUPPLY){
+        translate([(rear_backtop_advance+RightPanel_backwidth) - XZStage_offset, powersupply_Yposition])
+        rotate([0, 180, 0])
+        HiquaPowerSupply_subassembly();
+      }
+
       for (clip=right_cable_clips){
         assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
           translate([x,y, thickness])
@@ -2888,11 +2894,6 @@ module Metamaquina2(){
 
   YPlatform();
   ZAxis();
-
-  if (HIQUA_POWERSUPPLY){
-    translate([SidePanels_distance/2, RightPanel_basewidth/2 + XZStage_offset - (rear_backtop_advance+RightPanel_backwidth), powersupply_Yposition])
-    HiquaPowerSupply();
-  }
 }
 
 //rotate([0,0,cos(360*time)*60])
