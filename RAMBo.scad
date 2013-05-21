@@ -104,7 +104,7 @@ module RAMBo(){
     }
   }
 
-  translate([0,0,nylonspacer_length]){
+  translate([0,0,2*thickness]){
     RAMBo_pcb();
 
     translate([0,0,RAMBo_pcb_thickness]){
