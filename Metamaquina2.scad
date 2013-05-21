@@ -447,7 +447,7 @@ module holes_for_x_motor_and_endstop_wires(){
 }
 
 powersupply_Xposition = rear_backtop_advance+RightPanel_backwidth - XZStage_offset - 5;
-powersupply_Yposition = base_bars_height*2 + 33;
+powersupply_Yposition = base_bars_height*2 + 33 + 20;
 
 //!MachineRightPanel_face();
 module MachineRightPanel_face(){

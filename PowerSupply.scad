@@ -26,7 +26,7 @@ include <colors.h>;
 include <rounded_square.scad>;
 include <tslot.scad>;
 
-box_height = 50; //TODO
+box_height = 70; //TODO
 detail = false;
 mount_positions = [[5, 6],
                   [6, PowerSupply_height - 22],
