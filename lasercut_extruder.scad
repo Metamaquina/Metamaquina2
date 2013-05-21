@@ -48,11 +48,11 @@ position_of_holder_for_extruder_wires=[20,52];
 ////////////////////
 //TODO: Move this somewhere else:
 module M3_hole(){
-  circle(r=m3_diameter/2, $fn=20);
+  circle(r=m3_diameter/2);
 }
 
 module M4_hole(){
-  circle(r=m4_diameter/2, $fn=20);
+  circle(r=m4_diameter/2);
 }
 ///////////////////
 
@@ -64,8 +64,8 @@ module handle_face(r=5, width=HandleWidth, height=HandleHeight){
     for (i=[-1,1]){
       translate([i*(width/2+2), 2*height/3]) circle(r=6);
       hull(){
-        translate([i*HandleWidth/6,10]) circle(r=4/2, $fn=20);
-        translate([i*HandleWidth/6,4]) circle(r=4/2, $fn=20);
+        translate([i*HandleWidth/6,10]) circle(r=4/2);
+        translate([i*HandleWidth/6,4]) circle(r=4/2);
       }
     }
   }
@@ -169,8 +169,8 @@ module idler_spacer_face(){
   d = 8.3;
   D = 16;
   difference(){
-    circle(r=D/2,$fn=40);
-    circle(r=d/2,$fn=40);
+    circle(r=D/2);
+    circle(r=d/2);
   }
 }
 
@@ -178,8 +178,8 @@ module handlelock(){
   r=3;
   translate([1,52]){
     hull(){
-      rounded_square([11,15], corners=[r,r,r,r], $fn=30);
-      translate([10,-11]) circle(r=1, $fn=40);
+      rounded_square([11,15], corners=[r,r,r,r]);
+      translate([10,-11]) circle(r=1);
     }
   }
 }
@@ -251,7 +251,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
         hull(){
           for (i=[-1,1]){
             translate([i*base_length/2,0])
-            circle(r=base_thickness/2, $fn=40);
+            circle(r=base_thickness/2);
           }
         }
       }
@@ -301,13 +301,13 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
         }
 
         translate(hobbed_bolt_position){
-          circle(r=8/2, $fn=20);
+          circle(r=8/2);
           if (bearing_slot)
-            circle(r=608zz_diameter/2, $fn=20);
+            circle(r=608zz_diameter/2);
         }
 
         translate(hobbed_bolt_position - [14,0])
-        circle(r=23/2, $fn=20);
+        circle(r=23/2);
       }
 
       if (idler_axis){
@@ -322,16 +322,16 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
 
   //bolt holes for keeping the 5 extruder sheets together:
   translate([11, 54])
-  circle(r=m3_diameter/2, $fn=20);
+  circle(r=m3_diameter/2);
 
   translate([-25, base_thickness/2])
-  circle(r=m3_diameter/2, $fn=20);
+  circle(r=m3_diameter/2);
 
   translate([11, 20])
-  circle(r=m3_diameter/2, $fn=20);
+  circle(r=m3_diameter/2);
 
   translate(idler_axis_position)
-  circle(r=m3_diameter/2, $fn=20);
+  circle(r=m3_diameter/2);
 
   if (idler_nut_gap){
     translate(idler_axis_position - [5,4.5])
@@ -360,7 +360,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
 
   for (i=[-1,1])
     translate([i*nozzle_hole_width2/2-0.3,5])
-    circle(r=m3_diameter/2, $fn=20);
+    circle(r=m3_diameter/2);
 
   if (filament_channel){
     translate([-1.9,0]){
@@ -378,7 +378,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
         for (j=[-1,1])
           translate(position_of_holder_for_extruder_wires)
           translate([10+i*5, 20+j*5])
-          circle(r=m3_diameter/2, $fn=20);
+          circle(r=m3_diameter/2);
 
       translate(motor_position){
         rotate(-motor_angle){
@@ -391,7 +391,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
               rotate(motor_angle){
                 for (x=[-k,k]){
                   translate([x,0])
-                    circle(r=m3_diameter/2, $fn=30);
+                    circle(r=m3_diameter/2);
                 }
               }
             }
@@ -403,7 +403,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
     //holes for m3x35 screws to pack all 5 slices together
     for (i=[-1,1])
       translate([i*base_length/2, base_thickness/2])
-      circle(r=m3_diameter/2, $fn=20);
+      circle(r=m3_diameter/2);
   }
 }
 
@@ -480,7 +480,7 @@ module idler_bolt_subassembly(){
 
   //bolt body
   translate([0,0,-length])
-  cylinder(r=7.3/2, h=length, $fn=30);
+  cylinder(r=7.3/2, h=length);
 }
 
 module idler(){
@@ -571,7 +571,7 @@ module nozzle(length=50){
         cylinder(r=8,h=length-10);
       }
       translate([0,0,-length])
-      cylinder(r=3/2,h=length+11, $fn=30);
+      cylinder(r=3/2,h=length+11);
     }
   }
 }
@@ -579,7 +579,7 @@ module nozzle(length=50){
 module hobbed_bolt(){
   BillOfMaterials("Hobbed bolt");
   rotate([90,0])
-  cylinder(r=7.2/2, h=5*thickness, $fn=40);
+  cylinder(r=7.2/2, h=5*thickness);
 }
 
 washer_thickness = 1.5;
