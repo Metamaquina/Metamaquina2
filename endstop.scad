@@ -213,7 +213,7 @@ module z_max_endstop(){
   }
 }
 
-wire_coordinate = [microswitch_width*0.4,microswitch_height*0.1];
+wire_coordinate = [microswitch_width*0.5,microswitch_height*0.1];
 
 module oblongo(L=10,d=3){
   hull(){
