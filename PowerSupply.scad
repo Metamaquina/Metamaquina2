@@ -23,7 +23,11 @@ include <bolts.h>;
 include <washers.h>;
 include <render.h>;
 include <colors.h>;
+include <rounded_square.scad>;
+include <tslot.scad>;
 
+box_height = 50; //TODO
+detail = false;
 mount_positions = [[5, 6],
                   [6, PowerSupply_height - 22],
                   [PowerSupply_width - 5, 5],
@@ -35,6 +39,12 @@ module HiquaPowerSupply_holes(){
     translate(p)
     circle(r=5/2, $fn=20);
   }
+
+  translate([thickness,-(box_height-thickness)/2])
+  TSlot_holes(width=(box_height-thickness)/2);
+
+  translate([PowerSupply_width-thickness,-(box_height-thickness)/2])
+  TSlot_holes(width=(box_height-thickness)/2);
 }
 
 module oldHiquaPowerSupply(){
@@ -58,6 +68,16 @@ pcb_thickness = 2;
 pcb_height = 9 - pcb_thickness;
 pcb_bottom_advance = 2;
 
+module circle_pattern(r, spacing_x, spacing_y, x,y){
+  $fn=6;
+  for (i=[1:x]){
+    for (j=[1:y]){
+      translate([(i+(1/2)*(j%2)) * spacing_x, j * spacing_y])
+      circle(r=r);
+    }
+  }
+}
+
 module HiquaPowerSupply(){
   BillOfMaterials("Power Supply");
 
@@ -73,7 +93,19 @@ module HiquaPowerSupply(){
       cube([metal_sheet_thickness, PowerSupply_height, PowerSupply_thickness]);
 
       translate([0,bottom_offset])
-      cube([PowerSupply_width, PowerSupply_height - bottom_offset - top_offset, PowerSupply_thickness]);
+      difference(){
+        cube([PowerSupply_width, PowerSupply_height - bottom_offset - top_offset, PowerSupply_thickness]);
+
+        translate([metal_sheet_thickness, metal_sheet_thickness])
+        cube([PowerSupply_width - 2*metal_sheet_thickness, PowerSupply_height - bottom_offset - top_offset - 2*metal_sheet_thickness, PowerSupply_thickness - metal_sheet_thickness]);
+
+        if (detail){
+          translate([-23.5, 7, PowerSupply_thickness - 1.5*metal_sheet_thickness]){
+            linear_extrude(height=2*metal_sheet_thickness)
+            circle_pattern(r=4.6/2, spacing_x=6, spacing_y = 5, x=21,y=34);
+          }
+        }
+      }
     }
   }
 
@@ -87,6 +119,8 @@ module HiquaPowerSupply(){
 
 module HiquaPowerSupply_subassembly(th=thickness){
   HiquaPowerSupply();
+  PowerSupplyBox();
+
   for (p = mount_positions){
     translate([PowerSupply_width - p[0], p[1]]){
       translate([0, 0, -th - m3_washer_thickness]){
@@ -100,3 +134,120 @@ module HiquaPowerSupply_subassembly(th=thickness){
 }
 
 HiquaPowerSupply_subassembly();
+
+
+
+module PowerSupplyBox_side_face(){
+  difference(){
+    square([PowerSupply_width, box_height-thickness]);
+
+    translate([PowerSupply_width-metal_sheet_thickness, box_height-thickness-bottom_offset])
+    square([metal_sheet_thickness,bottom_offset]);
+
+    translate([thickness,0])
+    TSlot_holes(width=box_height-thickness);
+
+    translate([PowerSupply_width-thickness,0])
+    TSlot_holes(width=box_height-thickness);
+  }
+}
+
+module PowerSupplyBox_bottom_face(){
+  difference(){
+    square([PowerSupply_width, PowerSupply_thickness]);
+
+    translate([thickness,0])
+    TSlot_holes(width=PowerSupply_thickness-thickness);
+
+    translate([PowerSupply_width-thickness,0])
+    TSlot_holes(width=PowerSupply_thickness-thickness);
+  }
+}
+
+module PowerSupplyBox_front_face(){
+  difference(){
+    square([PowerSupply_thickness - thickness, box_height - thickness]);
+    translate([0,box_height-thickness-(bottom_offset+pcb_bottom_advance)])
+    rounded_square([9+2,bottom_offset+pcb_bottom_advance], corners=[0,2,0,0]);
+
+    translate([-thickness,(box_height-thickness)/2])
+    rotate(-90)
+    t_slot_shape(3,16);
+
+    translate([(PowerSupply_thickness-thickness)/2,-thickness])
+    t_slot_shape(3,16);
+
+    translate([PowerSupply_thickness,(box_height-thickness)/2])
+    rotate(90)
+    t_slot_shape(3,16);
+  }
+
+  translate([- thickness/2,(box_height-thickness)/4])
+  t_slot_joints((box_height-thickness)/2, thickness=thickness);
+
+  translate([0,-thickness/2])
+  rotate(-90)
+  t_slot_joints(PowerSupply_thickness-thickness, thickness=thickness);
+
+  translate([PowerSupply_thickness - thickness/2,0])
+  t_slot_joints(box_height-thickness, thickness=thickness);
+}
+
+module PowerSupplyBox_back_face(){
+  PowerSupplyBox_front_face();
+}
+
+
+module PowerSupplyBox_side_sheet(){
+  if (render_lasercut){
+    color(sheet_color){
+      linear_extrude(height=thickness)
+      PowerSupplyBox_side_face();
+    }
+  }
+}
+
+module PowerSupplyBox_bottom_sheet(){
+  if (render_lasercut){
+    color(sheet_color){
+      linear_extrude(height=thickness)
+      PowerSupplyBox_bottom_face();
+    }
+  }
+}
+
+module PowerSupplyBox_front_sheet(){
+  if (render_lasercut){
+    color(sheet_color){
+      linear_extrude(height=thickness)
+      PowerSupplyBox_front_face();
+    }
+  }
+}
+
+module PowerSupplyBox_back_sheet(){
+  if (render_lasercut){
+    color(sheet_color){
+      linear_extrude(height=thickness)
+      PowerSupplyBox_back_face();
+    }
+  }
+}
+
+
+module PowerSupplyBox(){
+  translate([0,-box_height+thickness+bottom_offset,PowerSupply_thickness - thickness])
+  PowerSupplyBox_side_sheet();
+
+  translate([0,-box_height+bottom_offset+thickness,0])
+  rotate([90,0,0])
+  PowerSupplyBox_bottom_sheet();
+
+  translate([thickness*(1+1/2),-box_height+bottom_offset+thickness,0])
+  rotate([0,-90,0])
+  PowerSupplyBox_front_sheet();
+
+  translate([PowerSupply_width - thickness/2,-box_height+bottom_offset+thickness,0])
+  rotate([0,-90,0])
+  PowerSupplyBox_back_sheet();
+}

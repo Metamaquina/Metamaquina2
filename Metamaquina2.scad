@@ -444,7 +444,7 @@ module holes_for_x_motor_and_endstop_wires(){
 }
 
 powersupply_Xposition = rear_backtop_advance+RightPanel_backwidth - XZStage_offset - 5;
-powersupply_Yposition = base_bars_height*2 + 40;
+powersupply_Yposition = base_bars_height*2 + 33;
 
 //!MachineRightPanel_face();
 module MachineRightPanel_face(){
@@ -465,14 +465,6 @@ module MachineRightPanel_face(){
       HiquaPowerSupply_holes();
     }
 
-    //holes for zipties to hold the power supply cord
-    translate([30 + feetwidth/2,feetheight*2]){
-      zip_tie_holes();
-
-      translate([10,0])
-      zip_tie_holes();
-    }
-
     //zip-tie holes for RAMBo power wires
     // not necessary anymore (spiral tube or contractile mesh)
     translate([30 + feetwidth,feetheight*2.5]){
@@ -489,8 +481,8 @@ module MachineRightPanel_face(){
     
 
     //hole for power supply wiring
-    translate([30 + feetwidth,feetheight])
-    rounded_square([powersupply_cut_width, feetheight], corners=[0,0,5,5]);
+    translate([95,42])
+    circle(r=8);
   }
 }
 
