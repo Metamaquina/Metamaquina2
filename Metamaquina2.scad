@@ -1000,7 +1000,7 @@ module MachineBottomPanel_face(){
 }
 
 //!XPlatform_bottom_face();
-module XPlatform_bottom_face(remove_frontal_bridge=0){
+module XPlatform_bottom_face(remove_frontal_bridge=1){
   r = 14*remove_frontal_bridge;
   s = 42*remove_frontal_bridge;
   render(){
