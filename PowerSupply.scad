@@ -259,3 +259,78 @@ module PowerSupplyBox(){
   rotate([0,-90,0])
   PowerSupplyBox_back_sheet();
 }
+
+module PowerSupply_FemaleConnector(){
+  BillOfMaterials("Power supply female connector");
+
+  border_height=22;
+  border_width=30.2;
+  border_thickness = 6.1;
+  depth = 13.1;
+  bolts_distance = 40;
+
+  if (render_ABS){
+    color(ABS_color){
+      difference(){
+        union(){
+          translate([0,0,-depth])
+          linear_extrude(height=depth)
+          PowerSupply_FemaleConnector_mount_hole();
+
+          linear_extrude(height=border_thickness)
+          translate([-border_width/2,-border_height/2])
+          rounded_square([border_width, border_height], corners=[2,2,2,2]);
+
+          linear_extrude(height=3.9)
+          hull(){
+            translate([-border_width/2,-border_height/2])
+            rounded_square([border_width, border_height], corners=[2,2,2,2]);
+
+            for (i=[-1,1])
+              translate([i*bolts_distance/2,0])
+              circle(r=6);
+          }
+        }
+
+        translate([0,0,border_thickness+0.1-depth])
+        linear_extrude(height=depth)
+        power_supply_generic_connector_shape(
+          width=24.6,
+          height=16.4,
+          bevel=4.2,
+          r1=1,
+          r2=2);
+
+        for (i=[-1,1]){
+          translate([i*bolts_distance/2,0,-0.1])
+          cylinder(r=m3_diameter/2, h=10);
+
+          translate([i*bolts_distance/2,0,2])
+          cylinder(r1=m3_diameter/2, r2=m3_diameter, h=3.9 - 2 + 0.1);
+        }
+      }
+    }
+  }
+}
+
+
+module PowerSupply_FemaleConnector_mount_hole(){
+  //TODO: check these dimensions:
+
+  power_supply_generic_connector_shape(
+    width=26.6,
+    height=18.4,
+    bevel=5,
+    r1=1,
+    r2=2);
+}
+
+module power_supply_generic_connector_shape(width, height, bevel, r1, r2){
+  hull(){
+    translate([-width/2,-height/2])
+    rounded_square([width, height-bevel], corners=[r2,r2,r1,r1]);
+
+    translate([-width/2 + bevel,-height/2])
+    rounded_square([width-2*bevel, height], corners=[r1,r1,r1,r1]);
+  }
+}
