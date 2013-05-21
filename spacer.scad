@@ -17,7 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 include <spacer.h>;
-include <color.h>;
+include <colors.h>;
 include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
 
