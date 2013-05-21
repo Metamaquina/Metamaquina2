@@ -199,6 +199,8 @@ module PowerSupplyBox_back_face(){
 
 
 module PowerSupplyBox_side_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Power Supply Box side sheet");
+
   if (render_lasercut){
     color(sheet_color){
       linear_extrude(height=thickness)
@@ -208,6 +210,8 @@ module PowerSupplyBox_side_sheet(){
 }
 
 module PowerSupplyBox_bottom_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Power Supply Box bottom sheet");
+
   if (render_lasercut){
     color(sheet_color){
       linear_extrude(height=thickness)
@@ -217,6 +221,8 @@ module PowerSupplyBox_bottom_sheet(){
 }
 
 module PowerSupplyBox_front_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Power Supply Box front sheet");
+
   if (render_lasercut){
     color(sheet_color){
       linear_extrude(height=thickness)
@@ -226,6 +232,8 @@ module PowerSupplyBox_front_sheet(){
 }
 
 module PowerSupplyBox_back_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Power Supply Box back sheet");
+
   if (render_lasercut){
     color(sheet_color){
       linear_extrude(height=thickness)
