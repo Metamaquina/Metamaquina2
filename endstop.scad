@@ -223,36 +223,63 @@ module oblongo(L=10,d=3){
   }
 }
 
-module endstop_spacer_face1(){
+module endstop_spacer_face1(nut_gap=true){
   r = 3;
   translate([0,-microswitch_height])
   difference(){
     translate([-2,-microswitch_height])
-    rounded_square([microswitch_width+4,3*microswitch_height], corners=[r,r,r,r], $fn=30);
+    rounded_square([microswitch_width+4,3*microswitch_height], corners=[r,r,r,r]);
 
     translate(wire_coordinate)
     oblongo(microswitch_width);
 
     for (i=[-1,1])
       translate([microswitch_width/2+i*microswitch_holes_distance/2, microswitch_height+2])
-      circle(r=m25_diameter, $fn=20);
+      if (nut_gap)
+        circle(r=m25_diameter);
+      else
+        circle(r=m25_diameter/2);
 
     for (i=[-1,1])
       translate([microswitch_width/2+i*microswitch_holes_distance/2, -microswitch_height/2])
-      circle(r=m3_diameter/2, $fn=20);
+      circle(r=m3_diameter/2);
+  }
+}
+
+module endstop_spacer_face2(nut_gap=false){
+  r = 3;
+  translate([0,-microswitch_height])
+  difference(){
+    translate([-2,-microswitch_height])
+    rounded_square([microswitch_width+4,3*microswitch_height], corners=[r,r,r,r]);
+
+    translate(wire_coordinate)
+    rotate(90)
+    oblongo(microswitch_width);
+
+    for (i=[-1,1])
+      translate([microswitch_width/2+i*microswitch_holes_distance/2, microswitch_height+2])
+      if (nut_gap)
+        circle(r=m25_diameter);
+      else
+        circle(r=m25_diameter/2);
+
+    for (i=[-1,1])
+      translate([microswitch_width/2+i*microswitch_holes_distance/2, -microswitch_height/2])
+      circle(r=m3_diameter/2);
   }
 }
 
 module ymin_endstop_spacer_face(){
   difference(){
-    endstop_spacer_face2();
+    endstop_spacer_face1(nut_gap=false);
     import("labels.dxf", layer="ymin");
   }
 }
 
 module ymax_endstop_spacer_face(){
   difference(){
-    endstop_spacer_face2();
+    endstop_spacer_face1(nut_gap=false);
     import("labels.dxf", layer="ymax");
   }
 }
@@ -284,27 +311,6 @@ module zmax_endstop_spacer_face2(){
   difference(){
     endstop_spacer_face2();
     import("labels.dxf", layer="zmax");
-  }
-}
-
-module endstop_spacer_face2(){
-  r = 3;
-  translate([0,-microswitch_height])
-  difference(){
-    translate([-2,-microswitch_height])
-    rounded_square([microswitch_width+4,3*microswitch_height], corners=[r,r,r,r], $fn=30);
-
-    translate(wire_coordinate)
-    rotate(90)
-    oblongo(microswitch_width);
-
-    for (i=[-1,1])
-      translate([microswitch_width/2+i*microswitch_holes_distance/2, microswitch_height+2])
-      circle(r=m25_diameter/2, $fn=20);
-
-    for (i=[-1,1])
-      translate([microswitch_width/2+i*microswitch_holes_distance/2, -microswitch_height/2])
-      circle(r=m3_diameter/2, $fn=20);
   }
 }
 
