@@ -67,7 +67,7 @@ left_cable_clips = [
 right_cable_clips = [
     //[type, angle, y, z]
     ["RA13", 90, 185,35],
-    ["RA13", 90, 120,35]];
+    ["RA13", 90, 115,35]];
     
 bottom_cable_clips = [
     ["RA13", -90, -100,0],
@@ -465,7 +465,7 @@ module MachineRightPanel_face(){
 
     if (HIQUA_POWERSUPPLY){
       translate([powersupply_Xposition - PowerSupply_width, powersupply_Yposition])
-      HiquaPowerSupply_holes();
+      PowerSupply_mount_holes();
     }
 
     //zip-tie holes for RAMBo power wires
@@ -481,11 +481,6 @@ module MachineRightPanel_face(){
       //translate([120,10])
       //zip_tie_holes();
     }
-    
-
-    //hole for power supply wiring
-    translate([95,42])
-    circle(r=8);
   }
 }
 

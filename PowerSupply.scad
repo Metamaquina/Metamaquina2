@@ -34,17 +34,31 @@ mount_positions = [[5, 6],
                   [PowerSupply_width - 12, PowerSupply_height - 21]
 ];
 
-module HiquaPowerSupply_holes(){
+module PowerSupply_mount_holes(){
+  wiring_radius = 8;
+
   for (p = mount_positions){
     translate(p)
-    circle(r=5/2, $fn=20);
+    circle(r=5/2);
   }
 
-  translate([thickness,-(box_height-thickness)/2])
+  translate([thickness/2 + metal_sheet_thickness,-(box_height-thickness)/2 - bottom_offset])
   TSlot_holes(width=(box_height-thickness)/2);
 
-  translate([PowerSupply_width-thickness,-(box_height-thickness)/2])
+  translate([PowerSupply_width-thickness/2,-(box_height-thickness)/2 - bottom_offset])
   TSlot_holes(width=(box_height-thickness)/2);
+
+  translate([thickness,-box_height + bottom_offset + thickness/2])
+  rotate(-90)
+  TSlot_holes(width=2*(PowerSupply_width - 2*thickness)/3);
+
+  translate([thickness + (PowerSupply_width - 2*thickness)/3,-box_height + bottom_offset + thickness/2])
+  rotate(-90)
+  TSlot_holes(width=2*(PowerSupply_width - 2*thickness)/3);
+
+  translate([PowerSupply_width/2,-box_height+bottom_offset + wiring_radius + thickness + 2])
+    //hole for power supply wiring
+    circle(r=wiring_radius);
 }
 
 module oldHiquaPowerSupply(){
@@ -235,7 +249,7 @@ module PowerSupplyBox_side_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Power Supply Box side sheet");
 
   if (render_lasercut){
-    color("yellow"){
+    color(sheet_color){
       linear_extrude(height=thickness)
       PowerSupplyBox_side_face();
     }
@@ -246,7 +260,7 @@ module PowerSupplyBox_bottom_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Power Supply Box bottom sheet");
 
   if (render_lasercut){
-    color("green"){
+    color(sheet_color){
       linear_extrude(height=thickness)
       PowerSupplyBox_bottom_face();
     }
@@ -257,7 +271,7 @@ module PowerSupplyBox_front_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Power Supply Box front sheet");
 
   if (render_lasercut){
-    color("blue"){
+    color(sheet_color){
       linear_extrude(height=thickness)
       PowerSupplyBox_front_face();
     }
@@ -268,7 +282,7 @@ module PowerSupplyBox_back_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Power Supply Box back sheet");
 
   if (render_lasercut){
-    color("white"){
+    color(sheet_color){
       linear_extrude(height=thickness)
       PowerSupplyBox_back_face();
     }
