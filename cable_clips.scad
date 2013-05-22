@@ -122,9 +122,9 @@ module clip_mount(L,W, line_thickness=0.5){
         square([L - 2*lt, W - 2*lt]);
     }
 
-    translate([0.7*L/2, 0])
+    translate([0.4*L, 0])
     rotate(180)
-    arrow(length=0.7*L, line_thickness=lt);
+    arrow(length=0.4*L, line_thickness=lt);
 }
 
 module cable_clip_mount(type){
