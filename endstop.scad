@@ -90,7 +90,7 @@ module y_endstop_mount_holes(){
     M3_hole();
 
   //edge cut for inserting the endstop wire
-  translate([-1.5,-30.01])
+  translate([0,-30.01])
   rotate(180)
   rounded_edge_cut(width=3, height=13, r=3/2);
 
