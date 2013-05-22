@@ -32,6 +32,8 @@ include <nuts.h>;
 include <washers.h>;
 include <bolts.h>;
 
+LCExtruder_nut_gap = false;
+
 extruder_mount_holes_distance = X_rods_distance + 14;
 idler_axis_position = [-12,21];
 idler_bearing_position = idler_axis_position + [0.4,15.6];
@@ -200,7 +202,7 @@ module slice1_face(){
 
 module slice2_face(){
   difference(){
-    extruder_slice(nozzle_holder2=true, idler_axis=true, idler_nut_gap=true);
+    extruder_slice(nozzle_holder2=true, idler_axis=true, idler_nut_gap=LCExtruder_nut_gap);
     slice_numbering(2);
   }
 }
@@ -507,9 +509,11 @@ module idler(){
       translate([0,0,-0.5]){
         idler_side_sheet();
 
-        // we must make sure that the nut_gap
-        // is large enough for this nut to fit inside
-        translate([0,0,thickness]) M3_nut();
+        if (LCExtruder_nut_gap){
+          // we must make sure that the nut_gap
+          // is large enough for this nut to fit inside
+          translate([0,0,thickness]) M3_nut();
+        }
       }
 
       translate(idler_bearing_position - idler_axis_position)
