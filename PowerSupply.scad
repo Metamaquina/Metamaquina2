@@ -222,7 +222,7 @@ module PowerSupplyBox_front_face(){
     translate([0,box_height-(bottom_offset+pcb_bottom_advance)])
     rounded_square([9+2,bottom_offset+pcb_bottom_advance], corners=[0,2,0,0]);
 
-    translate([-thickness,(box_height)/2])
+    translate([-thickness,(box_height-thickness)/2])
     rotate(-90)
     t_slot_shape(3,16);
 
