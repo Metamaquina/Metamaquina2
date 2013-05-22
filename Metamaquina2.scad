@@ -19,7 +19,7 @@
 include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
 
-extruder_wiring_radius = 6;//TODO: update this number before manufacturing!
+extruder_wiring_radius = 6;
 
 //utils
 include <colors.h>;
