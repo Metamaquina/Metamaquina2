@@ -218,6 +218,15 @@ module PowerSupplyBox_bottom_face(){
 
 module PowerSupplyBox_front_face(){
   difference(){
+    PowerSupplyBox_front_plain_face();
+
+    translate(ONOFF_Switch_position)
+    ONOFF_Switch_mount_hole();
+  }
+}
+
+module PowerSupplyBox_front_plain_face(){
+  difference(){
     square([PowerSupply_thickness, box_height]);
     translate([0,box_height-(bottom_offset+pcb_bottom_advance)])
     rounded_square([9+2,bottom_offset+pcb_bottom_advance], corners=[0,2,0,0]);
@@ -236,7 +245,7 @@ module PowerSupplyBox_front_face(){
 
 module PowerSupplyBox_back_face(){
   difference(){
-    PowerSupplyBox_front_face();
+    PowerSupplyBox_front_plain_face();
 
     translate([PowerSupply_thickness-thickness-PSU_Female_border_height/2, (box_height - bottom_offset)/2]){
       rotate(-90)
@@ -276,6 +285,8 @@ module PowerSupplyBox_front_sheet(){
       PowerSupplyBox_front_face();
     }
   }
+
+  ONOFF_Switch();
 }
 
 module PowerSupplyBox_back_sheet(){
@@ -310,6 +321,19 @@ module PowerSupplyBox(){
   translate([PowerSupply_width - metal_sheet_thickness,-box_height+bottom_offset,0])
   rotate([0,-90,0])
   PowerSupplyBox_back_sheet();
+}
+
+module ONOFF_Switch(){
+  BillOfMaterials("ONOFF Switch");
+  //TODO: Implement-me
+}
+
+ONOFF_Switch_position = [PowerSupply_thickness/2,(box_height-thickness)/2];
+ONOFF_Switch_mount_width = 12;
+ONOFF_Switch_mount_height = 17.5;
+module ONOFF_Switch_mount_hole(){
+  translate([-ONOFF_Switch_mount_width/2,-ONOFF_Switch_mount_height/2])
+  square([ONOFF_Switch_mount_width, ONOFF_Switch_mount_height]);
 }
 
 PSU_Female_border_height=22;
