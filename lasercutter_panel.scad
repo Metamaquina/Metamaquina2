@@ -22,6 +22,8 @@ use <Metamaquina2.scad>;
 use <endstop.scad>;
 use <lasercut_extruder.scad>;
 use <belt-clamp.scad>;
+include <spacer.h>;
+use <PowerSupply.scad>;
 
 module lasercutter_panel(){
   % plate_border(w=2500, h=1300, border=2);
@@ -129,7 +131,7 @@ module lasercutter_panel(){
       }
     }
 
-    translate([275,20]){
+    translate([275,15]){
       rotate(90) for (i=[-1,1]){
         translate([0,i*15]) RodEndTop_face();
         translate([60,i*15]) SecondaryRodEndTop_face();
@@ -169,22 +171,22 @@ module lasercutter_panel(){
     }
 
     translate([480,-135]){
-      translate([330,240])
+      translate([345,245])
       zmin_endstop_spacer_face1();
 
-      translate([330,210])
+      translate([345,210])
       zmin_endstop_spacer_face2();
 
-      translate([355,240])
+      translate([350,245])
       zmax_endstop_spacer_face1();
 
-      translate([355,210])
+      translate([350,210])
       zmax_endstop_spacer_face2();
 
-      translate([380,210])
+      translate([375,210])
       ymin_endstop_spacer_face();
 
-      translate([380,240])
+      translate([375,245])
       ymax_endstop_spacer_face();
     }
   }
@@ -193,6 +195,16 @@ module lasercutter_panel(){
     rotate(90)
     render() LCExtruder_panel();
   }
+
+#  translate([20,380])
+  PowerSupplyBox_side_face();
+#  translate([125,380])
+  PowerSupplyBox_bottom_face();
+#  translate([230,380])
+  PowerSupplyBox_front_face();
+#  translate([190,435])
+  rotate(90)
+  PowerSupplyBox_back_face();
 }
 
 
