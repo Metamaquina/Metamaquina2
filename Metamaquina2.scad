@@ -1289,12 +1289,6 @@ module beltclamp_holes(){
   M3_hole();
 }
 
-module wade_holes(){
-  for (i=[-1,1])
-  translate([0,i*extruder_mount_holes_distance/2])  
-  circle(r=m4_diameter/2, $fn=20);
-}
-
 module XCarriage_sandwich_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="X Carriage Sandwich");
 
@@ -1392,9 +1386,19 @@ module XCarriage_plainface(sandwich=false){
 
     for (i=[-1,1])
     translate([i*(num_extruders-1)*extra_extruder_length/2,0])
-      //holes for attaching the wade extruder
-      wade_holes();
-    
+
+      if (sandwich){
+        //holes for the screwdriver to access the wade extruder mount screws
+        for (i=[-1,1])
+          translate([0,i*extruder_mount_holes_distance/2])  
+          circle(r=10/2);
+      } else {
+        //holes for attaching the wade extruder
+        for (i=[-1,1])
+          translate([0,i*extruder_mount_holes_distance/2])  
+          circle(r=m4_diameter/2);
+      }
+
     //holes for spacers
     for (i=[-1,1]){
       for (j=[-1,1]){
