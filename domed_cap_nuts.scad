@@ -22,6 +22,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 include <BillOfMaterials.h>;
+include <render.h>;
 
 module M6_domed_cap_nut(){
   BillOfMaterials("M6 domed cap nut (DIN_1587)");
@@ -79,6 +80,7 @@ function hipotenusa(a, b) = sqrt(a*a + b*b);
 //x=E/sqrt(3);
 
 module DIN_1587(D, C, R, B, A, H, E, F){
+  material("metal")
   render(){
     difference(){
       union(){

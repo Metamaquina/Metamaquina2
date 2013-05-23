@@ -235,8 +235,8 @@ bolts = [
 
 ];
 
-if (render_metal && render_bolts){
-  color(metal_color){
+if (render_bolts){
+  material("metal"){
     for (p = bolts){
       translate([p[0],p[1],p[2]])
       rotate([p[3],p[4],p[5]])
@@ -904,27 +904,23 @@ module zip_tie_holes(d=12, r=m3_diameter/2, bom=true){
 module Y_belt(){
   BillOfMaterials("GT2 belt for the Y axis");
 
-  if (render_rubber){
-  	color(rubber_color){
-      translate([2.5, 0, 66])
-      rotate([0,0,-90])
-      rotate([90,0,0]){
-        belt(bearings = [
-              [/*x:*/ RightPanel_basewidth/2 - bar_cut_length,
-               /*y:*/ 0,
-               /*r:*/ IdlerRadius],
+  translate([2.5, 0, 66])
+  rotate([0,0,-90])
+  rotate([90,0,0]){
+    belt(bearings = [
+          [/*x:*/ RightPanel_basewidth/2 - bar_cut_length,
+           /*y:*/ 0,
+           /*r:*/ IdlerRadius],
 
-              [/*x:*/ -RightPanel_basewidth/2 + bar_cut_length,
-               /*y:*/ 0,
-               /*r:*/ IdlerRadius],
+          [/*x:*/ -RightPanel_basewidth/2 + bar_cut_length,
+           /*y:*/ 0,
+           /*r:*/ IdlerRadius],
 
-              [/*x:*/ -RightPanel_basewidth/2 + bar_cut_length + 30,
-               /*y:*/ -base_bars_Zdistance,
-               /*r:*/ IdlerRadius]
-             ],
-             belt_width = belt_width);
-      }
-    }
+          [/*x:*/ -RightPanel_basewidth/2 + bar_cut_length + 30,
+           /*y:*/ -base_bars_Zdistance,
+           /*r:*/ IdlerRadius]
+         ],
+         belt_width = belt_width);
   }
 }
 
@@ -950,12 +946,9 @@ module YEndstopHolder_face(){
 module YEndstopHolder_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Y Endstop Holder");
 
-  if( render_lasercut ){
-    color(sheet_color){
-      linear_extrude(height=thickness)
-      YEndstopHolder_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  YEndstopHolder_face();
 }
 
 //!MachineBottomPanel_face();
@@ -1292,12 +1285,9 @@ module beltclamp_holes(){
 module XCarriage_sandwich_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="X Carriage Sandwich");
 
-  if( render_lasercut ){
-    color(sheet_color){
-      linear_extrude(height=thickness)
-      XCarriage_sandwich_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  XCarriage_sandwich_face();
 }
 
 module XCarriage_sandwich_face(){
@@ -1445,25 +1435,20 @@ module XEnd_bearing_sandwich_sheet(){
     }
   }
 
-  if( render_lasercut ){
-    color(sheet_color){
-      translate([thickness + bearing_sandwich_spacing,0])
-      rotate([0,90,0])
-      rotate([0,0,90]){
-        linear_extrude(height=thickness)
-        xend_bearing_sandwich_face(H=XPlatform_height);
-      }
+  material("lasercut"){
+    translate([thickness + bearing_sandwich_spacing,0])
+    rotate([0,90,0])
+    rotate([0,0,90]){
+      linear_extrude(height=thickness)
+      xend_bearing_sandwich_face(H=XPlatform_height);
     }
   }
 }
 
 module YMotorHolder(){
-  if( render_lasercut ){
-    color(sheet_color){
-      linear_extrude(height=thickness)
-      YMotorHolder_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  YMotorHolder_face();
 }
 
 module RodEnd_ZTopLeft_sheet(){
@@ -1518,21 +1503,15 @@ module RodEndTop_sheet(){
     BillOfMaterials("M3 lock-nut", 3);
   }
 
-  if( render_lasercut ){
-    color(sheet_color){
-      linear_extrude(height=thickness)
-      RodEndTop_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  RodEndTop_face();
 }
 
 module SecondaryRodEndTop_sheet(){
-  if( render_lasercut ){
-    color(sheet_color){
-      linear_extrude(height=thickness)
-      SecondaryRodEndTop_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  SecondaryRodEndTop_face();
 }
 
 module RodEndBottom_sheet(){
@@ -1542,12 +1521,9 @@ module RodEndBottom_sheet(){
     BillOfMaterials("M3 lock-nut", 2);
   }
 
-  if( render_lasercut ){
-    color(sheet_color){
-      linear_extrude(height=thickness)
-      RodEndBottom_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  RodEndBottom_face();
 }
 
 module MachineRightPanel_sheet(){
@@ -1556,66 +1532,61 @@ module MachineRightPanel_sheet(){
   translate([SidePanels_distance/2, RightPanel_basewidth/2, 0])
   rotate([0,0,-90])
   rotate([90,0,0]){
-      if( render_lasercut ){
-        color(sheet_color){
-          linear_extrude(height=thickness)
-          MachineRightPanel_face();
-        }
-      }
+    material("lasercut")
+    linear_extrude(height=thickness)
+    MachineRightPanel_face();
 
-      if (HIQUA_POWERSUPPLY){
-        translate([powersupply_Xposition, powersupply_Yposition])
-        rotate([0, 180, 0])
-        HiquaPowerSupply_subassembly();
-      }
+    if (HIQUA_POWERSUPPLY){
+      translate([powersupply_Xposition, powersupply_Yposition])
+      rotate([0, 180, 0])
+      HiquaPowerSupply_subassembly();
+    }
 
-      for (clip=right_cable_clips){
-        assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
-          translate([x,y, thickness])
-          rotate(angle)
-          cable_clip(type);
-        }
+    for (clip=right_cable_clips){
+      assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
+        translate([x,y, thickness])
+        rotate(angle)
+        cable_clip(type);
       }
     }
+  }
 }
 
 //!MachineLeftPanel_sheet();
 module MachineLeftPanel_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Machine Left Panel");
 
-  if( render_lasercut ){
-    translate([-SidePanels_distance/2 + thickness, RightPanel_basewidth/2])
-    rotate([0,0,-90])
-    rotate([90,0,0]){
-      color(sheet_color){
-        linear_extrude(height=thickness)
-        MachineLeftPanel_face();
+  translate([-SidePanels_distance/2 + thickness, RightPanel_basewidth/2])
+  rotate([0,0,-90])
+  rotate([90,0,0]){
+    material("lasercut")
+    linear_extrude(height=thickness)
+    MachineLeftPanel_face();
+
+    for (clip=left_cable_clips){
+      assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
+        translate([x,y])
+        rotate(angle)
+        rotate([180,0])
+        cable_clip(type);
       }
-
-      for (clip=left_cable_clips){
-        assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
-          translate([x,y])
-          rotate(angle)
-          rotate([180,0])
-          cable_clip(type);
-        }
-      }
-
-      translate([RAMBo_x, RAMBo_y, thickness])
-      RAMBo();
-
-      translate([z_max_endstop_x, z_max_endstop_y, thickness])      
-      z_max_endstop();
-
-      translate([z_min_endstop_x, z_min_endstop_y, thickness])      
-      z_min_endstop();
     }
+
+    translate([RAMBo_x, RAMBo_y, thickness])
+    RAMBo();
+
+    translate([z_max_endstop_x, z_max_endstop_y, thickness])      
+    z_max_endstop();
+
+    translate([z_min_endstop_x, z_min_endstop_y, thickness])      
+    z_min_endstop();
   }
 }
 
 module top_wiring_hole_aux_sheet(r){
   BillOfMaterials(category="Lasercut wood", partname="Top Wiring Hole Aux Sheet");  
 
+  material("lasercut")
   linear_extrude(height=thickness)
   top_wiring_hole_aux(r=r);
 }
@@ -1631,18 +1602,15 @@ module MachineTopPanel_sheet(){
   }
 
   translate([0,-XZStage_offset,machine_height]){
-    if( render_lasercut ){
-      color(sheet_color){
-        linear_extrude(height=thickness)
-        MachineTopPanel_face();
+    material("lasercut")
+    linear_extrude(height=thickness)
+    MachineTopPanel_face();
 
-        translate([0,120,thickness])
-        top_wiring_hole_aux_sheet(r=extruder_wiring_radius);
+    translate([0,120,thickness])
+    top_wiring_hole_aux_sheet(r=extruder_wiring_radius);
 
-        translate([0,120,-thickness])
-        top_wiring_hole_aux_sheet(r=extruder_wiring_radius);
-      }
-    }
+    translate([0,120,-thickness])
+    top_wiring_hole_aux_sheet(r=extruder_wiring_radius);
 
     for (clip=top_cable_clips){
       assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
@@ -1659,12 +1627,9 @@ module MachineBottomPanel_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Machine Bottom Panel");
 
   translate([0,-XZStage_offset,BottomPanel_zoffset]){
-      if( render_lasercut ){
-        color(sheet_color){
-          linear_extrude(height=thickness)
-          MachineBottomPanel_face();
-        }
-      }
+    material("lasercut")
+    linear_extrude(height=thickness)
+    MachineBottomPanel_face();
 
     for (clip=bottom_cable_clips){
         assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
@@ -1688,119 +1653,92 @@ module MachineBottomPanel_sheet(){
 module MachineArcPanel_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Machine Arc Panel");
 
-  if( render_lasercut ){
-    color(sheet_color){
-      translate([0,ArcPanel_rear_advance-XZStage_offset, machine_height - ArcPanel_height])
-      rotate([90,0,0])
-      linear_extrude(height=thickness)
-      MachineArcPanel_face();
-    }
-  }
+  material("lasercut")
+  translate([0,ArcPanel_rear_advance-XZStage_offset, machine_height - ArcPanel_height])
+  rotate([90,0,0])
+  linear_extrude(height=thickness)
+  MachineArcPanel_face();
 }
 
 module XCarriage_bottom_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="X Carriage Bottom");
 
-  if( render_lasercut ){
-    color(sheet_color){
-      linear_extrude(height=thickness)
-      XCarriage_bottom_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  XCarriage_bottom_face();
 }
 
 module XPlatform_bottom_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="X Platform Bottom");
 
-  if( render_lasercut ){
-    color(sheet_color){
-	    linear_extrude(height=thickness)
-	    XPlatform_bottom_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  XPlatform_bottom_face();
 }
 
 module XEndMotor_back_face_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="XEnd Motor Back");
 
-  if( render_lasercut ){
-    color(sheet_color){
-	    translate([thickness, 0, 0])
-	    rotate([0,-90,0])
-	    rotate([0,0,-90])
-	    linear_extrude(height=thickness)
-	    XEndMotor_back_face();
-    }
-  }
+  material("lasercut")
+  translate([thickness, 0, 0])
+  rotate([0,-90,0])
+  rotate([0,0,-90])
+  linear_extrude(height=thickness)
+  XEndMotor_back_face();
 }
 
 module XEndMotor_front_face_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="XEnd Motor Front");
 
-  if( render_lasercut ){
-    color(sheet_color){
-	    translate([XEnd_box_size + 2*thickness, 0, 0])
-	    rotate([0,-90,0])
-	    rotate([0,0,-90])
-	    linear_extrude(height=thickness)
-	    XEnd_front_face();
-    }
-  }
+  material("lasercut")
+  translate([XEnd_box_size + 2*thickness, 0, 0])
+  rotate([0,-90,0])
+  rotate([0,0,-90])
+  linear_extrude(height=thickness)
+  XEnd_front_face();
 }
 
 module XEndIdler_back_face_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="XEnd Idler Back");
 
-  if( render_lasercut ){
-    color(sheet_color){
-	    rotate([0,-90,0])
-	    rotate([0,0,-90])
-	    linear_extrude(height=thickness)
-	    mirror([1,0]) XEndIdler_back_face();
-    }
-  }
+  material("lasercut")
+  rotate([0,-90,0])
+  rotate([0,0,-90])
+  linear_extrude(height=thickness)
+  mirror([1,0]) XEndIdler_back_face();
 }
 
 module XEndIdler_front_face_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="XEnd Idler Front");
 
-  if( render_lasercut ){
-    color(sheet_color){
-	    translate([- XEnd_box_size - thickness, 0, 0])
-	    rotate([0,-90,0])
-	    rotate([0,0,-90])
-	    linear_extrude(height=thickness)
-	    XEnd_front_face();
-    }
-  }
+  material("lasercut")
+  translate([- XEnd_box_size - thickness, 0, 0])
+  rotate([0,-90,0])
+  rotate([0,0,-90])
+  linear_extrude(height=thickness)
+  XEnd_front_face();
 }
 
 module XEndMotor_plain_face_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="XEnd Motor Plain Face");
 
-  if( render_lasercut ){
-    color(sheet_color){
-      translate([thickness, -XPlatform_width/2 + 1.5*thickness, thickness])
-      rotate([90,0,0])
-      linear_extrude(height=thickness)
-      XEndMotor_plain_face();
-    }
-  }
+  material("lasercut")
+  translate([thickness, -XPlatform_width/2 + 1.5*thickness, thickness])
+  rotate([90,0,0])
+  linear_extrude(height=thickness)
+  XEndMotor_plain_face();
 }
 
 module XEndMotor_belt_face_assembly(){
   BillOfMaterials(category="Lasercut wood", partname="XEnd Motor Belt Face");
 
-  if( render_lasercut ){
-    color(sheet_color){
-      translate([0, thickness])
-      linear_extrude(height=thickness)
-      XEndMotor_belt_face();
-    }
-  }
+  material("lasercut")
+  translate([0, thickness])
+  linear_extrude(height=thickness)
+  XEndMotor_belt_face();
 
   translate([0,0,thickness])
-    XEndMotor_pulley();
+  XEndMotor_pulley();
 
   XMotor();
 }
@@ -1808,41 +1746,31 @@ module XEndMotor_belt_face_assembly(){
 module XEndIdler_plain_face_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="XEnd Idler Plain Face");
 
-  if( render_lasercut ){
-    color(sheet_color){
-      translate([- thickness - XEnd_box_size, -XPlatform_width/2 + 1.5*thickness, thickness])
-      rotate([90,0,0])
-      linear_extrude(height=thickness)
-      XEndIdler_plain_face();
-    }
-  }
+  material("lasercut")
+  translate([- thickness - XEnd_box_size, -XPlatform_width/2 + 1.5*thickness, thickness])
+  rotate([90,0,0])
+  linear_extrude(height=thickness)
+  XEndIdler_plain_face();
 }
   
 module XEndIdler_belt_face_assembly(){
   BillOfMaterials(category="Lasercut wood", partname="XEnd Idler Belt Face");
 
-  if( render_lasercut ){
-    color(sheet_color){
-      translate([- thickness - XEnd_box_size, XPlatform_width/2 + XEnd_extra_width - 0.5*thickness, thickness])
-      rotate([90,0,0])
-      linear_extrude(height=thickness)
-      XEndIdler_belt_face();
-    }
-  }
-
+  material("lasercut")
+  translate([- thickness - XEnd_box_size, XPlatform_width/2 + XEnd_extra_width - 0.5*thickness, thickness])
+  rotate([90,0,0])
+  linear_extrude(height=thickness)
+  XEndIdler_belt_face();
 
   //TODO: implement XEndIdler bearing subassembly
 
-  if (render_metal){
-    color(metal_color){
-      translate([-XEnd_box_size/2 - thickness, XPlatform_width/2 + XEnd_extra_width -2.5* thickness, XIdler_height])
-      rotate([90,0,0]){
-        cylinder(r=4, h=80, center=true);
-        608zz_bearing(true);
-      }
-    }
-  }
+  translate([-XEnd_box_size/2 - thickness, XPlatform_width/2 + XEnd_extra_width -2.5* thickness, XIdler_height])
+  rotate([90,0,0]){
+    material("metal")
+    cylinder(r=4, h=80, center=true);
 
+    608zz_bearing(true);
+  }
 }
 
 module Z_couplings(){
@@ -1867,6 +1795,7 @@ module coupling_pair(){
 }
 
 module belt(bearings, belt_width=5){
+  material("rubber")
   linear_extrude(height=belt_width){
     difference(){
       hull(){
@@ -1892,22 +1821,18 @@ module belt(bearings, belt_width=5){
 module Xbelt(){
   BillOfMaterials("GT2 belt for the X axis");
 
-  if (render_rubber){
-  	color(rubber_color){
-      translate([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + thickness]){
-        rotate([90,0,0]){
-          belt(bearings = [
-                [/*x:*/ -machine_x_dim/2 + thickness + XEnd_box_size/2,
-                 /*y:*/ XMotor_height,
-                 /*r:*/ 6],
+  translate([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + thickness]){
+    rotate([90,0,0]){
+      belt(bearings = [
+            [/*x:*/ -machine_x_dim/2 + thickness + XEnd_box_size/2,
+             /*y:*/ XMotor_height,
+             /*r:*/ 6],
 
-                [/*x:*/ machine_x_dim/2 - thickness - XEnd_box_size/2,
-                 /*y:*/ XIdler_height,
-                 /*r:*/ IdlerRadius]
-               ],
-               belt_width = belt_width);
-        }
-      }
+            [/*x:*/ machine_x_dim/2 - thickness - XEnd_box_size/2,
+             /*y:*/ XIdler_height,
+             /*r:*/ IdlerRadius]
+           ],
+           belt_width = belt_width);
     }
   }
 }
@@ -1922,21 +1847,17 @@ module belt_clamps(){
     BillOfMaterials("M3 washer", 4);
   }
 
-  if (render_lasercut){
-    color(sheet_color){
-      for (i=[-1,1])
-      translate([XCarPosition + i*1.3*(XCarriage_lm8uu_distance/2+10),
-                 XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width,
-                 belt_clamp_height + 2*thickness + X_rod_height + lm8uu_diameter/2])
-      rotate([0,0,90])
-      rotate([180,0,0])
-      if (i==-1)
-        x_carriage_beltclamp();
-      else
-        mirror([0,1])
-        x_carriage_beltclamp();
-    }
-  }
+  for (i=[-1,1])
+  translate([XCarPosition + i*1.3*(XCarriage_lm8uu_distance/2+10),
+             XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width,
+             belt_clamp_height + 2*thickness + X_rod_height + lm8uu_diameter/2])
+  rotate([0,0,90])
+  rotate([180,0,0])
+  if (i==-1)
+    x_carriage_beltclamp();
+  else
+    mirror([0,1])
+    x_carriage_beltclamp();
 }
 
 module XEndMotor_linear_bearings(){
@@ -1955,16 +1876,12 @@ module XEndIdler_linear_bearings(){
 }
 
 module XCarriage_linear_bearings(){
-  if (render_metal){
-    color(metal_color){
-      translate([XCarPosition, 0, thickness + X_rod_height])
-      for (i=[-1,1]){
-        for (j=[-1,1]){
-          translate([i*XCarriage_lm8uu_distance/2, j*X_rods_distance/2])
-          rotate([0,0,90])
-          LM8UU();
-        }
-      }
+  translate([XCarPosition, 0, thickness + X_rod_height])
+  for (i=[-1,1]){
+    for (j=[-1,1]){
+      translate([i*XCarriage_lm8uu_distance/2, j*X_rods_distance/2])
+      rotate([0,0,90])
+      LM8UU();
     }
   }
 }
@@ -1985,57 +1902,51 @@ module XEndIdler_ZLink(){
 
 module XRods(){
   BillOfMaterials(str("M8x",X_rod_length,"mm Smooth Rod"), 2);
-  if (render_metal){
-    color(metal_color){
-      translate([0, -X_rods_distance/2, thickness + X_rod_height])
-      rotate([0,90,0])
-      cylinder(r=8/2, h=X_rod_length, center=true);
+  material("metal"){
+    translate([0, -X_rods_distance/2, thickness + X_rod_height])
+    rotate([0,90,0])
+    cylinder(r=8/2, h=X_rod_length, center=true);
 
-      translate([0, X_rods_distance/2, thickness + X_rod_height])
-      rotate([0,90,0])
-      cylinder(r=8/2, h=X_rod_length, center=true);
-    }
+    translate([0, X_rods_distance/2, thickness + X_rod_height])
+    rotate([0,90,0])
+    cylinder(r=8/2, h=X_rod_length, center=true);
   }
 }
 
 module YRods(){
   BillOfMaterials(str("M8x",Y_rod_length,"mm Smooth Rod"), 2);
-  if (render_metal){
-    color(metal_color){
-      translate([Y_rods_distance/2, -Y_rod_length/2, Y_rod_height])
-      rotate([-90,0,0])
-      cylinder(r=8/2, h=Y_rod_length);
+  material("metal"){
+    translate([Y_rods_distance/2, -Y_rod_length/2, Y_rod_height])
+    rotate([-90,0,0])
+    cylinder(r=8/2, h=Y_rod_length);
 
-      translate([-Y_rods_distance/2, -Y_rod_length/2, Y_rod_height])
-      rotate([-90,0,0])
-      cylinder(r=8/2, h=Y_rod_length);
-    }
+    translate([-Y_rods_distance/2, -Y_rod_length/2, Y_rod_height])
+    rotate([-90,0,0])
+    cylinder(r=8/2, h=Y_rod_length);
   }
 }
 
 module ZRods(){
   BillOfMaterials(str("M8x",Z_rod_length,"mm Smooth Rod"), 2);
-  if (render_metal){
-    color(metal_color){
-      translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2, -XZStage_offset, BottomPanel_zoffset])
-      cylinder(r=8/2, h=Z_rod_length);
 
-      translate([machine_x_dim/2 - thickness - lm8uu_diameter/2, -XZStage_offset,  BottomPanel_zoffset])
-      cylinder(r=8/2, h=Z_rod_length);
-    }
+  material("metal"){
+    translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2, -XZStage_offset, BottomPanel_zoffset])
+    cylinder(r=8/2, h=Z_rod_length);
+
+    translate([machine_x_dim/2 - thickness - lm8uu_diameter/2, -XZStage_offset,  BottomPanel_zoffset])
+    cylinder(r=8/2, h=Z_rod_length);
   }
 }
 
 module ZBars(){
   BillOfMaterials(str("M8x",Z_bar_length,"mm Threaded Rod"), 2);
-  if (render_threaded_metal){
-    color(threaded_metal_color){
-      translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
-      cylinder(r=m8_diameter/2, h=Z_bar_length);
 
-      translate([machine_x_dim/2 - thickness - lm8uu_diameter/2 - z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
-      cylinder(r=m8_diameter/2, h=Z_bar_length);
-    }
+  material("threaded metal"){
+    translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
+    cylinder(r=m8_diameter/2, h=Z_bar_length);
+
+    translate([machine_x_dim/2 - thickness - lm8uu_diameter/2 - z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
+    cylinder(r=m8_diameter/2, h=Z_bar_length);
   }
 }
 
@@ -2113,10 +2024,8 @@ module XPlatform(){
 module GT2_pulley(){
   BillOfMaterials("GT2 pulley");
 
-  if (render_metal){
-    color(metal_color){
-      //TODO: implement-me!
-    }
+  material("metal"){
+    //TODO: implement-me!
   }
 }
 
@@ -2205,27 +2114,21 @@ module XEndIdler(){
 }
 
 module BuildPlatform_pcb(){
-  if(render_pcb)
+  material("pcb")
   translate([0,0,pcb_height])
   heated_bed();
 }
 
 module YPlatform_left_sandwich_sheet(){
-  if (render_lasercut){
-    color(sheet_color){  
-      linear_extrude(height=thickness)
-      YPlatform_left_sandwich_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  YPlatform_left_sandwich_face();
 }
 
 module YPlatform_right_sandwich_sheet(){
-  if (render_lasercut){
-    color(sheet_color){
-      linear_extrude(height=thickness)
-      YPlatform_right_sandwich_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  YPlatform_right_sandwich_face();
 }
 
 YBearings_distance = 100;
@@ -2269,12 +2172,9 @@ module YPlatform_left_sandwich_face(sandwich_tightening=1){
 }
 
 module YPlatform_sheet(){
-    if (render_lasercut){
-      color(sheet_color){
-        linear_extrude(height=thickness)
-        YPlatform_face();
-      }
-    }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  YPlatform_face();
 }
 
 //!YPlatform_subassembly();
@@ -2371,16 +2271,12 @@ module YPlatform_spacers(){
 }
 
 module YPlatform_linear_bearings(){
-  if (render_metal){
-    color(metal_color){
-      translate([-Y_rods_distance/2, 0])
-      LM8UU();
+  translate([-Y_rods_distance/2, 0])
+  LM8UU();
 
-      for (j=[-1,1]){
-        translate([Y_rods_distance/2, j*50])
-        LM8UU();
-      }
-    }
+  for (j=[-1,1]){
+    translate([Y_rods_distance/2, j*50])
+    LM8UU();
   }
 }
 
@@ -2472,39 +2368,34 @@ module bearing_assembly(rear){
   washer_thickness = 1.5;
   mudguard_washer_thickness = 2;
 
-  if (render_metal){
-    color(metal_color){
+  //translate([belt_x,0])
+  rotate([0,90,0]){
+    for (i=[0,1]){
+      rotate([0,i*180]){
+        translate([0,0,bearing_thickness/2]){
+          M8_washer();
 
-      //translate([belt_x,0])
-      rotate([0,90,0]){
-        for (i=[0,1]){
-          rotate([0,i*180]){
-            translate([0,0,bearing_thickness/2]){
+          translate([0,0, washer_thickness]){
+            M8_mudguard_washer();
+
+            if (rear && i==1){
+              translate([0,0, mudguard_washer_thickness + thickness])
               M8_washer();
 
-              translate([0,0, washer_thickness]){
-                M8_mudguard_washer();
-
-                if (rear && i==1){
-                  translate([0,0, mudguard_washer_thickness + thickness])
-                  M8_washer();
-
 translate([0,0, mudguard_washer_thickness + thickness + washer_thickness])
-                  M8_nut();
-                }else{
-                  translate([0,0, mudguard_washer_thickness])
-                  M8_nut();
-                }
-              }
+              M8_nut();
+            }else{
+              translate([0,0, mudguard_washer_thickness])
+              M8_nut();
             }
           }
         }
-
-        //bearing
-        translate([0,0,-bearing_thickness/2])
-        608zz_bearing(true);//TODO: add the bearing to the model in order to fix the X-belt related bugs
       }
     }
+
+    //bearing
+    translate([0,0,-bearing_thickness/2])
+    608zz_bearing(true);//TODO: add the bearing to the model in order to fix the X-belt related bugs
   }
 }
 
@@ -2539,20 +2430,16 @@ module nut_cap_assembly(){
 
   rotate([0,90,0]){
   translate([0,0,-thickness/2])
-    if (render_metal){
-      color(metal_color){
-        for (angle=[0,180]){
-          rotate([0,angle]){
-            translate([0,0, thickness/2]){
-              M8_washer();
+    for (angle=[0,180]){
+      rotate([0,angle]){
+        translate([0,0, thickness/2]){
+          M8_washer();
 
-              translate([0,0, washer_thickness])
-              if (angle==180){
-                M8_nut();
-              }else{
-                M8_domed_cap_nut();
-              }
-            }
+          translate([0,0, washer_thickness])
+          if (angle==180){
+            M8_nut();
+          }else{
+            M8_domed_cap_nut();
           }
         }
       }
@@ -2565,12 +2452,10 @@ module FrontBars(){
 
   translate([0, -RightPanel_basewidth/2 + bar_cut_length, base_bars_Zdistance + base_bars_height]){
 
-    if (render_metal){
-      color(metal_color){
-          //front top bar
-          rotate([0,90,0])
-          cylinder(r=m8_diameter/2, h=horiz_bars_length, center=true);
-      }
+    material("threaded metal"){
+      //front top bar
+      rotate([0,90,0])
+      cylinder(r=m8_diameter/2, h=horiz_bars_length, center=true);
     }
 
     translate([SidePanels_distance/2,0,0])
@@ -2591,12 +2476,10 @@ module FrontBars(){
 
   translate([0, -RightPanel_basewidth/2 + bar_cut_length + 30,base_bars_height]){
 
-    if (render_metal){
-      color(metal_color){
-        //front bottom bar
-        rotate([0,90,0])
-        cylinder(r=m8_diameter/2, h=horiz_bars_length, center=true);
-      }
+    material("threaded metal"){
+      //front bottom bar
+      rotate([0,90,0])
+      cylinder(r=m8_diameter/2, h=horiz_bars_length, center=true);
     }
 
     translate([SidePanels_distance/2,0,0])
@@ -2615,11 +2498,9 @@ module RearBars(){
   translate([0, RightPanel_basewidth/2 - bar_cut_length, base_bars_Zdistance + base_bars_height]){
 
     //rear top bar
-    if (render_metal){
-      color(metal_color){
-        rotate([0,90,0])
-        cylinder(r=m8_diameter/2, h=horiz_bars_length, center=true);
-      }
+    material("threaded metal"){
+      rotate([0,90,0])
+      cylinder(r=m8_diameter/2, h=horiz_bars_length, center=true);
     }
 
     translate([SidePanels_distance/2,0,0])
@@ -2636,17 +2517,14 @@ module RearBars(){
     bar_clamp_assembly();
 
     bearing_assembly(rear=true);
-
   }
 
   translate([0, RightPanel_basewidth/2 - bar_cut_length - 30, base_bars_height]){
 
     //rear bottom bar
-    if (render_metal){
-      color(metal_color){
-        rotate([0,90,0])
-        cylinder(r=m8_diameter/2, h=horiz_bars_length, center=true);
-      }
+    material("threaded metal"){
+      rotate([0,90,0])
+      cylinder(r=m8_diameter/2, h=horiz_bars_length, center=true);
     }
 
     translate([SidePanels_distance/2,0,0])
@@ -2657,25 +2535,6 @@ module RearBars(){
     nut_cap_assembly();
 
     bearing_assembly(rear=true);
-
-  }
-}
-
-module M8Nut(){
-  linear_extrude(height = m8_nut_height){
-    difference(){
-      circle(r=14.5/2, $fn=6);
-      circle(r=m8_diameter/2);
-    }
-  }
-}
-
-module M8Washer(){
-  linear_extrude(height = m8_washer_thickness){
-    difference(){
-      circle(r=m8_diameter/2 + 3.6);
-      circle(r=m8_diameter/2);
-    }
   }
 }
 
@@ -2692,84 +2551,84 @@ module RearNutsAndWashers(){
 module TopFrontNutsAndWashers(){
   translate([SidePanels_distance/2, -RightPanel_basewidth/2 + bar_cut_length, base_bars_Zdistance + base_bars_height]){
     rotate([0,90,0])
-    M8Washer();
+    m8_washer();
 
     translate([m8_washer_thickness,0,0])
     rotate([0,90,0])
-    M8Nut();
+    M8_nut();
   }
 
   translate([-SidePanels_distance/2, -RightPanel_basewidth/2 + bar_cut_length, base_bars_Zdistance + base_bars_height]){
 
     rotate([0,-90,0])
-    M8Washer();
+    m8_washer();
 
     translate([-m8_washer_thickness,0,0])
     rotate([0,-90,0])
-    M8Nut();
+    M8_nut();
   }
 }
 
 module BottomFrontNutsAndWashers(){
   translate([SidePanels_distance/2, -RightPanel_basewidth/2 + 30 + bar_cut_length, base_bars_height]){
     rotate([0,90,0])
-    M8Washer();
+    m8_washer();
 
     translate([m8_washer_thickness,0,0])
     rotate([0,90,0])
-    M8Nut();
+    M8_nut();
   }
 
   translate([-SidePanels_distance/2, -RightPanel_basewidth/2 + 30 + bar_cut_length, base_bars_height]){
 
     rotate([0,-90,0])
-    M8Washer();
+    m8_washer();
 
     translate([-m8_washer_thickness,0,0])
     rotate([0,-90,0])
-    M8Nut();
+    M8_nut();
   }
 }
 
 module TopRearNutsAndWashers(){
   translate([SidePanels_distance/2, RightPanel_basewidth/2 - bar_cut_length, base_bars_Zdistance + base_bars_height]){
     rotate([0,90,0])
-    M8Washer();
+    m8_washer();
 
     translate([m8_washer_thickness,0,0])
     rotate([0,90,0])
-    M8Nut();
+    M8_nut();
   }
 
   translate([-SidePanels_distance/2, RightPanel_basewidth/2 - bar_cut_length, base_bars_Zdistance + base_bars_height]){
 
     rotate([0,-90,0])
-    M8Washer();
+    m8_washer();
 
     translate([-m8_washer_thickness,0,0])
     rotate([0,-90,0])
-    M8Nut();
+    M8_nut();
   }
 }
 
 module BottomRearNutsAndWashers(){
   translate([SidePanels_distance/2, RightPanel_basewidth/2 - 30 - bar_cut_length, base_bars_height]){
     rotate([0,90,0])
-    M8Washer();
+    m8_washer();
 
     translate([m8_washer_thickness,0,0])
     rotate([0,90,0])
-    M8Nut();
+    M8_nut();
   }
 
   translate([-SidePanels_distance/2, RightPanel_basewidth/2 - 30 - bar_cut_length, base_bars_height]){
 
     rotate([0,-90,0])
-    M8Washer();
+    m8_washer();
 
     translate([-m8_washer_thickness,0,0])
     rotate([0,-90,0])
-    M8Nut();
+    M8_nut();
   }
 }
 
