@@ -20,7 +20,6 @@
 include <washers.h>;
 include <BillOfMaterials.h>;
 include <render.h>;
-include <colors.h>;
 
 module M3_washer(){
   BillOfMaterials("M3 washer");
@@ -51,13 +50,11 @@ module M8_mudguard_washer(){
 }
 
 module washer(washer_thickness, external_diameter, internal_diameter){
-  if (render_metal){
-    color(metal_color){
-      linear_extrude(height=washer_thickness)
-      difference(){
-        circle(r=external_diameter/2);
-        circle(r=internal_diameter/2);
-      }
+  material("metal"){
+    linear_extrude(height=washer_thickness)
+    difference(){
+      circle(r=external_diameter/2);
+      circle(r=internal_diameter/2);
     }
   }
 }

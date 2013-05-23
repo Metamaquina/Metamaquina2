@@ -19,7 +19,7 @@
 
 include <BillOfMaterials.h>;
 include <nuts.h>;
-include <colors.h>;
+include <render.h>;
 
 module M25_nut(){
   BillOfMaterials("M2.5 nut");
@@ -67,7 +67,7 @@ epsilon = 0.05;
 
 // Commented lines are not working for all sizes
 module nut(r, R, H){
-  color(metal_color)
+  material("metal")
   difference(){
     //hexagon
     intersection(){

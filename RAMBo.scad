@@ -21,6 +21,7 @@ include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
 use <rounded_square.scad>;
 include <spacer.h>;
+include <render.h>;
 
 RAMBo_pcb_thickness = 2;
 M3_bolt_head = 3;
@@ -46,8 +47,7 @@ module PSU_connector(){
   bolt_diameter = 3.5;
   bolts_offset = -2.3;
 
-  if (render_rubber)
-  color(rubber_color)
+  material("rubber")
   difference() {
     cube([conn_thickness, conn_width, conn_height]);
 
@@ -59,7 +59,6 @@ module PSU_connector(){
   }
 }
 
-acrylic_color = [1, 0.5, 0.5, 0.7];//red-transparent
 module RAMBo_cover_curves(border=0){
   difference(){
     translate([-border,-border])
@@ -70,12 +69,11 @@ module RAMBo_cover_curves(border=0){
 }
 
 module RAMBo_cover(){
-    BillOfMaterials("Lasercut acrylic RAMBo cover");
-  if (render_acrylic){
-    color(acrylic_color)
-    linear_extrude(height=RAMBo_cover_thickness)
-    RAMBo_cover_curves();
-  }
+  BillOfMaterials("Lasercut acrylic RAMBo cover");
+
+  material("acrylic")
+  linear_extrude(height=RAMBo_cover_thickness)
+  RAMBo_cover_curves();
 }
 
 module RAMBo(){
@@ -95,8 +93,7 @@ module RAMBo(){
           hexspacer_38mm();
           translate([0,0,hexspacer_length+RAMBo_cover_thickness]){
             //bolt head
-            if (render_metal)
-            color(metal_color)
+            material("metal")
             cylinder(r=3, h=M3_bolt_head, $fn=20);
           }
         }
@@ -200,13 +197,11 @@ module RAMBo_holes(){
 }
 
 module RAMBo_pcb(){
-  if (render_pcb){
-    color(pcb_color){
-      linear_extrude(height=RAMBo_pcb_thickness){
-        difference(){
-          square([RAMBo_width, RAMBo_height]);
-          RAMBo_holes();
-        }
+  material("pcb"){
+    linear_extrude(height=RAMBo_pcb_thickness){
+      difference(){
+        square([RAMBo_width, RAMBo_height]);
+        RAMBo_holes();
       }
     }
   }

@@ -18,13 +18,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 include <coupling.h>;
-include <colors.h>;
+include <render.h>;
 include <BillOfMaterials.h>;
 
 module coupling(shaft_diameter=5, rod_diameter=8){
   BillOfMaterials("Coupling for the Z axis");
 
-  color(metal_color)
+  material("metal")
   difference(){
     cylinder(r=coupling_diameter/2, h=coupling_length, $fn=60);
 

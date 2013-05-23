@@ -22,7 +22,23 @@ $fa = 0.01;
 // $fs is the minimum size of a fragment. Because of this variable very small circles have a smaller number of fragments than specified using $fa. The default value is 2. The minimum allowed value is 0.01.
 $fs = 0.5;
 
-include <colors.h>;
+dark_green = [0,0.2,0];
+rubber_color = [0.1, 0.1, 0.1];
+nozzle_color = "gold";
+pcb_color = [1.0, 0.0, 0.0];
+glass_color = [0.6, 0.6, 1, 0.4];
+threaded_metal_color = [0.6, 0.6, 0.6];
+metal_color = [0.7, 0.7, 0.7];
+powersupply_color = metal_color;
+PLA_color = [0.95, 0.35, 0.35];
+ABS_color = [0.35, 0.35, 0.35];
+sheet_color = [227/230, 190/230, 151/230];
+peek_color = "beige";
+dark_grey = [0.3, 0.3, 0.3];
+green_plastic_color = [0.7,0.8,0,7];
+black_plastic_color = [0.3,0.3,0.3];
+nylon_color = [1, 1, 0.8];
+acrylic_color = [1, 0.6, 0.6, 0.4];
 
 render_materials = [
   "lasercut",
@@ -31,69 +47,73 @@ render_materials = [
   "ABS",
   "PLA",
   "metal",
-  "threaded_metal",
+  "threaded metal",
   "rubber",
   "peek",
   "nylon",
-  "acrylic"];
+  "acrylic",
+  "silk",
+  "golden"];
 
-//rendering configs:
-render_lasercut=true;
-render_pcb=true;
-render_glass=true;
-render_ABS=true;
-render_PLA=true;
-render_metal=true;
-render_threaded_metal=true;
-render_rubber=true;
-render_peek=true;
-render_nylon=true;
-render_acrylic=true;
+render_materials = [
+  "lasercut"];
 
 module material(id){
-  if (id=="lasercut")
-  for (i=[0:$children-1])
-  color(sheet_color) child(i);
+  for (m=render_materials){
+    if (id==m){
+      if (id=="lasercut")
+      for (i=[0:$children-1])
+      color(sheet_color) child(i);
 
-  if (id=="pcb")
-  for (i=[0:$children-1])
-  color(pcb_color) child(i);
+      if (id=="pcb")
+      for (i=[0:$children-1])
+      color(pcb_color) child(i);
 
-  if (id=="glass")
-  for (i=[0:$children-1])
-  color(glass_color) child(i);
+      if (id=="glass")
+      for (i=[0:$children-1])
+      color(glass_color) child(i);
 
-  if (id=="ABS")
-  for (i=[0:$children-1])
-  color(ABS_color) child(i);
+      if (id=="ABS")
+      for (i=[0:$children-1])
+      color(ABS_color) child(i);
 
-  if (id=="PLA")
-  for (i=[0:$children-1])
-  color(PLA_color) child(i);
+      if (id=="PLA")
+      for (i=[0:$children-1])
+      color(PLA_color) child(i);
 
-  if (id=="metal")
-  for (i=[0:$children-1])
-  color(metal_color) child(i);
+      if (id=="metal")
+      for (i=[0:$children-1])
+      color(metal_color) child(i);
 
-  if (id=="threaded metal")
-  for (i=[0:$children-1])
-  color(threaded_metal_color) child(i);
+      if (id=="threaded metal")
+      for (i=[0:$children-1])
+      color(threaded_metal_color) child(i);
 
-  if (id=="rubber")
-  for (i=[0:$children-1])
-  color(rubber_color) child(i);
+      if (id=="rubber")
+      for (i=[0:$children-1])
+      color(rubber_color) child(i);
 
-  if (id=="peek")
-  for (i=[0:$children-1])
-  color(peek_color) child(i);
+      if (id=="peek")
+      for (i=[0:$children-1])
+      color(peek_color) child(i);
 
-  if (id=="nylon")
-  for (i=[0:$children-1])
-  color(nylon_color) child(i);
+      if (id=="nylon")
+      for (i=[0:$children-1])
+      color(nylon_color) child(i);
 
-  if (id=="acrylic")
-  for (i=[0:$children-1])
-  color(acrylic_color) child(i);
+      if (id=="acrylic")
+      for (i=[0:$children-1])
+      color(acrylic_color) child(i);
+
+      if (id=="silk")
+      for (i=[0:$children-1])
+      color("white") child(i);
+
+      if (id=="golden")
+      for (i=[0:$children-1])
+      color("gold") child(i);
+    }
+  }
 }
 
 //subassembly rendering switches:

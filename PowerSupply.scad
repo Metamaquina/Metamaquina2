@@ -22,7 +22,6 @@ include <PowerSupply.h>;
 include <bolts.h>;
 include <washers.h>;
 include <render.h>;
-include <colors.h>;
 include <rounded_square.scad>;
 include <tslot.scad>;
 
@@ -68,11 +67,8 @@ module oldHiquaPowerSupply(){
     BillOfMaterials("Power Supply cable");
   }
 
-  if (render_metal){
-    color(metal_color){
-      cube([PowerSupply_thickness, PowerSupply_width, PowerSupply_height]);
-    }
-  }
+  material("metal")
+  cube([PowerSupply_thickness, PowerSupply_width, PowerSupply_height]);
 }
 
 metal_sheet_thickness = 1;
@@ -99,35 +95,31 @@ module HiquaPowerSupply(){
     BillOfMaterials("Power Supply cable");
   }
 
-  if (render_metal){
-    color(metal_color){
-      cube([PowerSupply_width, PowerSupply_height, metal_sheet_thickness]);
+  material("metal"){
+    cube([PowerSupply_width, PowerSupply_height, metal_sheet_thickness]);
 
-      translate([PowerSupply_width - metal_sheet_thickness, 0])
-      cube([metal_sheet_thickness, PowerSupply_height, PowerSupply_thickness]);
+    translate([PowerSupply_width - metal_sheet_thickness, 0])
+    cube([metal_sheet_thickness, PowerSupply_height, PowerSupply_thickness]);
 
-      translate([0,bottom_offset])
-      difference(){
-        cube([PowerSupply_width, PowerSupply_height - bottom_offset - top_offset, PowerSupply_thickness]);
+    translate([0,bottom_offset])
+    difference(){
+      cube([PowerSupply_width, PowerSupply_height - bottom_offset - top_offset, PowerSupply_thickness]);
 
-        translate([metal_sheet_thickness, metal_sheet_thickness])
-        cube([PowerSupply_width - 2*metal_sheet_thickness, PowerSupply_height - bottom_offset - top_offset - 2*metal_sheet_thickness, PowerSupply_thickness - metal_sheet_thickness]);
+      translate([metal_sheet_thickness, metal_sheet_thickness])
+      cube([PowerSupply_width - 2*metal_sheet_thickness, PowerSupply_height - bottom_offset - top_offset - 2*metal_sheet_thickness, PowerSupply_thickness - metal_sheet_thickness]);
 
-        if (detail){
-          translate([-23.5, 7, PowerSupply_thickness - 1.5*metal_sheet_thickness]){
-            linear_extrude(height=2*metal_sheet_thickness)
-            circle_pattern(r=4.6/2, spacing_x=6, spacing_y = 5, x=21,y=34);
-          }
+      if (detail){
+        translate([-23.5, 7, PowerSupply_thickness - 1.5*metal_sheet_thickness]){
+          linear_extrude(height=2*metal_sheet_thickness)
+          circle_pattern(r=4.6/2, spacing_x=6, spacing_y = 5, x=21,y=34);
         }
       }
     }
   }
 
-  if (render_pcb){
-    color(pcb_color){
-      translate([metal_sheet_thickness, -pcb_bottom_advance, pcb_height])
-      cube([PowerSupply_width - 2*metal_sheet_thickness, PowerSupply_height - top_offset, pcb_thickness]);
-    }
+  material("pcb"){
+    translate([metal_sheet_thickness, -pcb_bottom_advance, pcb_height])
+    cube([PowerSupply_width - 2*metal_sheet_thickness, PowerSupply_height - top_offset, pcb_thickness]);
   }
 }
 
@@ -257,34 +249,25 @@ module PowerSupplyBox_back_face(){
 module PowerSupplyBox_side_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Power Supply Box side sheet");
 
-  if (render_lasercut){
-    color(sheet_color){
-      linear_extrude(height=thickness)
-      PowerSupplyBox_side_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  PowerSupplyBox_side_face();
 }
 
 module PowerSupplyBox_bottom_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Power Supply Box bottom sheet");
 
-  if (render_lasercut){
-    color(sheet_color){
-      linear_extrude(height=thickness)
-      PowerSupplyBox_bottom_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  PowerSupplyBox_bottom_face();
 }
 
 module PowerSupplyBox_front_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Power Supply Box front sheet");
 
-  if (render_lasercut){
-    color(sheet_color){
-      linear_extrude(height=thickness)
-      PowerSupplyBox_front_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  PowerSupplyBox_front_face();
 
   ONOFF_Switch();
 }
@@ -292,12 +275,9 @@ module PowerSupplyBox_front_sheet(){
 module PowerSupplyBox_back_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Power Supply Box back sheet");
 
-  if (render_lasercut){
-    color(sheet_color){
-      linear_extrude(height=thickness)
-      PowerSupplyBox_back_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  PowerSupplyBox_back_face();
 
   translate([PowerSupply_thickness-thickness-PSU_Female_border_height/2, (box_height - bottom_offset)/2])
   rotate(90)
@@ -346,45 +326,43 @@ module PowerSupply_FemaleConnector(){
   border_thickness = 6.1;
   depth = 13.1;
 
-  if (render_ABS){
-    color(ABS_color){
-      difference(){
-        union(){
-          translate([0,0,-depth])
-          linear_extrude(height=depth)
-          PowerSupply_FemaleConnector_large_hole();
+  material("ABS"){
+    difference(){
+      union(){
+        translate([0,0,-depth])
+        linear_extrude(height=depth)
+        PowerSupply_FemaleConnector_large_hole();
 
-          linear_extrude(height=border_thickness)
+        linear_extrude(height=border_thickness)
+        translate([-border_width/2,-border_height/2])
+        rounded_square([border_width, border_height], corners=[2,2,2,2]);
+
+        linear_extrude(height=3.9)
+        hull(){
           translate([-border_width/2,-border_height/2])
           rounded_square([border_width, border_height], corners=[2,2,2,2]);
 
-          linear_extrude(height=3.9)
-          hull(){
-            translate([-border_width/2,-border_height/2])
-            rounded_square([border_width, border_height], corners=[2,2,2,2]);
-
-            for (i=[-1,1])
-              translate([i*power_supply_bolts_distance/2, 0])
-              circle(r=6);
-          }
+          for (i=[-1,1])
+            translate([i*power_supply_bolts_distance/2, 0])
+            circle(r=6);
         }
+      }
 
-        translate([0,0,border_thickness+0.1-depth])
-        linear_extrude(height=depth)
-        power_supply_generic_connector_shape(
-          width=24.6,
-          height=16.4,
-          bevel=4.2,
-          r1=1,
-          r2=2);
+      translate([0,0,border_thickness+0.1-depth])
+      linear_extrude(height=depth)
+      power_supply_generic_connector_shape(
+        width=24.6,
+        height=16.4,
+        bevel=4.2,
+        r1=1,
+        r2=2);
 
-        for (i=[-1,1]){
-          translate([i*power_supply_bolts_distance/2,0,-0.1])
-          cylinder(r=m3_diameter/2, h=10);
+      for (i=[-1,1]){
+        translate([i*power_supply_bolts_distance/2,0,-0.1])
+        cylinder(r=m3_diameter/2, h=10);
 
-          translate([i*power_supply_bolts_distance/2,0,2])
-          cylinder(r1=m3_diameter/2, r2=m3_diameter, h=3.9 - 2 + 0.1);
-        }
+        translate([i*power_supply_bolts_distance/2,0,2])
+        cylinder(r1=m3_diameter/2, r2=m3_diameter, h=3.9 - 2 + 0.1);
       }
     }
   }

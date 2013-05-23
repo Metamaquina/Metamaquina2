@@ -19,6 +19,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 include <BillOfMaterials.h>;
+include <render.h>;
 
 module 608zz_bearing(details=false){
   BillOfMaterials("608zz bearing");
@@ -31,7 +32,7 @@ module 608zz_bearing(details=false){
 }
 
 module 608zz_bearing_simple(){
-  color("silver"){
+  material("metal"){
     linear_extrude(height=7)
     difference(){
       circle(r=22/2, $fn=40);
@@ -41,7 +42,7 @@ module 608zz_bearing_simple(){
 }
 
 module 608zz_bearing_detailed(){
-  color("silver"){
+  material("metal"){
     //inner disc
     linear_extrude(height=7)
     difference(){

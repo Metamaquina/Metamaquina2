@@ -2,6 +2,7 @@
 
 include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
+include <render.h>;
 
 module v4nozzle(){
   BillOfMaterials("JHead nozzle");
@@ -13,7 +14,7 @@ module v4nozzle(){
   }
 
   if (render_nozzle){
-    color (nozzle_color){
+    material("golden"){
       scale(25.4)
       difference() {
         union() {

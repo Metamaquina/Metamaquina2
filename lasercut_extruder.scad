@@ -76,11 +76,9 @@ module handle_face(r=5, width=HandleWidth, height=HandleHeight){
 module handle_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Handle");
 
-  color(sheet_color){
-    linear_extrude(height=thickness){
-      handle_face();
-    }
-  }
+  material("lasercut")
+  linear_extrude(height=thickness)
+  handle_face();
 }
 
 //!idler_side_face();
@@ -146,7 +144,7 @@ module idler_back_face(){
 module idler_back_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Idler Back");
 
-  color(sheet_color)
+  material("lasercut")
   linear_extrude(height=thickness)
   idler_back_face();
 }
@@ -154,7 +152,7 @@ module idler_back_sheet(){
 module idler_side_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Idler Side");
 
-  color(sheet_color)
+  material("lasercut")
   linear_extrude(height=thickness)
   idler_side_face();
 }
@@ -162,7 +160,7 @@ module idler_side_sheet(){
 module idler_spacer_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Idler Spacer");
 
-  color(sheet_color)
+  material("lasercut")
   linear_extrude(height=thickness)
   idler_spacer_face();
 }
@@ -412,7 +410,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
 module slice1(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #1");
 
-  color(sheet_color)
+  material("lasercut")
   linear_extrude(height=thickness)
   slice1_face();
 }
@@ -420,7 +418,7 @@ module slice1(){
 module slice2(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #2");
 
-  color(sheet_color)
+  material("lasercut")
   translate([0,0,1*thickness])
   linear_extrude(height=thickness)
   slice2_face();
@@ -430,7 +428,7 @@ module slice2(){
 module slice3(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #3");
 
-  color(sheet_color)
+  material("lasercut")
   translate([0,0,2*thickness])
   linear_extrude(height=thickness)
   slice3_face();
@@ -439,7 +437,7 @@ module slice3(){
 module slice4(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #4");
 
-  color(sheet_color)
+  material("lasercut")
   translate([0,0,3*thickness])
   linear_extrude(height=thickness)
   slice4_face();
@@ -448,7 +446,7 @@ module slice4(){
 module slice5(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #5");
 
-  color(sheet_color)
+  material("lasercut")
   translate([0,0,4*thickness])
   linear_extrude(height=thickness)
   slice5_face();
@@ -481,6 +479,7 @@ module idler_bolt_subassembly(){
   BillOfMaterials(str("M8x", length, "mm Threaded Rod"));
 
   //bolt body
+  material("threaded metal")
   translate([0,0,-length])
   cylinder(r=7.3/2, h=length);
 }
@@ -495,8 +494,6 @@ module idler(){
   R=23;
   bearing_thickness = 7;
 
-  if (render_metal)
-  color(metal_color)
   rotate([90,0])
     translate([0,0,5*thickness])
     translate(idler_bearing_position)
@@ -562,8 +559,7 @@ module extruder_block(){
 
 //JHead MKIV nozzle
 module nozzle(length=50){
-  if (render_rubber)
-  color(rubber_color){
+  material("rubber"){
     difference(){
       union(){
         translate([0,0,5])
@@ -582,6 +578,8 @@ module nozzle(length=50){
 
 module hobbed_bolt(){
   BillOfMaterials("Hobbed bolt");
+
+  material("metal")
   rotate([90,0])
   cylinder(r=7.2/2, h=5*thickness);
 }
@@ -605,26 +603,20 @@ module lasercut_extruder(){
 
     nozzle();
 
-    if (render_ABS){
-      color(ABS_color)
-      translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
-      rotate([0,extruder_gear_angle])
-      rotate([90,0])
-      extruder_gear(teeth=37);
-    }
+    translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
+    rotate([0,extruder_gear_angle])
+    rotate([90,0])
+    extruder_gear(teeth=37);
 
-    if (render_metal){
-      color(metal_color)
-      translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]]) hobbed_bolt();
+    translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]]) hobbed_bolt();
 
-      translate([hobbed_bolt_position[0], -3*thickness/2, hobbed_bolt_position[1]])
-      rotate([90,0])
-      608zz_bearing(true);
+    translate([hobbed_bolt_position[0], -3*thickness/2, hobbed_bolt_position[1]])
+    rotate([90,0])
+    608zz_bearing(true);
 
-      translate([hobbed_bolt_position[0], 3*thickness/2+7, hobbed_bolt_position[1]])
-      rotate([90,0])
-      608zz_bearing(true);
-    }
+    translate([hobbed_bolt_position[0], 3*thickness/2+7, hobbed_bolt_position[1]])
+    rotate([90,0])
+    608zz_bearing(true);
 
     translate([motor_position[0], -thickness/2, motor_position[1]])
     rotate([-90,0])
@@ -633,11 +625,8 @@ module lasercut_extruder(){
       NEMA17_subassembly();
 
       translate([0,0,-2*thickness - 2*washer_thickness])
-      if (render_ABS){
-        color(ABS_color)
-        rotate([180,0])
-        motor_gear(teeth=11);
-      }
+      rotate([180,0])
+      motor_gear(teeth=11);
     }
   }
 }

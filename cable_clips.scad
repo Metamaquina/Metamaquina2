@@ -17,6 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 include <BillOfMaterials.h>;
+include <render.h>;
 
 module ring(r, R, start=0, end=360){
     N=200;
@@ -95,11 +96,11 @@ module cable_clip_model(D, H, L, W, W2, clip_thickness){
 }
 
 module hellerman_cable_clip_with_sticker(D, H, L, W, W2, sticker_thickness=1, clip_thickness){
-    color("grey")
+    material("rubber")
     translate([-L/2, -W/2])
     cube([L, W, sticker_thickness]);
 
-    color("white")
+    material("nylon")
     translate([0,0,sticker_thickness])
     cable_clip_model(D=D, H=H, L=L, W=W, W2=W2, clip_thickness=clip_thickness);
 }
@@ -179,5 +180,4 @@ translate([20,0]) RA6_cable_clip();
 translate([43,0]) RA9_cable_clip();
 translate([70,0]) RA13_cable_clip();
 translate([103,0]) RA18_cable_clip();
-
 

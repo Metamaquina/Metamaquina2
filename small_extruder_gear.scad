@@ -21,6 +21,7 @@
 
 use <gears.scad>;
 include <BillOfMaterials.h>;
+include <render.h>;
 
 module motor_gear(teeth=11, shaft_diameter=5){
   BillOfMaterials(category="3D Printed", partname="Small Extruder Gear");
@@ -29,6 +30,7 @@ module motor_gear(teeth=11, shaft_diameter=5){
     BillOfMaterials("M3x8 grubscrew - TODO");
   }
 
+  material("ABS")
   render()
   translate([0,0,5])
   difference() {

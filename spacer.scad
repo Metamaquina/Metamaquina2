@@ -17,7 +17,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 include <spacer.h>;
-include <colors.h>;
 include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
 
@@ -33,7 +32,7 @@ module double_M3_lasercut_spacer(){
 module M3_spacer(){
   BillOfMaterials("M3 Lasercut spacer");
 
-  color(sheet_color)
+  material("lasercut")
   linear_extrude(height=thickness)
   M3_spacer_face();
 }
@@ -57,7 +56,7 @@ module set_of_M3_spacers(w=4, h=4){
 module M4_spacer(){
   BillOfMaterials("M4 Lasercut spacer");
 
-  color(sheet_color)
+  material("lasercut")
   linear_extrude(height=thickness)
   M4_spacer_face();
 }
@@ -91,24 +90,20 @@ module hexspacer_32mm(){
 }
 
 module generic_hexspacer(D=8, d=m3_diameter, h=hexspacer_length){
-  if (render_metal){
-    color(metal_color)
-    linear_extrude(height=h)
-    difference(){
-      circle(r=D/2, $fn=6);
-      circle(r=d/2, $fn=20);
-    }
+  material("metal")
+  linear_extrude(height=h)
+  difference(){
+    circle(r=D/2, $fn=6);
+    circle(r=d/2, $fn=20);
   }
 }
 
 module generic_nylonspacer(D=8, d=m4_diameter, h=nylonspacer_length){
-  if (render_nylon){
-    color(white_nylon_color)
-    linear_extrude(height=h)
-    difference(){
-      circle(r=D/2, $fn=20);
-      circle(r=d/2, $fn=20);
-    }
+  material("nylon")
+  linear_extrude(height=h)
+  difference(){
+    circle(r=D/2, $fn=20);
+    circle(r=d/2, $fn=20);
   }
 }
 

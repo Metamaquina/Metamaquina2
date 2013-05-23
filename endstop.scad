@@ -21,6 +21,7 @@ include <BillOfMaterials.h>;
 include <endstop.h>;
 use <utils.scad>;
 use <rounded_square.scad>;
+include <render.h>;
 
 m3_diameter=3; //TODO: move-me to a header file
 
@@ -114,10 +115,10 @@ module simples_mechanical_endstop(){
   thickness = 5;//TODO
 
   if (render_rubber)
-  color(rubber_color)
+  material("rubber")
   cube([microswitch_width, microswitch_height, thickness]);
 
-  color(metal_color){
+  material("metal"){
     translate([2, microswitch_height+3])
     rotate(10)
     cube([microswitch_width-2, 1, thickness]);
@@ -164,7 +165,7 @@ module ymax_endstop_subassembly(){
 }
 
 module YMIN_endstop_spacer_sheet(){
-  color(sheet_color)
+  material("lasercut")
   linear_extrude(height=thickness)
   endstop_spacer_face2();
 }
@@ -320,8 +321,7 @@ module mechanical_switch(bom=true){
 
   metal_thickness = 1;
 
-  if (render_rubber)
-  color(rubber_color)
+  material("rubber")
   linear_extrude(height=microswitch_thickness){
     difference(){
       square([microswitch_width, microswitch_height]);
@@ -332,8 +332,7 @@ module mechanical_switch(bom=true){
     }
   }
 
-  if (render_metal)
-  color(metal_color)
+  material("metal")
   translate([2, microswitch_height+3, 1]){
     linear_extrude(height=microswitch_thickness-2){
       hull(){
@@ -359,7 +358,7 @@ module optical_endstop(){
 module ymin_endstop_spacer_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="YMIN Spacer");
 
-  color(sheet_color)
+  material("lasercut")
   linear_extrude(height=thickness)
   ymin_endstop_spacer_face();
 }
@@ -367,7 +366,7 @@ module ymin_endstop_spacer_sheet(){
 module ymax_endstop_spacer_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="YMAX Spacer");
 
-  color(sheet_color)
+  material("lasercut")
   linear_extrude(height=thickness)
   ymax_endstop_spacer_face();
 }
@@ -375,23 +374,23 @@ module ymax_endstop_spacer_sheet(){
 module zmax_endstop_spacer_sheet1(){
   BillOfMaterials(category="Lasercut wood", partname="ZMAX Spacer #1");
 
-    color(sheet_color)
-    linear_extrude(height=thickness)
-    zmax_endstop_spacer_face1();
+  material("lasercut")
+  linear_extrude(height=thickness)
+  zmax_endstop_spacer_face1();
 }
 
 module zmax_endstop_spacer_sheet2(){
   BillOfMaterials(category="Lasercut wood", partname="ZMAX Spacer #2");
 
-    color(sheet_color)
-    linear_extrude(height=thickness)
-    zmax_endstop_spacer_face2();
+  material("lasercut")
+  linear_extrude(height=thickness)
+  zmax_endstop_spacer_face2();
 }
 
 module zmin_endstop_spacer_sheet1(){
   BillOfMaterials(category="Lasercut wood", partname="ZMIN Spacer #1");
 
-  color(sheet_color)
+  material("lasercut")
   linear_extrude(height=thickness)
   zmin_endstop_spacer_face1();
 }
@@ -399,7 +398,7 @@ module zmin_endstop_spacer_sheet1(){
 module zmin_endstop_spacer_sheet2(){
   BillOfMaterials(category="Lasercut wood", partname="ZMIN Spacer #2");
 
-  color(sheet_color)
+  material("lasercut")
   linear_extrude(height=thickness)
   zmin_endstop_spacer_face2();
 }

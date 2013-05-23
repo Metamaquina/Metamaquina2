@@ -22,7 +22,6 @@ include <BillOfMaterials.h>;
 extruder_wiring_radius = 6;
 
 //utils
-include <colors.h>;
 use <utils.scad>;
 use <mm2logo.scad>;
 use <rounded_square.scad>;
@@ -2114,7 +2113,6 @@ module XEndIdler(){
 }
 
 module BuildPlatform_pcb(){
-  material("pcb")
   translate([0,0,pcb_height])
   heated_bed();
 }

@@ -17,7 +17,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 include <lm8uu_bearing.h>;
-include <colors.h>;
 include <render.h>;
 include <BillOfMaterials.h>;
 
@@ -25,16 +24,13 @@ module LM8UU(bom=true){
   if (bom)
     BillOfMaterials("LM8UU linear bearing");
 
-  if (render_metal){
-    color(metal_color){
-      translate([0,lm8uu_length/2])
-      rotate([90,0])
-      linear_extrude(height=lm8uu_length)
-      difference(){
-          circle(r=lm8uu_diameter/2);
-          circle(r=lm8uu_internal_diameter/2);
-      }
-    }
+  material("metal")
+  translate([0,lm8uu_length/2])
+  rotate([90,0])
+  linear_extrude(height=lm8uu_length)
+  difference(){
+      circle(r=lm8uu_diameter/2);
+      circle(r=lm8uu_internal_diameter/2);
   }
 }
 

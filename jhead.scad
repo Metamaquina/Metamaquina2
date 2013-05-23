@@ -19,6 +19,7 @@
 include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
 include <jhead.h>;
+include <render.h>;
 use <nozzle.scad>;
 
 module J_head_assembly(){
@@ -36,14 +37,12 @@ module J_head_body(){
     BillOfMaterials("PTFE liner");
   }
 
-  if (render_peek){
-    color(peek_color){
-      translate([0,0,-50+4.76+4.64]){
-        cylinder(h=50,r=6);
-        cylinder(h=50-4.76-4.64,r=(5/8)*inch/2);
-        translate([0,0,50-4.76])
-        cylinder(h=4.64,r=(5/8)*inch/2);
-      }
+  material("peek"){
+    translate([0,0,-50+4.76+4.64]){
+      cylinder(h=50,r=6);
+      cylinder(h=50-4.76-4.64,r=(5/8)*inch/2);
+      translate([0,0,50-4.76])
+      cylinder(h=4.64,r=(5/8)*inch/2);
     }
   }
 }

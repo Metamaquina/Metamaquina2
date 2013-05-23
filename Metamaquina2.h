@@ -18,7 +18,6 @@
 
 use <Metamaquina2.scad>;
 include <render.h>;
-include <colors.h>;
 
 /*Thickness of acrylic or plywood sheets to use.*/
 thickness = 6; //millimiters

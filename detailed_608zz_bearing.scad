@@ -21,7 +21,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use <rounded_square.scad>;
-include <colors.h>;
+include <render.h>;
 
 //include <render.h>;
 $fa=0.01;
@@ -73,7 +73,7 @@ module bearing_internal_cut(){
 }
 
 module detailed_608zz_bearing_body(){
-    color(metal_color)
+    material("metal")
     rotate_extrude() detailed_608zz_bearing_2d();
 }
 
@@ -94,7 +94,7 @@ module detailed_608zz_bearing() {
 }
 
 module detailed_608zz_balls(){
-    color(metal_color)
+    material("metal")
     for (i=[1:608zz_num_balls])
         rotate(i*360/608zz_num_balls)
             translate([608zz_race_radius, 0])
@@ -112,7 +112,8 @@ module detailed_608zz_ball_cage2(){
 
 module detailed_608zz_ball_cage(){
     translate([0,0,608zz_cage_clearance])
-    color("brown")render(){
+    material("metal")
+    render(){
 
         linear_extrude(height=608zz_cage_thickness)
         difference(){

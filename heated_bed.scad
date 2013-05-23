@@ -19,15 +19,15 @@
 include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
 include <heated_bed.h>;
-include <colors.h>;
+include <render.h>;
 use <rounded_square.scad>;
 
 module heated_bed_pcb(width = heated_bed_pcb_width, height = heated_bed_pcb_height){
-    BillOfMaterials("Heated bed PCB");
+  BillOfMaterials("Heated bed PCB");
 
-    color(pcb_color)
-    linear_extrude(height=heated_bed_pcb_thickness)
-    heated_bed_pcb_curves(width=width, height=height);
+  material("pcb")
+  linear_extrude(height=heated_bed_pcb_thickness)
+heated_bed_pcb_curves(width=width, height=height);
 }
 
 module heated_bed_pcb_curves(width = heated_bed_pcb_width, height = heated_bed_pcb_height, connector_holes=true){
@@ -61,21 +61,20 @@ module heated_bed_pcb_curves(width = heated_bed_pcb_width, height = heated_bed_p
 }
 
 module heated_bed_silk(width = heated_bed_pcb_width, height = heated_bed_pcb_height){
-    line_thickness = 1;
-    color("white"){
-        translate([0,0,heated_bed_pcb_thickness+0.1])
-        difference(){
-            square([200,200], center=true);
-            square([200-2*line_thickness,200-2*line_thickness], center=true);
-        }
+  line_thickness = 1;
+  material("silk"){
+    translate([0,0,heated_bed_pcb_thickness+0.1])
+    difference(){
+      square([200,200], center=true);
+      square([200-2*line_thickness,200-2*line_thickness], center=true);
     }
+  }
 }
 
 module heated_bed_glass(){
   BillOfMaterials(str(heated_bed_glass_thickness, "mm glass for the build platform (",glass_w,"mm x ",glass_h,"mm)"));
 
-  if(render_glass)
-  color(glass_color)
+  material("glass")
   translate([-glass_w/2, -glass_h/2, heated_bed_pcb_thickness])
   cube([glass_w, glass_h, heated_bed_glass_thickness]);
 }
