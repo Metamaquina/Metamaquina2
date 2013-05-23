@@ -55,9 +55,6 @@ render_materials = [
   "silk",
   "golden"];
 
-render_materials = [
-  "lasercut"];
-
 module material(id){
   for (m=render_materials){
     if (id==m){
