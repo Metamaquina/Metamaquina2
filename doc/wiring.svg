@@ -25,8 +25,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="4.1598156"
-     inkscape:cx="161.5074"
-     inkscape:cy="112.08164"
+     inkscape:cx="228.81808"
+     inkscape:cy="92.850018"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -635,37 +635,40 @@
            sodipodi:role="line">???cm</tspan></text>
     </g>
     <g
-       id="g4160"
-       transform="matrix(0.35449781,-0.93505684,0.93505684,0.35449781,-1037.4007,-375.53709)">
-      <text
-         xml:space="preserve"
-         style="font-size:5.41255236px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Monospace;-inkscape-font-specification:Monospace Bold"
-         x="-982.56641"
-         y="307.57333"
-         id="text4162"
-         sodipodi:linespacing="125%"
-         transform="matrix(0.93196274,-0.36255408,0.36255408,0.93196274,0,0)"><tspan
-           sodipodi:role="line"
-           id="tspan4164"
+       id="g3551">
+      <g
+         transform="matrix(0.35449781,-0.93505684,0.93505684,0.35449781,-1037.4007,-375.53709)"
+         id="g4160">
+        <text
+           transform="matrix(0.93196274,-0.36255408,0.36255408,0.93196274,0,0)"
+           sodipodi:linespacing="125%"
+           id="text4162"
+           y="307.57333"
            x="-982.56641"
-           y="307.57333">???cm</tspan></text>
+           style="font-size:5.41255236px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Monospace;-inkscape-font-specification:Monospace Bold"
+           xml:space="preserve"><tspan
+             y="307.57333"
+             x="-982.56641"
+             id="tspan4164"
+             sodipodi:role="line">???cm</tspan></text>
+      </g>
+      <path
+         inkscape:connector-curvature="0"
+         d="m -719.71103,607.47287 2.3503,3.26438 2.3626,-3.12381 m 0.3907,3.1335 -5.4936,0"
+         style="fill:none;stroke:#ff0000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         id="path3901-7" />
+      <path
+         inkscape:connector-curvature="0"
+         d="m -719.70996,586.49245 2.3503,-3.26438 2.3626,3.12381 m 0.3907,-3.1335 -5.4936,0"
+         style="fill:none;stroke:#ff0000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         id="path3901-6" />
+      <path
+         transform="translate(-1026.6398,452.5)"
+         inkscape:connector-curvature="0"
+         id="path4191"
+         d="m 309.34048,131.0362 -0.0688,26.8079"
+         style="fill:none;stroke:#ff0000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
     </g>
-    <path
-       id="path3901-7"
-       style="fill:none;stroke:#ff0000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
-       d="m -719.71103,607.47287 2.3503,3.26438 2.3626,-3.12381 m 0.3907,3.1335 -5.4936,0"
-       inkscape:connector-curvature="0" />
-    <path
-       id="path3901-6"
-       style="fill:none;stroke:#ff0000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
-       d="m -719.70996,586.49245 2.3503,-3.26438 2.3626,3.12381 m 0.3907,-3.1335 -5.4936,0"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 309.34048,131.0362 -0.0688,26.8079"
-       id="path4191"
-       inkscape:connector-curvature="0"
-       transform="translate(-1026.6398,452.5)" />
     <text
        xml:space="preserve"
        style="font-size:3px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Garoa Hacker Clube;-inkscape-font-specification:Garoa Hacker Clube Bold"
@@ -907,7 +910,7 @@
          y="563.12036">termistor base</tspan></text>
     <path
        transform="matrix(0.63636364,0,0,0.63636364,-331.91824,258.54829)"
-       d="m -921.25001,601.64789 a 1.9642857,1.9642857 0 1 1 -3.92857,0 1.9642857,1.9642857 0 1 1 3.92857,0 z"
+       d="m -921.25001,601.64789 c 0,1.08484 -0.87944,1.96428 -1.96428,1.96428 -1.08485,0 -1.96429,-0.87944 -1.96429,-1.96428 0,-1.08485 0.87944,-1.96429 1.96429,-1.96429 1.08484,0 1.96428,0.87944 1.96428,1.96429 z"
        sodipodi:ry="1.9642857"
        sodipodi:rx="1.9642857"
        sodipodi:cy="601.64789"
@@ -1297,5 +1300,74 @@
        d="m -919.13498,640.06806 -36.5169,-75.55965"
        style="fill:#0000ff;stroke:#999999;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        inkscape:connector-curvature="0" />
+    <g
+       transform="matrix(-0.24013016,-0.9707407,0.9707407,-0.24013016,-1551.6289,-33.185218)"
+       id="g3561"
+       style="stroke:none;fill:#00ff00">
+      <text
+         transform="matrix(0.93196274,-0.36255408,0.36255408,0.93196274,0,0)"
+         sodipodi:linespacing="125%"
+         id="text3563"
+         y="307.57333"
+         x="-982.56641"
+         style="font-size:5.41255236000000028px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#00ff00;fill-opacity:1;stroke:none;font-family:Monospace;-inkscape-font-specification:Monospace Bold"
+         xml:space="preserve"><tspan
+           y="307.57333"
+           x="-982.56641"
+           id="tspan3565"
+           sodipodi:role="line">52cm</tspan></text>
+    </g>
+    <path
+       inkscape:connector-curvature="0"
+       d="m -718.56608,612.06216 3.78961,1.34867 0.16702,-3.91308 m 2.10328,2.35536 -4.51888,3.12399"
+       style="fill:#00ff00;stroke:none;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="path3567" />
+    <path
+       inkscape:connector-curvature="0"
+       d="m -743.2369,577.49519 0.077,-4.02171 3.7198,1.22604 m -1.46052,-2.79971 -4.51888,3.124"
+       style="fill:#00ff00;stroke:none;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="path3569" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3571"
+       d="m -742.93509,573.69262 27.92896,39.6394"
+       style="fill:#00ff00;stroke:none;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 301.21528,84.491886 26.44347,36.780474"
+       id="path3579"
+       inkscape:connector-curvature="0"
+       transform="translate(-1043.3796,490.65499)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 291.35907,211.66098 65.38751,1.44238"
+       id="path3581"
+       inkscape:connector-curvature="0"
+       transform="translate(-1043.3796,490.65499)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 352.41947,208.29545 6.00988,7.21186 -7.93304,3.84632"
+       id="path3583"
+       inkscape:connector-curvature="0"
+       transform="translate(-1043.3796,490.65499)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 296.88816,206.61268 -5.2887,3.60593 4.32712,7.45226"
+       id="path3585"
+       inkscape:connector-curvature="0"
+       transform="translate(-1043.3796,490.65499)"
+       sodipodi:nodetypes="ccc" />
+    <text
+       xml:space="preserve"
+       style="font-size:3px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Garoa Hacker Clube;-inkscape-font-specification:Garoa Hacker Clube Bold"
+       x="-733.26971"
+       y="707.84509"
+       id="text3587"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3589"
+         x="-733.26971"
+         y="707.84509">37cm = XMOTOR</tspan></text>
   </g>
 </svg>
