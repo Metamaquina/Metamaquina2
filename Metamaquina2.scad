@@ -52,28 +52,37 @@ use <cable_clips.scad>;
 include <ZLink.h>;
 use <bar-clamp.scad>;
 
+top_cable_clips = [
+//[type, angle, y, z]
+//upper wiring:
+    ["RA9", 90, -70,130]];
+
 left_cable_clips = [
-    //[type, angle, y, z]
-    ["RA6", 90, 65,30],
+//[type, angle, y, z]
+//upper wiring:
+    ["RA9", 90, 80,200],
+    ["RA9", 180, 120,310],
+    ["RA9", 0, 120,230],
+//lower wiring:
     ["RA13", -90, 80,170],
-    ["RA13", 90, 80,200],
-    ["RA13", 180, 120,310],
-    ["RA13", 0, 120,230],
     ["RA13", 0, 120,130],
     ["RA13", 180, 120,60],
-    ["RA13", 90, 180,30]];
+    ["RA13", 90, 180,30],
+//ymotor wire:
+    ["RA6", 90, 65,30]];
 
 right_cable_clips = [
-    //[type, angle, y, z]
+//[type, angle, y, z]
+//lower wiring (power supply):
     ["RA13", 90, 185,35],
     ["RA13", 90, 115,35]];
     
 bottom_cable_clips = [
+//[type, angle, y, z]
+//lower wiring:
     ["RA13", -90, -100,0],
     ["RA13", 90, 0,0],
     ["RA13", -90, 100,0]];
-
-top_cable_clips = [["RA13", 90, -70,130]];
 
 bearing_sandwich_spacing = 12;
 
