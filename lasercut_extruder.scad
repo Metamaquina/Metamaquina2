@@ -517,7 +517,6 @@ module idler(){
       translate([0,0,-0.5 + thickness]){
         idler_spacer_sheet();
 
-        if (render_metal)
         translate([0,0, thickness])
         608zz_bearing(true);
 
