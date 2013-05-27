@@ -21,7 +21,15 @@ include <bolts.h>;
 include <render.h>;
 
 module M3x10(){
-  bolt(3,10);  
+  bolt(3,10);
+}
+
+module M3x16(){
+  bolt(3,16);
+}
+
+module M3x30(){
+  bolt(3,30);
 }
 
 module bolt_head(r, h){

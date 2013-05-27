@@ -20,6 +20,7 @@ include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
 
 extruder_wiring_radius = 6;
+YEndstopHolder_distance = 66;
 
 //utils
 use <utils.scad>;
@@ -38,6 +39,7 @@ use <jhead.scad>;
 include <NEMA.h>;
 include <coupling.h>;
 include <washers.h>;
+include <bolts.h>;
 include <nuts.h>;
 include <spacer.h>;
 include <lm8uu_bearing.h>;
@@ -178,7 +180,7 @@ XEnd_extra_width = 30;
 XEnd_box_size = lm8uu_diameter/2 + z_rod_z_bar_distance + ZLink_rod_height;
 
 //height of the bottom panel acrylic/plywood sheet:
-BottomPanel_zoffset = feetheight + NEMA17_length;
+BottomPanel_zoffset = feetheight + NEMA17_length + 5;
 
 Z_rod_length = machine_height - BottomPanel_zoffset + thickness;
 Z_bar_length = thickness + machine_height - BottomPanel_zoffset - motor_shaft_length;
@@ -934,7 +936,7 @@ module Y_belt(){
 
 module YEndstopHolder_face(){
   width = 25;
-  height = 20;
+  height = 13.5;
   r = 5;
   translate([-width/2,0])
   difference(){
@@ -2211,21 +2213,43 @@ module YPlatform_subassembly(){
     translate([0,0, -bearing_sandwich_spacing]){
       YPlatform_spacers();
 
-      translate([-Y_rods_distance/2, 0, -thickness])
-      YPlatform_left_sandwich_sheet();
+      translate([-Y_rods_distance/2, 0, -thickness]){
+        YPlatform_left_sandwich_sheet();
 
-      translate([Y_rods_distance/2, 0, -thickness])
-      YPlatform_right_sandwich_sheet();
+        for (p=[[-14,20],[-14,-20],[14,0]]){
+          translate(p)
+          rotate([180,0]){
+            M3_washer();
+            translate([0,0, m3_washer_thickness])
+            M3x30();
+          }
+        }
+      }
+
+      translate([Y_rods_distance/2, 0, -thickness]){
+        YPlatform_right_sandwich_sheet();
+
+        for (i=[-1,1]){
+          for (j=[-1,1]){
+            translate([i*14,j*50])
+            rotate([180,0]){
+              M3_washer();
+              translate([0,0, m3_washer_thickness])
+              M3x30();
+            }
+          }
+        }
+      }
     }
 
     translate([0,0, -lm8uu_diameter/2])
     YPlatform_linear_bearings();
 
-    translate([30,90])
+    translate([YEndstopHolder_distance/2,90])
     rotate([-90,0])
     YEndstopHolder_sheet();
 
-    translate([-30,-90 - thickness])
+    translate([-YEndstopHolder_distance/2,-90 - thickness])
     rotate([-90,0])
     YEndstopHolder_sheet();
 
