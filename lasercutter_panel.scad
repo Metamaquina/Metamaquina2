@@ -39,28 +39,26 @@ module lasercutter_panel(){
     translate([1215,88])
     set_of_M3_spacers(h=6, w=11);
 
-    translate([242,0]){
-      translate([205,222]){
-        XEndIdler_back_face();
+    translate([207,195]){
+      XEndIdler_back_face();
 
-        translate([40,70])
-        XEndMotor_back_face();
-      }
-
-      translate([216,153])
-      XEndMotor_plain_face();
-
-      translate([154,111])
-      XEndMotor_belt_face();
-
-      translate([256,143])
-      rotate(180)
-      XEndIdler_belt_face();
-
-      translate([488,314])
-      rotate(180)
-      XEndIdler_plain_face();
+      translate([40,70])
+      XEndMotor_back_face();
     }
+
+    translate([236,153])
+    XEndMotor_plain_face();
+
+    translate([444,341])
+    XEndMotor_belt_face();
+
+    translate([276,143])
+    rotate(180)
+    XEndIdler_belt_face();
+
+    translate([730,314])
+    rotate(180)
+    XEndIdler_plain_face();
   }
 
   translate([908,0]){
@@ -140,8 +138,8 @@ module lasercutter_panel(){
   }
 
   translate([350,70]){
-    translate([-64, 147])
-    rotate(-90)
+    translate([70, 147])
+    rotate(90)
     render() YPlatform_face();
 
     translate([370,85])
