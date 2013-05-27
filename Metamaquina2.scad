@@ -2206,12 +2206,21 @@ module YPlatform_subassembly(){
 
     //for the Y belt clamps
     BillOfMaterials("M3 lock-nut", 4);
-    BillOfMaterials("M3x20 bolt", 4); //TODO: check this!
+    BillOfMaterials("M3x25 bolt", 4);
     BillOfMaterials("M3 washer", 4);
   }
 
   translate([0,0,100-15]){ /*TODO*/
     YPlatform_sheet();
+
+    for (j=[-20,20])
+    translate([0,j, -thickness]){
+      y_platform_beltclamp();
+
+      translate([0,0, -thickness-3]){
+        y_platform_beltclamp();
+      }
+    }
 
     translate([0,0, -bearing_sandwich_spacing]){
       YPlatform_spacers();

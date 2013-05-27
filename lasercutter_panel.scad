@@ -61,6 +61,11 @@ module lasercutter_panel(){
     XEndIdler_plain_face();
   }
 
+#  for (i=[0:1])
+    translate([1280+i*18,238])
+    rotate(90)
+    beltclamp_curves(width=28, r=5, for_y_platform=true);
+
   translate([908,0]){
     translate([405,170])
     for (i=[0:1])
