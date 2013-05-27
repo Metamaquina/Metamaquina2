@@ -65,10 +65,7 @@ module handle_face(r=5, width=HandleWidth, height=HandleHeight){
 
     for (i=[-1,1]){
       translate([i*(width/2+2), 2*height/3]) circle(r=6);
-      hull(){
-        translate([i*HandleWidth/6,10]) circle(r=4/2);
-        translate([i*HandleWidth/6,4]) circle(r=4/2);
-      }
+      translate([i*HandleWidth/6,5]) circle(r=4/2);
     }
   }
 }
