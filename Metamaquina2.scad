@@ -122,8 +122,6 @@ ZCarPosition = 150; //carz_demo(time);
 by Nodaji in Brazil */
 HIQUA_POWERSUPPLY=true;
 
-powersupply_cut_width = 25;
-
 /* dimensions of the machine feet */
 feetwidth = 50;
 feetheight = 12;
