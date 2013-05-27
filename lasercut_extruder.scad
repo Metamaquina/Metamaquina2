@@ -121,7 +121,7 @@ module idler_side_face(){
 module idler_back_face(){
   R=23;
   rounding = 5;
-  idler_width = 5*thickness + 1;
+  idler_width = 5*thickness;
   idler_height = R+2+rounding;
 
   difference(){
@@ -136,8 +136,8 @@ module idler_back_face(){
       }
 
     for (i=[-1,1])
-      translate([i*(2*thickness+0.5),0])
-      TSlot_holes(width=R);
+      translate([i*(2*thickness),0])
+      t_slot_holes(width=R, thickness=thickness);
   }
 }
 
@@ -157,11 +157,19 @@ module idler_side_sheet(){
   idler_side_face();
 }
 
-module idler_spacer_sheet(){
-  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Idler Spacer");
+module idler_spacer_5mm_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Idler 5mm Spacer");
 
   material("lasercut")
-  linear_extrude(height=thickness)
+  linear_extrude(height=5)
+  idler_spacer_face();
+}
+
+module idler_spacer_6mm_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Idler 6mm Spacer");
+
+  material("lasercut")
+  linear_extrude(height=6)
   idler_spacer_face();
 }
 
@@ -503,28 +511,27 @@ module idler(){
     translate(idler_axis_position)
     rotate(-idler_angle)
     {
-      translate([0,0,-0.5]){
-        idler_side_sheet();
+      idler_side_sheet();
 
-        if (LCExtruder_nut_gap){
-          // we must make sure that the nut_gap
-          // is large enough for this nut to fit inside
-          translate([0,0,thickness]) M3_nut();
-        }
+      if (LCExtruder_nut_gap){
+        // we must make sure that the nut_gap
+        // is large enough for this nut to fit inside
+        translate([0,0,thickness]) M3_nut();
       }
 
       translate(idler_bearing_position - idler_axis_position)
-      translate([0,0,-0.5 + thickness]){
-        idler_spacer_sheet();
+      translate([0,0, thickness]){
+        idler_spacer_6mm_sheet();
 
-        translate([0,0, thickness])
-        608zz_bearing(true);
+        translate([0,0, thickness]){
+          608zz_bearing(true);
 
-        translate([0,0,bearing_thickness + thickness])
-        idler_spacer_sheet();
+          translate([0,0,bearing_thickness])
+            idler_spacer_5mm_sheet();
+        }
       }
 
-      translate([0,0,4*thickness+0.5])
+      translate([0,0,4*thickness])
       idler_side_sheet();
     
       translate([-R+thickness, R, 5*thickness/2])
