@@ -462,7 +462,12 @@ powersupply_Yposition = base_bars_height*2 + 33 + 20;
 //!MachineRightPanel_face();
 module MachineRightPanel_face(){
   difference(){
-    MachineSidePanel_face();
+    union(){
+      MachineSidePanel_face();
+      //extra area just to keep the machine symmetric (the other side panel uses this extra area for mounting the ZMIN endstop)
+      translate([145,76])
+      trapezoid(h=30, l1=50, l2=80, r=10);
+    }
 
     for (clip=right_cable_clips){
       assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
