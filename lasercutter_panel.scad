@@ -26,7 +26,8 @@ include <spacer.h>;
 use <PowerSupply.scad>;
 
 module lasercutter_panel(){
-  % plate_border(w=2500, h=1300, border=2);
+//  % plate_border(w=2500, h=1300, border=2);
+  % plate_border(w=1200, h=600, border=2);
 
   translate([10,0]){
     translate([0,10])
@@ -35,9 +36,6 @@ module lasercutter_panel(){
     translate([902,10])
     mirror([1,0]) //this is mirrored to place the etchings in the right side of the sheet
     render() MachineLeftPanel_face();
-
-    translate([1215,88])
-    set_of_M3_spacers(h=6, w=11);
 
     translate([207,195]){
       XEndIdler_back_face();
@@ -59,87 +57,6 @@ module lasercutter_panel(){
     translate([730,314])
     rotate(180)
     XEndIdler_plain_face();
-  }
-
-#  for (i=[0:1])
-    translate([1280+i*18,238])
-    rotate(90)
-    beltclamp_curves(width=28, r=5, for_y_platform=true);
-
-  translate([908,0]){
-    translate([405,170])
-    for (i=[0:1])
-      translate([i*18,0])
-      rotate(90)
-      beltclamp_curves(width=28, r=5, for_y_platform=true);
-
-    translate([372,170]){
-      rotate(90)
-      beltclamp_curves(width=28, r=5, for_x_carriage=true);
-
-      translate([12,0])
-      rotate(90)
-      mirror([0,1])
-      beltclamp_curves(width=28, r=5, for_x_carriage=true);
-    }
-
-    translate([338,230])
-    mirror([0,1])
-    rotate([0,0,-90])
-    MachineTopPanel_face();
-
-    translate([393,340])
-    rotate([0,0,90])
-    MachineArcPanel_face();
-
-    translate([185,230])
-    rotate(90)
-    mirror([1,0]) //mirroring to make laser etching in the correct side of the panel
-    MachineBottomPanel_face();
-
-    translate([80,230]){
-      rotate([0,0,90])
-      XPlatform_bottom_face();
-
-      translate([25,-40])
-      rotate([0,0,90]){
-        XEnd_front_face();//Motor
-
-        translate([90,0])
-        mirror([1,0]) XEnd_front_face();//Idler <-- this is mirrored so that the laser burnt side ends up turned to the same side (eighter exterior or interior) for both XEnds
-      }
-    }
-    
-    translate([10,330])
-    rotate(180)
-    mirror([0,1])
-    YMotorHolder_face();
-
-    translate([352,310])
-    rotate(-90)
-    render() XCarriage_bottom_face();
-
-    translate([335,170]){
-      for (i=[0:1]){
-        translate([i*20,0]) RodEndBottom_face();
-      }
-    }
-
-    translate([415,205]){
-    rotate(90)
-      for (i=[0:1]){
-        translate([i*30,0])
-         rotate(45)
-         top_wiring_hole_aux(r=6);
-      }
-    }
-
-    translate([275,15]){
-      rotate(90) for (i=[-1,1]){
-        translate([0,i*15]) RodEndTop_face();
-        translate([60,i*15]) SecondaryRodEndTop_face();
-      }
-    }
   }
 
   translate([350,70]){
@@ -171,26 +88,6 @@ module lasercutter_panel(){
 
       translate([0,28])
       YEndstopHolder_face();
-    }
-
-    translate([480,-135]){
-      translate([345,245])
-      zmin_endstop_spacer_face1();
-
-      translate([345,210])
-      zmin_endstop_spacer_face2();
-
-      translate([350,245])
-      zmax_endstop_spacer_face1();
-
-      translate([350,210])
-      zmax_endstop_spacer_face2();
-
-      translate([375,210])
-      ymin_endstop_spacer_face();
-
-      translate([375,245])
-      ymax_endstop_spacer_face();
     }
   }
 
@@ -249,5 +146,145 @@ module LCExtruder_panel(){
   handle_face();
 }
 
-lasercutter_panel();
+!lasercutter_panel();
 
+
+module second_panel(){
+  translate([908,0]){
+    translate([405,170])
+    for (i=[0:1])
+      translate([i*18,0])
+      rotate(90)
+      beltclamp_curves(width=28, r=5, for_y_platform=true);
+
+    translate([372,170]){
+      rotate(90)
+      beltclamp_curves(width=28, r=5, for_x_carriage=true);
+
+      translate([12,0])
+      rotate(90)
+      mirror([0,1])
+      beltclamp_curves(width=28, r=5, for_x_carriage=true);
+    }
+
+    translate([338,230])
+    mirror([0,1])
+    rotate([0,0,-90])
+    MachineTopPanel_face();
+
+    translate([393,340])
+    rotate([0,0,90])
+    MachineArcPanel_face();
+
+    translate([185,230])
+    rotate(90)
+    mirror([1,0]) //mirroring to make laser etching in the correct side of the panel
+    MachineBottomPanel_face();
+
+    translate([80,230]){
+      rotate([0,0,90])
+      XPlatform_bottom_face();
+
+      translate([25,-40])
+      rotate([0,0,90]){
+        XEnd_front_face();//Motor
+
+        translate([90,0])
+        mirror([1,0]) XEnd_front_face();//Idler <-- this is mirrored so that the laser burnt side ends up turned to the same side (eighter exterior or interior) for both XEnds
+      }
+    }
+    
+    translate([160,440])
+    rotate(180)
+    mirror([0,1])
+    YMotorHolder_face();
+
+    translate([352,310])
+    rotate(-90)
+    render() XCarriage_bottom_face();
+
+    translate([335,170]){
+      for (i=[0:1]){
+        translate([i*20,0]) RodEndBottom_face();
+      }
+    }
+
+    translate([415,205]){
+    rotate(90)
+      for (i=[0:1]){
+        translate([i*30,0])
+         rotate(45)
+         top_wiring_hole_aux(r=6);
+      }
+    }
+
+    translate([275,15]){
+      rotate(90) for (i=[-1,1]){
+        translate([0,i*15]) RodEndTop_face();
+        translate([60,i*15]) SecondaryRodEndTop_face();
+      }
+    }
+  }
+
+  translate([1225,88])
+  set_of_M3_spacers(h=6, w=11);
+
+  for (i=[0:1])
+    translate([1280+i*18,238])
+    rotate(90)
+    beltclamp_curves(width=28, r=5, for_y_platform=true);
+
+  translate([350,70]){
+    translate([480,-135]){
+      translate([345,245])
+      zmin_endstop_spacer_face1();
+
+      translate([345,210])
+      zmin_endstop_spacer_face2();
+
+      translate([350,245])
+      zmax_endstop_spacer_face1();
+
+      translate([350,210])
+      zmax_endstop_spacer_face2();
+
+      translate([375,210])
+      ymin_endstop_spacer_face();
+
+      translate([375,245])
+      ymax_endstop_spacer_face();
+    }
+  }
+
+  for (i=[0:1])
+    translate([1370+i*18,28])
+    rotate(90)
+    beltclamp_curves(width=28, r=5, for_y_platform=true);
+
+  translate([1480,20]){
+    for (N=[1:6]){
+      translate([0,(N-1)*50]){
+        side_sheet_candidate(N);
+
+        translate([-50,0])
+        mirror([1,0])
+        side_sheet_candidate(N);
+      }
+    }
+  }
+
+}
+
+module side_sheet_candidate(N){
+  difference(){
+    idler_side_face(7.3+N*0.1);
+
+    for (i=[1:N])
+    translate([-12,6+2*i])
+      rotate(90)
+      square([0.1,1]);
+  }
+}
+
+translate([-900,10])
+second_panel();
