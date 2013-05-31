@@ -79,7 +79,7 @@ module handle_sheet(){
 }
 
 //!idler_side_face();
-module idler_side_face(){
+module idler_side_face(smooth_rod_cut_diameter=7.3){
   R=23;
 
   rotate(90)
@@ -99,9 +99,9 @@ module idler_side_face(){
 
       rotate(-90)
       translate(idler_bearing_position - idler_axis_position)
-      circle(r=7.3/2);
+      circle(r=smooth_rod_cut_diameter/2);
 
-      //cur for the idler_back_face
+      //cut for the idler_back_face
       translate([R,R-thickness])
       square([50,thickness]);
 
