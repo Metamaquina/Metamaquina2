@@ -101,7 +101,7 @@ module lasercutter_panel(){
       rotate([0,0,90])
       XPlatform_bottom_face();
 
-      translate([25,-40])
+      translate([30,-40])
       rotate([0,0,90]){
         XEnd_front_face();//Motor
 
