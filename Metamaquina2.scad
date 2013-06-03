@@ -110,7 +110,7 @@ function carz_demo(time) = time*BuildVolume_Z;
 function coupling_demo(time) = (360*carz_demo(time)/1.25)/hack_couplings;
 
 /* Positioning of the extruder assembly */
-XCarPosition = 0; //carx_demo(time);
+XCarPosition = -100; //carx_demo(time);
 YCarPosition = 0; //cary_demo(time);
 ZCarPosition = 150; //carz_demo(time);
 
@@ -143,10 +143,10 @@ machine_height = BuildVolume_Z + 207.2; //why?
 
 XZStage_offset = 20;
 XZStage_position = RightPanel_basewidth/2 + XZStage_offset;
-z_max_endstop_x = XZStage_position - 46;
-z_max_endstop_y = machine_height - 25;
+z_max_endstop_x = XZStage_position - 41;
+z_max_endstop_y = machine_height - 19;
 
-z_min_endstop_x = z_max_endstop_x - 20;
+z_min_endstop_x = z_max_endstop_x - 28;
 z_min_endstop_y = 109;
 
 baseh = 35;
@@ -220,7 +220,7 @@ RightPanel_backheight = machine_height - RightPanel_baseheight;
 
 rear_backtop_advance = XZStage_position - (XPlatform_width/2 + XEnd_extra_width + 10) - RightPanel_backwidth;
 
-RightPanel_topheight = 35;
+RightPanel_topheight = 30;
 RightPanel_topwidth = XZStage_position + 30 - rear_backtop_advance;
 
 module bar_cut(l=2*bar_cut_length){
@@ -1257,10 +1257,24 @@ module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=1){
   }
 }
 
+//!XEnd_front_face();
 module XEnd_front_face(){
   difference(){
-  	translate([-XPlatform_width/2 - XEnd_extra_width, thickness])
-	  rounded_square([XEnd_width, XPlatform_height - thickness], corners=[0,0,thickness/2,thickness/2]);
+    union(){
+    	translate([-XPlatform_width/2 - XEnd_extra_width, thickness])
+	    rounded_square([XEnd_width, XPlatform_height - thickness], corners=[0,0,thickness/2,thickness/2]);
+
+      translate([-XPlatform_width/2 - XEnd_extra_width + belt_offset - 5, XPlatform_height])
+      hull(){
+        for (i=[-1,1]){
+          translate([i*5,2])
+          circle(r=3);
+
+          translate([i*11,0])
+          circle(r=0.01);
+        }
+      }
+    }
 	  
     //holes for x-axis rods
     translate([X_rods_distance/2, X_rod_height + thickness])

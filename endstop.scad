@@ -28,14 +28,14 @@ m3_diameter=3; //TODO: move-me to a header file
 module z_max_mount_holes(){
   //these are the holes for mounting the endstop subassembly
   for (i=[-1,1])
-    translate([-microswitch_width/2+i*microswitch_holes_distance/2,16-microswitch_height/2])
+    translate([-microswitch_width/2+i*microswitch_holes_distance/2,19-microswitch_height/2])
     M3_hole();
 
   translate([-100,7]){
       //this is to keep the endstop wiring in place:
       zip_tie_holes(d=8);
 
-      translate([78,0])
+      translate([74,0])
       zip_tie_holes(d=8);
 
       // Since all of the 3d printer wiring will be prepared
@@ -68,7 +68,7 @@ module z_min_mount_holes(){
   translate([-15.5,7]){
     rounded_edge_cut(width=3, height=15.7, r=3/2, plain_left=true);
 
-    translate([5,-15])
+    translate([8,-15])
     zip_tie_holes(d=8);
   }
 }
@@ -181,14 +181,14 @@ module z_min_endstop(){
     BillOfMaterials("M2.5 lock-nut", 2);
   }
 
-  translate([15,0]){
+  translate([20,0]){
     zmin_endstop_spacer_sheet1();
 
-    translate([0,0,thickness])
+    translate([0,0,acrylic_thickness])
     zmin_endstop_spacer_sheet2();
   }
 
-  translate([0,0,2*thickness])
+  translate([0,0,2*acrylic_thickness])
   mechanical_switch();
 }
 
@@ -203,13 +203,14 @@ module z_max_endstop(){
     BillOfMaterials("M2.5 lock-nut", 2);
   }
 
+  translate([0,-2.5])
   rotate(180){
     zmax_endstop_spacer_sheet1();
 
-    translate([0,0,thickness])
+    translate([0,0,acrylic_thickness])
     zmax_endstop_spacer_sheet2();
 
-    translate([0,0,2*thickness])
+    translate([0,0,2*acrylic_thickness])
     mechanical_switch();
   }
 }
@@ -229,7 +230,7 @@ module endstop_spacer_face1(nut_gap=true){
   translate([0,-microswitch_height])
   difference(){
     translate([-2,-microswitch_height])
-    rounded_square([microswitch_width+4,3*microswitch_height], corners=[r,r,r,r]);
+    rounded_square([microswitch_width+4,endstop_spacer_height], corners=[r,r,r,r]);
 
     translate(wire_coordinate)
     oblongo(microswitch_width);
@@ -252,7 +253,7 @@ module endstop_spacer_face2(nut_gap=false){
   translate([0,-microswitch_height])
   difference(){
     translate([-2,-microswitch_height])
-    rounded_square([microswitch_width+4,3*microswitch_height], corners=[r,r,r,r]);
+    rounded_square([microswitch_width+4,endstop_spacer_height], corners=[r,r,r,r]);
 
     translate(wire_coordinate)
     rotate(90)
@@ -374,32 +375,32 @@ module ymax_endstop_spacer_sheet(){
 module zmax_endstop_spacer_sheet1(){
   BillOfMaterials(category="Lasercut wood", partname="ZMAX Spacer #1");
 
-  material("lasercut")
-  linear_extrude(height=thickness)
+  material("acrylic")
+  linear_extrude(height=acrylic_thickness)
   zmax_endstop_spacer_face1();
 }
 
 module zmax_endstop_spacer_sheet2(){
   BillOfMaterials(category="Lasercut wood", partname="ZMAX Spacer #2");
 
-  material("lasercut")
-  linear_extrude(height=thickness)
+  material("acrylic")
+  linear_extrude(height=acrylic_thickness)
   zmax_endstop_spacer_face2();
 }
 
 module zmin_endstop_spacer_sheet1(){
   BillOfMaterials(category="Lasercut wood", partname="ZMIN Spacer #1");
 
-  material("lasercut")
-  linear_extrude(height=thickness)
+  material("acrylic")
+  linear_extrude(height=acrylic_thickness)
   zmin_endstop_spacer_face1();
 }
 
 module zmin_endstop_spacer_sheet2(){
   BillOfMaterials(category="Lasercut wood", partname="ZMIN Spacer #2");
 
-  material("lasercut")
-  linear_extrude(height=thickness)
+  material("acrylic")
+  linear_extrude(height=acrylic_thickness)
   zmin_endstop_spacer_face2();
 }
 

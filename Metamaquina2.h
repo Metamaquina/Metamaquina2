@@ -21,6 +21,7 @@ include <render.h>;
 
 /*Thickness of acrylic or plywood sheets to use.*/
 thickness = 6; //millimiters
+acrylic_thickness = 5;
 
 /*This value is added to the thickness value when drawing cuts for connecting perpendicular sheets together*/
 slot_extra_thickness = 0.5;

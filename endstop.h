@@ -24,3 +24,5 @@ microswitch_width = 20;
 microswitch_height = 10.7;
 microswitch_thickness = 6.3;
 
+endstop_spacer_height = 30;
+
