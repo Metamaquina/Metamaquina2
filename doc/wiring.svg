@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7176142"
-     inkscape:cx="633.60592"
-     inkscape:cy="906.29238"
+     inkscape:zoom="0.5461229"
+     inkscape:cx="743.21967"
+     inkscape:cy="505.07327"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -410,7 +410,7 @@
          x="-986.40979"
          y="-248.48596">chicote inferior</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:4.81741142;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:19.26964482, 19.26964482;stroke-dashoffset:0"
+       style="fill:#000000;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        d="m -192.22507,-246.9194 0,803.31967"
        id="path4023"
        inkscape:connector-curvature="0"
@@ -1332,5 +1332,34 @@
          id="tspan3997-9"
          x="-125.19831"
          y="-230.60236">chicote superior</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:26.32990074px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:FreeMono;-inkscape-font-specification:FreeMono"
+       x="-1023.3007"
+       y="602.70233"
+       id="text4164"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4166"
+         x="-1023.3007"
+         y="602.70233">Metamáquina 2 - wiring diagram</tspan><tspan
+         sodipodi:role="line"
+         x="-1023.3007"
+         y="635.61469"
+         id="tspan4168">Date: 2013-06-03</tspan><tspan
+         sodipodi:role="line"
+         x="-1023.3007"
+         y="668.5271"
+         id="tspan4170">Author: Felipe Sanches &lt;fsanches@metamaquina.com.br&gt;</tspan><tspan
+         sodipodi:role="line"
+         x="-1023.3007"
+         y="701.43945"
+         id="tspan4172">Revisor: Rodrigo Rodrigues da Silva &lt;rsilva@metamaquina.com.br&gt;</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M -7.3243587,907.7061 1497.8314,909.53719"
+       id="path4174"
+       inkscape:connector-curvature="0"
+       transform="translate(-1043.3796,-329.85304)" />
   </g>
 </svg>
