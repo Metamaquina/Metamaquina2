@@ -24,12 +24,28 @@ module M3x10(){
   bolt(3,10);
 }
 
+module M3x12(){
+  bolt(3,12);
+}
+
 module M3x16(){
   bolt(3,16);
 }
 
+module M3x20(){
+  bolt(3,20);
+}
+
+module M3x25(){
+  bolt(3,25);
+}
+
 module M3x30(){
   bolt(3,30);
+}
+
+module M3x35(){
+  bolt(3,35);
 }
 
 module bolt_head(r, h){

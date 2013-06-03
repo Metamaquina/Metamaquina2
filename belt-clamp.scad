@@ -19,7 +19,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
+include <bolts.h>;
+include <washers.h>;
 include <render.h>;
 
 module belt_clamp_holder(){
@@ -100,6 +103,15 @@ module x_carriage_beltclamp(width=28, height=6, r=5){
   material("lasercut")
   linear_extrude(height=height)
   beltclamp_curves(width, r, for_x_carriage=true);
+
+  for (i=[-1,1])
+  rotate([180,0])
+  translate([i*9,0]){
+    M3_washer();
+    translate([0,0,m3_washer_thickness]){
+      M3x20();
+    }
+  }
 }
 
 module y_platform_beltclamp(width=28, height=6, r=5){
