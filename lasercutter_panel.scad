@@ -194,6 +194,13 @@ module lasercutter_panel(){
     }
   }
 
+#  translate ([10,330]){
+    ymin_endstop_spacer_face();
+
+    translate([0,35])
+    ymax_endstop_spacer_face();
+  }
+
   translate([650,100]){
     rotate(90)
     render() LCExtruder_panel();
