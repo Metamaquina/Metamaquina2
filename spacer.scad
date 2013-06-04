@@ -39,7 +39,7 @@ module M3_spacer(){
 
 module M3_spacer_face(){
   difference(){
-    circle(r=m3_diameter*1.5, $fn=30);
+    circle(r=m3_spacer_radius, $fn=30);
     circle(r=(m3_diameter + spacers_clearance)/2, $fn=30);
   }
 }

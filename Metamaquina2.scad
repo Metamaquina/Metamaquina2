@@ -2271,17 +2271,36 @@ module YPlatform_subassembly(){
     translate([0,0, -lm8uu_diameter/2])
     YPlatform_linear_bearings();
 
-    translate([YEndstopHolder_distance/2,90])
-    rotate([-90,0])
-    YEndstopHolder_sheet();
+    translate([YEndstopHolder_distance/2,90]){
+      translate([0,thickness/2+1.4,-thickness])
+      yendstop_hit_subassembly();
 
-    translate([-YEndstopHolder_distance/2,-90 - thickness])
-    rotate([-90,0])
-    YEndstopHolder_sheet();
+//      rotate([-90,0])
+//      YEndstopHolder_sheet();
+    }
 
+    translate([-YEndstopHolder_distance/2,-90 - thickness]){
+      translate([0,thickness/2-1.4,-thickness])
+      yendstop_hit_subassembly();
+
+//      rotate([-90,0])
+//      YEndstopHolder_sheet();
+    }
   }
 }
 
+module yendstop_hit_subassembly(){
+  translate([0,0, 2*thickness]){
+    M3_nut();//This should be a lock nut!
+  }        
+
+  M3_spacer();
+  translate([0,0,-m3_washer_thickness]){
+    M3_washer();
+
+    rotate([180,0]) M3x16();
+  }
+}
 module YPlatform_face_generic(){
   difference(){
     rounded_square([HeatedBed_X, HeatedBed_Y + 35], corners=[10,10,10,10], center=true);
@@ -2355,6 +2374,7 @@ module YPlatform_face(){
         belt_clamp_holes();
     }
     
+/*
     translate([YEndstopHolder_distance/2 + 25/2, 90 + thickness/2])
     rotate(90)
     TSlot_holes(width=25);
@@ -2362,6 +2382,13 @@ module YPlatform_face(){
     translate([-YEndstopHolder_distance/2 + 25/2, -90 - thickness/2])
     rotate(90)
     TSlot_holes(width=25);
+*/
+
+    translate([YEndstopHolder_distance/2, 91.4 + thickness/2])
+    M3_hole();
+
+    translate([-YEndstopHolder_distance/2, -91.4 - thickness/2])
+    M3_hole();
 
   }
 }

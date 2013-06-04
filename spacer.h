@@ -17,6 +17,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use <spacer.scad>;
+include <metric.scad>;
 
+m3_spacer_radius = m3_diameter*1.5;
 hexspacer_length = 38; //considering the height of the connectors and components
 nylonspacer_length = 6;
