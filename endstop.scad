@@ -74,12 +74,12 @@ module z_min_mount_holes(){
 }
 
 module y_max_endstop_mount_holes(){
-  translate([30, -12])
+  translate([32.5, -12])
   y_endstop_mount_holes();
 }
 
 module y_min_endstop_mount_holes(){
-  translate([-30, +12])
+  translate([-32.5, +12])
   mirror([0,1])
   y_endstop_mount_holes();
 }
@@ -142,8 +142,10 @@ module ymin_endstop_subassembly(){
   }
 
   ymin_endstop_spacer_sheet();
-
   translate([0,0,thickness])
+  ymin_endstop_spacer_sheet();
+
+  translate([0,0,2*thickness])
   mechanical_switch();
 }
 
@@ -161,6 +163,9 @@ module ymax_endstop_subassembly(){
   ymax_endstop_spacer_sheet();
 
   translate([0,0,thickness])
+  ymax_endstop_spacer_sheet();
+
+  translate([0,0,2*thickness])
   mechanical_switch();
 }
 
