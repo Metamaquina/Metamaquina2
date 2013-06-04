@@ -2355,11 +2355,11 @@ module YPlatform_face(){
         belt_clamp_holes();
     }
     
-    translate([30 + 25/2, 90 + thickness/2])
+    translate([YEndstopHolder_distance/2 + 25/2, 90 + thickness/2])
     rotate(90)
     TSlot_holes(width=25);
 
-    translate([-30 + 25/2, -90 - thickness/2])
+    translate([-YEndstopHolder_distance/2 + 25/2, -90 - thickness/2])
     rotate(90)
     TSlot_holes(width=25);
 
