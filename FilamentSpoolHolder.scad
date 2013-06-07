@@ -27,24 +27,39 @@ feet_width = 30;
 base_height = 40;
 total_height = 120;
 total_width = 150;
+top_cut_height = 50;
+top_cut_width = 30;
 radius = 10;
 
 module FilamentSpoolHolder_sidepanel_face(){
-  hull()
-  for (i=[-1,1]){
-      translate([i*30,total_height])
-      circle(r=radius);
 
-      translate([i*(total_width/2-radius),base_height])
-      circle(r=radius);
+  difference(){
+    union(){
+      hull()
+      for (i=[-1,1]){
+          translate([i*30,total_height])
+          circle(r=radius);
 
-      translate([i*total_width/2,feet_height])
-      circle(r=0.1);
+          translate([i*(total_width/2-radius),base_height])
+          circle(r=radius);
+
+          translate([i*total_width/2,feet_height])
+          circle(r=0.1);
+      }
+
+      for (i=[-1,1])
+      translate([i*(total_width-feet_width)/2,10])
+      rounded_square([feet_width,20], corners=[5, 5, 5, 5], center=true);
+    }
+
+    union(){
+      translate([0,(total_height)])
+      square([top_cut_width,top_cut_height],center = true);
+
+      translate([0,(total_height-top_cut_height+top_cut_width)])
+      circle(r=top_cut_width/2);
+      }  
   }
-
-  for (i=[-1,1])
-  translate([i*(total_width-feet_width)/2,10])
-  rounded_square([feet_width,20], corners=[5, 5, 5, 5], center=true);
 }
 
 module FilamentSpoolHolder_sidepanel_sheet(){
