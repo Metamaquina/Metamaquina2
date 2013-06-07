@@ -90,7 +90,7 @@ module idler_side_face(smooth_rod_cut_diameter=7.8){
 
         circle(r=6);
 
-//The following code is a quick hack to make the idler side a bit larger so that the idler's small threaded rod is better attached to the lasercut sheet and also to give more room to a larger bolt (M3x16 instead of M3x12)
+//The following code is a quick hack to make the idler side a bit larger so that the idler's small smooth rod is better attached to the lasercut sheet and also to give more room to a larger bolt (M3x16 instead of M3x12)
         translate([2,-2.5])
         rounded_square([2*R,R], corners=[0,R,R,0]);
       }
@@ -481,12 +481,12 @@ module handle(){
 
 module idler_bolt_subassembly(){
   length=30;
-  BillOfMaterials(str("M8x", length, "mm Threaded Rod"));
+  BillOfMaterials(str("M8x", length, "mm Smooth Rod"));
 
   //bolt body
-  material("threaded metal")
+  material("metal")
   translate([0,0,-length])
-  cylinder(r=7.3/2, h=length);
+  cylinder(r=7.8/2, h=length);
 }
 
 module idler(){
