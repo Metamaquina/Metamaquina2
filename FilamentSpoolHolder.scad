@@ -27,9 +27,11 @@ feet_width = 30;
 base_height = 40;
 total_height = 120;
 total_width = 150;
-top_cut_height = 50;
+top_cut_height = 15;
 top_cut_width = 30;
 radius = 10;
+spool_holder_width = 180;
+spool_holder_height = 30;
 
 module FilamentSpoolHolder_sidepanel_face(){
 
@@ -53,14 +55,19 @@ module FilamentSpoolHolder_sidepanel_face(){
     }
 
     union(){
-      translate([0,(total_height)])
+      translate([0,(total_height+feet_height-top_cut_height/2)])
       square([top_cut_width,top_cut_height],center = true);
 
-      translate([0,(total_height-top_cut_height+top_cut_width)])
+      translate([0,(total_height+feet_height-top_cut_height)])
       circle(r=top_cut_width/2);
       }  
+    }
   }
-}
+
+module FilamentSpoolHolder_othersidepanel_face(){
+          translate([0,feet_height+spool_holder_height/2])
+          #square([spool_holder_width-thickness,spool_holder_height],center = true);
+    }
 
 module FilamentSpoolHolder_sidepanel_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Filament Spool Holder Side Panel");
@@ -69,7 +76,13 @@ module FilamentSpoolHolder_sidepanel_sheet(){
   FilamentSpoolHolder_sidepanel_face();
 }
 
-spool_holder_width = 180;
+module FilamentSpoolHolder_othersidepanel_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Filament Spool Holder Side Panel");
+  material("lasercut")
+  linear_extrude(height=thickness)
+  FilamentSpoolHolder_othersidepanel_face();
+}
+
 module FilamentSpoolHolder(){
   for (i=[-1,1])
   translate([0, i*spool_holder_width/2])
@@ -77,5 +90,15 @@ module FilamentSpoolHolder(){
   FilamentSpoolHolder_sidepanel_sheet();
 }
 
+module FilamentSpoolHolder_othersidepanel(){
+  for (i=[-1,1])
+  translate([0, i*(total_width/2-thickness/2)])
+  rotate([90,0,0])
+  FilamentSpoolHolder_othersidepanel_sheet();
+}
+  translate([-thickness/2,-thickness/2])
+  rotate([0,0,90])
+
 FilamentSpoolHolder();
+FilamentSpoolHolder_othersidepanel();
 

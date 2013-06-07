@@ -2878,3 +2878,10 @@ if (render_calibration_guide){
   translate([-SidePanels_distance/2 + thickness, -RightPanel_basewidth/2 + bar_cut_length - 10, base_bars_Zdistance/2 + base_bars_height])
   color([1,1,0.4,0.7]) cube([Sidepanel_calibration, 20, 15]);
 }
+
+
+use <FilamentSpoolHolder.scad>;
+
+FilamentSpoolHolder();
+
+
