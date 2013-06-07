@@ -1290,7 +1290,7 @@ module XEnd_front_face(){
 
     //hole for belt
   	translate([-XPlatform_width/2 - XEnd_extra_width + belt_offset - 5, XIdler_height])
-    square([belt_width+6, 2*(IdlerRadius+4)], center=true);
+    square([belt_width+8, 2*(IdlerRadius+4)], center=true);
 
     translate([XPlatform_width/2 - thickness, thickness]){
       TSlot_holes(width=XPlatform_height - thickness);
