@@ -49,11 +49,11 @@ module PowerSupply_mount_holes(){
 
   translate([thickness,-box_height + bottom_offset + thickness/2])
   rotate(-90)
-  TSlot_holes(width=2*(PowerSupply_width - 2*thickness)/3);
+  TSlot_holes(width=2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3);
 
-  translate([thickness + (PowerSupply_width - 2*thickness)/3,-box_height + bottom_offset + thickness/2])
+  translate([thickness + (PowerSupply_width - metal_sheet_thickness - 2*thickness)/3,-box_height + bottom_offset + thickness/2])
   rotate(-90)
-  TSlot_holes(width=2*(PowerSupply_width - 2*thickness)/3);
+  TSlot_holes(width=2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3);
 
   translate([PowerSupply_width/2,-box_height+bottom_offset + wiring_radius + thickness + 2])
     //hole for power supply wiring
@@ -155,11 +155,11 @@ module PowerSupplyBox_side_face(){
 
     translate([0,thickness/2])
       rotate(-90)
-      TSlot_holes(2*(PowerSupply_width - 2*thickness)/3);
+      TSlot_holes(2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3);
 
-    translate([(PowerSupply_width - 2*thickness)/3,thickness/2])
+    translate([(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3,thickness/2])
       rotate(-90)
-      TSlot_holes(2*(PowerSupply_width - 2*thickness)/3);
+      TSlot_holes(2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3);
   }
 
   translate([-thickness/2, 0])
@@ -169,43 +169,55 @@ module PowerSupplyBox_side_face(){
   t_slot_joints(width=box_height, thickness=thickness);
 }
 
+//!test_PowerSupplyBox_bottom_face_symmetry();
+module test_PowerSupplyBox_bottom_face_symmetry(){
+  //This must result in an empty geometry
+
+  difference(){
+    PowerSupplyBox_bottom_face();
+
+    translate([PowerSupply_width - metal_sheet_thickness - 2*thickness+0, 0])
+mirror([1,0])  PowerSupplyBox_bottom_face();
+  }
+}
+
 module PowerSupplyBox_bottom_face(){
   difference(){
     square([PowerSupply_width-2*thickness-metal_sheet_thickness, PowerSupply_thickness-thickness]);
 
 
-    translate([(PowerSupply_width-2*thickness)/3,PowerSupply_thickness])
+    translate([(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3,PowerSupply_thickness])
     rotate(180)
     t_slot_shape(3,16);
 
 
-    translate([2*(PowerSupply_width-2*thickness)/3,PowerSupply_thickness])
+    translate([2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3,PowerSupply_thickness])
     rotate(180)
     t_slot_shape(3,16);
 
-    translate([(PowerSupply_width-2*thickness)/3,-thickness])
+    translate([(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3,-thickness])
     t_slot_shape(3,16);
 
 
-    translate([2*(PowerSupply_width-2*thickness)/3,-thickness])
+    translate([2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3,-thickness])
     t_slot_shape(3,16);
   }
 
   translate([0, PowerSupply_thickness - thickness/2])
   rotate(-90)
-  t_slot_joints(2*(PowerSupply_width - 2*thickness)/3, thickness=thickness);
+  t_slot_joints(2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3, thickness=thickness);
 
-  translate([(PowerSupply_width - 2*thickness)/3, PowerSupply_thickness - thickness/2])
+  translate([(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3, PowerSupply_thickness - thickness/2])
   rotate(-90)
-  t_slot_joints(2*(PowerSupply_width - 2*thickness)/3, thickness=thickness);
+  t_slot_joints(2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3, thickness=thickness);
 
   translate([0, -thickness/2])
   rotate(-90)
-  t_slot_joints(2*(PowerSupply_width - 2*thickness)/3, thickness=thickness);
+  t_slot_joints(2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3, thickness=thickness);
 
-  translate([(PowerSupply_width - 2*thickness)/3, - thickness/2])
+  translate([(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3, - thickness/2])
   rotate(-90)
-  t_slot_joints(2*(PowerSupply_width - 2*thickness)/3, thickness=thickness);
+  t_slot_joints(2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3, thickness=thickness);
 }
 
 module PowerSupplyBox_front_face(){
