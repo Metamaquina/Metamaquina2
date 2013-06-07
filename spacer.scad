@@ -20,6 +20,8 @@ include <spacer.h>;
 include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
 
+m3_diameter = 3;
+
 spacers_clearance = 0.1; // extra room for the spacers hole diameter
 
 module double_M3_lasercut_spacer(){
