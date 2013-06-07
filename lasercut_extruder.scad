@@ -79,7 +79,7 @@ module handle_sheet(){
 }
 
 //!idler_side_face();
-module idler_side_face(smooth_rod_cut_diameter=7.3){
+module idler_side_face(smooth_rod_cut_diameter=7.8){
   R=23;
 
   rotate(90)
