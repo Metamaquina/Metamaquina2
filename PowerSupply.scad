@@ -317,13 +317,14 @@ module ONOFF_Switch_mount_hole(){
 }
 
 PSU_Female_border_height=22;
-power_supply_bolts_distance = 40;
+female_connector_bolts_distance = 40;
 module PowerSupply_FemaleConnector(){
   BillOfMaterials("Power supply female connector");
 
   border_height=PSU_Female_border_height;
   border_width=30.2;
-  border_thickness = 6.1;
+  border_thickness = 4.84;
+  wings_thickness = 3.5;
   depth = 13.1;
 
   material("ABS"){
@@ -337,13 +338,13 @@ module PowerSupply_FemaleConnector(){
         translate([-border_width/2,-border_height/2])
         rounded_square([border_width, border_height], corners=[2,2,2,2]);
 
-        linear_extrude(height=3.9)
+        linear_extrude(height=wings_thickness)
         hull(){
           translate([-border_width/2,-border_height/2])
           rounded_square([border_width, border_height], corners=[2,2,2,2]);
 
           for (i=[-1,1])
-            translate([i*power_supply_bolts_distance/2, 0])
+            translate([i*female_connector_bolts_distance/2, 0])
             circle(r=6);
         }
       }
@@ -358,22 +359,21 @@ module PowerSupply_FemaleConnector(){
         r2=2);
 
       for (i=[-1,1]){
-        translate([i*power_supply_bolts_distance/2,0,-0.1])
+        translate([i*female_connector_bolts_distance/2,0,-0.1])
         cylinder(r=m3_diameter/2, h=10);
 
-        translate([i*power_supply_bolts_distance/2,0,2])
+        translate([i*female_connector_bolts_distance/2,0,2])
         cylinder(r1=m3_diameter/2, r2=m3_diameter, h=3.9 - 2 + 0.1);
       }
     }
   }
 }
 
-
-module PowerSupply_FemaleConnector_large_hole(){
+module PowerSupply_FemaleConnector_large_hole(clearance=0.25){
   power_supply_generic_connector_shape(
-    width=26.6,
-    height=18.4,
-    bevel=5,
+    width=27+clearance,
+    height=18.9+clearance,
+    bevel=3,
     r1=1,
     r2=2);
 }
@@ -382,7 +382,7 @@ module PowerSupply_FemaleConnector_mount_holes(){
   PowerSupply_FemaleConnector_large_hole();
 
   for (i=[-1,1]){
-    translate([i*power_supply_bolts_distance/2, 0])
+    translate([i*female_connector_bolts_distance/2, 0])
     circle(r=m3_diameter/2);
   }
 }
