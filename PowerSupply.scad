@@ -321,8 +321,8 @@ module ONOFF_Switch(){
 }
 
 ONOFF_Switch_position = [PowerSupply_thickness/2,(box_height-thickness)/2];
-ONOFF_Switch_mount_width = 12;
-ONOFF_Switch_mount_height = 17.5;
+ONOFF_Switch_mount_width = 13;
+ONOFF_Switch_mount_height = 19;
 module ONOFF_Switch_mount_hole(){
   translate([-ONOFF_Switch_mount_width/2,-ONOFF_Switch_mount_height/2])
   square([ONOFF_Switch_mount_width, ONOFF_Switch_mount_height]);
