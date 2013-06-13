@@ -117,7 +117,9 @@ module lasercutter_panel(){
 
     translate([352,310])
     rotate(-90)
-    render() XCarriage_bottom_face();
+    render()
+    mirror([1,0]) //we want the burnt side up because it's cool!
+    XCarriage_bottom_face();
 
     translate([335,170]){
       for (i=[0:1]){
@@ -212,8 +214,9 @@ module lasercutter_panel(){
   PowerSupplyBox_bottom_face();
 #  translate([230,380])
   PowerSupplyBox_front_face();
-#  translate([190,435])
+#  translate([125,435])
   rotate(90)
+  mirror([0,1]) //we want to keep the burnt side visible because it looks good!
   PowerSupplyBox_back_face();
 }
 
