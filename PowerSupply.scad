@@ -251,7 +251,7 @@ module PowerSupplyBox_back_face(){
   difference(){
     PowerSupplyBox_front_plain_face();
 
-    translate([PowerSupply_thickness-thickness-PSU_Female_border_height/2, (box_height - bottom_offset)/2]){
+    translate([PowerSupply_thickness-thickness-PSU_Female_border_height/2 - 3, (box_height - bottom_offset)/2]){
       rotate(-90)
       PowerSupply_FemaleConnector_mount_holes();
     }
