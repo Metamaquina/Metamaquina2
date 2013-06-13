@@ -21,17 +21,21 @@ include <render.h>;
 include <BillOfMaterials.h>;
 
 thickness = 6;
+margin = 10;
 
-feet_height = 10;
-feet_width = 30;
-base_height = 40;
-total_height = 120;
-total_width = 150;
-top_cut_height = 15;
+feet_height = 12;
+feet_width = 50;
+base_height = 60;
+
+total_width = 160+2*thickness+margin;
+top_cut_height = 20;
 top_cut_width = 30;
-radius = 10;
-spool_holder_width = 180;
+radius = 15;
+spool_holder_width = 160+2*thickness+margin;
 spool_holder_height = 30;
+
+total_height = feet_height+160/2+35/2+top_cut_height+top_cut_width/2;
+radius_feet=5;
 
 module FilamentSpoolHolder_sidepanel_face(){
 
@@ -39,7 +43,7 @@ module FilamentSpoolHolder_sidepanel_face(){
     union(){
       hull()
       for (i=[-1,1]){
-          translate([i*30,total_height])
+          translate([i*40,total_height-radius])
           circle(r=radius);
 
           translate([i*(total_width/2-radius),base_height])
@@ -50,23 +54,24 @@ module FilamentSpoolHolder_sidepanel_face(){
       }
 
       for (i=[-1,1])
-      translate([i*(total_width-feet_width)/2,10])
-      rounded_square([feet_width,20], corners=[5, 5, 5, 5], center=true);
+      translate([i*(total_width-feet_width)/2,(feet_height+radius_feet)/2])
+      rounded_square([feet_width,feet_height+radius_feet], corners=[radius_feet, radius_feet, radius_feet, radius_feet], center=true);
     }
 
     union(){
-      translate([0,(total_height+feet_height-top_cut_height/2)])
+      translate([0,(total_height-top_cut_height/2)])
       square([top_cut_width,top_cut_height],center = true);
 
-      translate([0,(total_height+feet_height-top_cut_height)])
+
+      translate([0,(total_height-top_cut_height)])
       circle(r=top_cut_width/2);
       }  
     }
   }
 
 module FilamentSpoolHolder_othersidepanel_face(){
-          translate([0,feet_height+spool_holder_height/2])
-          #square([spool_holder_width-thickness,spool_holder_height],center = true);
+translate([0,(base_height)/2])
+      square([spool_holder_width-thickness,spool_holder_height],center = true);
     }
 
 module FilamentSpoolHolder_sidepanel_sheet(){
