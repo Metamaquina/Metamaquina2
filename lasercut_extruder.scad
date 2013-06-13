@@ -67,6 +67,9 @@ module handle_face(r=5, width=HandleWidth, height=HandleHeight){
       translate([i*(width/2+2), 2*height/3]) circle(r=6);
       translate([i*HandleWidth/6,5]) circle(r=4/2);
     }
+
+    translate([-14.7/2,12])
+    import("M_circle.dxf");
   }
 }
 
