@@ -41,7 +41,7 @@ module z_max_mount_holes(){
       // Since all of the 3d printer wiring will be prepared
       // in an early assembly stage this hole should be
       // large enough to let the ZMAX microswitch pass through:
-      translate([-7,0]){
+      translate([-7,-4]){
 
         translate([-microswitch_thickness/2 - 1,-microswitch_width/2 - 1])
         rounded_square([microswitch_thickness+2, microswitch_width+2], corners=[2,2,2,2]);
