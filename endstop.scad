@@ -280,6 +280,9 @@ module endstop_spacer_face2(nut_gap=false){
 module ymin_endstop_spacer_face(){
   difference(){
     endstop_spacer_face1(nut_gap=false);
+
+    translate([5,-14])
+    rotate(90)
     import("labels.dxf", layer="ymin");
   }
 }
@@ -287,6 +290,9 @@ module ymin_endstop_spacer_face(){
 module ymax_endstop_spacer_face(){
   difference(){
     endstop_spacer_face1(nut_gap=false);
+
+    translate([5,-14])
+    rotate(90)
     import("labels.dxf", layer="ymax");
   }
 }
@@ -316,6 +322,7 @@ module zmin_endstop_spacer_face2(){
 module zmax_endstop_spacer_face1(){
   difference(){
     endstop_spacer_face1();
+
     translate([5,-14])
     rotate(90)
     import("labels.dxf", layer="zmax");
@@ -325,6 +332,7 @@ module zmax_endstop_spacer_face1(){
 module zmax_endstop_spacer_face2(){
   difference(){
     endstop_spacer_face2();
+
     translate([5,-14])
     rotate(90)
     import("labels.dxf", layer="zmax");
