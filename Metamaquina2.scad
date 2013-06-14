@@ -2852,7 +2852,7 @@ echo(str("  X_rod_length (x2): ", corrected_length(X_rod_length), " mm"));
 echo(str("  Y_rod_length (x2): ", corrected_Ylength(Y_rod_length), " mm"));
 echo(str("  Z_rod_length (x2): ", corrected_length(Z_rod_length), " mm"));
 
-barclamp_calibration = (SidePanels_distance - 2*thickness - Y_rods_distance - m8_diameter)/2 - slot_extra_thickness;
+barclamp_calibration = (SidePanels_distance - 2*thickness - Y_rods_distance - m8_diameter)/2;
 
 echo(str("calibration distance between the internal face of a sidepanel and the closest tangent of a Y-axis rod: ", barclamp_calibration, " mm"));
 
@@ -2864,7 +2864,7 @@ if (render_calibration_guide){
 bearing_thickness = 7;
 washer_thickness = 1.5;
 mudguard_washer_thickness = 2;
-Ybearing_calibration = (SidePanels_distance - 2*thickness)/2 - bearing_thickness/2 - washer_thickness - mudguard_washer_thickness - slot_extra_thickness;
+Ybearing_calibration = (SidePanels_distance - 2*thickness)/2 - bearing_thickness/2 - washer_thickness - mudguard_washer_thickness;
 
 echo(str("calibration distance between the internal face of a sidepanel and the closest face of a mudguard washer: ", Ybearing_calibration, " mm"));
 
