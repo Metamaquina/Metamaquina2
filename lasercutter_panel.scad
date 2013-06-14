@@ -160,7 +160,7 @@ module lasercutter_panel(){
     rotate(90)
     XCarriage_sandwich_face();
 
-    translate([75,120])
+    translate([-150,80])
     rotate(90)
     YPlatform_left_sandwich_face();
 
