@@ -158,9 +158,9 @@ module idler_side_sheet(){
 }
 
 module idler_spacer_5mm_sheet(){
-  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Idler 5mm Spacer");
+  BillOfMaterials(category="Lasercut Acrylic", partname="LCExtruder Idler 5mm Spacer");
 
-  material("lasercut")
+  material("acrylic")
   linear_extrude(height=5)
   idler_spacer_face();
 }
