@@ -2161,20 +2161,22 @@ module YPlatform_right_sandwich_face(){
 }
 
 module YPlatform_left_sandwich_outline(){
+//This shape and it's positioning are important to let the heated bed wiring free to move. If we placed it mirrored there would be a chance of the wiring to get stuck in one of the corners of this sheet.
+
   width=40;
   height=50;
   r=5;
   R=25;
   translate([-width/2,-height/2])
-  rounded_square([width, height], corners=[r,R,r,R]);
+  rounded_square([width, height], corners=[R,r,R,r]);
 }
 
 module YPlatform_left_sandwich_holes(){
-    translate([14,0])
+    translate([-14,0])
     M3_hole();
 
     for (j=[-1,1])
-      translate([-14,j*(50/2 - 5)])
+      translate([14,j*(50/2 - 5)])
       M3_hole();
 }
 
@@ -2240,7 +2242,7 @@ module YPlatform_subassembly(){
       translate([-Y_rods_distance/2, 0, -thickness]){
         YPlatform_left_sandwich_sheet();
 
-        for (p=[[-14,20],[-14,-20],[14,0]]){
+        for (p=[[14,20],[14,-20],[-14,0]]){
           translate(p)
           rotate([180,0]){
             M3_washer();
@@ -2328,11 +2330,11 @@ module YPlatform_right_sandwich_holes(){
 }
 
 module YPlatform_spacers(){
-  translate([-Y_rods_distance/2 + 14, 0])
+  translate([-Y_rods_distance/2 - 14, 0])
   double_M3_lasercut_spacer();
 
   for (j=[-1,1]){
-    translate([-Y_rods_distance/2 - 14, j*(50/2-5)])
+    translate([-Y_rods_distance/2 + 14, j*(50/2-5)])
     double_M3_lasercut_spacer();
   }
 
