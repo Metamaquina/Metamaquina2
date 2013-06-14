@@ -210,14 +210,16 @@ module lasercutter_panel(){
 
 #  translate([20,380])
   PowerSupplyBox_side_face();
-#  translate([125,380])
-  PowerSupplyBox_bottom_face();
-#  translate([230,380])
+#  translate([210,380])
   PowerSupplyBox_front_face();
-#  translate([125,435])
+#  translate([130,380])
   rotate(90)
   mirror([0,1]) //we want to keep the burnt side visible because it looks good!
   PowerSupplyBox_back_face();
+
+#  translate([265,385])
+  PowerSupplyBox_bottom_face();
+
 }
 
 
