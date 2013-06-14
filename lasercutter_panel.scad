@@ -249,12 +249,6 @@ module LCExtruder_panel(){
   translate([22,20])
   idler_back_face();
 
-  translate([105,10])
-  idler_spacer_face();
-
-  translate([122,10])
-  idler_spacer_face();
-
   translate([55,74])
   handle_face();
 }
