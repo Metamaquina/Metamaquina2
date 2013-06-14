@@ -92,7 +92,7 @@ bearing_sandwich_spacing = 12;
 RAMBo_x = 1;
 RAMBo_y = 133;
 
-rods_diameter_clearance = 0.1; //extra room for the X and Z rods
+rods_radius_clearance = 0.04; //extra room for the X and Z rods
 
 //For the actual build volume we avoid using the marginal
 //region around the heated bed
@@ -298,7 +298,7 @@ module SecondaryRodEnd_face(L, third_hole=true){
   difference(){
     RodEnd_face(L, third_hole=true);
 
-    circle(r=(m8_diameter + rods_diameter_clearance)/2);
+    circle(r=m8_diameter/2 + rods_radius_clearance);
 
     translate([L-8,0])
     circle(r=m8_diameter/2 + 2);
@@ -634,7 +634,7 @@ module MachineSidePanel_plainface(){
 module TopPanel_holes(){
   translate([Z_rods_distance/2,0]){
     //holes for Zrod and Zbar
-    circle(r = m8_diameter/2 + rods_diameter_clearance);
+    circle(r = m8_diameter/2 + rods_radius_clearance);
 
     translate([8, 0])
     M3_hole();
@@ -867,7 +867,7 @@ module MachineTopPanel_face(){
 module BottomPanel_holes(){
     //holes for Z rods
     translate([Z_rods_distance/2,0]){
-      circle(r=(m8_diameter + 2*rods_diameter_clearance)/2);
+      circle(r=m8_diameter/2 + rods_radius_clearance);
       translate([0, -8]) M3_hole();
       translate([0, 8]) M3_hole();
       //translate([8, 0]) M3_hole();
@@ -1279,7 +1279,7 @@ module XEnd_front_face(){
     //holes for x-axis rods
     for (i=[-1,1])
       translate([i*X_rods_distance/2, X_rod_height + thickness])
-      circle(r=(X_rods_diameter + rods_diameter_clearance)/2);
+      circle(r=X_rods_diameter/2 + rods_radius_clearance);
 
     //screw holes for z-axis threaded bar
     for (i=[-1,1])
