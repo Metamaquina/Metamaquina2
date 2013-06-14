@@ -295,6 +295,9 @@ module zmin_endstop_spacer_face1(){
   difference(){
     mirror([1,0])
     endstop_spacer_face1();
+
+    translate([0,-14])
+    rotate(90)
     import("labels.dxf", layer="zmin");
   }
 }
@@ -303,6 +306,9 @@ module zmin_endstop_spacer_face2(){
   difference(){
     mirror([1,0])
     endstop_spacer_face2();
+
+    translate([0,-14])
+    rotate(90)
     import("labels.dxf", layer="zmin");
   }
 }
@@ -310,6 +316,8 @@ module zmin_endstop_spacer_face2(){
 module zmax_endstop_spacer_face1(){
   difference(){
     endstop_spacer_face1();
+    translate([5,-14])
+    rotate(90)
     import("labels.dxf", layer="zmax");
   }
 }
@@ -317,6 +325,8 @@ module zmax_endstop_spacer_face1(){
 module zmax_endstop_spacer_face2(){
   difference(){
     endstop_spacer_face2();
+    translate([5,-14])
+    rotate(90)
     import("labels.dxf", layer="zmax");
   }
 }
