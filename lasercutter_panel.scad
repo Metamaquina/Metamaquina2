@@ -176,18 +176,6 @@ module lasercutter_panel(){
     }
 
     translate([480,-135]){
-      translate([345,245])
-      zmin_endstop_spacer_face1();
-
-      translate([345,210])
-      zmin_endstop_spacer_face2();
-
-      translate([350,245])
-      zmax_endstop_spacer_face1();
-
-      translate([350,210])
-      zmax_endstop_spacer_face2();
-
       translate([375,210])
       ymin_endstop_spacer_face();
 
