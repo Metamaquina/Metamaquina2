@@ -1012,9 +1012,11 @@ module XPlatform_bottom_face(remove_frontal_bridge=1){
 	    }
 
       //hole for extruder nozzle:
-      square([nozzle_hole_length, nozzle_hole_width], center=true);
-      translate([nozzle_hole_length/2,0]) circle(r=nozzle_hole_width/2);
-      translate([-nozzle_hole_length/2,0]) circle(r=nozzle_hole_width/2);
+      hull()
+      for (i=[-1,1])
+        translate([i*nozzle_hole_length/2,0]) circle(r=nozzle_hole_width/2);
+
+      x_carriage_screw_driver_access_holes();
 
       rotate([0,0,180])
       translate([-machine_x_dim/2, 0])
@@ -1356,6 +1358,13 @@ module XEndstopHolder(){
   }
 }
 
+module x_carriage_screw_driver_access_holes(){
+  //holes for the screwdriver to access the wade extruder mount screws
+  for (i=[-1,1])
+    translate([0,i*extruder_mount_holes_distance/2])
+    circle(r=10/2);
+}
+
 module XCarriage_plainface(sandwich=false){
   difference(){
     if (sandwich){
@@ -1397,14 +1406,11 @@ module XCarriage_plainface(sandwich=false){
     translate([i*(num_extruders-1)*extra_extruder_length/2,0])
 
       if (sandwich){
-        //holes for the screwdriver to access the wade extruder mount screws
-        for (i=[-1,1])
-          translate([0,i*extruder_mount_holes_distance/2])  
-          circle(r=10/2);
+        x_carriage_screw_driver_access_holes();
       } else {
         //holes for attaching the wade extruder
         for (i=[-1,1])
-          translate([0,i*extruder_mount_holes_distance/2])  
+          translate([0,i*extruder_mount_holes_distance/2])
           circle(r=m4_diameter/2);
       }
 
