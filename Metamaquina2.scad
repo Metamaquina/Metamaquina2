@@ -1277,11 +1277,9 @@ module XEnd_front_face(){
     }
 	  
     //holes for x-axis rods
-    translate([X_rods_distance/2, X_rod_height + thickness])
-    circle(r=(X_rods_diameter + rods_diameter_clearance)/2);
-
-    translate([-X_rods_distance/2, X_rod_height + thickness])
-    circle(r=(X_rods_diameter + rods_diameter_clearance)/2);
+    for (i=[-1,1])
+      translate([i*X_rods_distance/2, X_rod_height + thickness])
+      circle(r=(X_rods_diameter + rods_diameter_clearance)/2);
 
     //screw holes for z-axis threaded bar
     for (i=[-1,1])
