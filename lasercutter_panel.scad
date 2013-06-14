@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use <Metamaquina2.scad>;
+include <Metamaquina2.h>;
 use <endstop.scad>;
 use <lasercut_extruder.scad>;
 use <belt-clamp.scad>;
@@ -217,9 +217,10 @@ module lasercutter_panel(){
   mirror([0,1]) //we want to keep the burnt side visible because it looks good!
   PowerSupplyBox_back_face();
 
-#  translate([265,385])
-  PowerSupplyBox_bottom_face();
-
+  if (batch_run==false){
+    #translate([265,385])
+    PowerSupplyBox_bottom_face();
+  }
 }
 
 

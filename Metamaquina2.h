@@ -62,3 +62,5 @@ extruder_mount_holes_distance = X_rods_distance + 14;
 
 XPlatform_height = 45;
 
+//[revision_id, batch_number, first_id, size_of_batch]
+batch_run = false;
