@@ -2272,19 +2272,19 @@ module YPlatform_subassembly(){
     YPlatform_linear_bearings();
 
     translate([YEndstopHolder_distance/2,90]){
-      translate([0,thickness/2+1.4,-thickness])
-      yendstop_hit_subassembly();
+//      translate([0,thickness/2+1.4,-thickness])
+//      yendstop_hit_subassembly();
 
-//      rotate([-90,0])
-//      YEndstopHolder_sheet();
+      rotate([-90,0])
+      YEndstopHolder_sheet();
     }
 
     translate([-YEndstopHolder_distance/2,-90 - thickness]){
-      translate([0,thickness/2-1.4,-thickness])
-      yendstop_hit_subassembly();
+//      translate([0,thickness/2-1.4,-thickness])
+//      yendstop_hit_subassembly();
 
-//      rotate([-90,0])
-//      YEndstopHolder_sheet();
+      rotate([-90,0])
+      YEndstopHolder_sheet();
     }
   }
 }
