@@ -47,11 +47,11 @@ module PowerSupply_mount_holes(){
   translate([PowerSupply_width-thickness/2,-(box_height-thickness)/2 - bottom_offset])
   TSlot_holes(width=(box_height-thickness)/2);
 
-  translate([thickness,-box_height + bottom_offset + thickness/2])
+  translate([thickness + metal_sheet_thickness,-box_height + bottom_offset + thickness/2])
   rotate(-90)
   TSlot_holes(width=2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3);
 
-  translate([thickness + (PowerSupply_width - metal_sheet_thickness - 2*thickness)/3,-box_height + bottom_offset + thickness/2])
+  translate([thickness + metal_sheet_thickness + (PowerSupply_width - metal_sheet_thickness - 2*thickness)/3,-box_height + bottom_offset + thickness/2])
   rotate(-90)
   TSlot_holes(width=2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3);
 
