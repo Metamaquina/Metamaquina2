@@ -230,10 +230,12 @@ module PowerSupplyBox_front_face(){
 }
 
 module PowerSupplyBox_front_plain_face(){
+  pcb_clearance = 1;//clearance to deal with slight variations in the dimensions of each unit providade by the power supply manufacturer
+
   difference(){
     square([PowerSupply_thickness, box_height]);
-    translate([0,box_height-(bottom_offset+pcb_bottom_advance)])
-    rounded_square([9+2,bottom_offset+pcb_bottom_advance], corners=[0,2,0,0]);
+    translate([0,box_height-(bottom_offset+pcb_bottom_advance+pcb_clearance)])
+    rounded_square([9+2+pcb_clearance,bottom_offset+pcb_bottom_advance+pcb_clearance], corners=[0,2,0,0]);
 
     translate([-thickness,(box_height-thickness)/2])
     rotate(-90)
