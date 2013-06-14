@@ -537,9 +537,15 @@ module MachineSidePanel_face(){
           M3_hole();
         }
 
-        //hole for z motors wiring
-        translate([XZStage_position - 12, feetheight-5])
-        rounded_square([24, 24+5], corners=[5,5,5,5]);
+        translate([XZStage_position - 12, feetheight-5]){
+          //hole for z motors wiring
+          rounded_square([24, 24+5], corners=[5,5,5,5]);
+
+          //zipties to protect the Z-motor wiring from mechanical stress
+          translate([12,37])
+          rotate(45)
+          zip_tie_holes();
+        }
 
       }
 
@@ -885,18 +891,6 @@ module BottomPanel_holes(){
     translate([Z_rods_distance/2 - Z_rod_sidepanel_distance + thickness, BottomPanel_width/2 + BottomPanel_width/4])
     rotate([0,0,90])
     t_slot_shape(3,16);
-
-    translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness,0]){
-      // motor wires
-      translate([16,0])
-      zip_tie_holes(d=16);
-
-      //not necessary anymore (spiral tube or contractile mesh)
-      //translate([60,0])
-      //zip_tie_holes(d=16);
-    }
-    //not necessary anymore (spiral tube or contractile mesh)
-    //zip_tie_holes(d=16);
 }
 
 module heatedbed_bottompanel_hole(){
