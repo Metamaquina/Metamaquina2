@@ -47,13 +47,13 @@ module PowerSupply_mount_holes(){
   translate([PowerSupply_width-thickness/2,-(box_height-thickness)/2 - bottom_offset])
   TSlot_holes(width=(box_height-thickness)/2);
 
-  translate([thickness,-box_height + bottom_offset + thickness/2])
+  translate([thickness + metal_sheet_thickness,-box_height + bottom_offset + thickness/2])
   rotate(-90)
-  TSlot_holes(width=2*(PowerSupply_width - 2*thickness)/3);
+  TSlot_holes(width=2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3);
 
-  translate([thickness + (PowerSupply_width - 2*thickness)/3,-box_height + bottom_offset + thickness/2])
+  translate([thickness + metal_sheet_thickness + (PowerSupply_width - metal_sheet_thickness - 2*thickness)/3,-box_height + bottom_offset + thickness/2])
   rotate(-90)
-  TSlot_holes(width=2*(PowerSupply_width - 2*thickness)/3);
+  TSlot_holes(width=2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3);
 
   translate([PowerSupply_width/2,-box_height+bottom_offset + wiring_radius + thickness + 2])
     //hole for power supply wiring
@@ -155,11 +155,11 @@ module PowerSupplyBox_side_face(){
 
     translate([0,thickness/2])
       rotate(-90)
-      TSlot_holes(2*(PowerSupply_width - 2*thickness)/3);
+      TSlot_holes(2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3);
 
-    translate([(PowerSupply_width - 2*thickness)/3,thickness/2])
+    translate([(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3,thickness/2])
       rotate(-90)
-      TSlot_holes(2*(PowerSupply_width - 2*thickness)/3);
+      TSlot_holes(2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3);
   }
 
   translate([-thickness/2, 0])
@@ -169,43 +169,55 @@ module PowerSupplyBox_side_face(){
   t_slot_joints(width=box_height, thickness=thickness);
 }
 
+//!test_PowerSupplyBox_bottom_face_symmetry();
+module test_PowerSupplyBox_bottom_face_symmetry(){
+  //This must result in an empty geometry
+
+  difference(){
+    PowerSupplyBox_bottom_face();
+
+    translate([PowerSupply_width - metal_sheet_thickness - 2*thickness+0, 0])
+mirror([1,0])  PowerSupplyBox_bottom_face();
+  }
+}
+
 module PowerSupplyBox_bottom_face(){
   difference(){
     square([PowerSupply_width-2*thickness-metal_sheet_thickness, PowerSupply_thickness-thickness]);
 
 
-    translate([(PowerSupply_width-2*thickness)/3,PowerSupply_thickness])
+    translate([(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3,PowerSupply_thickness])
     rotate(180)
     t_slot_shape(3,16);
 
 
-    translate([2*(PowerSupply_width-2*thickness)/3,PowerSupply_thickness])
+    translate([2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3,PowerSupply_thickness])
     rotate(180)
     t_slot_shape(3,16);
 
-    translate([(PowerSupply_width-2*thickness)/3,-thickness])
+    translate([(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3,-thickness])
     t_slot_shape(3,16);
 
 
-    translate([2*(PowerSupply_width-2*thickness)/3,-thickness])
+    translate([2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3,-thickness])
     t_slot_shape(3,16);
   }
 
   translate([0, PowerSupply_thickness - thickness/2])
   rotate(-90)
-  t_slot_joints(2*(PowerSupply_width - 2*thickness)/3, thickness=thickness);
+  t_slot_joints(2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3, thickness=thickness);
 
-  translate([(PowerSupply_width - 2*thickness)/3, PowerSupply_thickness - thickness/2])
+  translate([(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3, PowerSupply_thickness - thickness/2])
   rotate(-90)
-  t_slot_joints(2*(PowerSupply_width - 2*thickness)/3, thickness=thickness);
+  t_slot_joints(2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3, thickness=thickness);
 
   translate([0, -thickness/2])
   rotate(-90)
-  t_slot_joints(2*(PowerSupply_width - 2*thickness)/3, thickness=thickness);
+  t_slot_joints(2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3, thickness=thickness);
 
-  translate([(PowerSupply_width - 2*thickness)/3, - thickness/2])
+  translate([(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3, - thickness/2])
   rotate(-90)
-  t_slot_joints(2*(PowerSupply_width - 2*thickness)/3, thickness=thickness);
+  t_slot_joints(2*(PowerSupply_width - metal_sheet_thickness - 2*thickness)/3, thickness=thickness);
 }
 
 module PowerSupplyBox_front_face(){
@@ -218,10 +230,12 @@ module PowerSupplyBox_front_face(){
 }
 
 module PowerSupplyBox_front_plain_face(){
+  pcb_clearance = 1;//clearance to deal with slight variations in the dimensions of each unit providade by the power supply manufacturer
+
   difference(){
     square([PowerSupply_thickness, box_height]);
-    translate([0,box_height-(bottom_offset+pcb_bottom_advance)])
-    rounded_square([9+2,bottom_offset+pcb_bottom_advance], corners=[0,2,0,0]);
+    translate([0,box_height-(bottom_offset+pcb_bottom_advance+pcb_clearance)])
+    rounded_square([9+2+pcb_clearance,bottom_offset+pcb_bottom_advance+pcb_clearance], corners=[0,2,0,0]);
 
     translate([-thickness,(box_height-thickness)/2])
     rotate(-90)
@@ -239,7 +253,7 @@ module PowerSupplyBox_back_face(){
   difference(){
     PowerSupplyBox_front_plain_face();
 
-    translate([PowerSupply_thickness-thickness-PSU_Female_border_height/2, (box_height - bottom_offset)/2]){
+    translate([PowerSupply_thickness-thickness-PSU_Female_border_height/2 - 3, (box_height - bottom_offset)/2]){
       rotate(-90)
       PowerSupply_FemaleConnector_mount_holes();
     }
@@ -309,21 +323,22 @@ module ONOFF_Switch(){
 }
 
 ONOFF_Switch_position = [PowerSupply_thickness/2,(box_height-thickness)/2];
-ONOFF_Switch_mount_width = 12;
-ONOFF_Switch_mount_height = 17.5;
+ONOFF_Switch_mount_width = 13;
+ONOFF_Switch_mount_height = 19;
 module ONOFF_Switch_mount_hole(){
   translate([-ONOFF_Switch_mount_width/2,-ONOFF_Switch_mount_height/2])
   square([ONOFF_Switch_mount_width, ONOFF_Switch_mount_height]);
 }
 
 PSU_Female_border_height=22;
-power_supply_bolts_distance = 40;
+female_connector_bolts_distance = 40;
 module PowerSupply_FemaleConnector(){
   BillOfMaterials("Power supply female connector");
 
   border_height=PSU_Female_border_height;
   border_width=30.2;
-  border_thickness = 6.1;
+  border_thickness = 4.84;
+  wings_thickness = 3.5;
   depth = 13.1;
 
   material("ABS"){
@@ -337,13 +352,13 @@ module PowerSupply_FemaleConnector(){
         translate([-border_width/2,-border_height/2])
         rounded_square([border_width, border_height], corners=[2,2,2,2]);
 
-        linear_extrude(height=3.9)
+        linear_extrude(height=wings_thickness)
         hull(){
           translate([-border_width/2,-border_height/2])
           rounded_square([border_width, border_height], corners=[2,2,2,2]);
 
           for (i=[-1,1])
-            translate([i*power_supply_bolts_distance/2, 0])
+            translate([i*female_connector_bolts_distance/2, 0])
             circle(r=6);
         }
       }
@@ -358,22 +373,21 @@ module PowerSupply_FemaleConnector(){
         r2=2);
 
       for (i=[-1,1]){
-        translate([i*power_supply_bolts_distance/2,0,-0.1])
+        translate([i*female_connector_bolts_distance/2,0,-0.1])
         cylinder(r=m3_diameter/2, h=10);
 
-        translate([i*power_supply_bolts_distance/2,0,2])
+        translate([i*female_connector_bolts_distance/2,0,2])
         cylinder(r1=m3_diameter/2, r2=m3_diameter, h=3.9 - 2 + 0.1);
       }
     }
   }
 }
 
-
-module PowerSupply_FemaleConnector_large_hole(){
+module PowerSupply_FemaleConnector_large_hole(clearance=0.25){
   power_supply_generic_connector_shape(
-    width=26.6,
-    height=18.4,
-    bevel=5,
+    width=27+clearance,
+    height=18.9+clearance,
+    bevel=3,
     r1=1,
     r2=2);
 }
@@ -382,7 +396,7 @@ module PowerSupply_FemaleConnector_mount_holes(){
   PowerSupply_FemaleConnector_large_hole();
 
   for (i=[-1,1]){
-    translate([i*power_supply_bolts_distance/2, 0])
+    translate([i*female_connector_bolts_distance/2, 0])
     circle(r=m3_diameter/2);
   }
 }

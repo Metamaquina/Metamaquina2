@@ -151,7 +151,15 @@ module RA3_cable_clip(){
   hellerman_cable_clip_with_sticker(D=3, H=5, L=13, W=13, W2=5, clip_thickness=1);
 }
 
-module RA6_cable_clip_mount() clip_mount(L=20.7, W=11.6);
+module RA6_cable_clip_mount(){
+  clip_mount(L=20.7, W=11.6);
+
+  translate([-9,5])
+  rotate(-90)
+  scale(0.6)
+  import("RA6.dxf");
+}
+
 module RA6_cable_clip(){
   BillOfMaterials("Cable-clip Hellerman RA6");
   hellerman_cable_clip_with_sticker(D=6, L=20.7, H=9, W=11.6, W2=5, clip_thickness=1.5);

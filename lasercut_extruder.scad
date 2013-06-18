@@ -67,6 +67,9 @@ module handle_face(r=5, width=HandleWidth, height=HandleHeight){
       translate([i*(width/2+2), 2*height/3]) circle(r=6);
       translate([i*HandleWidth/6,5]) circle(r=4/2);
     }
+
+    translate([-14.7/2,12])
+    import("M_circle.dxf");
   }
 }
 
@@ -79,7 +82,7 @@ module handle_sheet(){
 }
 
 //!idler_side_face();
-module idler_side_face(smooth_rod_cut_diameter=7.3){
+module idler_side_face(smooth_rod_cut_diameter=7.8){
   R=23;
 
   rotate(90)
@@ -90,7 +93,7 @@ module idler_side_face(smooth_rod_cut_diameter=7.3){
 
         circle(r=6);
 
-//The following code is a quick hack to make the idler side a bit larger so that the idler's small threaded rod is better attached to the lasercut sheet and also to give more room to a larger bolt (M3x16 instead of M3x12)
+//The following code is a quick hack to make the idler side a bit larger so that the idler's small smooth rod is better attached to the lasercut sheet and also to give more room to a larger bolt (M3x16 instead of M3x12)
         translate([2,-2.5])
         rounded_square([2*R,R], corners=[0,R,R,0]);
       }
@@ -155,9 +158,9 @@ module idler_side_sheet(){
 }
 
 module idler_spacer_5mm_sheet(){
-  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Idler 5mm Spacer");
+  BillOfMaterials(category="Lasercut Acrylic", partname="LCExtruder Idler 5mm Spacer");
 
-  material("lasercut")
+  material("acrylic")
   linear_extrude(height=5)
   idler_spacer_face();
 }
@@ -481,12 +484,12 @@ module handle(){
 
 module idler_bolt_subassembly(){
   length=30;
-  BillOfMaterials(str("M8x", length, "mm Threaded Rod"));
+  BillOfMaterials(str("M8x", length, "mm Smooth Rod"));
 
   //bolt body
-  material("threaded metal")
+  material("metal")
   translate([0,0,-length])
-  cylinder(r=7.3/2, h=length);
+  cylinder(r=7.8/2, h=length);
 }
 
 module idler(){

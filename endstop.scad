@@ -41,7 +41,7 @@ module z_max_mount_holes(){
       // Since all of the 3d printer wiring will be prepared
       // in an early assembly stage this hole should be
       // large enough to let the ZMAX microswitch pass through:
-      translate([-7,0]){
+      translate([-7,-4]){
 
         translate([-microswitch_thickness/2 - 1,-microswitch_width/2 - 1])
         rounded_square([microswitch_thickness+2, microswitch_width+2], corners=[2,2,2,2]);
@@ -100,14 +100,14 @@ module y_endstop_mount_holes(){
   zip_tie_holes(d=6);
 
   //hole to give room for bolt tips and M25 nuts:
-  translate([0,-10])
+  translate([0,-6])
   rotate(90)
   zip_tie_holes(d=microswitch_holes_distance, r=3);
 
   //these serve as reference for us
   // to see where will be the tips of the M2.5 bolts
   %for (i=[-1,1])
-    translate([i*microswitch_holes_distance/2,-10])
+    translate([i*microswitch_holes_distance/2,-6])
     M25_hole();
 }
 
@@ -280,6 +280,9 @@ module endstop_spacer_face2(nut_gap=false){
 module ymin_endstop_spacer_face(){
   difference(){
     endstop_spacer_face1(nut_gap=false);
+
+    translate([5,-14])
+    rotate(90)
     import("labels.dxf", layer="ymin");
   }
 }
@@ -287,6 +290,9 @@ module ymin_endstop_spacer_face(){
 module ymax_endstop_spacer_face(){
   difference(){
     endstop_spacer_face1(nut_gap=false);
+
+    translate([5,-14])
+    rotate(90)
     import("labels.dxf", layer="ymax");
   }
 }
@@ -295,6 +301,9 @@ module zmin_endstop_spacer_face1(){
   difference(){
     mirror([1,0])
     endstop_spacer_face1();
+
+    translate([0,-14])
+    rotate(90)
     import("labels.dxf", layer="zmin");
   }
 }
@@ -303,6 +312,9 @@ module zmin_endstop_spacer_face2(){
   difference(){
     mirror([1,0])
     endstop_spacer_face2();
+
+    translate([0,-14])
+    rotate(90)
     import("labels.dxf", layer="zmin");
   }
 }
@@ -310,6 +322,9 @@ module zmin_endstop_spacer_face2(){
 module zmax_endstop_spacer_face1(){
   difference(){
     endstop_spacer_face1();
+
+    translate([5,-14])
+    rotate(90)
     import("labels.dxf", layer="zmax");
   }
 }
@@ -317,6 +332,9 @@ module zmax_endstop_spacer_face1(){
 module zmax_endstop_spacer_face2(){
   difference(){
     endstop_spacer_face2();
+
+    translate([5,-14])
+    rotate(90)
     import("labels.dxf", layer="zmax");
   }
 }
