@@ -43,6 +43,8 @@ tslot_diameter = 3;
 total_height = feet_height+160/2+35/2+top_cut_height+top_cut_width/2;
 radius_feet=5;
 
+diameter=3;
+
 module FilamentSpoolHolder_sidepanel_face(){
 
   difference(){
@@ -77,8 +79,13 @@ module FilamentSpoolHolder_sidepanel_face(){
       scale(5) mm_logo();
 
       for (i=[-1,1]){
-          translate([i*(total_width/2-thickness),feet_height/3])
-          TSlot_joints();}
+          translate([i*(total_width/2-thickness),base_height/12])
+          TSlot_joints();
+}
+      for (i=[-1,1]){
+          translate([i*(total_width/2-thickness),base_height/2])
+    #circle(r=diameter);
+}
       }  
     }
   }
