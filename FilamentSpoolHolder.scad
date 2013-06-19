@@ -96,7 +96,7 @@ translate([-spool_holder_width/3,(spool_holder_height/2)])
       for (i=[-1,1]){
         translate([i*(spool_holder_width/2), base_height/2])
         rotate([0,0,i*90])
-        #t_slot_shape(tslot_diameter,tslot_length);
+        t_slot_shape(tslot_diameter,tslot_length);
 }
 }
     }
