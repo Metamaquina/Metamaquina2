@@ -28,19 +28,19 @@ margin = 10;
 
 feet_height = 12;
 feet_width = 50;
-base_height = 60;
+base_height = 80;
 
-total_width = 160+2*thickness+margin;
+total_width = 160+2*thickness+2*margin;
 top_cut_height = 20;
 top_cut_width = 30;
 radius = 15;
-spool_holder_width = 160+2*thickness+margin;
+spool_holder_width = 160+2*margin+2*thickness;
 spool_holder_height = 40;
 
 tslot_length = 16;
 tslot_diameter = 3;
 
-total_height = feet_height+160/2+35/2+top_cut_height+top_cut_width/2;
+total_height = 160/2+35+top_cut_height+top_cut_width/2+margin;
 radius_feet=5;
 
 diameter=3;
@@ -59,6 +59,7 @@ module FilamentSpoolHolder_sidepanel_face(){
 
           translate([i*total_width/2,feet_height])
           circle(r=0.1);
+
       }
 
       for (i=[-1,1]){
@@ -71,7 +72,6 @@ module FilamentSpoolHolder_sidepanel_face(){
       translate([0,(total_height-top_cut_height/2)])
       square([top_cut_width,top_cut_height],center = true);
 
-
       translate([0,(total_height-top_cut_height)])
       circle(r=top_cut_width/2);
 
@@ -79,12 +79,8 @@ module FilamentSpoolHolder_sidepanel_face(){
       scale(5) mm_logo();
 
       for (i=[-1,1]){
-          translate([i*(total_width/2-thickness),base_height/12])
-          TSlot_joints();
-}
-      for (i=[-1,1]){
-          translate([i*(total_width/2-thickness),base_height/2])
-    #circle(r=diameter);
+          translate([i*(total_width/2-thickness),15])
+          TSlot_holes();
 }
       }  
     }
@@ -92,11 +88,19 @@ module FilamentSpoolHolder_sidepanel_face(){
 
 module FilamentSpoolHolder_othersidepanel_face(){
 difference(){
+union(){
 translate([0,(base_height)/2])
       square([spool_holder_width,spool_holder_height],center = true);
 
+//ver isto aqui!!!!
+
+      for (i=[-1,1]){
+        translate([i*(spool_holder_width/2),15])
+        TSlot_joints(50);
+        }
+}
 union(){
-translate([-spool_holder_width/3,(spool_holder_height/2)])
+translate([-spool_holder_width/3.2,(spool_holder_height/1.3)])
    scale(0.6) MM2_logo();
 
       //tslots for other side panel
@@ -134,11 +138,11 @@ module FilamentSpoolHolder(){
 }
 
 module FilamentSpoolHolder_othersidepanel(){
-  translate([0, -1*(total_width/2-thickness/2)])
+  translate([0, -1*(total_width/2-thickness/2-3)])
   rotate([90,0,0])
   FilamentSpoolHolder_othersidepanel_sheet();
 
-  translate([0, 1*(total_width/2-thickness/2)-thickness])
+  translate([0, 1*(total_width/2-thickness/2-3)-thickness])
   rotate([90,0,180])
   FilamentSpoolHolder_othersidepanel_sheet();
 }
