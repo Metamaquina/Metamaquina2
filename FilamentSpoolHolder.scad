@@ -23,28 +23,44 @@ include <render.h>;
 include <BillOfMaterials.h>;
 use <mm2logo.scad>;
 
+//measures
 thickness = 6;
-margin = 10;
+margin = 5;
 
 feet_height = 12;
 feet_width = 50;
 base_height = 80;
 
 total_width = 160+2*thickness+2*margin;
+
 top_cut_height = 20;
 top_cut_width = 30;
+
 radius = 15;
+rad=3/2;
+
 spool_holder_width = 160+2*margin+2*thickness;
 spool_holder_height = 40;
 
 tslot_length = 16;
 tslot_diameter = 3;
 
-total_height = 160/2+35+top_cut_height+top_cut_width/2+margin;
+locker_diameter=35;
+locker_length=thickness;
+
+
+margin2=8;
+
+bar_diameter=25;
+bar_length= spool_holder_width+locker_length*2+2*margin2;
+
+total_height = 160/2+35/2-bar_diameter/2+top_cut_height+feet_height+top_cut_width/2;
 radius_feet=5;
 
 diameter=3;
 
+
+//side panel
 module FilamentSpoolHolder_sidepanel_face(){
 
   difference(){
@@ -59,14 +75,13 @@ module FilamentSpoolHolder_sidepanel_face(){
 
           translate([i*total_width/2,feet_height])
           circle(r=0.1);
-
       }
 
       for (i=[-1,1]){
       translate([i*(total_width-feet_width)/2,(feet_height+radius_feet)/2])
       rounded_square([feet_width,feet_height+radius_feet], corners=[radius_feet, radius_feet, radius_feet, radius_feet], center=true);
-}
     }
+}
 
     union(){
       translate([0,(total_height-top_cut_height/2)])
@@ -75,9 +90,11 @@ module FilamentSpoolHolder_sidepanel_face(){
       translate([0,(total_height-top_cut_height)])
       circle(r=top_cut_width/2);
 
-      translate([-3,(base_height)])
+//logo
+      translate([-3,(base_height*0.7)])
       scale(5) mm_logo();
 
+//tslots
       for (i=[-1,1]){
           translate([i*(total_width/2-thickness),15])
           TSlot_holes();
@@ -86,20 +103,21 @@ module FilamentSpoolHolder_sidepanel_face(){
     }
   }
 
+//other side panel
 module FilamentSpoolHolder_othersidepanel_face(){
 difference(){
 union(){
 translate([0,(base_height)/2])
-      square([spool_holder_width,spool_holder_height],center = true);
+      square([spool_holder_width-2*thickness,spool_holder_height],center = true);
 
-//ver isto aqui!!!!
-
+//tslots joints
       for (i=[-1,1]){
-        translate([i*(spool_holder_width/2),15])
+        translate([i*(spool_holder_width/2-thickness/2),15])
         TSlot_joints(50);
         }
 }
 union(){
+//logo
 translate([-spool_holder_width/3.2,(spool_holder_height/1.3)])
    scale(0.6) MM2_logo();
 
@@ -108,10 +126,33 @@ translate([-spool_holder_width/3.2,(spool_holder_height/1.3)])
         translate([i*(spool_holder_width/2), base_height/2])
         rotate([0,0,i*90])
         t_slot_shape(tslot_diameter,tslot_length);
-}
-}
+        }
+      }
     }
   }
+
+//bar
+module FilamentSpoolHolder_bar_face(){
+      circle(r=bar_diameter/2,center=true);
+  }
+
+//locker 
+module FilamentSpoolHolder_locker_face(){
+difference(){
+      circle(r=locker_diameter/2,center=true);
+
+      circle(r=bar_diameter/2,center=true);
+     }
+    }
+
+//spool 
+module FilamentSpoolHolder_spool_face(){
+difference(){
+      circle(r=160/2,center=true);
+
+      circle(r=35/2,center=true);
+     }
+    }
 
 module FilamentSpoolHolder_sidepanel_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Filament Spool Holder Side Panel");
@@ -127,8 +168,30 @@ module FilamentSpoolHolder_othersidepanel_sheet(){
   FilamentSpoolHolder_othersidepanel_face();
 }
 
+module FilamentSpoolHolder_bar_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Filament Spool Holder Bar"); //adicionar na lista
+  material("lasercut")
+linear_extrude(height=bar_length)
+  FilamentSpoolHolder_bar_face();
+}
+
+module FilamentSpoolHolder_locker_sheet(){
+  BillOfMaterials(category="Lasercut wood", partname="Filament Spool Holder Locker"); //adicionar na lista
+  material("lasercut")
+linear_extrude(height=locker_length)
+  FilamentSpoolHolder_locker_face();
+}
+
+module FilamentSpoolHolder_spool_sheet(){
+ // BillOfMaterials(category="Lasercut wood", partname="Spool"); //adicionar na lista
+ // material("lasercut")
+color("red")
+linear_extrude(height=160)
+  FilamentSpoolHolder_spool_face();
+}
+
 module FilamentSpoolHolder(){
-  translate([0, -1*spool_holder_width/2])
+  translate([0, -1*spool_holder_width/2+thickness])
   rotate([90,0,0])
   FilamentSpoolHolder_sidepanel_sheet();
 
@@ -138,17 +201,66 @@ module FilamentSpoolHolder(){
 }
 
 module FilamentSpoolHolder_othersidepanel(){
-  translate([0, -1*(total_width/2-thickness/2-3)])
+  translate([0, -1*(total_width/2-thickness/2-6)])
   rotate([90,0,0])
   FilamentSpoolHolder_othersidepanel_sheet();
 
-  translate([0, 1*(total_width/2-thickness/2-3)-thickness])
+  translate([0, 1*(total_width/2-thickness/2-6)])
   rotate([90,0,180])
   FilamentSpoolHolder_othersidepanel_sheet();
 }
-  translate([-thickness/2,-thickness/2])
+
+module FilamentSpoolHolder_bar(){
+difference(){
+  translate([-(bar_length)/2,0,(total_height-top_cut_height-(top_cut_width-bar_diameter)/2)])
+  rotate([0,90,0])
+  FilamentSpoolHolder_bar_sheet();
+
+for(j=[-1,1]){
+for(i=[0:40]){
+ translate([j*(1*(bar_length-margin2)/2),0,(total_height-top_cut_height-(top_cut_width-bar_diameter)/2+locker_diameter/2)-i])
+   circle(r=rad, center=true);
+      }
+    }
+  }
+}
+
+module FilamentSpoolHolder_locker(){
+
+difference(){
+
+union(){
+ translate([1*((bar_length-2*margin2-2*locker_length)/2),0,(total_height-top_cut_height-(top_cut_width-bar_diameter)/2)])
+  rotate([0,90,0])
+ FilamentSpoolHolder_locker_sheet();
+
+
+ translate([-1*((bar_length-2*margin2)/2),0,(total_height-top_cut_height-(top_cut_width-bar_diameter)/2)])
+  rotate([0,90,0])
+ FilamentSpoolHolder_locker_sheet();
+}
+for(j=[-1,1]){
+for(i=[0:40]){
+ translate([j*(1*(bar_length-margin2)/2),0,(total_height-top_cut_height-(top_cut_width-bar_diameter)/2+locker_diameter/2)-i])
+   circle(r=rad, center=true);
+     }
+   }
+  }
+}
+
+module FilamentSpoolHolder_spool(){
+  translate([-160/2,0,(total_height-top_cut_height-35/2+bar_diameter/2-(top_cut_width-bar_diameter)/2)])
+  rotate([0,90,0])
+  FilamentSpoolHolder_spool_sheet();
+
+}
+
   rotate([0,0,90])
+
 
 FilamentSpoolHolder();
 FilamentSpoolHolder_othersidepanel();
+FilamentSpoolHolder_bar();
+FilamentSpoolHolder_locker();
+FilamentSpoolHolder_spool();
 
