@@ -26,7 +26,7 @@ use <domed_cap_nuts.scad>;
 
 //measures
 thickness = 6;
-margin = 5;
+margin = 10;
 
 feet_height = 12;
 feet_width = 50;
@@ -36,8 +36,8 @@ adjust=12;
 
 total_width = 160+2*thickness+2*margin+adjust/2;
 
-top_cut_height = 20;
-top_cut_width = 30;
+top_cut_height = 40;
+top_cut_width = 9;
 
 radius = 15;
 rad=3/2;
@@ -89,7 +89,7 @@ module FilamentSpoolHolder_sidepanel_face(){
       circle(r=top_cut_width/2);
 
 //logo
-      translate([-3,(base_height*0.7)])
+      translate([-3,(base_height*0.75)])
       scale(5) mm_logo();
 
 //tslots
