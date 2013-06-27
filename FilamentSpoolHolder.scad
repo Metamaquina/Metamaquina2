@@ -2,6 +2,7 @@
 //
 // Author:
 // * Felipe C. da S. Sanches <fsanches@metamaquina.com.br>
+// * Sara Rodriguez <sara@metamaquina.com.br>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -36,7 +37,7 @@ adjust=12;
 
 total_width = 160+2*thickness+2*margin+adjust/2;
 
-top_cut_height = 40;
+top_cut_height = 20;
 top_cut_width = 9;
 
 radius = 15;
@@ -73,13 +74,13 @@ module FilamentSpoolHolder_sidepanel_face(){
 
           translate([i*total_width/2,feet_height])
           circle(r=0.1);
-}
+      }
 
       for (i=[-1,1]){
       translate([i*(total_width-feet_width)/2,(feet_height+radius_feet)/2])
       rounded_square([feet_width,feet_height+radius_feet], corners=[radius_feet, radius_feet, radius_feet, radius_feet], center=true);
-  }
-}
+      }
+    }
 
     union(){
       translate([0,(total_height-top_cut_height/2)])
@@ -101,26 +102,24 @@ module FilamentSpoolHolder_sidepanel_face(){
   }
 }
 
-//other side panel
-module FilamentSpoolHolder_othersidepanel_face(){
-difference(){
-union(){
-translate([0,(base_height)/2])
+//front and back panels
+module FilamentSpoolHolder_front_and_back_panels_face(){
+  difference(){
+    union(){
+      translate([0,(base_height)/2])
       square([spool_holder_width-2*thickness,spool_holder_height],center = true);
 
-//tslots joints
+      //tslots joints
       for (i=[-1,1]){
         translate([i*(spool_holder_width/2-thickness/2),15])
         TSlot_joints(50);
   }
 }
-union(){
-      //tslots for other side panel
+      //tslots for front and back panels
       for (i=[-1,1]){
         translate([i*(spool_holder_width/2), base_height/2])
         rotate([0,0,i*90])
         t_slot_shape(tslot_diameter,tslot_length);
-      }
     }
   }
 }
@@ -128,9 +127,7 @@ union(){
 //bar
 module FilamentSpoolHolder_bar_face(){
       circle(r=bar_diameter/2,center=true);
-
-    nut_cap_assembly();
-  }
+}
 
 //spool 
 module FilamentSpoolHolder_spool_face(){
@@ -148,11 +145,11 @@ module FilamentSpoolHolder_sidepanel_sheet(){
   FilamentSpoolHolder_sidepanel_face();
 }
 
-module FilamentSpoolHolder_othersidepanel_sheet(){
+module FilamentSpoolHolder_front_and_back_panels_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Filament Spool Holder Side Panel");
   material("lasercut")
   linear_extrude(height=thickness)
-  FilamentSpoolHolder_othersidepanel_face();
+  FilamentSpoolHolder_front_and_back_panels_face();
 }
 
 module FilamentSpoolHolder_bar_sheet(){
@@ -162,61 +159,67 @@ linear_extrude(height=bar_length)
   FilamentSpoolHolder_bar_face();
 }
 
-module FilamentSpoolHolder_spool_sheet(){
- // BillOfMaterials(category="Lasercut wood", partname="Spool"); //adicionar na lista
- // material("lasercut")
-color("red")
-linear_extrude(height=160)
-  FilamentSpoolHolder_spool_face();
-}
-
 module FilamentSpoolHolder(){
   translate([0, -1*spool_holder_width/2+thickness])
   rotate([90,0,0])
-  FilamentSpoolHolder_sidepanel_sheet();
-
-  translate([0, 1*spool_holder_width/2-thickness])
-  rotate([90,0,180])
-  FilamentSpoolHolder_sidepanel_sheet();
+  FilamentSpoolHolder_front_and_back_panels_face();
 }
 
-module FilamentSpoolHolder_othersidepanel(){
+module FilamentSpoolHolder_sidepanels(){
+  rotate([0,0,90]){
+    translate([0, -spool_holder_width/2+thickness])
+    rotate([90,0,0])
+    FilamentSpoolHolder_sidepanel_sheet();
+
+    translate([0, spool_holder_width/2-thickness])
+    rotate([90,0,180])
+    FilamentSpoolHolder_sidepanel_sheet();
+  }
+}
+
+module FilamentSpoolHolder_front_and_back_panels(){
   translate([0, -1*(total_width/2-thickness/2-adjust/2)])
   rotate([90,0,0])
-  FilamentSpoolHolder_othersidepanel_sheet();
+  FilamentSpoolHolder_front_and_back_panels_sheet();
 
   translate([0, 1*(total_width/2-thickness/2-adjust/2)])
   rotate([90,0,180])
-  FilamentSpoolHolder_othersidepanel_sheet();
+  FilamentSpoolHolder_front_and_back_panels_sheet();
 }
 
-module FilamentSpoolHolder_bar(){
+module FilamentSpoolHolder_bar_subassembly(){
   translate([-(bar_length)/2,0,(total_height-top_cut_height-(top_cut_width-bar_diameter)/2)])
   rotate([0,90,0])
   FilamentSpoolHolder_bar_sheet();
 
-union(){
- translate([1*((bar_length-2*hole_domed_cap_nut)/2),0,(total_height-top_cut_height-(top_cut_width-bar_diameter)/2)])
-  rotate([0,90,0])
-            M8_domed_cap_nut();
+  union(){
+    translate([1*((bar_length-2*hole_domed_cap_nut)/2),0,(total_height-top_cut_height-(top_cut_width-bar_diameter)/2)])
+    rotate([0,90,0])
+    M8_domed_cap_nut();
 
- translate([-1*((bar_length-2*hole_domed_cap_nut)/2),0,(total_height-top_cut_height-(top_cut_width-bar_diameter)/2)])
-  rotate([0,270,0])
-            M8_domed_cap_nut();
+    translate([-1*((bar_length-2*hole_domed_cap_nut)/2),0,(total_height-top_cut_height-(top_cut_width-bar_diameter)/2)])
+    rotate([0,270,0])
+    M8_domed_cap_nut();
   }
 }
 
-module FilamentSpoolHolder_spool(){
-  translate([-160/2,0,(total_height-top_cut_height-35/2+bar_diameter/2-(top_cut_width-bar_diameter)/2)])
-  rotate([0,90,0])
-  FilamentSpoolHolder_spool_sheet();
-
+module FilamentSpoolHolder(){
+  FilamentSpoolHolder_sidepanels();
+  FilamentSpoolHolder_front_and_back_panels();
+  FilamentSpoolHolder_bar_subassembly();
 }
 
-  rotate([0,0,90])
+module FilamentSpool(){
+  BillOfMaterials(partname="Filament Spool");
+  translate([-160/2,0,total_height - top_cut_height - 35/2 + bar_diameter/2 - (top_cut_width-bar_diameter)/2])
+  rotate([0,90,0])
+  material("ABS")
+  linear_extrude(height=160)
+  difference(){
+    circle(r=160/2);
+    circle(r=35/2);
+  }
+}
 
 FilamentSpoolHolder();
-FilamentSpoolHolder_othersidepanel();
-FilamentSpoolHolder_bar();
-FilamentSpoolHolder_spool();
-
+FilamentSpool();
