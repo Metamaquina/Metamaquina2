@@ -66,13 +66,9 @@ diameter=3;
 distance=5;
 
 module lasercutter_panel(){
- // % plate_border(w=2500, h=1300, border=2);
-
-  //translate([0,distance/2,0])
   FilamentSpoolHolder_sidepanel_face();
 
   translate([0,-total_height,0])
-  //rotate([180,0,0])
   FilamentSpoolHolder_sidepanel_face();
 
   rotate([0,0,90])
