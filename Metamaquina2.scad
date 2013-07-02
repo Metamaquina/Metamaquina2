@@ -849,10 +849,10 @@ module zip_tie_holes(d=12, r=m3_diameter/2, bom=true){
   }
 }
 
-module Y_belt(){
-  //TODO: pass length to BOM
-  BillOfMaterials("GT2 belt for the Y axis", ref="MM2_CORY");
-
+module YBelt(){
+  //TODO: pass length to BOM as a float - update integration script to support it
+  BillOfMaterials("GT2 belt for the Y axis", 1, ref="GT2B6");
+  
   translate([2.5, 0, 66])
   rotate([0,0,-90])
   rotate([90,0,0]){
@@ -1796,10 +1796,10 @@ module belt(bearings, belt_width=5){
   }
 }
 
-module Xbelt(){
-  //TODO: pass length to BOM
-  BillOfMaterials("GT2 belt for the X axis", ref="MM2_CORX");
-
+module XBelt(){
+  //TODO: pass length to BOM as a float - update integration script to support it
+  BillOfMaterials("GT2 belt for the Y axis", 1, ref="GT2B6");
+  
   translate([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + thickness]){
     rotate([90,0,0]){
       belt(bearings = [
@@ -1816,7 +1816,7 @@ module Xbelt(){
   }
 }
 
-//!Xbelt();
+//!XBelt();
 
 module belt_clamps(){
 
@@ -1995,7 +1995,7 @@ module XPlatform(){
   XEndMotor();
   XEndIdler();
   XCarriage();
-  Xbelt();
+  XBelt();
 
   //lasercut parts:
   XPlatform_bottom_sheet();
@@ -2406,7 +2406,7 @@ module YPlatform(){
     YPlatform_subassembly();
   }
   YRods();
-  Y_belt();
+  YBelt();
 }
 
 module bearing_assembly(rear){
