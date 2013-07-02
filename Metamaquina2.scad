@@ -1879,8 +1879,14 @@ module XEndIdler_ZLink(){
   ZLink();
 }
 
+// consider cutting error for bars length specification
+// TODO: render geometry accordingly to specs
+function closest(x) = floor(x+0.5);
+function corrected_length(x, supplier_error=2) = closest(x) - supplier_error;
+function corrected_Ylength(x, supplier_error=2) = closest(x) + supplier_error;
+
 module XRods(){
-  BillOfMaterials(str("M8x",X_rod_length,"mm Smooth Rod"), 2, ref=str("MM2_XROD_",X_rod_length));
+  BillOfMaterials(str("M8x",corrected_length(X_rod_length),"mm Smooth Rod"), 2, ref=str("MM2_XROD_",corrected_length(X_rod_length)));
   material("metal"){
     translate([0, -X_rods_distance/2, thickness + X_rod_height])
     rotate([0,90,0])
@@ -1893,7 +1899,7 @@ module XRods(){
 }
 
 module YRods(){
-  BillOfMaterials(str("M8x",Y_rod_length,"mm Smooth Rod"), 2, ref=str("MM2_YROD_",Y_rod_length));
+  BillOfMaterials(str("M8x",corrected_Ylength(Y_rod_length),"mm Smooth Rod"), 2, ref=str("MM2_YROD_",corrected_Ylength(Y_rod_length)));
   material("metal"){
     translate([Y_rods_distance/2, -Y_rod_length/2, Y_rod_height])
     rotate([-90,0,0])
@@ -1906,7 +1912,7 @@ module YRods(){
 }
 
 module ZRods(){
-  BillOfMaterials(str("M8x",Z_rod_length,"mm Smooth Rod"), 2, ref=str("MM2_ZROD_",Z_rod_length));
+  BillOfMaterials(str("M8x",corrected_length(Z_rod_length),"mm Smooth Rod"), 2, ref=str("MM2_ZROD_",corrected_length(Z_rod_length)));
 
   material("metal"){
     translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2, -XZStage_offset, BottomPanel_zoffset])
@@ -1923,7 +1929,7 @@ BillOfMaterials("M8 threaded rod (1m)", 2, ref="BR_M8");
 
 module ZBars(){
   
-  BillOfMaterials(str("M8x",Z_bar_length,"mm Threaded Rod"), 2);
+  BillOfMaterials(str("M8x",corrected_length(Z_bar_length),"mm Threaded Rod"), 2);
 
   material("threaded metal"){
     translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
@@ -2495,7 +2501,7 @@ module nut_cap_assembly(){
 }
 
 module FrontBars(){
-  BillOfMaterials(str("M8x",horiz_bars_length,"mm Threaded Rod"), 2);
+  BillOfMaterials(str("M8x",corrected_length(horiz_bars_length),"mm Threaded Rod"), 2);
 
   translate([0, -RightPanel_basewidth/2 + bar_cut_length, base_bars_Zdistance + base_bars_height]){
 
@@ -2540,7 +2546,7 @@ module FrontBars(){
 }
 
 module RearBars(){
-  BillOfMaterials(str("M8x",horiz_bars_length,"mm Threaded Rod"), 2);
+  BillOfMaterials(str("M8x",corrected_length(horiz_bars_length),"mm Threaded Rod"), 2);
 
   translate([0, RightPanel_basewidth/2 - bar_cut_length, base_bars_Zdistance + base_bars_height]){
 
@@ -2795,11 +2801,6 @@ module Metamaquina2(){
 
 //rotate([0,0,cos(360*time)*60])
 Metamaquina2();
-
-supplier_error = 2; // means bars&rods are cut with a typical error of +/- 2mm
-function closest(x) = floor(x+0.5);
-function corrected_length(x) = closest(x) - supplier_error;
-function corrected_Ylength(x) = closest(x) + supplier_error;
 
 echo(str("XCarriage dimensions: ", XCarriage_width, " mm x ", XCarriage_length, " mm"));
 
