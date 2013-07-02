@@ -181,7 +181,7 @@ module z_min_endstop(){
     BillOfMaterials("M3 washer", 2, ref="AL_M3");
     BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
 
-    BillOfMaterials("M2.5x16 bolt", 2, ref="H_M2.5x16_cl");
+    BillOfMaterials("M2.5x16 bolt, cylindric head", 2, ref="H_M2.5x16_cl");
     BillOfMaterials("M2.5 washer", 2, ref="AL_M2.5");
     BillOfMaterials("M2.5 nut", 2, ref="P_M2.5");
   }
@@ -203,7 +203,7 @@ module z_max_endstop(){
     BillOfMaterials("M3 washer", 2, ref="AL_M3");
     BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
 
-    BillOfMaterials("M2.5x16 bolt", 2, ref="H_M2.5x16_cl");
+    BillOfMaterials("M2.5x16 bolt, cylindric head", 2, ref="H_M2.5x16_cl");
     BillOfMaterials("M2.5 washer", 2, ref="AL_M2.5");
     BillOfMaterials("M2.5 nut", 2, ref="P_M2.5");
   }

@@ -463,10 +463,10 @@ module slice5(){
 
 module handle(){
   { //TODO: Add these parts to the CAD model
-    BillOfMaterials("M4 lock nut", 4, ref="P_M4_ny");
+    BillOfMaterials("M4 lock-nut", 4, ref="P_M4_ny");
     BillOfMaterials("M4 washer", 4, ref="AL_M4");//for the lock nuts
     BillOfMaterials("Compresison Spring CM1678 (6mm x 16.5mm) - TODO:check this!", 2, ref="CM1678");
-    BillOfMaterials("M4 washer", 2, ref="P_M4_ny");//for the springs
+    BillOfMaterials("M4 washer", 2, ref="AL_M4");//for the springs
   }
 
   nut_height = 3;

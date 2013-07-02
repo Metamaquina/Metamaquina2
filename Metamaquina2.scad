@@ -2011,7 +2011,7 @@ module XPlatform(){
 }
 
 module GT2_pulley(){
-  BillOfMaterials("GT2 pulley", ref="GT2_6mm_16_Al");
+  BillOfMaterials("GT2 pulley 6mm x 16 teeth", ref="GT2P6x16_Al");
 
   material("metal"){
     //TODO: implement-me!
