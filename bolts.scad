@@ -58,7 +58,8 @@ module bolt_head(r, h){
 }
 
 module bolt(dia, length){
-  BillOfMaterials(str("M",dia,"x",length," bolt"));
+  //TODO: assuming hexagonal/cylindric cap bolt
+  BillOfMaterials(str("M",dia,"x",length," bolt"), ref=str("H_M",dia,"x",length));
 
   material("metal"){
     bolt_head(r=dia, h=dia);

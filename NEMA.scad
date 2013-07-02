@@ -25,7 +25,7 @@ use <rounded_square.scad>;
 include <render.h>;
 
 module NEMA17(){
-  BillOfMaterials("NEMA17 stepper motor");
+  BillOfMaterials("NEMA17 stepper motor", ref="SM1.8A1740CHSE");
 
   material("rubber"){
     translate([-NEMA17_width/2, -NEMA17_height/2, -0.1])

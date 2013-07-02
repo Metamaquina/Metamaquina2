@@ -22,7 +22,7 @@ include <BillOfMaterials.h>;
 
 module LM8UU(bom=true){
   if (bom)
-    BillOfMaterials("LM8UU linear bearing");
+    BillOfMaterials("LM8UU linear bearing", ref="LM8UU");
 
   material("metal")
   translate([0,lm8uu_length/2])
