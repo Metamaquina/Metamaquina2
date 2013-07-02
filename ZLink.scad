@@ -27,7 +27,7 @@ include <BillOfMaterials.h>;
 include <render.h>;
 
 module ZLink(clearance = 0.2, hull_size=0){
-  BillOfMaterials(category="3D Printed", partname="ZLink");
+  BillOfMaterials(category="3D Printed", partname="ZLink", ref="MM2_ZL");
 
   material("ABS"){
     difference(){

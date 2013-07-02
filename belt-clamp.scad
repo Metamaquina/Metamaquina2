@@ -81,7 +81,7 @@ module teeth_for_belt(belt_width=6){
 }
 
 module beltclamp(width=28, height=6, r=5, teeth_depth=0.5){
-  BillOfMaterials(category="3D Printed", partname="Belt Clamp");
+  BillOfMaterials(category="3D printed", partname="Belt Clamp");
 
   material("ABS"){
     render()

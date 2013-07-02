@@ -22,7 +22,7 @@ include <render.h>;
 include <BillOfMaterials.h>;
 
 module coupling(shaft_diameter=5, rod_diameter=8){
-  BillOfMaterials("Coupling for the Z axis");
+  BillOfMaterials("Coupling for the Z axis", ref="JT2-20");
 
   material("metal")
   difference(){

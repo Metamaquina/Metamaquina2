@@ -22,7 +22,7 @@ include <BillOfMaterials.h>;
 include <render.h>;
 
 module 608zz_bearing(details=false){
-  BillOfMaterials("608zz bearing");
+  BillOfMaterials("608zz bearing", ref="608ZZ");
 
   if(details){
     608zz_bearing_detailed();

@@ -5,12 +5,12 @@ include <BillOfMaterials.h>;
 include <render.h>;
 
 module v4nozzle(){
-  BillOfMaterials("JHead nozzle");
+  BillOfMaterials("J-Head 0.35mm nozzle", ref="035_NZ");
 
   {
     //TODO: Add these parts to the CAD model
-    BillOfMaterials("extruder thermistor");
-    BillOfMaterials("extruder heater resistance");
+    BillOfMaterials("extruder thermistor", ref="TV100000X");
+    BillOfMaterials("extruder heater resistance", ref="UB5C-5RF1");
   }
 
   if (render_nozzle){

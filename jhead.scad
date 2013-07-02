@@ -37,11 +37,11 @@ extruders_distance=9;
 }
 
 module J_head_body(){
-  BillOfMaterials("JHead machined body");
+  BillOfMaterials("JHead machined body", ref="MM2_PEEK");
 
   {
     //TODO: Add this part to the CAD model
-    BillOfMaterials("PTFE liner");
+    BillOfMaterials("PTFE liner", ref="MM2_PTFE_liner");
   }
 
 h1=50;

@@ -28,6 +28,7 @@ use <large_extruder_gear.scad>
 
 use <tslot.scad>;
 include <Metamaquina2.h>;
+include <BillOfMaterials.h>;
 include <nuts.h>;
 include <washers.h>;
 include <bolts.h>;
@@ -158,7 +159,7 @@ module idler_side_sheet(){
 }
 
 module idler_spacer_5mm_sheet(){
-  BillOfMaterials(category="Lasercut Acrylic", partname="LCExtruder Idler 5mm Spacer");
+  BillOfMaterials(category="Lasercut Acrylic", partname="LCExtruder Idler 5mm Spacer", ref="MM2_LC_SPC5");
 
   material("acrylic")
   linear_extrude(height=5)
@@ -462,10 +463,10 @@ module slice5(){
 
 module handle(){
   { //TODO: Add these parts to the CAD model
-    BillOfMaterials("M4 lock nut", 4);
-    BillOfMaterials("M4 washer", 4);//for the lock nuts
-    BillOfMaterials("Compresison Spring CM1678 (6mm x 16.5mm) - TODO:check this!", 2);
-    BillOfMaterials("M4 washer", 2);//for the springs
+    BillOfMaterials("M4 lock-nut", 4, ref="P_M4_ny");
+    BillOfMaterials("M4 washer", 4, ref="AL_M4");//for the lock nuts
+    BillOfMaterials("Compresison Spring CM1678 (6mm x 16.5mm) - TODO:check this!", 2, ref="CM1678");
+    BillOfMaterials("M4 washer", 2, ref="AL_M4");//for the springs
   }
 
   nut_height = 3;
@@ -484,7 +485,7 @@ module handle(){
 
 module idler_bolt_subassembly(){
   length=30;
-  BillOfMaterials(str("M8x", length, "mm Smooth Rod"));
+  BillOfMaterials(str("M8x", length, "mm Smooth Rod"), ref="MM2_IDLER_ROD");
 
   //bolt body
   material("metal")
@@ -496,7 +497,7 @@ module idler(){
   { //TODO: Add these parts to the CAD model
 
     //for the idler axis
-    BillOfMaterials("M3x30 bolt");
+    BillOfMaterials("M3x30 bolt", ref="H_M3x30");
   }
 
   R=23;
@@ -544,12 +545,12 @@ module idler(){
 module extruder_block(){
 
   { //TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x30 bolt", 2); // for attaching the jhead_body
+    BillOfMaterials("M3x30 bolt", 2, ref="H_M3x30"); // for attaching the jhead_body
 
     { // to hold the MDF sheets together
-      BillOfMaterials("M3x35 bolt", 5);
-      BillOfMaterials("M3 washer", 5*3);
-      BillOfMaterials("M3 lock-nut", 5);
+      BillOfMaterials("M3x35 bolt", 5, ref="H_M3x35");
+      BillOfMaterials("M3 washer", 5*3, ref="AL_M3");
+      BillOfMaterials("M3 lock-nut", 5, ref="P_M3_ny");
       //TODO: decide wheter we'll use M3x30 or M3x35 in some places here
     }
   }
@@ -583,7 +584,7 @@ module nozzle(length=50){
 }
 
 module hobbed_bolt(){
-  BillOfMaterials("Hobbed bolt");
+  BillOfMaterials("Hobbed bolt", ref="MM2_HBLT");
 
   material("metal")
   rotate([90,0])

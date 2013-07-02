@@ -33,7 +33,7 @@ RAMBo_height = 104;
 epsilon = 0.05;
 
 module PSU_connector(){
-  BillOfMaterials("Power supply connector for RAMBo board");
+  BillOfMaterials("Power supply connector for RAMBo board", ref="39530-0006");
 
   //Power supply connector
 
@@ -69,7 +69,7 @@ module RAMBo_cover_curves(border=0){
 }
 
 module RAMBo_cover(){
-  BillOfMaterials("Lasercut acrylic RAMBo cover");
+  BillOfMaterials("Lasercut acrylic RAMBo cover", ref="MM2_RAMBO_COVER");
 
   material("acrylic")
   linear_extrude(height=RAMBo_cover_thickness)
@@ -77,11 +77,11 @@ module RAMBo_cover(){
 }
 
 module RAMBo(){
-  BillOfMaterials("RAMBo board");
+  BillOfMaterials("RAMBo board", ref="RMB_1.1b");
 
   { //TODO: add these parts to the CAD model
-    BillOfMaterials("M3x25 bolt",4); //to mount the RAMBo board in the side panel
-    BillOfMaterials("M3x10 bolt",4); //To attach the cover
+    BillOfMaterials("M3x25 bolt",4, ref="H_M3x25"); //to mount the RAMBo board in the side panel
+    BillOfMaterials("M3x10 bolt",4, ref="H_M3x10"); //To attach the cover
   }
 
   for (x=[RAMBo_border, RAMBo_width-RAMBo_border]){
