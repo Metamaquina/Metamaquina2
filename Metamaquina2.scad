@@ -1968,9 +1968,7 @@ module XCarriage(){
 
     if (render_extruder)
       translate([0,0,thickness])
-      echo("hey");
       lasercut_extruder();
-      echo("ho");
   }
 
   {

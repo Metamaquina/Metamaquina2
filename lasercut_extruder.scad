@@ -28,7 +28,7 @@ use <large_extruder_gear.scad>
 
 use <tslot.scad>;
 include <Metamaquina2.h>;
-incluse <BillOfMaterials.h>;
+include <BillOfMaterials.h>;
 include <nuts.h>;
 include <washers.h>;
 include <bolts.h>;
@@ -584,7 +584,7 @@ module nozzle(length=50){
 }
 
 module hobbed_bolt(){
-  BillOfMaterials("Hobbed bolt", ref="MM2_HB");
+  BillOfMaterials("Hobbed bolt", ref="MM2_HBLT");
 
   material("metal")
   rotate([90,0])

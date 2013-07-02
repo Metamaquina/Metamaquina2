@@ -42,7 +42,7 @@ module M4_nut(){
 }
 
 module M8_nut(){
-  BillOfMaterials("M8 nut " ref="P_M8");
+  BillOfMaterials("M8 nut", ref="P_M8");
   nut(r = m8_nut_r, R = m8_nut_R, H = m8_nut_height);
 }
 

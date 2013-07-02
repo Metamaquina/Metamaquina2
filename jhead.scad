@@ -34,7 +34,7 @@ module J_head_body(){
 
   {
     //TODO: Add this part to the CAD model
-    BillOfMaterials("PTFE liner");
+    BillOfMaterials("PTFE liner", ref="MM2_PTFE_liner");
   }
 
   material("peek"){
