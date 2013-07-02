@@ -32,7 +32,7 @@ module double_M3_lasercut_spacer(){
 }
 
 module M3_spacer(){
-  BillOfMaterials("M3 Lasercut spacer");
+  BillOfMaterials(category = "Lasercut wood", "M3 Lasercut spacer");
 
   material("lasercut")
   linear_extrude(height=thickness)
@@ -56,7 +56,7 @@ module set_of_M3_spacers(w=4, h=4){
 }
 
 module M4_spacer(){
-  BillOfMaterials("M4 Lasercut spacer");
+  BillOfMaterials(category = "Lasercut wood", "M4 Lasercut spacer");
 
   material("lasercut")
   linear_extrude(height=thickness)
@@ -80,13 +80,13 @@ module set_of_M4_spacers(w=4, h=4){
 }
 
 module hexspacer_38mm(){
-  BillOfMaterials(str("Female-female 38mm Hexspacer (CBTS135A)"));
+  BillOfMaterials(str("Female-female 38mm Hexspacer (CBTS135A)"), ref="CBTS135A");
 
   generic_hexspacer(length=38);
 }
 
 module hexspacer_32mm(){
-  BillOfMaterials(str("Female-female 32mm Hexspacer (CBTS130A)"));
+  BillOfMaterials(str("Female-female 32mm Hexspacer (CBTS130A)"), ref="CBTS130A");
 
   generic_hexspacer(length=32);
 }

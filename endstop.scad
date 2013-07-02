@@ -132,13 +132,13 @@ thickness = 6;
 
 module ymin_endstop_subassembly(){
   {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x16 bolt", 2);
-    BillOfMaterials("M3 washer", 2);
-    BillOfMaterials("M3 lock-nut", 2);
+    BillOfMaterials("M3x16 bolt", 2, ref="H_M3x16");
+    BillOfMaterials("M3 washer", 2, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
 
-    BillOfMaterials("M2.5x16 bolt", 2);
-    BillOfMaterials("M2.5 washer", 2);
-    BillOfMaterials("M2.5 lock-nut", 2);
+    BillOfMaterials("M2.5x16 bolt, cylindric head", 2, ref="H_M2.5x16_cl");
+    BillOfMaterials("M2.5 washer", 2, ref="AL_M2.5");
+    BillOfMaterials("M2.5 nut", 2, ref="P_M2.5");
   }
 
   ymin_endstop_spacer_sheet();
@@ -151,13 +151,13 @@ module ymin_endstop_subassembly(){
 
 module ymax_endstop_subassembly(){
   {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x16 bolt", 2);
-    BillOfMaterials("M3 washer", 2);
-    BillOfMaterials("M3 lock-nut", 2);
+    BillOfMaterials("M3x16 bolt", 2, ref="H_M3x16");
+    BillOfMaterials("M3 washer", 2, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
 
-    BillOfMaterials("M2.5x16 bolt", 2);
-    BillOfMaterials("M2.5 washer", 2);
-    BillOfMaterials("M2.5 lock-nut", 2);
+    BillOfMaterials("M2.5x16 bolt, cylindric head", 2, ref="H_M2.5x16_cl");
+    BillOfMaterials("M2.5 washer", 2, ref="AL_M2.5");
+    BillOfMaterials("M2.5 nut", 2, ref="P_M2.5");
   }
 
   ymax_endstop_spacer_sheet();
@@ -177,13 +177,13 @@ module YMIN_endstop_spacer_sheet(){
 
 module z_min_endstop(){
   {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x25 bolt", 2);
-    BillOfMaterials("M3 washer", 2);
-    BillOfMaterials("M3 lock-nut", 2);
+    BillOfMaterials("M3x25 bolt", 2, ref="H_M3x25");
+    BillOfMaterials("M3 washer", 2, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
 
-    BillOfMaterials("M2.5x16 bolt", 2);
-    BillOfMaterials("M2.5 washer", 2);
-    BillOfMaterials("M2.5 lock-nut", 2);
+    BillOfMaterials("M2.5x16 bolt", 2, ref="H_M2.5x16_cl");
+    BillOfMaterials("M2.5 washer", 2, ref="AL_M2.5");
+    BillOfMaterials("M2.5 nut", 2, ref="P_M2.5");
   }
 
   translate([20,0]){
@@ -199,13 +199,13 @@ module z_min_endstop(){
 
 module z_max_endstop(){
   {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x25 bolt", 2);
-    BillOfMaterials("M3 washer", 2);
-    BillOfMaterials("M3 lock-nut", 2);
+    BillOfMaterials("M3x25 bolt", 2, ref="H_M3x25");
+    BillOfMaterials("M3 washer", 2, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
 
-    BillOfMaterials("M2.5x16 bolt", 2);
-    BillOfMaterials("M2.5 washer", 2);
-    BillOfMaterials("M2.5 lock-nut", 2);
+    BillOfMaterials("M2.5x16 bolt", 2, ref="H_M2.5x16_cl");
+    BillOfMaterials("M2.5 washer", 2, ref="AL_M2.5");
+    BillOfMaterials("M2.5 nut", 2, ref="P_M2.5");
   }
 
   translate([0,-2.5])
@@ -341,7 +341,7 @@ module zmax_endstop_spacer_face2(){
 
 module mechanical_switch(bom=true){
   if (bom)
-    BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM");
+    BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM", ref="KW11-3Z-5-3T");
 
   metal_thickness = 1;
 

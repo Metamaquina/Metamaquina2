@@ -89,10 +89,10 @@ module circle_pattern(r, spacing_x, spacing_y, x,y){
 }
 
 module HiquaPowerSupply(){
-  BillOfMaterials("Power Supply");
+  BillOfMaterials("Power Supply", ref="T-200-12");
 
   {//TODO: Add this to the CAD model
-    BillOfMaterials("Power Supply cable");
+    BillOfMaterials("Power Supply cable", ref="TRIP_NBR");
   }
 
   material("metal"){
@@ -318,7 +318,7 @@ module PowerSupplyBox(){
 }
 
 module ONOFF_Switch(){
-  BillOfMaterials("ONOFF Switch");
+  BillOfMaterials("ON/OFF DPST Switch", ref="KCD1_104N");
   //TODO: Implement-me
 }
 
@@ -333,7 +333,7 @@ module ONOFF_Switch_mount_hole(){
 PSU_Female_border_height=22;
 female_connector_bolts_distance = 40;
 module PowerSupply_FemaleConnector(){
-  BillOfMaterials("Power supply female connector");
+  BillOfMaterials("Power supply female connector", ref="AS02");
 
   border_height=PSU_Female_border_height;
   border_width=30.2;

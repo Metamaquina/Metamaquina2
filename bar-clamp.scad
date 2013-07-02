@@ -31,7 +31,7 @@ include <BillOfMaterials.h>;
 include <render.h>
 
 module barclamp(){
-  BillOfMaterials(category="3D Printed", partname="Bar Clamp");
+  BillOfMaterials(category="3D Printed", partname="Bar Clamp", ref="MM2_BC");
 
   outer_diameter = threaded_rod_diameter/2 + 2.4;
 
