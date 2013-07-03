@@ -97,12 +97,13 @@ module RearRule_face(){
       translate([0,0])
         square([283, 50], center=true);
       translate([0,25+25/2])
-        rounded_square([283+30, 25], corners=[10,10,10,10], center=true);
+        square([283, 25], center=true);
     }
     union(){
-      rotate([0,180,0])
-        translate([-44,15+16])
-          scale(0.5) calibracao();
+rotate([180,0,0])
+  rotate([180,180,0])
+  translate([-44,15+16])
+    scale(0.5) calibracao();
 
       for (i=[-1,1]){
 
@@ -145,7 +146,7 @@ module RearRule_face(){
 module RearRule_sheet(){
   material("lasercut")
   linear_extrude(height=thickness)
-  FrontRule_face();
+  RearRule_face();
 }
 
 module RearRule(){
