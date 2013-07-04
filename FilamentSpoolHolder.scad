@@ -59,6 +59,18 @@ radius_feet=5;
 
 diameter=3;
 
+//TSLOTS
+sidepanel_TSLOTS = [
+//parameters => [x, y, width, angle]
+  [(total_width/2-thickness),15, 50, 0],
+  [-(total_width/2-thickness),15, 50, 0],
+];
+
+front_and_back_panels_TSLOT_SHAPES = [
+//parameters => [x, y, angle]
+  [tslot_diameter,tslot_length,0],
+];
+
 //side panel
 module FilamentSpoolHolder_sidepanel_face(){
 
@@ -113,28 +125,28 @@ module FilamentSpoolHolder_front_and_back_panels_face(){
       for (i=[-1,1]){
         translate([i*(spool_holder_width/2-thickness/2),15])
         TSlot_joints(50);
-  }
-}
-      //tslots for front and back panels
-      for (i=[-1,1]){
-        translate([i*(spool_holder_width/2), base_height/2])
-        rotate([0,0,i*90])
-        t_slot_shape(tslot_diameter,tslot_length);
+      }
+    }
+
+    for (i=[-1,1]){
+    translate([i*(spool_holder_width/2+tslot_length), (base_height/2-i*tslot_diameter)])
+    rotate([0,0,i*90])
+    tslot_shapes_from_list(front_and_back_panels_TSLOT_SHAPES);
     }
   }
 }
 
 //bar
 module FilamentSpoolHolder_bar_face(){
-      circle(r=bar_diameter/2,center=true);
+  circle(r=bar_diameter/2,center=true);
 }
 
 //spool 
 module FilamentSpoolHolder_spool_face(){
-difference(){
-      circle(r=160/2,center=true);
+  difference(){
+    circle(r=160/2,center=true);
 
-      circle(r=35/2,center=true);
+    circle(r=35/2,center=true);
   }
 }
 
@@ -143,6 +155,7 @@ module FilamentSpoolHolder_sidepanel_sheet(){
   material("lasercut")
   linear_extrude(height=thickness)
   FilamentSpoolHolder_sidepanel_face();
+  tslot_parts_from_list(sidepanel_TSLOTS);
 }
 
 module FilamentSpoolHolder_front_and_back_panels_sheet(){
@@ -155,14 +168,8 @@ module FilamentSpoolHolder_front_and_back_panels_sheet(){
 module FilamentSpoolHolder_bar_sheet(){
   BillOfMaterials(str("M8x","mm Threaded Rod"), 2);
   material("threaded metal")
-linear_extrude(height=bar_length)
+  linear_extrude(height=bar_length)
   FilamentSpoolHolder_bar_face();
-}
-
-module FilamentSpoolHolder(){
-  translate([0, -1*spool_holder_width/2+thickness])
-  rotate([90,0,0])
-  FilamentSpoolHolder_front_and_back_panels_face();
 }
 
 module FilamentSpoolHolder_sidepanels(){
