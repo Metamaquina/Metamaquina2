@@ -159,7 +159,7 @@ module idler_side_sheet(){
 }
 
 module idler_spacer_5mm_sheet(){
-  BillOfMaterials(category="Lasercut Acrylic", partname="LCExtruder Idler 5mm Spacer", ref="MM2_LC_SPC5");
+  BillOfMaterials(/*category="Lasercut Acrylic", */partname="LCExtruder Idler 5mm Acrylic Spacer", ref="MM2_LC_SPC5");
 
   material("acrylic")
   linear_extrude(height=5)
@@ -521,10 +521,14 @@ module idler(){
       }
 
       translate(idler_bearing_position - idler_axis_position)
-      translate([0,0, thickness]){
-        idler_spacer_6mm_sheet();
+      // give some room to accomodate lasercut and spacer
+      // thickness variations
+      translate([0,0, thickness+0.5]){
+        idler_spacer_5mm_sheet();
 
-        translate([0,0, thickness]){
+        // give some room to accomodate lasercut and spacer
+        // thickness variations
+        translate([0,0, thickness-1.0]){
           608zz_bearing(true);
 
           translate([0,0,bearing_thickness])
