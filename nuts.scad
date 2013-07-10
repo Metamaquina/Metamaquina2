@@ -55,7 +55,7 @@ module new_M8_nut(){
 //TODO: verify this
 module M8_locknut(){
   BillOfMaterials("M8 lock-nut", ref="P_M8_ny");
-  locknut(r = 6.75, R = 14.76, H1 = 6.4, H = 7.94);
+  locknut(r = m8_nut_r, R = m8_nut_R, H1 = 6.4, H = 7.94);
 }
 
 module M8_cap_nut(){
@@ -112,3 +112,4 @@ module cap_nut(r, R, H1, H) {
 
 M8_locknut();
 translate([0,30,0]) M8_cap_nut();
+translate([0,70,0]) M8_nut();
