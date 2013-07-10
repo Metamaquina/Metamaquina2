@@ -589,11 +589,15 @@ module nozzle(length=50){
 
 module hobbed_bolt(){
   BillOfMaterials("Hobbed bolt", ref="MM2_HBLT");
-
+  // TODO: use <hobbed_bolt.h> values to draw hobbed bolt 3D model
   material("metal")
-  rotate([90,0])
-  cylinder(r=7.2/2, h=5*thickness);
+  rotate([90,0]){
+    cylinder(r=13.0/2, h=5, $fn=6);
+    translate([0,0,5])
+    cylinder(r=8.0/2, h=50);
+  }
 }
+//!hobbed_bolt();
 
 washer_thickness = 1.5;
 module lasercut_extruder(){
@@ -619,7 +623,13 @@ module lasercut_extruder(){
     rotate([90,0])
     extruder_gear(teeth=37);
 
-    translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]]) hobbed_bolt();
+    translate([hobbed_bolt_position[0], 0, hobbed_bolt_position[1]]) {
+        translate([0,-30,0]) rotate([180,0,0]) hobbed_bolt();
+        // TODO: put washers in the right place
+        translate([0,5*thickness/2+washer_thickness,0])
+        rotate([-90,0,0])
+        M8_locknut();
+    }
 
     translate([hobbed_bolt_position[0], -3*thickness/2, hobbed_bolt_position[1]])
     rotate([90,0])
