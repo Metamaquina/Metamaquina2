@@ -91,10 +91,6 @@ module circle_pattern(r, spacing_x, spacing_y, x,y){
 module HiquaPowerSupply(){
   BillOfMaterials("Power Supply", ref="T-200-12");
 
-  {//TODO: Add this to the CAD model
-    BillOfMaterials("Power Supply cable", ref="TRIP_NBR");
-  }
-
   material("metal"){
     cube([PowerSupply_width, PowerSupply_height, metal_sheet_thickness]);
 

@@ -44,7 +44,7 @@ module t_slot_cuts(width, diameter, length){
 module t_slot_shape(diameter, length){
   {
     //TODO: Add these nuts, washers and bolts to the CAD model
-    BillOfMaterials(str("M",diameter,"x",length," Bolt"), ref=str("H_M",diameter,"x",length));
+    BillOfMaterials(str("M",diameter,"x",length," bolt"), ref=str("H_M",diameter,"x",length));
     BillOfMaterials(str("M",diameter," nut"), ref=str("P_M",diameter));
     BillOfMaterials(str("M",diameter," washer"), ref=str("AL_M",diameter));
   }
