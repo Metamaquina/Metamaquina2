@@ -90,7 +90,7 @@ module RAMBo(){
         double_M3_lasercut_spacer();
 
         translate([0,0,2*thickness+RAMBo_pcb_thickness]){
-          hexspacer_38mm();
+          hexspacer_32mm();
           translate([0,0,hexspacer_length+RAMBo_cover_thickness]){
             //bolt head
             material("metal")
