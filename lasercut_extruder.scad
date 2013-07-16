@@ -601,6 +601,7 @@ module hobbed_bolt(){
 
 washer_thickness = 1.5;
 module lasercut_extruder(){
+  mirror([1,0])
   rotate(90)
   union(){
     translate([0,2.5*thickness]){
