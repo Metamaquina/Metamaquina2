@@ -110,9 +110,9 @@ function carz_demo(time) = time*BuildVolume_Z;
 function coupling_demo(time) = (360*carz_demo(time)/1.25)/hack_couplings;
 
 /* Positioning of the extruder assembly */
-XCarPosition = -100; //carx_demo(time);
+XCarPosition = 0; //carx_demo(time);
 YCarPosition = 0; //cary_demo(time);
-ZCarPosition = 150; //carz_demo(time);
+ZCarPosition = 75; //carz_demo(time);
 
 //-------------------------
 
