@@ -175,18 +175,18 @@ module lasercutter_panel(){
       YEndstopHolder_face();
     }
 
-    translate([480,-135]){
+    render() translate([480,-135]){
       translate([365,210])
-      ymin_endstop_spacer_face();
+      ymin_endstop_spacer_face1();
 
       translate([335,210])
-      ymin_endstop_spacer_face();
+      ymin_endstop_spacer_face2();
 
       translate([365,245])
-      ymax_endstop_spacer_face();
+      ymax_endstop_spacer_face1();
 
       translate([335,245])
-      ymax_endstop_spacer_face();
+      ymax_endstop_spacer_face2();
     }
   }
 

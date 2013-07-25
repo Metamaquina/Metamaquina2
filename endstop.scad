@@ -141,9 +141,9 @@ module ymin_endstop_subassembly(){
     BillOfMaterials("M2.5 nut", 2, ref="P_M2.5");
   }
 
-  ymin_endstop_spacer_sheet();
+  ymin_endstop_spacer_sheet1();
   translate([0,0,thickness])
-  ymin_endstop_spacer_sheet();
+  ymin_endstop_spacer_sheet2();
 
   translate([0,0,2*thickness])
   mechanical_switch();
@@ -160,19 +160,13 @@ module ymax_endstop_subassembly(){
     BillOfMaterials("M2.5 nut", 2, ref="P_M2.5");
   }
 
-  ymax_endstop_spacer_sheet();
+  ymax_endstop_spacer_sheet1();
 
   translate([0,0,thickness])
-  ymax_endstop_spacer_sheet();
+  ymax_endstop_spacer_sheet2();
 
   translate([0,0,2*thickness])
   mechanical_switch();
-}
-
-module YMIN_endstop_spacer_sheet(){
-  material("lasercut")
-  linear_extrude(height=thickness)
-  endstop_spacer_face2();
 }
 
 module z_min_endstop(){
@@ -243,7 +237,7 @@ module endstop_spacer_face1(nut_gap=true){
     for (i=[-1,1])
       translate([microswitch_width/2+i*microswitch_holes_distance/2, microswitch_height+2])
       if (nut_gap)
-        circle(r=m25_diameter);
+        circle(r=m25_diameter+0.5);
       else
         circle(r=m25_diameter/2);
 
@@ -277,7 +271,7 @@ module endstop_spacer_face2(nut_gap=false){
   }
 }
 
-module ymin_endstop_spacer_face(){
+module ymin_endstop_spacer_face1(){
   difference(){
     endstop_spacer_face1(nut_gap=false);
 
@@ -287,9 +281,29 @@ module ymin_endstop_spacer_face(){
   }
 }
 
-module ymax_endstop_spacer_face(){
+module ymin_endstop_spacer_face2(){
+  difference(){
+    endstop_spacer_face1(nut_gap=true);
+
+    translate([5,-14])
+    rotate(90)
+    import("labels.dxf", layer="ymin");
+  }
+}
+
+module ymax_endstop_spacer_face1(){
   difference(){
     endstop_spacer_face1(nut_gap=false);
+
+    translate([5,-14])
+    rotate(90)
+    import("labels.dxf", layer="ymax");
+  }
+}
+
+module ymax_endstop_spacer_face2(){
+  difference(){
+    endstop_spacer_face1(nut_gap=true);
 
     translate([5,-14])
     rotate(90)
@@ -379,20 +393,36 @@ module optical_endstop(){
   //TODO: implement-me!
 }
 
-module ymin_endstop_spacer_sheet(){
-  BillOfMaterials(category="Lasercut wood", partname="YMIN Spacer");
+module ymin_endstop_spacer_sheet1(){
+  BillOfMaterials(category="Lasercut wood", partname="YMIN Spacer #1");
 
   material("lasercut")
   linear_extrude(height=thickness)
-  ymin_endstop_spacer_face();
+  ymin_endstop_spacer_face1();
 }
 
-module ymax_endstop_spacer_sheet(){
-  BillOfMaterials(category="Lasercut wood", partname="YMAX Spacer");
+module ymin_endstop_spacer_sheet2(){
+  BillOfMaterials(category="Lasercut wood", partname="YMIN Spacer #2");
 
   material("lasercut")
   linear_extrude(height=thickness)
-  ymax_endstop_spacer_face();
+  ymin_endstop_spacer_face2();
+}
+
+module ymax_endstop_spacer_sheet1(){
+  BillOfMaterials(category="Lasercut wood", partname="YMAX Spacer #1");
+
+  material("lasercut")
+  linear_extrude(height=thickness)
+  ymax_endstop_spacer_face1();
+}
+
+module ymax_endstop_spacer_sheet2(){
+  BillOfMaterials(category="Lasercut wood", partname="YMAX Spacer #2");
+
+  material("lasercut")
+  linear_extrude(height=thickness)
+  ymax_endstop_spacer_face2();
 }
 
 module zmax_endstop_spacer_sheet1(){
