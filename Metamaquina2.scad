@@ -19,7 +19,7 @@
 include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
 
-extruder_wiring_radius = 6;
+extruder_wiring_radius = 16.2/2;
 YEndstopHolder_distance = 66;
 
 //utils
