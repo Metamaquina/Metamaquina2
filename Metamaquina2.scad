@@ -745,7 +745,7 @@ module MachineArcPanel_face(){
   }
 }
 
-//These are auxiliary parts for tightening up the extruder wiring when it passes through the TopPenal hole.
+//These are auxiliary parts for tightening up the extruder wiring when it passes through the TopPanel hole.
 module top_wiring_hole_aux(r=5, border=4){
   difference(){
     hull(){
