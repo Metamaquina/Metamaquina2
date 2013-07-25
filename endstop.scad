@@ -98,17 +98,6 @@ module y_endstop_mount_holes(){
   //and ziptie holes to keep it in place
   translate([-22,-20])
   zip_tie_holes(d=6);
-
-  //hole to give room for bolt tips and M25 nuts:
-  translate([0,-6])
-  rotate(90)
-  zip_tie_holes(d=microswitch_holes_distance, r=3);
-
-  //these serve as reference for us
-  // to see where will be the tips of the M2.5 bolts
-  %for (i=[-1,1])
-    translate([i*microswitch_holes_distance/2,-6])
-    M25_hole();
 }
 
 module simples_mechanical_endstop(){
