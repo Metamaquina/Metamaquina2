@@ -35,7 +35,7 @@ module z_max_mount_holes(){
       //this is to keep the endstop wiring in place:
       zip_tie_holes(d=8);
 
-      translate([74,0])
+      translate([64,0])
       zip_tie_holes(d=8);
 
       // Since all of the 3d printer wiring will be prepared
@@ -68,7 +68,7 @@ module z_min_mount_holes(){
   translate([-15.5+3,7]){
     rounded_edge_cut(width=3, height=15.7, r=3/2, plain_left=true);
 
-    translate([6,-15])
+    translate([-12,-15])
     zip_tie_holes(d=8);
   }
 }
@@ -96,7 +96,7 @@ module y_endstop_mount_holes(){
   rounded_edge_cut(width=3, height=13, r=3/2);
 
   //and ziptie holes to keep it in place
-  translate([-12,-20])
+  translate([-22,-20])
   zip_tie_holes(d=6);
 
   //hole to give room for bolt tips and M25 nuts:
