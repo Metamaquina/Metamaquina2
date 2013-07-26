@@ -368,7 +368,7 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
   }
 
   for (i=[-1,1])
-    translate([i*nozzle_hole_width2/2-0.3,5])
+    translate([i*nozzle_hole_width2/2-0.3,4])
     circle(r=m3_diameter/2);
 
   if (filament_channel){
