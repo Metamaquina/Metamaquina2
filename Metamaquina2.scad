@@ -927,7 +927,7 @@ module MachineBottomPanel_face(){
       BottomPanel_holes();
       mirror([1,0,0]) BottomPanel_holes();
 
-      translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness + 16, 30])
+      translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness -10, 30])
       heatedbed_bottompanel_hole();
 
       y_max_endstop_mount_holes();
@@ -2376,13 +2376,9 @@ module holes_for_heated_bed_wiring(){
   rotate(45)
   zip_tie_holes();
 
-  translate([-100,0]){
-    translate([0,10])
-    rotate(90)
-    zip_tie_holes();
-
-    heated_bed_wire_passthru_hole();
-  }
+  translate([-103,0])
+  rotate(90)
+  heated_bed_wire_passthru_hole();
 }
 
 module heated_bed_wire_passthru_hole(){
