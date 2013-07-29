@@ -1379,11 +1379,6 @@ module XCarriage_bottom_face(){
         translate([i*(XCarriage_lm8uu_distance/2+10), 0])
         beltclamp_holes();
     }
-
-    //these are for making sure the motor wires are not broken by the machine's constant movement:
-    translate([-30,15])
-    rotate(90)
-    zip_tie_holes();
   }
 }
 
