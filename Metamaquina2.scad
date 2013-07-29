@@ -1364,8 +1364,6 @@ module XCarriage_plainface(sandwich=false){
         translate([i*(XCarriage_lm8uu_distance/2), j*(XPlatform_width/2 - XCarriage_padding)])
         M3_hole();
       }
-      translate([i*(XCarriage_length/2-XCarriage_padding), 0])
-      M3_hole();
     }
   }
 }
