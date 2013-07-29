@@ -158,26 +158,18 @@ module RAMBo_wiring_holes(){
   translate([95,80])
   zip_tie_holes(d=20);
 
-  { //Endstop cables
-    //TODO: Choose one before manufacturing:
-
-    // Option 1: This is closer to the connector but may leave the cables exposed in the back of the machine
-#    translate([10,50])
-    zip_tie_holes();
-
-    // Option 2: This is a bit far, but the cables would be less exposed in the upper portion of the pcb mount area
-#    translate([80,95])
-    rotate(90)
-    zip_tie_holes();
-  }
-
   //Extruder heater cable
   translate([20,95])
   rotate(90)
   zip_tie_holes();
 
-  //HeatedBed heater cable
+  //Endstop cables
   translate([50,95])
+  rotate(90)
+  zip_tie_holes();
+
+  //HeatedBed heater cable
+  translate([80,95])
   rotate(90)
   zip_tie_holes();
 }
