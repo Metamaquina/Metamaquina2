@@ -20,7 +20,13 @@ use <PowerSupply.scad>;
 
 //This is based on measurements of
 // a HIQUA power supply
-PowerSupply_width=110;
-PowerSupply_height=198;
+//PowerSupply_width=110;
+//PowerSupply_height=198;
+//PowerSupply_thickness=50;
+
+//This is based on measurements of
+// a MeanWell power supply
+PowerSupply_width=114;
+PowerSupply_height=214;
 PowerSupply_thickness=50;
 

@@ -120,7 +120,8 @@ ZCarPosition = 75; //carz_demo(time);
 
 /* whether or not to add holes for a PowerSupply manufactured by Hiqua and sold 
 by Nodaji in Brazil */
-HIQUA_POWERSUPPLY=true;
+HIQUA_POWERSUPPLY=false;
+MEANWELL_POWERSUPPLY=true;
 
 /* dimensions of the machine feet */
 feetwidth = 50;
@@ -504,7 +505,12 @@ module MachineRightPanel_face(){
 
     if (HIQUA_POWERSUPPLY){
       translate([powersupply_Xposition - PowerSupply_width, powersupply_Yposition])
-      PowerSupply_mount_holes();
+      HiquaPowerSupply_mount_holes();
+    }
+
+    if (MEANWELL_POWERSUPPLY){
+      translate([powersupply_Xposition - PowerSupply_width, powersupply_Yposition])
+      MeanWellPowerSupply_mount_holes();
     }
 
     //zip-tie holes for RAMBo power wires
@@ -1505,6 +1511,12 @@ module MachineRightPanel_sheet(){
       translate([powersupply_Xposition, powersupply_Yposition])
       rotate([0, 180, 0])
       HiquaPowerSupply_subassembly();
+    }
+
+    if (MEANWELL_POWERSUPPLY){
+      translate([powersupply_Xposition, powersupply_Yposition])
+      rotate([0, 180, 0])
+      MeanWellPowerSupply_subassembly();
     }
 
     for (clip=right_cable_clips){
