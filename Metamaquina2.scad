@@ -584,7 +584,7 @@ module MachineSidePanel_face(){
 module MachineSidePanel_plainface(){
   r1=0.1;
   r2=60;
-  H=150;
+  H=162;
   k=19;
   union(){
     hull(){
