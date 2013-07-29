@@ -114,12 +114,16 @@ module x_carriage_beltclamp(width=28, height=6, r=5){
   }
 }
 
+module y_platform_beltclamp_base_curves(){
+  beltclamp_curves(width=38, r=10, for_y_platform=true);
+}
+
 module y_platform_beltclamp_base(width=38, height=6, r=10){
   BillOfMaterials(category="Lasercut wood", partname="Y Platform Belt Clamp Base");
 
   material("lasercut")
   linear_extrude(height=height)
-  beltclamp_curves(width, r, for_y_platform=true);
+  y_platform_beltclamp_base_curves();
 }
 
 module y_platform_beltclamp(width=28, height=6, r=5){

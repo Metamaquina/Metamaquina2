@@ -208,6 +208,21 @@ module lasercutter_panel(){
     #translate([265,385])
     PowerSupplyBox_bottom_face();
   }
+
+  translate([400,420]){
+    y_platform_beltclamp_base_curves();
+
+    translate([0,-30])
+    y_platform_beltclamp_base_curves();
+
+    translate([100,0])
+    rotate(90)
+    YPlatform_right_sandwich_base_face();
+
+    translate([200,0])
+    rotate(90)
+    YPlatform_left_sandwich_base_face();
+  }
 }
 
 
