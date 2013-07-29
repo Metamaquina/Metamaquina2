@@ -148,7 +148,7 @@ z_max_endstop_x = XZStage_position - 41;
 z_max_endstop_y = machine_height - 19;
 
 z_min_endstop_x = z_max_endstop_x - 28;
-z_min_endstop_y = 109;
+z_min_endstop_y = 115;
 
 baseh = 35;
 ArcPanel_rear_advance = 105;
@@ -402,7 +402,7 @@ module MachineLeftPanel_face(){
     union(){
       MachineSidePanel_face();
       //extra area for mounting the ZMIN endstop:
-      translate([145,78])
+      translate([145,84])
       trapezoid(h=30, l1=50, l2=80, r=10);
     }
 
@@ -490,7 +490,7 @@ module MachineRightPanel_face(){
     union(){
       MachineSidePanel_face();
       //extra area just to keep the machine symmetric (the other side panel uses this extra area for mounting the ZMIN endstop)
-      translate([145,76])
+      translate([145,84])
       trapezoid(h=30, l1=50, l2=80, r=10);
     }
 
@@ -881,7 +881,7 @@ module YBelt(){
 
 module YEndstopHolder_face(){
   width = 25;
-  height = 13.5;
+  height = 17;
   r = 5;
   translate([-width/2,0])
   difference(){
@@ -1179,17 +1179,19 @@ module generic_bearing_sandwich_plainface(H, r){
   }
 }
 
-module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=1){
+module generic_bearing_sandwich_face(H, r=20, sandwich_tightening=1, bearing_hole=true){
   projection(cut=true){
     difference(){
       linear_extrude(height=thickness)
       generic_bearing_sandwich_plainface(H, r);
 
-      //linear bearings
-      translate([0,0,lm8uu_diameter/2 - (bearing_sandwich_spacing + sandwich_tightening)]){
-        for (j=[-1,1])
-        translate([0,j*H/2])
-        LM8UU(bom=false);
+      if (bearing_hole){
+        //linear bearings
+        translate([0,0,lm8uu_diameter/2 - (bearing_sandwich_spacing + sandwich_tightening)]){
+          for (j=[-1,1])
+          translate([0,j*H/2])
+          LM8UU(bom=false);
+        }
       }
     }
   }
@@ -2121,6 +2123,12 @@ module BuildPlatform_pcb(){
   heated_bed();
 }
 
+module YPlatform_left_sandwich_base_sheet(){
+  material("lasercut")
+  linear_extrude(height=thickness)
+  YPlatform_left_sandwich_base_face();
+}
+
 module YPlatform_left_sandwich_sheet(){
   material("lasercut")
   linear_extrude(height=thickness)
@@ -2133,7 +2141,17 @@ module YPlatform_right_sandwich_sheet(){
   YPlatform_right_sandwich_face();
 }
 
+module YPlatform_right_sandwich_base_sheet(){
+  material("lasercut")
+  linear_extrude(height=thickness)
+  YPlatform_right_sandwich_base_face();
+}
+
 YBearings_distance = 100;
+module YPlatform_right_sandwich_base_face(){
+  generic_bearing_sandwich_face(H=YBearings_distance, bearing_hole=false);
+}
+
 module YPlatform_right_sandwich_face(){
   generic_bearing_sandwich_face(H=YBearings_distance);
 }
@@ -2158,16 +2176,22 @@ module YPlatform_left_sandwich_holes(){
       M3_hole();
 }
 
-module YPlatform_left_sandwich_face(sandwich_tightening=1){
+module YPlatform_left_sandwich_base_face(sandwich_tightening=1){
+  YPlatform_left_sandwich_face(bearing_holes=false);
+}
+
+module YPlatform_left_sandwich_face(sandwich_tightening=1, bearing_holes=true){
   difference(){
     projection(cut=true){
       difference(){
         linear_extrude(height=thickness)
         YPlatform_left_sandwich_outline();
 
-        //linear bearing
-        translate([0,0,lm8uu_diameter/2 - (bearing_sandwich_spacing + sandwich_tightening)])
-        LM8UU(bom=false);
+        if (bearing_holes){
+          //linear bearing
+          translate([0,0,lm8uu_diameter/2 - (bearing_sandwich_spacing + sandwich_tightening)])
+          LM8UU(bom=false);
+        }
       }
     }
 
@@ -2203,14 +2227,26 @@ module YPlatform_subassembly(){
   }
 
   translate([0,0,100-15]){ /*TODO*/
+
+    translate([0,0,thickness])
     YPlatform_sheet();
 
-    for (j=[-20,20])
-    translate([0,j, -thickness]){
-      y_platform_beltclamp();
+    translate([Y_rods_distance/2, 0])
+    YPlatform_right_sandwich_base_sheet();
 
-      translate([0,0, -thickness-3]){
+    translate([-Y_rods_distance/2, 0])
+    YPlatform_left_sandwich_base_sheet();
+
+    for (j=[-20,20]){
+      translate([0,j])
+      y_platform_beltclamp_base();
+
+      translate([0,j, -thickness]){
         y_platform_beltclamp();
+
+        translate([0,0, -thickness-3]){
+          y_platform_beltclamp();
+        }
       }
     }
 
@@ -2225,7 +2261,7 @@ module YPlatform_subassembly(){
           rotate([180,0]){
             M3_washer();
             translate([0,0, m3_washer_thickness])
-            M3x30();
+            M3x35();
           }
         }
       }
@@ -2239,7 +2275,7 @@ module YPlatform_subassembly(){
             rotate([180,0]){
               M3_washer();
               translate([0,0, m3_washer_thickness])
-              M3x30();
+              M3x35();
             }
           }
         }
@@ -2249,7 +2285,7 @@ module YPlatform_subassembly(){
     translate([0,0, -lm8uu_diameter/2])
     YPlatform_linear_bearings();
 
-    translate([YEndstopHolder_distance/2,90]){
+    translate([YEndstopHolder_distance/2,90, thickness]){
 //      translate([0,thickness/2+1.4,-thickness])
 //      yendstop_hit_subassembly();
 
@@ -2257,7 +2293,7 @@ module YPlatform_subassembly(){
       YEndstopHolder_sheet();
     }
 
-    translate([-YEndstopHolder_distance/2,-90 - thickness]){
+    translate([-YEndstopHolder_distance/2,-90 - thickness, thickness]){
 //      translate([0,thickness/2-1.4,-thickness])
 //      yendstop_hit_subassembly();
 
