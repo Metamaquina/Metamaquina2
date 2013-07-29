@@ -52,8 +52,8 @@ module t_slot_shape(diameter, length){
 	translate([-diameter/2, 0])
 	square([diameter, length]);
 
-	translate([-diameter, length-(3/2)*diameter])
-	square([2*diameter, diameter]);
+	translate([-diameter, length-2*diameter])
+	square([2*diameter, 1.5*diameter]);
 }
 
 module t_slot_joints(width, thickness, joint_size=5){
@@ -127,8 +127,9 @@ module tslot_parts_from_list(list, length=16){
         bolt(3,length);
       }
 
-      translate([0,0,8-length])
-      M3_nut();
+      translate([0,0,12-length]) //TODO: fix math
+      rotate([180,0,0])
+      M3_locknut();
     }
   }
 }

@@ -25,8 +25,8 @@ m25_nut_R = 5.68/2;
 m25_nut_height = 1.81;
 
 m3_nut_r = 3/2;
-m3_nut_R = 6.235/2;
-m3_nut_height = 2.23;
+m3_nut_R = 6.13/2;
+m3_nut_height = 2.33;
 
 m4_nut_r = 4/2;
 m4_nut_R = 7.875/2;
