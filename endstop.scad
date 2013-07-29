@@ -59,14 +59,13 @@ module z_max_mount_holes(){
 module z_min_mount_holes(){    
   for (i=[-1,1])
     translate([microswitch_width/2+i*microswitch_holes_distance/2,-microswitch_height/2])
-    hull(){
-        M3_hole();
-        translate([0,-16])
-        M3_hole();
-    }
+    translate([0,-10.5])
+    M3_hole();
 
   translate([-15.5+3,7]){
-    rounded_edge_cut(width=3, height=15.7, r=3/2, plain_left=true);
+
+    translate([0,2])
+    rounded_edge_cut(width=3, height=17.7, r=3/2, plain_left=true);
 
     translate([-12,-15])
     zip_tie_holes(d=8);

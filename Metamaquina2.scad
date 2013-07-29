@@ -402,7 +402,7 @@ module MachineLeftPanel_face(){
     union(){
       MachineSidePanel_face();
       //extra area for mounting the ZMIN endstop:
-      translate([145,76])
+      translate([145,78])
       trapezoid(h=30, l1=50, l2=80, r=10);
     }
 
