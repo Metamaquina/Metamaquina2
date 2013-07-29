@@ -52,15 +52,14 @@ module new_M8_nut(){
   nut(r = 6.75, R = 14.76, H = 6.35);
 }
 
-//TODO: verify this
+module M3_locknut(){
+  BillOfMaterials("M3 lock-nut", ref="P_M3_ny");
+  locknut(r = m3_nut_r, R = m3_nut_R, H1 = 2.7, H = 3.95);
+}
+
 module M8_locknut(){
   BillOfMaterials("M8 lock-nut", ref="P_M8_ny");
   locknut(r = m8_nut_r, R = m8_nut_R, H1 = 6.4, H = 7.94);
-}
-
-module M8_cap_nut(){
-  BillOfMaterials("M8 cap-nut", ref="P_M8_ca");
-  cap_nut(r = m8_capnut_r, R = m8_capnut_R, H1 = m8_capnut_H1, H = m8_capnut_height);
 }
 
 function hypotenuse(a, b) = sqrt(a*a + b*b);
@@ -70,12 +69,11 @@ epsilon = 0.05;
 module nut(r, R, H){
   material("metal")
   difference(){
-    //hexagon
     intersection(){
       cylinder(r=R*2/sqrt(3), h=H, $fn=6);
-      //sphere(r=hypotenuse(R, H), $fn=60);
-      //translate([0,0,H])
-      //sphere(r=hypotenuse(R, H), $fn=60);
+      sphere(r=hypotenuse(R, H), $fn=60);
+      translate([0,0,H])
+      sphere(r=hypotenuse(R, H), $fn=60);
     }
 
     //hole
@@ -86,30 +84,33 @@ module nut(r, R, H){
 
 // H: total height
 module locknut(r, R, H1, H){
+  material("metal")
   difference() {
-  union(){
-    nut(r, R, H1);
-    
-    intersection(){
-      translate([0,0,H1]) cylinder(r=R, h=H-H1, $fn=60);
-      translate([0,0,H1]) sphere(r=R, $fn=60);
+    union(){
+      nut(r, R, H1);
+
+      intersection(){
+        translate([0,0,H1]) cylinder(r=R, h=H-H1, $fn=60);
+        translate([0,0,H1]) sphere(r=R, $fn=60);
+      }
     }
+    translate([0,0,H1-epsilon])
+    cylinder(r=R-1, h=H-H1+2*epsilon, $fn=60);
   }
-  translate([0,0,-epsilon]) cylinder(r=0.9*R, h=H+2*epsilon, $fn=60);
+
+  material("nylon")
+  translate([0,0,H1])
+  linear_extrude(height=H-H1-0.7)
+  difference(){
+    circle(r=R-1);
+    circle(r=r);
   }
 }
 
-// H: total height
-module cap_nut(r, R, H1, H) {
-  union(){
-    nut(r, R, H1);
-    intersection(){
-      translate([0,0,H1]) cylinder(r=R, h=H-H1, $fn=60);
-      translate([0,0,(H-H1)/2]) sphere(r=R, $fn=60);
-    }
-  }
-}
+
+translate([0,-20,0])
+M3_locknut();
 
 M8_locknut();
-translate([0,30,0]) M8_cap_nut();
-translate([0,70,0]) M8_nut();
+
+translate([0,20,0]) M8_nut();
