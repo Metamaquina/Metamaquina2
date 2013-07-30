@@ -555,11 +555,11 @@ module extruder_block(){
   }
 
   rotate([90,0]){
-    slice1();
-    slice2();
-    slice3();
-    slice4();
-    slice5();
+    //slice1();
+    //slice2();
+    //slice3();
+    //slice4();
+    //slice5();
   }
 }
 
@@ -596,16 +596,16 @@ module lasercut_extruder(){
   union(){
     translate([0,2.5*thickness]){
       extruder_block();
-      idler();
+      //idler();
     }
-
+/*
     translate([7,0,58]){
       rotate([0,-90,0]){
         rotate([0,0,-90]){
           handle();
         }
       }
-    }
+    }*/
 
     nozzle();
 
@@ -637,10 +637,10 @@ module lasercut_extruder(){
   }
 }
 
-for (i=[-1,1]){
-  translate([i*9,0,0])
-  lasercut_extruder();
-}
+//for (i=[-1,1]){
+  //translate([i*9,0,0])
+ // lasercut_extruder();
+//}
 
   //lasercut_extruder();
 
