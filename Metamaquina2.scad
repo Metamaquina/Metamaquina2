@@ -76,8 +76,8 @@ left_cable_clips = [
 right_cable_clips = [
 //[type, angle, y, z]
 //lower wiring (power supply):
-    ["RA13", 90, 185,35],
-    ["RA13", 90, 115,35]];
+    ["RA13", 90, 185,37],
+    ["RA13", 90, 115,37]];
     
 bottom_cable_clips = [
 //[type, angle, y, z]
