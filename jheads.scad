@@ -68,6 +68,12 @@ module J_head_body(){
         }
       }
 
+extra_extruder_length=50
+extruder_dist=9
+      translate([-extra_extruder_length/2+extruder_dist,0])
+      //#circle(r=XCarriage_nozzle_hole_radius);
+      #circle(r=13/2); //sara
+
       union()
       translate([13/2+10/2,0,-50+4.76+4.64-10/2+6])
       cube(size=[10,10,10], center=true );

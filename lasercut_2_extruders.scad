@@ -637,12 +637,7 @@ module lasercut_extruder(){
   }
 }
 
-//for (i=[-1,1]){
-  //translate([i*9,0,0])
- // lasercut_extruder();
-//}
-
-  //lasercut_extruder();
+  lasercut_extruder();
 
 %translate([0,0,-thickness]) XCarriage_bottom_sheet();
 
