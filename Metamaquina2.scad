@@ -1153,7 +1153,7 @@ module XEnd_back_face(){
       translate([-14, 0])
       M3_hole();
 
-      tslot_holes_from_list(XEnd_back_face_TSLOTS);
+      tslot_holes_from_list(XEndMotor_back_face_TSLOTS);
     }
   }
 }
