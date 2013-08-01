@@ -107,6 +107,9 @@ module tslot_holes_from_list(list){
       translate([x, y])
       rotate(angle)
       TSlot_holes(width=width);
+    else
+      translate([x, y])
+      circle(r=m3_diameter/2);
   }
 }
 
