@@ -53,7 +53,7 @@ module PSU_connector(){
 
     for (i = [1 : 6]) {
       translate([conn_thickness/2,bolts_offset + 5*i,-epsilon]) {
-       cylinder(conn_height+2*epsilon,r=bolt_diameter/2, $fn=20);
+       cylinder(conn_height+2*epsilon,r=bolt_diameter/2);
        }
     }
   }
@@ -94,7 +94,7 @@ module RAMBo(){
           translate([0,0,hexspacer_length+RAMBo_cover_thickness]){
             //bolt head
             material("metal")
-            cylinder(r=3, h=M3_bolt_head, $fn=20);
+            cylinder(r=3, h=M3_bolt_head);
           }
         }
       }
@@ -129,7 +129,7 @@ module RAMBo_wiring_holes(){
   hull()
   for (i=[-1,1])
     translate([i*15,0])
-    circle(r=10, $fn=20);
+    circle(r=10);
 
 
   //These are ziptie holes for making sure the individual wires
@@ -184,16 +184,16 @@ module RAMBo_wiring_holes(){
 
 module RAMBo_holes(){
   translate([RAMBo_border, RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
+  circle(r=m4_diameter/2);
 
   translate([RAMBo_border, RAMBo_height-RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
+  circle(r=m4_diameter/2);
 
   translate([RAMBo_width-RAMBo_border, RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
+  circle(r=m4_diameter/2);
 
   translate([RAMBo_width-RAMBo_border, RAMBo_height-RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
+  circle(r=m4_diameter/2);
 }
 
 module RAMBo_pcb(){
