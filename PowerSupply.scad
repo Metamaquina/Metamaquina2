@@ -36,10 +36,10 @@ hiqua_mount_positions = [
 
 //TODO:
 meanwell_mount_positions = [
-                  [4, [32.5, 32.5]],
-                  [4, [32.5, PowerSupply_height-32.5]],
-                  [4, [82.5, 32.5]],
-                  [4, [82.5, PowerSupply_height-32.5]]
+                  [5, [32.5, 32.5]],
+                  [5, [32.5, PowerSupply_height-33.5]],
+                  [5, [82.5, 32.5]],
+                  [5, [82.5, PowerSupply_height-33.5]]
 ];
 
 module HiquaPowerSupply_mount_holes(){
