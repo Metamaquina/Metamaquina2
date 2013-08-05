@@ -148,7 +148,7 @@ z_max_endstop_x = XZStage_position - 41;
 z_max_endstop_y = machine_height - 19;
 
 z_min_endstop_x = z_max_endstop_x - 28;
-z_min_endstop_y = 115;
+z_min_endstop_y = 112;
 
 baseh = 35;
 ArcPanel_rear_advance = 105;
@@ -402,7 +402,7 @@ module MachineLeftPanel_face(){
     union(){
       MachineSidePanel_face();
       //extra area for mounting the ZMIN endstop:
-      translate([145,84])
+      translate([145, z_min_endstop_y - 31])
       trapezoid(h=30, l1=50, l2=80, r=10);
     }
 
@@ -490,7 +490,7 @@ module MachineRightPanel_face(){
     union(){
       MachineSidePanel_face();
       //extra area just to keep the machine symmetric (the other side panel uses this extra area for mounting the ZMIN endstop)
-      translate([145,84])
+      translate([145, z_min_endstop_y - 31])
       trapezoid(h=30, l1=50, l2=80, r=10);
     }
 
