@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use <Metamaquina2.scad>;
+include <Metamaquina2.h>;
 use <endstop.scad>;
 use <lasercut_extruder.scad>;
 use <belt-clamp.scad>;
@@ -117,7 +117,9 @@ module lasercutter_panel(){
 
     translate([352,310])
     rotate(-90)
-    render() XCarriage_bottom_face();
+    render()
+    mirror([1,0]) //we want the burnt side up because it's cool!
+    XCarriage_bottom_face();
 
     translate([335,170]){
       for (i=[0:1]){
@@ -158,7 +160,7 @@ module lasercutter_panel(){
     rotate(90)
     XCarriage_sandwich_face();
 
-    translate([75,120])
+    translate([-150,80])
     rotate(90)
     YPlatform_left_sandwich_face();
 
@@ -174,31 +176,18 @@ module lasercutter_panel(){
     }
 
     translate([480,-135]){
-      translate([345,245])
-      zmin_endstop_spacer_face1();
-
-      translate([345,210])
-      zmin_endstop_spacer_face2();
-
-      translate([350,245])
-      zmax_endstop_spacer_face1();
-
-      translate([350,210])
-      zmax_endstop_spacer_face2();
-
-      translate([375,210])
+      translate([365,210])
       ymin_endstop_spacer_face();
 
-      translate([375,245])
+      translate([335,210])
+      ymin_endstop_spacer_face();
+
+      translate([365,245])
+      ymax_endstop_spacer_face();
+
+      translate([335,245])
       ymax_endstop_spacer_face();
     }
-  }
-
-#  translate ([10,330]){
-    ymin_endstop_spacer_face();
-
-    translate([0,35])
-    ymax_endstop_spacer_face();
   }
 
   translate([650,100]){
@@ -208,13 +197,17 @@ module lasercutter_panel(){
 
 #  translate([20,380])
   PowerSupplyBox_side_face();
-#  translate([125,380])
-  PowerSupplyBox_bottom_face();
-#  translate([230,380])
+#  translate([210,380])
   PowerSupplyBox_front_face();
-#  translate([190,435])
+#  translate([130,380])
   rotate(90)
+  mirror([0,1]) //we want to keep the burnt side visible because it looks good!
   PowerSupplyBox_back_face();
+
+  if (batch_run==false){
+    #translate([265,385])
+    PowerSupplyBox_bottom_face();
+  }
 }
 
 
@@ -245,12 +238,6 @@ module LCExtruder_panel(){
 
   translate([22,20])
   idler_back_face();
-
-  translate([105,10])
-  idler_spacer_face();
-
-  translate([122,10])
-  idler_spacer_face();
 
   translate([55,74])
   handle_face();

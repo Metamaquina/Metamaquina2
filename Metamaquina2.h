@@ -34,9 +34,6 @@ module TSlot_joints(width=50){
   t_slot_joints(width=width, thickness=thickness, joint_size=5);
 }
 
-/*z motor placement in the original Prusa was on top. Our design uses the z motors in the bottom of the machine, but if you want them on top, you can set this variable to true. */
-zmotors_on_top = false;
-
 /* Desired build volume: */
 BuildVolume_X=200;
 BuildVolume_Y=200;
@@ -62,3 +59,5 @@ extruder_mount_holes_distance = X_rods_distance + 14;
 
 XPlatform_height = 45;
 
+//[revision_id, batch_number, first_id, size_of_batch]
+batch_run = false;

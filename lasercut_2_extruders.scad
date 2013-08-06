@@ -54,7 +54,7 @@ module M3_hole(){
 }
 
 module M4_hole(){
-  circle(r=m4_diameter/2);
+  #circle(r=m4_diameter/2);
 }
 ///////////////////
 
@@ -72,14 +72,14 @@ module handle_face(r=5, width=HandleWidth, height=HandleHeight){
     import("M_circle.dxf");
   }
 }
-
+/*
 module handle_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Handle");
 
   material("lasercut")
   linear_extrude(height=thickness)
   handle_face();
-}
+}*/
 
 //!idler_side_face();
 module idler_side_face(smooth_rod_cut_diameter=7.8){
@@ -87,7 +87,7 @@ module idler_side_face(smooth_rod_cut_diameter=7.8){
 
   rotate(90)
   union(){
-    difference(){
+    /*difference(){
       hull(){
         rounded_square([2*R,R], corners=[0,R,R,0]);
 
@@ -114,7 +114,7 @@ module idler_side_face(smooth_rod_cut_diameter=7.8){
     }
     translate([R,R-thickness/2])
     rotate(-90)
-    TSlot_joints(width=R);
+    TSlot_joints(width=R);*/
   }
 }
 //!idler_side_face();
@@ -123,7 +123,7 @@ module idler_back_face(){
   rounding = 5;
   idler_width = 5*thickness;
   idler_height = R+2+rounding;
-
+/*
   difference(){
     translate([-idler_width/2,0])
     rounded_square([idler_width,idler_height], corners=[0,0,rounding,rounding]);
@@ -138,7 +138,7 @@ module idler_back_face(){
     for (i=[-1,1])
       translate([i*(2*thickness),0])
       t_slot_holes(width=R, thickness=thickness);
-  }
+  }*/
 }
 
 module idler_back_sheet(){
@@ -555,11 +555,11 @@ module extruder_block(){
   }
 
   rotate([90,0]){
-    slice1();
-    slice2();
-    slice3();
-    slice4();
-    slice5();
+    //slice1();
+    //slice2();
+    //slice3();
+    //slice4();
+    //slice5();
   }
 }
 
@@ -596,47 +596,48 @@ module lasercut_extruder(){
   union(){
     translate([0,2.5*thickness]){
       extruder_block();
-      idler();
+      //idler();
     }
-
+/*
     translate([7,0,58]){
       rotate([0,-90,0]){
         rotate([0,0,-90]){
           handle();
         }
       }
-    }
+    }*/
 
-    //nozzle(); by Sara
+    nozzle();
 
-    translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
-    rotate([0,extruder_gear_angle])
-    rotate([90,0])
-    extruder_gear(teeth=37);
+    //translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
+    //rotate([0,extruder_gear_angle])
+    //rotate([90,0])
+    //extruder_gear(teeth=37);
 
-    translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]]) hobbed_bolt();
+    //translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]]) hobbed_bolt();
 
-    translate([hobbed_bolt_position[0], -3*thickness/2, hobbed_bolt_position[1]])
-    rotate([90,0])
-    608zz_bearing(true);
+    //translate([hobbed_bolt_position[0], -3*thickness/2, hobbed_bolt_position[1]])
+    //rotate([90,0])
+    //608zz_bearing(true);
 
-    translate([hobbed_bolt_position[0], 3*thickness/2+7, hobbed_bolt_position[1]])
-    rotate([90,0])
-    608zz_bearing(true);
+    //translate([hobbed_bolt_position[0], 3*thickness/2+7, hobbed_bolt_position[1]])
+    //rotate([90,0])
+    //608zz_bearing(true);
 
-    translate([motor_position[0], -thickness/2, motor_position[1]])
-    rotate([-90,0])
-    rotate(motor_angle)
-    {
-      NEMA17_subassembly();
+    //translate([motor_position[0], -thickness/2, motor_position[1]])
+    //rotate([-90,0])
+    //rotate(motor_angle)
+    //{
+      //NEMA17_subassembly();
 
-      translate([0,0,-2*thickness - 2*washer_thickness])
-      rotate([180,0])
-      motor_gear(teeth=11);
-    }
+      //translate([0,0,-2*thickness - 2*washer_thickness])
+      //rotate([180,0])
+     // motor_gear(teeth=11);
+    //}
   }
 }
 
-lasercut_extruder();
+  lasercut_extruder();
+
 %translate([0,0,-thickness]) XCarriage_bottom_sheet();
 

@@ -31,9 +31,9 @@ use <tslot.scad>;
 //subassemblies
 include <endstop.h>;
 include <heated_bed.h>;
-use <lasercut_extruder.scad>;
+use <lasercut_2_extruders.scad>;
 use <RAMBo.scad>;
-use <jhead.scad>;
+use <jheads.scad>;
 
 //parts
 include <NEMA.h>;
@@ -43,7 +43,7 @@ include <bolts.h>;
 include <nuts.h>;
 include <spacer.h>;
 include <lm8uu_bearing.h>;
-include <jhead.h>;
+include <jheads.h>;
 include <PowerSupply.h>;
 use <608zz_bearing.scad>;
 use <domed_cap_nuts.scad>;
@@ -189,6 +189,7 @@ XPlatform_width = X_rods_distance + X_rods_diameter + 2*margin + 2* tslot_extra;
 XEnd_width = XPlatform_width+XEnd_extra_width;
 num_extruders = 1;
 extra_extruder_length = 50; //TODO
+extruder_dist = 9; //distance between extruders
 XCarriage_padding = 6;
 XCarriage_nozzle_hole_radius = 20;
 XCarriage_width = XPlatform_width + 22;
@@ -1323,18 +1324,20 @@ module XCarriage_plainface(sandwich=false){
     }
 
     //central hole for extruder nozzle
-    hull(){
-      translate([-(num_extruders-1)*extra_extruder_length/2,0])
-      circle(r=XCarriage_nozzle_hole_radius);
+    union(){
+      translate([-(num_extruders-1)*extra_extruder_length/2+extruder_dist,0])
+      //#circle(r=XCarriage_nozzle_hole_radius);
+      #circle(r=13/2); //sara
 
-      translate([(num_extruders-1)*extra_extruder_length/2,0])
-      circle(r=XCarriage_nozzle_hole_radius);
+      translate([-(num_extruders-1)*extra_extruder_length/2-extruder_dist,0])
+      //circle(r=XCarriage_nozzle_hole_radius);
+      #circle(r=13/2); //sara
     }
 
     //hole for extruder wiring
     if (!sandwich){
-      translate([-25,-10])
-      rounded_square([25,20], corners=[5,5,5,5]);
+      translate([-10,8])
+      #rounded_square([20,6], corners=[3,3,2,2]);
     }
 
     for (i=[-1,1])
@@ -1942,7 +1945,7 @@ module XCarriage(){
 
   //lasercut parts:
   translate([XCarPosition, 0, XCarriage_height]){
-    XCarriage_bottom_sheet();
+    XCarriage_bottom_sheet(); //sara
     translate([0,0,-bearing_sandwich_spacing]){
 
       for (i=[-1,1]){
@@ -1956,12 +1959,8 @@ module XCarriage(){
       }
 
       translate([0,0,-thickness])
-      XCarriage_sandwich_sheet();
+      XCarriage_sandwich_sheet(); //sara
     }
-
-    if (render_extruder)
-      translate([0,0,thickness])
-      lasercut_extruder();
   }
 
   {
@@ -1981,14 +1980,14 @@ module XCarriage(){
 
   //nozzle:
   translate([XCarPosition, 0, XCarriage_height + thickness])
-  J_head_assembly();
+  J_head_assembly();//sara
 }
 
-module XPlatform(){
+module XPlatform(){ 
   //submodules:
   XEndMotor();
   XEndIdler();
-  XCarriage();
+  XCarriage(); //sara
   Xbelt();
 
   //lasercut parts:

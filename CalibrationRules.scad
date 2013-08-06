@@ -1,5 +1,3 @@
-// Lasercutter Panel #4 for manufacturing the Metamaquina 2 desktop 3d printer
-//
 // (c) 2013 Metamáquina <http://www.metamaquina.com.br/>
 //
 // Author:
@@ -18,17 +16,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use <RAMBo.scad>;
+include <Metamaquina2.h>;
+include <BillOfMaterials.h>;
 
-//This is intended to be lasercut in acrylic
-module lasercutter_panel4(){
-  %plate_border();
+extruder_wiring_radius = 6;
+YEndstopHolder_distance = 66;
 
-  RAMBo_cover_curves();
+//utils
+use <utils.scad>;
+use <mm2logo.scad>;
+use <rounded_square.scad>;
+use <tslot.scad>;
+use <Metamaquina2.scad>
+use <CalibrationRules-conf.scad>
 
-  translate([110,0])
-  RAMBo_cover_curves(3);
-}
-
-lasercutter_panel4();
-
+FrontRule();
+RearRule();
+//RearAssembly();
+//RearBars();
+//FrontBars();
+//LaserCutPanels();
+//Metamaquina2();
