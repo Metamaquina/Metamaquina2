@@ -1961,13 +1961,6 @@ module XCarriage(){
       translate([0,0,-thickness])
       XCarriage_sandwich_sheet(); //sara
     }
-/*
-    if (render_extruder)
-      translate([0,0,thickness])
-      for (i=[-1,1]){
-        translate([i*9,0,0])
-        lasercut_extruder();
-      }*/
   }
 
   {
@@ -1986,11 +1979,7 @@ module XCarriage(){
   XCarriage_linear_bearings();
 
   //nozzle:
-  translate([XCarPosition+1*extruder_dist, 0, XCarriage_height + thickness])
-  J_head_assembly();//sara
-
-  translate([XCarPosition-1*extruder_dist, 0, XCarriage_height + thickness])
-  rotate([0,0,180])
+  translate([XCarPosition, 0, XCarriage_height + thickness])
   J_head_assembly();//sara
 }
 

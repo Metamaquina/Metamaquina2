@@ -23,10 +23,25 @@ include <render.h>;
 use <nozzle.scad>;
 
 module J_head_assembly(){
+
+extruders_distance=9;
+
   J_head_body();
 
-  translate([-0.15625*25.4,-0.250*25.4,-50])
+  translate([-0.15625*25.4+extruders_distance/2,-0.250*25.4,-50])
+  //translate([1*extruders_distance,0,0])
   v4nozzle();
+
+
+
+rotate([0,0,180])
+  translate([-0.15625*25.4+extruders_distance/2,-0.250*25.4,-50])
+  //translate([0,0,0])
+  
+  #v4nozzle();
+
+
+ // #v4nozzle();
 }
 
 module J_head_body(){
@@ -37,49 +52,71 @@ module J_head_body(){
     BillOfMaterials("PTFE liner");
   }
 
+h1=50;
+r1=2*10.4/2;
+
+h2=1;
+r2=2*13/2;
+
+h3=13.6;
+r3=2*16/2;
+
+h4=1;
+r4=2*16/2;
+
+h5=1;
+r5=2*16/2;
+
+h6=1;
+r6=2*16/2;
+
+h7=1;
+r7=2*16/2;
+
+h8=10.4;
+r8=2*16/2;
+
+h9=4.64;
+r9=2*(5/8)*inch/2;
+
+
   material("peek"){
     difference(){
       union(){
         translate([0,0,-50+4.76+4.64]){
-        cylinder(h=50,r=10.4/2);
+        cylinder(h=h1,r=r1);
 
-        cylinder(h=1,r=(13/2));
+        cylinder(h=h2,r=r2);
 
         translate([0,0,1])
-        cylinder(h=13.6,r=(16/2));
+        cylinder(h=h3,r=r3);
 
         translate([0,0,1+13.6+2.5])
-        cylinder(h=1,r=(16/2));
+        cylinder(h=h4,r=r4);
 
         translate([0,0,1+13.6+2.5+1+2.5])
-        cylinder(h=1,r=(16/2));
+        cylinder(h=h5,r=r5);
 
         translate([0,0,1+13.6+2.5+1+2.5+1+2.5])
-        cylinder(h=1,r=(16/2));
+        cylinder(h=h6,r=r6);
 
         translate([0,0,1+13.6+2.5+1+2.5+1+2.5+1+2.5])
-        cylinder(h=1,r=(16/2));
+        cylinder(h=h7,r=r7);
 
         translate([0,0,1+13.6+2.5+1+2.5+1+2.5+1+2.5+1+2.5])
-        cylinder(h=10.4,r=(16/2));
+        cylinder(h=h8,r=r8);
 
         translate([0,0,50-4.64])
-        cylinder(h=4.64,r=(5/8)*inch/2);
+        cylinder(h=h9,r=r9);
         }
       }
 
-extra_extruder_length=50
-extruder_dist=9
-      translate([-extra_extruder_length/2+extruder_dist,0])
-      //#circle(r=XCarriage_nozzle_hole_radius);
-      #circle(r=13/2); //sara
-
       union()
-      translate([13/2+10/2,0,-50+4.76+4.64-10/2+6])
-      cube(size=[10,10,10], center=true );
+      translate([13+10/2,0,-50+4.76+4.64-10/2+6])
+      cube(size=[10,100,10], center=true );
 
-      translate([-13/2-10/2,0,-50+4.76+4.64-10/2+6])
-      cube(size=[10,10,10], center=true );
+      translate([-13-10/2,0,-50+4.76+4.64-10/2+6])
+      cube(size=[10,100,10], center=true );
     }
   }
 }
