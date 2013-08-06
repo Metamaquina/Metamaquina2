@@ -604,7 +604,7 @@ module lasercut_extruder(){
       }
     }
 
-    nozzle();
+    //nozzle(); by Sara
 
     translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
     rotate([0,extruder_gear_angle])
