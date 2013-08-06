@@ -19,7 +19,7 @@ module v4nozzle(){
       difference() {
         union() {
           // heater block
-          cube(size = [0.500,0.500,0.325]);
+          cube(size = [0.630,0.550,0.325]);
 
           // threaded top end
           translate([0.15625,0.250,0.325])
@@ -36,14 +36,19 @@ module v4nozzle(){
           cylinder (h = 0.070, r1 = 0.025, r2 = 0.15625, center = false, $fn = 100);
         }
 
-        // heater resistor hole
-        translate([0.358,0.501,0.1625])
-        rotate ([90,0,0]) cylinder (h=0.502, r = 0.117, center = false, $fn = 100);
+        // heater resistor hole with guide
+        translate([0.458,0.551,0.1625])
+        rotate ([90,0,0]) cylinder (h=0.602, r = 0.117, center = false, $fn = 100);
 
-        // thermistor hole
-        translate([-0.001,0.430,0.1625])
+        translate([0.458,0.501,0.1625-0.117])
+        cube([0.117*2,0.117*2+1,0.117*2], center = true);
+
+        // thermistor hole with guide
+        translate([-0.001,0.480,0.1625])
         rotate ([90,0,90]) cylinder (h=0.170, r = 0.045, center = false, $fn = 100);
 
+        translate([-0.001+0.170/2,0.480,0.1625-0.045*2])
+        rotate ([90,0,90]) cube([0.045*2,0.170,0.170], center = true);
 
 
         // melt chamber
