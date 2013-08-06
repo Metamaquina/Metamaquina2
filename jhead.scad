@@ -23,10 +23,17 @@ include <render.h>;
 use <nozzle.scad>;
 
 module J_head_assembly(){
+
+extruders_distance=9;
+
   J_head_body();
 
   translate([-0.15625*25.4,-0.250*25.4,-50])
+  //translate([1*extruders_distance,0,0])
   v4nozzle();
+
+
+ // #v4nozzle();
 }
 
 module J_head_body(){
@@ -37,12 +44,71 @@ module J_head_body(){
     BillOfMaterials("PTFE liner");
   }
 
+h1=50;
+r1=10.4/2;
+
+h2=1;
+r2=13/2;
+
+h3=13.6;
+r3=16/2;
+
+h4=1;
+r4=16/2;
+
+h5=1;
+r5=16/2;
+
+h6=1;
+r6=16/2;
+
+h7=1;
+r7=16/2;
+
+h8=10.4;
+r8=16/2;
+
+h9=4.64;
+r9=(5/8)*inch/2;
+
+
   material("peek"){
-    translate([0,0,-50+4.76+4.64]){
-      cylinder(h=50,r=6);
-      cylinder(h=50-4.76-4.64,r=(5/8)*inch/2);
-      translate([0,0,50-4.76])
-      cylinder(h=4.64,r=(5/8)*inch/2);
+    difference(){
+      union(){
+        translate([0,0,-50+4.76+4.64]){
+        cylinder(h=h1,r=r1);
+
+        cylinder(h=h2,r=r2);
+
+        translate([0,0,1])
+        cylinder(h=h3,r=r3);
+
+        translate([0,0,1+13.6+2.5])
+        cylinder(h=h4,r=r4);
+
+        translate([0,0,1+13.6+2.5+1+2.5])
+        cylinder(h=h5,r=r5);
+
+        translate([0,0,1+13.6+2.5+1+2.5+1+2.5])
+        cylinder(h=h6,r=r6);
+
+        translate([0,0,1+13.6+2.5+1+2.5+1+2.5+1+2.5])
+        cylinder(h=h7,r=r7);
+
+        translate([0,0,1+13.6+2.5+1+2.5+1+2.5+1+2.5+1+2.5])
+        cylinder(h=h8,r=r8);
+
+        translate([0,0,50-4.64])
+        cylinder(h=h9,r=r9);
+        }
+      }
+
+      union()
+      translate([13+10/2,0,-50+4.76+4.64-10/2+6])
+      cube(size=[10,100,10], center=true );
+
+      translate([-13-10/2,0,-50+4.76+4.64-10/2+6])
+      cube(size=[10,100,10], center=true );
     }
   }
 }
