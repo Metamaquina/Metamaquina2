@@ -1344,10 +1344,17 @@ module XCarriage_plainface(sandwich=false){
       if (sandwich){
         x_carriage_screw_driver_access_holes();
       } else {
-        //holes for attaching the wade extruder
-        for (i=[-1,1])
-          translate([0,i*extruder_mount_holes_distance/2])
+        //holes for attaching and removing the wade extruder
+          translate([0,-1*extruder_mount_holes_distance/2])
           circle(r=m4_diameter/2);
+
+        hull(){
+          translate([0,1*extruder_mount_holes_distance/2])
+          circle(r=m4_diameter/2);
+
+          translate([0,1*extruder_mount_holes_distance/2+10])
+          circle(r=m4_diameter/2);
+        }
       }
 
     //holes for spacers
@@ -1367,11 +1374,13 @@ module XCarriage_bottom_face(){
   difference(){
     XCarriage_plainface();
 
-    //holes for beltclamps
-    translate ([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width]){
+    union(){
+      //holes for beltclamps
+      translate ([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width]){
       for (i=[-1.3,1.3])
         translate([i*(XCarriage_lm8uu_distance/2+10), 0])
         beltclamp_holes();
+      }
     }
 
     //these are for making sure the motor wires are not broken by the machine's constant movement:
@@ -1997,7 +2006,7 @@ module XCarriage(){
 }
 
 module XPlatform(){
-  //submodules:
+  //submodules: 
   XEndMotor();
   XEndIdler();
   XCarriage();
@@ -2689,8 +2698,8 @@ module BottomRearNutsAndWashers(){
 module FrontAssembly(){
   FrontBars();
 
-//  FrontTopBar();
-  //FrontBottomBars();
+  FrontTopBar();
+  FrontBottomBars();
 }
 
 //!YMotorAssembly();
@@ -2704,8 +2713,8 @@ module YMotorAssembly(){
 
 module RearAssembly(){
   RearBars();
-//  RearTopBar();
-//  RearBottomBar();
+  RearTopBar();
+  RearBottomBar();
 
   translate([-7, RightPanel_basewidth/2 - bar_cut_length, 60 + feetheight +12])
   rotate([0,-90,0])
@@ -2845,6 +2854,12 @@ if (render_calibration_guide){
 
 use <FilamentSpoolHolder.scad>;
 
-FilamentSpoolHolder();
+
+translate([400,0,0])
+rotate([0,0,90]){
+  FilamentSpoolHolder();
+  FilamentSpool();
+}
+
 
 
