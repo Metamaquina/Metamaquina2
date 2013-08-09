@@ -18,7 +18,7 @@
 
 include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
-include <jhead.h>;
+include <jheads.h>;
 include <render.h>;
 use <nozzle.scad>;
 
@@ -31,15 +31,13 @@ module J_head_assembly(){
     J_head_body();
   }
 
-  translate([0.15625*25.4-extruders_distance,0.250*25.4,-50])
+  translate([-extruders_distance,0,-50])
   rotate([0,0,180])
   difference(){
     v4nozzle();
-    square([]);
 }
 
-  translate([-0.15625*25.4,-0.250*25.4,-50])
-  translate([1*extruders_distance,0,0])
+  translate([extruders_distance,0,-50])
   v4nozzle();
 }
 
