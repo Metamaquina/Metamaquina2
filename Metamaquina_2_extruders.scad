@@ -34,6 +34,7 @@ include <heated_bed.h>;
 use <gears_Bowden.scad>;
 use <RAMBo.scad>;
 use <jheads.scad>;
+use <lasercut_2_extruders.scad>
 
 //parts
 include <NEMA.h>;
@@ -1327,17 +1328,17 @@ module XCarriage_plainface(sandwich=false){
     union(){
       translate([-(num_extruders-1)*extra_extruder_length/2+extruder_dist,0])
       //#circle(r=XCarriage_nozzle_hole_radius);
-      #circle(r=13/2); //sara
+      circle(r=13/2);
 
       translate([-(num_extruders-1)*extra_extruder_length/2-extruder_dist,0])
       //circle(r=XCarriage_nozzle_hole_radius);
-      #circle(r=13/2); //sara
+      circle(r=13/2);
     }
 
     //hole for extruder wiring
     if (!sandwich){
       translate([-10,8])
-      #rounded_square([20,6], corners=[3,3,2,2]);
+      rounded_square([20,6], corners=[3,3,2,2]);
     }
 
     for (i=[-1,1])
@@ -1517,6 +1518,11 @@ module MachineRightPanel_sheet(){
       }
     }
   }
+
+    //translate([50,95,-6])
+    rotate([90,180,270])
+    #lasercut_extruder(); //sara
+
 }
 
 //!MachineLeftPanel_sheet();
@@ -1539,6 +1545,9 @@ module MachineLeftPanel_sheet(){
         rotate([180,0])
         cable_clip(type);
       }
+    translate([50,95,-6])
+    rotate([180,0,0])
+    lasercut_extruder(); //sara
     }
 
     translate([RAMBo_x, RAMBo_y, thickness])
@@ -2764,12 +2773,12 @@ module plate_border(w=500, h=500, border=2){
   }
 }
 
-//!LaserCutPanels();
+//!LaserCutPanels(); //sara
 module Metamaquina2(){
   LaserCutPanels();
-  FrontAssembly();
-  RearAssembly();
-
+  //FrontAssembly();
+  //RearAssembly();
+/*
   if (render_xplatform){
     translate([0,
                -XZStage_offset,
@@ -2781,7 +2790,7 @@ module Metamaquina2(){
   }
 
   YPlatform();
-  ZAxis();
+  ZAxis();*/
 }
 
 //rotate([0,0,cos(360*time)*60])
@@ -2835,12 +2844,14 @@ if (render_calibration_guide){
 
 use <FilamentSpoolHolder.scad>;
 
+ //sara 
 
+/*
 translate([400,0,0])
 rotate([0,0,90]){
   FilamentSpoolHolder();
   FilamentSpool();
-}
+}*/
 
 
 
