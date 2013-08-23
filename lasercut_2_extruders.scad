@@ -21,13 +21,14 @@
 use <NEMA.scad>;
 use <608zz_bearing.scad>;
 use <rounded_square.scad>;
+use <Metamaquina_2_extruders.scad>
 
 // Gears
 use <small_extruder_gear.scad>
 use <large_extruder_gear.scad>
 
 use <tslot.scad>;
-include <Metamaquina2.h>;
+//include <Metamaquina2.h>;
 include <nuts.h>;
 include <washers.h>;
 include <bolts.h>;
@@ -37,8 +38,8 @@ LCExtruder_nut_gap = false;
 extruder_mount_holes_distance = X_rods_distance + 14;
 idler_axis_position = [-12,21];
 idler_bearing_position = idler_axis_position + [0.4,15.6];
-motor_position = [45.5,35];
-motor_angle = 28;
+motor_position = [3,36.5];//[45.5,35];
+motor_angle = 180; //45+90
 idler_angle = 0;
 extruder_gear_angle = 40;
 hobbed_bolt_position = [3,36.5];
@@ -54,7 +55,7 @@ module M3_hole(){
 }
 
 module M4_hole(){
-  #circle(r=m4_diameter/2);
+  circle(r=m4_diameter/2);
 }
 ///////////////////
 
@@ -81,6 +82,7 @@ module handle_sheet(){
   handle_face();
 }*/
 
+/*
 //!idler_side_face();
 module idler_side_face(smooth_rod_cut_diameter=7.8){
   R=23;
@@ -116,7 +118,9 @@ module idler_side_face(smooth_rod_cut_diameter=7.8){
     rotate(-90)
     TSlot_joints(width=R);
   }
-}
+}*/
+
+/*
 //!idler_side_face();
 module idler_back_face(){
   R=23;
@@ -140,7 +144,7 @@ module idler_back_face(){
       t_slot_holes(width=R, thickness=thickness);
   }
 }
-
+*/
 module idler_back_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Idler Back");
 
@@ -193,48 +197,38 @@ module handlelock(){
 }
 
 module slice_numbering(n){
-  translate([-22,3])
+  translate([-1,14])
   for (i=[1:n])
-    translate([i, 0])
-    square([0.1,1]);
+      translate([i, 0])
+      square([0.1,1]);
 }
 
+m3_diameter = 3;
 module slice1_face(){
   difference(){
-    extruder_slice(bearing_slot=true, idler_axis=false, handle_lock=true);
+    extruder_slice(face_base=true, idler_axis2=true, face_final=true);
     slice_numbering(1);
   }
 }
 
 module slice2_face(){
   difference(){
-    extruder_slice(nozzle_holder2=true, idler_axis=true, idler_nut_gap=LCExtruder_nut_gap);
+            extruder_slice(idler_axis2=true,  idler_nut_gap=LCExtruder_nut_gap, face_base=true, bearing_slot2=true);
     slice_numbering(2);
   }
 }
 
 module slice3_face(){
   difference(){
-    extruder_slice(nozzle_holder=true, idler_axis=true, filament_channel=true, mount_holes=true);
-    slice_numbering(3);
-
-    translate([40,0])
+      extruder_slice(nozzle_holder2=true, idler_axis2=true, idler_nut_gap=LCExtruder_nut_gap, face_base=true, spring_hole=true, bearing_slot=true, spring_locker=true, ortho_locker=false);
     slice_numbering(3);
   }
 }
 
-m3_diameter = 3;
 module slice4_face(){
   difference(){
-    extruder_slice(nozzle_holder2=true, motor_holder=true, idler_axis=true);
+      extruder_slice(face_base=true, motor_holes=true);
     slice_numbering(4);
-  }
-}
-
-module slice5_face(){
-  difference(){
-    extruder_slice(bearing_slot=true, idler_axis=false, handle_lock=true);
-    slice_numbering(5);
   }
 }
 
@@ -251,6 +245,8 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
   608zz_diameter = 22;
   idler_axis_width = 7;
   base_length = extruder_mount_holes_distance+12;
+  bdn_hole_diam = 5; //external diameter of the Bowden tube
+  filament_diam = 3;
 
   difference(){
     union(){
@@ -258,30 +254,73 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
       translate([0,base_thickness/2]){
         hull(){
           for (i=[-1,1]){
-            translate([i*base_length/2,0])
-            circle(r=base_thickness/2);
+            //translate([i*base_length/4,0])
+            //circle(r=base_thickness/2);
           }
         }
       }
 
-      if (motor_holder){
-        translate(position_of_holder_for_extruder_wires)
-        rounded_square([20,30], corners=[5,5,5,5]);
+      if (sheets_together2){
+        //translate([-4,hobbed_bolt_position[1]])
+        //rounded_square([15+4,H-hobbed_bolt_position[1]], corners=[3,3,3,3]);
+      }
 
+      if (motor_holder){
         hull(){
-          translate([15,0])
-          square([epsilon, H]);
+          //translate([15,0])
+          //square([epsilon, H]);
 
           translate(motor_position)
           rotate(-motor_angle)
           translate([-NEMA_side/2,-NEMA_side/2])
-          rounded_square([NEMA_side,NEMA_side], corners=[5,5,5,5]);
+          rounded_square([NEMA_side,NEMA_side]+[15,0], corners=[5,5,5,5]);
+        }
+      }
+
+      if (face_base){
+        hull(){
+          //translate([15,0])
+          //square([epsilon, H]);
+
+          translate(motor_position)
+          rotate(-motor_angle)
+          translate([-NEMA_side/2,-NEMA_side/2])
+          rounded_square([NEMA_side,NEMA_side]+[20,0], corners=[5,5,5,5]);
+        }
+      }
+
+      if (spring_locker){
+          translate([motor_position])
+          translate([-20-0.5,36.5])
+          square([10, 7.8], center=true);
+      }
+
+      if (motor_holder2){
+        hull(){
+          //translate([15,0])
+          //square([epsilon, H]);
+
+          translate(motor_position)
+          rotate(-motor_angle)
+          translate([-NEMA_side/2,-NEMA_side/2])
+          rounded_square([NEMA_side,NEMA_side]+[15,0], corners=[5,5,5,5]);
         }
       }
 
       difference(){
         union(){
 
+          if (motor_holes){
+            hull(){
+
+              translate(motor_position)
+              rotate(-motor_angle)
+              translate([-NEMA_side/2,-NEMA_side/2])
+              rounded_square([NEMA_side,NEMA_side]+[15,0], corners=[5,5,5,5]);
+            }
+          }
+
+/*
           if (bearing_slot){
             translate(hobbed_bolt_position){
               intersection(){
@@ -291,55 +330,70 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
                 square([18,2*18]);
               }
             }
+          }*/
+/*
+          if (bearing_slot2){
+            translate(hobbed_bolt_position)
+              circle(r=16);
           }
-
+*/
           translate([-23/2,0]){
             if (idler_axis)
               square([idler_axis_width,hobbed_bolt_position[1]]);
 
-            translate([idler_axis_width,0])
-            square([15 - idler_axis_width + 23/2,hobbed_bolt_position[1]]);
-
             if (handle_lock)
               handlelock();
           }
-
-          translate([-4,hobbed_bolt_position[1]])
-          square([15+4,H-hobbed_bolt_position[1]]);
-        }
-
+      }
+/*
         translate(hobbed_bolt_position){
           circle(r=8/2);
           if (bearing_slot)
             circle(r=608zz_diameter/2);
-        }
-
-        translate(hobbed_bolt_position - [14,0])
-        circle(r=23/2);
+        
+          if (bearing_slot2)
+            circle(r=608zz_diameter/2);
+          }*/
       }
 
       if (idler_axis){
         translate([-9 - 1.5*r, 0])
         rounded_square([1.5*r, hobbed_bolt_position[1] - 23/2], corners=[0,0,r,0]);
       }
+
+      if (idler_axis2){
+        //translate([-9 - 1.5*r, 0])
+        //rounded_square([3*r, hobbed_bolt_position[1] - 23/2], corners=[0,0,0,0]);
+      }
     }
 
+///////////////////////
+
+//holes
+
+  if (face_final){
+    translate([-14.6-1/2,36.6])
+    rounded_square([14+1, 7.8], corners=[7.8/2, 7.8/2, 7.8/2, 7.8/2], center=true);
+
+    translate(motor_position+[0,0,0])
+    circle(r=7.2/2);
+  }
+
+      if (ortho_locker){ 
+        for (i=[-1,1]){
+          translate(motor_position+[-10,i*12.5])
+          square([NEMA_side+20,m3_diameter/2], center=true);
+        }
+      }
+
   //cut for an M4 washer
-  translate([27,base_thickness])
-  square([10, 1.5]);
+  //translate([27,base_thickness])
+  //square([10, 1.5]);
 
-  //bolt holes for keeping the 5 extruder sheets together:
-  translate([11, 54])
-  circle(r=m3_diameter/2);
-
-  translate([-25, base_thickness/2])
-  circle(r=m3_diameter/2);
-
-  translate([11, 20])
-  circle(r=m3_diameter/2);
-
+  if (sheets_together){
   translate(idler_axis_position)
   circle(r=m3_diameter/2);
+  }
 
   if (idler_nut_gap){
     translate(idler_axis_position - [5,4.5])
@@ -354,21 +408,19 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
 
   //////////////////
 
-  if (nozzle_holder){
+
+
+  if (nozzle_holder){  
     //cuts for attaching the nozzle holder
     translate([-nozzle_hole_width/2-0.3,0])
     square([nozzle_hole_width,10]);
   }
 
-  if (nozzle_holder2){
-    //cuts for attaching the nozzle holder
-    translate([-nozzle_hole_width2/2-0.3,0])
-    square([nozzle_hole_width2,10]);
-  }
+  //////////////////
 
   for (i=[-1,1])
-    translate([i*nozzle_hole_width2/2-0.3,5])
-    circle(r=m3_diameter/2);
+    //translate([i*nozzle_hole_width2/2-0.3+3,5])
+    //circle(r=m3_diameter/2);
 
   if (filament_channel){
     translate([-1.9,0]){
@@ -382,12 +434,6 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
 
   ///////////////
     if (motor_holder){
-      for (i=[-1,1])
-        for (j=[-1,1])
-          translate(position_of_holder_for_extruder_wires)
-          translate([10+i*5, 20+j*5])
-          circle(r=m3_diameter/2);
-
       translate(motor_position){
         rotate(-motor_angle){
           circle(r=12);
@@ -407,18 +453,101 @@ module extruder_slice(motor_holder=false, bearing_slot=false, filament_channel=f
         }
       }
     }
+
+    if (face_base){
+      translate(motor_position){
+        rotate(-motor_angle){
+
+          for (i=[-1,1]){
+            for (j=[-1,1]){
+              translate([i*NEMA_holes_distance, j*NEMA_holes_distance])
+              circle(r=m3_diameter/2);
+            }
+          }
+        }
+      }
+    }
+
+    if (bearing_slot){
+      translate(motor_position)
+      circle(r=608zz_diameter/2);
+    }
+
+    if (bearing_slot2){
+      translate(motor_position+[-7.2/2-14.5,0])
+      square([18+608zz_diameter/2,608zz_diameter], center=true);
+
+      translate(motor_position+[-7.2/2,0])
+      square([filament_diam,NEMA_side], center=true); 
+  
+      hull(){
+        translate(motor_position+[-7.2/2,NEMA_side/4+15/2])
+        square([bdn_hole_diam,NEMA_side/2-15], center=true);
+
+        translate(motor_position+[-7.2/2,NEMA_side/4+15/2-8])
+        circle(r=1/2, center=true);
+      }
+
+      translate(motor_position+[-7.2/2,NEMA_side/2-4])
+      square([10,3], center=true);
+    }
+
+    if (motor_holder2){
+      translate(idler_axis_position+[0,15])
+      circle(r=12, center=true);
+
+          for (i=[-1,1]){
+            for (j=[-1,1]){
+              translate([i*NEMA_holes_distance, j*NEMA_holes_distance])
+              hull()
+              rotate(motor_angle){
+                for (x=[-k,k]){
+                  translate([x,0])
+                    circle(r=m3_diameter/2);
+            }
+          }
+        }
+      }
+    }
+
+  if (spring_hole){
+    translate(motor_position+[-25,0])
+    square([18+30,7.8], center=true);
+
+    translate(motor_position+[-22-13-5,0])
+    square([3,10], center=true);
+  }
+
+   if (sheets_together2){
+      //bolt holes for keeping the 5 extruder sheets together:
+      translate([11, 54])
+      circle(r=m3_diameter/2);
+
+      translate([11, 20])
+      circle(r=m3_diameter/2);
+    }
+
+    if (motor_holes){ 
+      translate(motor_position){
+        rotate(-motor_angle){
+          circle(r=12);
+        }
+      }
+    }
+
   ///////////////
     //holes for m3x35 screws to pack all 5 slices together
     for (i=[-1,1])
-      translate([i*base_length/2, base_thickness/2])
+      translate([i*base_length/4, base_thickness/2])
       circle(r=m3_diameter/2);
   }
 }
 
 module slice1(){
-  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #1");
+  BillOfMaterials(category="Lasercut Acrylic", partname="LCExtruder Slice #1");
 
-  material("lasercut")
+  material("acrylic")
+  translate([0,0,3*thickness])
   linear_extrude(height=thickness)
   slice1_face();
 }
@@ -427,17 +556,16 @@ module slice2(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #2");
 
   material("lasercut")
-  translate([0,0,1*thickness])
+  translate([0,0,4*thickness])
   linear_extrude(height=thickness)
   slice2_face();
 }
 
-//!slice3();
 module slice3(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #3");
 
   material("lasercut")
-  translate([0,0,2*thickness])
+  translate([0,0,5*thickness])
   linear_extrude(height=thickness)
   slice3_face();
 }
@@ -446,18 +574,9 @@ module slice4(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #4");
 
   material("lasercut")
-  translate([0,0,3*thickness])
+  translate([0,0,6*thickness])
   linear_extrude(height=thickness)
   slice4_face();
-}
-
-module slice5(){
-  BillOfMaterials(category="Lasercut wood", partname="LCExtruder Slice #5");
-
-  material("lasercut")
-  translate([0,0,4*thickness])
-  linear_extrude(height=thickness)
-  slice5_face();
 }
 
 module handle(){
@@ -503,7 +622,7 @@ module idler(){
   bearing_thickness = 7;
 
   rotate([90,0])
-    translate([0,0,5*thickness])
+    translate([0,0,7*thickness])
     translate(idler_bearing_position)
     idler_bolt_subassembly();
 
@@ -519,15 +638,15 @@ module idler(){
         translate([0,0,thickness]) M3_nut();
       }
 
-      translate(idler_bearing_position - idler_axis_position)
+      //translate(idler_bearing_position - idler_axis_position)
       translate([0,0, thickness]){
-        idler_spacer_6mm_sheet();
+        //idler_spacer_6mm_sheet();
 
         translate([0,0, thickness]){
-          608zz_bearing(true);
+          //608zz_bearing(true);
 
-          translate([0,0,bearing_thickness])
-            idler_spacer_5mm_sheet();
+          //translate([0,0,bearing_thickness])
+            //idler_spacer_5mm_sheet();
         }
       }
 
@@ -555,11 +674,10 @@ module extruder_block(){
   }
 
   rotate([90,0]){
-    slice1();
-    slice2();
+    //slice1();
+    //slice2();
     slice3();
     slice4();
-    slice5();
   }
 }
 
@@ -586,58 +704,62 @@ module hobbed_bolt(){
   BillOfMaterials("Hobbed bolt");
 
   material("metal")
+  translate([0,-3*thickness,0])
   rotate([90,0])
-  cylinder(r=7.2/2, h=5*thickness);
+  cylinder(r=7.2/2, h=3*thickness); //eixo motor sara
 }
 
 washer_thickness = 1.5;
-module lasercut_extruder(){
+module lasercut_extruder1(){
   rotate(90)
   union(){
     translate([0,2.5*thickness]){
       extruder_block();
-      idler();
+    translate([0,6])
+    translate([-7,0,0]) //teste andando sara
+      idler(); //outro eixo sara recartilhado
+    material("metal")
+    translate([-11.6,-6,36.5])
+    translate([-7,0,0]) //teste andando sara
+      sphere(r=7.8/2, $fn=100);//esfera ponta para não machucar
     }
-
-    translate([7,0,58]){
-      rotate([0,-90,0]){
-        rotate([0,0,-90]){
-          handle();
-        }
-      }
-    }
-
-    //nozzle();
-
-    translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
-    rotate([0,extruder_gear_angle])
-    rotate([90,0])
-    extruder_gear(teeth=37);
 
     translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]]) hobbed_bolt();
 
-    translate([hobbed_bolt_position[0], -3*thickness/2, hobbed_bolt_position[1]])
+    translate([hobbed_bolt_position[0], -4.8*thickness/2, hobbed_bolt_position[1]])
     rotate([90,0])
     608zz_bearing(true);
 
-    translate([hobbed_bolt_position[0], 3*thickness/2+7, hobbed_bolt_position[1]])
+    translate([hobbed_bolt_position[0], -2.8*thickness/2, hobbed_bolt_position[1]]+[-(7.2+22)/2,0,0])
+    translate([-7,0,0]) //teste andando sara
     rotate([90,0])
-    608zz_bearing(true);
+    %608zz_bearing(true);
 
-    translate([motor_position[0], -thickness/2, motor_position[1]])
-    rotate([-90,0])
+    translate([hobbed_bolt_position[0], -8*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
+    rotate([90,0])
     rotate(motor_angle)
-    {
-      NEMA17_subassembly();
+    NEMA17_subassembly();
 
-      translate([0,0,-2*thickness - 2*washer_thickness])
-      rotate([180,0])
-      motor_gear(teeth=11);
-    }
+    material("metal") //eixo em contato com a mola sara
+    translate([hobbed_bolt_position[0]-23.5+2,-thickness*3,36.5])
+    translate([-7,0,0]) //teste andando sara
+    rotate([0,90,0])
+    cube([7.8, 6, 10], center=true);//era 14
   }
 }
 
-  lasercut_extruder();
+module lasercut_extruder2(){
+  mirror([10,0,0])
+    lasercut_extruder1();
+}
 
-//%translate([0,0,-thickness]) XCarriage_bottom_sheet();
+
+translate([-150,150,250])
+  lasercut_extruder1();
+
+//translate([169,150,250])
+  //lasercut_extruder2();
+
+//% MachineLeftPanel_sheet();
+//% MachineRightPanel_sheet();
 

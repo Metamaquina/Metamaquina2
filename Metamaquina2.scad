@@ -2736,7 +2736,7 @@ module YMotorAssembly(){
 
 module RearAssembly(){
   RearBars();
-//  RearTopBar();
+//  RearTopBar(); //sara
 //  RearBottomBar();
 
   translate([-7, RightPanel_basewidth/2 - bar_cut_length, 60 + feetheight +12])
@@ -2745,12 +2745,12 @@ module RearAssembly(){
   YMotorAssembly();
 }
 
-module LaserCutPanels(){
-  MachineTopPanel_sheet();
+module LaserCutPanels(){ //sara
+  //MachineTopPanel_sheet();
   MachineLeftPanel_sheet();
   MachineRightPanel_sheet();
-  MachineArcPanel_sheet();
-  MachineBottomPanel_sheet();
+  //MachineArcPanel_sheet();
+  //MachineBottomPanel_sheet();
 
   RodEnd_ZTopLeft_sheet();
   SecondaryRodEnd_ZTopLeft_sheet();
@@ -2813,10 +2813,10 @@ module plate_border(w=500, h=500, border=2){
 
 //!LaserCutPanels();
 module Metamaquina2(){
-  LaserCutPanels();
+  //LaserCutPanels();
   FrontAssembly();
-  RearAssembly();
-
+  //RearAssembly(); //sara
+/*
   if (render_xplatform){
     translate([0,
                -XZStage_offset,
@@ -2828,7 +2828,7 @@ module Metamaquina2(){
   }
 
   YPlatform();
-  ZAxis();
+  ZAxis();*/
 }
 
 //rotate([0,0,cos(360*time)*60])
