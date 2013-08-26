@@ -2830,6 +2830,8 @@ module plate_border(w=500, h=500, border=2){
 
 //!LaserCutPanels();
 module Metamaquina2(){
+  BillOfMaterials(str("MM2 lasercut set (", current_revision_id, ")"), ref=str("MM2_CAR_", current_revision_id));
+  
   LaserCutPanels();
   FrontAssembly();
   RearAssembly();
@@ -2839,8 +2841,7 @@ module Metamaquina2(){
                -XZStage_offset,
                BuildPlatform_height
                + ZCarPosition
-               + nozzle_tip_distance
-])
+               + nozzle_tip_distance])
       XPlatform();
   }
 

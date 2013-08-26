@@ -59,10 +59,12 @@ extruder_mount_holes_distance = X_rods_distance + 14;
 
 XPlatform_height = 45;
 
+current_revision_id = "revD";
 //[revision_id, batch_number, first_id, size_of_batch]
 //batch_run = ["revA", 0, 31, 6];
 //batch_run = ["revB", 1, 37, 10];
 //batch_run = ["revB", 2, 47, 10];
 //batch_run = ["revC", 3, 57, 10];
-batch_run = false;
+//batch_run = ["revC", 4, 67, 10];
+batch_run = ["revD", 5, 77, 10];
 
