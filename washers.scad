@@ -51,7 +51,10 @@ module M8_mudguard_washer(){
 
 module M8_lock_washer(){
   BillOfMaterials("M8 lock washer", ref="AP_M8");
-  //TODO: render
+
+  washer(washer_thickness = m8_washer_thickness,
+         external_diameter = m8_washer_D*0.8,
+         internal_diameter = m8_washer_d);
 }
 
 module washer(washer_thickness, external_diameter, internal_diameter){

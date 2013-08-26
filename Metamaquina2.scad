@@ -2474,16 +2474,21 @@ module bearing_assembly(rear){
 
           translate([0,0, washer_thickness]){
             M8_mudguard_washer();
-
             if (rear && i==1){
-              translate([0,0, mudguard_washer_thickness + thickness])
-              M8_washer();
-
-translate([0,0, mudguard_washer_thickness + thickness + washer_thickness])
-              M8_nut();
+              translate([0,0, mudguard_washer_thickness + thickness]) {
+                M8_washer();
+                translate([0,0,washer_thickness]) {
+                  #M8_lock_washer();
+                  translate([0,0,washer_thickness])
+                  M8_nut();
+                }
+              }
             }else{
-              translate([0,0, mudguard_washer_thickness])
-              M8_nut();
+              translate([0,0,mudguard_washer_thickness]) {
+                #M8_lock_washer();
+                translate([0,0,washer_thickness])
+                M8_nut();
+                }
             }
           }
         }
@@ -2534,7 +2539,8 @@ module nut_cap_assembly(){
 
           translate([0,0, washer_thickness])
           if (angle==180){
-            M8_nut();
+            #M8_lock_washer();
+            translate([0,0,washer_thickness]) M8_nut();
           }else{
             M8_domed_cap_nut();
           }
