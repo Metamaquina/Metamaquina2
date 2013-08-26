@@ -36,10 +36,10 @@ hiqua_mount_positions = [
 
 //TODO:
 meanwell_mount_positions = [
-                  [5, [32.5, 32.5]],
-                  [5, [32.5, PowerSupply_height-33.5]],
-                  [5, [82.5, 32.5]],
-                  [5, [82.5, PowerSupply_height-33.5]]
+                  [4.5, [32.5, 32.5]],
+                  [4.5, [32.5, PowerSupply_height-33.5]],
+                  [4.5, [82.5, 32.5]],
+                  [4.5, [82.5, PowerSupply_height-33.5]]
 ];
 
 module HiquaPowerSupply_mount_holes(){
@@ -47,17 +47,22 @@ module HiquaPowerSupply_mount_holes(){
 }
 
 module MeanWellPowerSupply_mount_holes(){
-  PowerSupply_mount_holes(mount_positions=meanwell_mount_positions);
+  PowerSupply_mount_holes(mount_positions=meanwell_mount_positions, slot_length=2);
 }
 
 
-module PowerSupply_mount_holes(mount_positions){
+module PowerSupply_mount_holes(mount_positions, slot_length=0){
   wiring_radius = 8;
 
   for (p = mount_positions){
     assign(diameter=p[0], position=p[1]){
-      translate(position)
-      circle(r=diameter/2);
+      hull(){
+        translate([position[0], position[1]+slot_length])
+        circle(r=diameter/2);
+        translate([position[0], position[1]-slot_length])
+        circle(r=diameter/2);
+      }
+
     }
   }
 
