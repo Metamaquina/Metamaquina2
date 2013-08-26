@@ -132,7 +132,7 @@ module lasercutter_panel(){
       for (i=[0:1]){
         translate([i*30,0])
          rotate(45)
-         top_wiring_hole_aux(r=6);
+         TopWiringHoleAux_face();
       }
     }
 

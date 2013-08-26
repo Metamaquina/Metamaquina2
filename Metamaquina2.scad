@@ -19,7 +19,7 @@
 include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
 
-extruder_wiring_radius = 16.2/2;
+extruder_wiring_diameter = 18;
 YEndstopHolder_distance = 66;
 
 //utils
@@ -760,7 +760,7 @@ module top_wiring_hole_aux(r=5, border=4){
       translate([13,0]) circle(r=3/2 + border);
       translate([-13,0]) circle(r=3/2 + border);
     }
-    circle(r=r);
+    scale([1,12.5/17])circle(r=r); //wiring is oval
     translate([13,0]) M3_hole();
     translate([-13,0]) M3_hole();
   }
@@ -768,7 +768,7 @@ module top_wiring_hole_aux(r=5, border=4){
 
 module top_hole_for_extruder_wires(){
   translate([0,120]){
-    circle(r=10);
+    circle(r=1.15*extruder_wiring_diameter/2);
 
     translate([13,0]) M3_hole();
     translate([-13,0]) M3_hole();
@@ -1564,12 +1564,18 @@ module MachineLeftPanel_sheet(){
   }
 }
 
-module top_wiring_hole_aux_sheet(r){
+module TopWiringHoleAux_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Top Wiring Hole Aux Sheet");  
 
   material("lasercut")
   linear_extrude(height=thickness)
-  top_wiring_hole_aux(r=r);
+
+  TopWiringHoleAux_face();
+}
+
+//!TopWiringHoleAux_face();
+module TopWiringHoleAux_face(){
+  top_wiring_hole_aux(r=extruder_wiring_diameter/2);
 }
 
 //!MachineTopPanel_sheet();
@@ -1589,11 +1595,9 @@ module MachineTopPanel_sheet(){
 
     tslot_parts_from_list(TopPanel_TSLOTS);
 
-    translate([0,120,thickness])
-    top_wiring_hole_aux_sheet(r=extruder_wiring_radius);
-
-    translate([0,120,-thickness])
-    top_wiring_hole_aux_sheet(r=extruder_wiring_radius);
+    for(i=[-1,1])
+      translate([0,120,i*thickness])
+      TopWiringHoleAux_sheet();
 
     for (clip=top_cable_clips){
       assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
