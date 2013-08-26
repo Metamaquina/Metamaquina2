@@ -53,7 +53,7 @@ module FrontRule_face(){
 //barras transversais
     translate([i*Y_rods_distance/2,-11+tolerancia,0]) 
       rounded_square([m8_diameter,50], corners=[0,0,m8_diameter/2,m8_diameter/2], center=true);
-
+/*
 //arruelas encostadas nas laterais
     translate([i*(SidePanels_distance-2*thickness-m8_washer_thickness)/2,m8_washer_D/2-50/2+tolerancia,0])
       square([m8_washer_thickness,50], center=true);
@@ -68,7 +68,16 @@ module FrontRule_face(){
 
 //porcas encostadas nas laterais do rolamento
     translate([i*(bearing_thickness+2*mudguard_washer_thickness+2*washer_thickness+2*1.25+m8_nut_height)/2,m8_nut_R-50/2+1.1+tolerancia,0])
-      square([m8_nut_height,50], center=true);
+      square([m8_nut_height,50], center=true); */
+
+//espaço na lateral
+    translate([i*(SidePanels_distance-2*thickness-m8_washer_thickness)/2,m8_washer_D/2-50/2+tolerancia,0])
+      square([m8_washer_thickness+20,52], center=true);
+
+
+//espaço no centro
+    translate([i*(bearing_thickness+2*mudguard_washer_thickness+2*washer_thickness+1.25)/2,m8_washer_D/2-50/2+tolerancia,0])
+      square([m8_nut_height+20,52], center=true);
     }
 
 //rolamento
@@ -111,15 +120,29 @@ rotate([180,0,0])
         translate([i*Y_rods_distance/2,-11+tolerancia,0]) 
           rounded_square([m8_diameter,50], corners=[0,0,m8_diameter/2,m8_diameter/2], center=true);
 
+//espaço na lateral
+    translate([i*(SidePanels_distance-2*thickness-m8_washer_thickness)/2,m8_washer_D/2-50/2+tolerancia,0])
+      square([m8_washer_thickness+20,52], center=true);
+
+/*
 //arruelas encostadas nas laterais
         translate([i*(SidePanels_distance-2*thickness-m8_washer_thickness)/2,m8_washer_D/2-50/2+tolerancia,0])
           square([m8_washer_thickness,50], center=true);
 
 //porcas encostadas nas laterais
         translate([i*(SidePanels_distance-2*thickness-2*m8_washer_thickness-m8_nut_height)/2,m8_nut_R-50/2+1.1+tolerancia,0])
-          square([m8_nut_height,50], center=true);
+          square([m8_nut_height,50], center=true);*/
       }
 
+//espaço à direita
+        translate([(bearing_thickness+2*mudguard_washer_thickness+2*washer_thickness+m8_nut_height)/2,m8_nut_R-50/2+1.1+tolerancia,0])
+          square([m8_nut_height+3,55], center=true);
+
+//porca da esquerda encostada no rolamento
+        translate([-(bearing_thickness+2*mudguard_washer_thickness+2*washer_thickness+2*thickness+m8_washer_thickness)/2,m8_washer_D/2-50/2+tolerancia,0])
+         square([m8_nut_height+10,55], center=true);
+
+/*
 //porca da direita encostada no rolamento
         translate([(bearing_thickness+2*mudguard_washer_thickness+2*washer_thickness+m8_nut_height)/2,m8_nut_R-50/2+1.1+tolerancia,0])
           square([m8_nut_height,50], center=true);
@@ -131,7 +154,7 @@ rotate([180,0,0])
 //arruela encostada no rolamento
         translate([-(bearing_thickness+2*mudguard_washer_thickness+2*washer_thickness+2*thickness+m8_washer_thickness)/2,m8_washer_D/2-50/2+tolerancia,0])
           square([m8_washer_thickness,50], center=true);
-
+*/
 //rolamento
         translate([0,-9+tolerancia,0])
           square([bearing_thickness+2*mudguard_washer_thickness+2*washer_thickness,50], center=true);
