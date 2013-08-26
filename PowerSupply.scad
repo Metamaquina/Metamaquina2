@@ -130,13 +130,21 @@ module HiquaPowerSupply(){
 
 //!MeanWellPowerSupply();
 module MeanWellPowerSupply(){
+//TODO: rename module to PWMSteadyPowerSupply() - the upper cases and
+//pin headers are different. This module implements the PWMSteady
+//actually
+
   metal_sheet_thickness=1.73;
   top_offset = 0;
   bottom_offset = 18;
   pcb_bottom_advance=0;
   pcb_height=6;
 
-  BillOfMaterials("Power Supply MeanWell", ref="NES-200-12");
+  //BillOfMaterials("Power Supply MeanWell", ref="NES-200-12");
+
+  //The PWM Steady power supply uses the same mount as the MeanWell
+  //PSU. We are using the PWM Steady PSU instead.
+  BillOfMaterials("PWM Steady Power Supply 12VDC 16A", ref="S-201-12");
 
   material("metal"){
     //Bottom sheet
