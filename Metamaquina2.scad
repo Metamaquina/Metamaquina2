@@ -1994,7 +1994,7 @@ module XCarriage(){
   {
     //TODO: Add these microswitches to the CAD model
     BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM",2, ref="KW11-3Z-5-3T" ); //XMIN & XMAX
-    BillOfMaterials("M2.5x16 bolt, cylindric head",4, ref="H_M2.5x16_cl");
+    BillOfMaterials("M2.5x16 screw, Phillips pan head",4, ref="PH_M2.5x16_pan");
     BillOfMaterials("M2.5 nut",4, ref="P_M2.5");
     BillOfMaterials("M2.5 washer",4, ref="AL_M2.5");
   }

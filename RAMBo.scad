@@ -78,9 +78,14 @@ module RAMBo_cover(){
 
 module RAMBo(){
   BillOfMaterials("RAMBo board", ref="RMB_1.1b");
+  
+  //extruder heater connector
+  BillOfMaterials("Heater supply connector for RAMBo board", ref="39530-0005");
+  //heated bed connector
+  BillOfMaterials("Heater supply connector for RAMBo board", ref="39530-0005");
 
   { //TODO: add these parts to the CAD model
-    BillOfMaterials("M3x25 bolt",4, ref="H_M3x25"); //to mount the RAMBo board in the side panel
+    BillOfMaterials("M3x30 bolt",4, ref="H_M3x30"); //to mount the RAMBo board in the side panel
     BillOfMaterials("M3x10 bolt",4, ref="H_M3x10"); //To attach the cover
   }
 

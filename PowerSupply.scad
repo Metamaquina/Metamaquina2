@@ -415,6 +415,11 @@ female_connector_bolts_distance = 40;
 module PowerSupply_FemaleConnector(){
   BillOfMaterials("Power supply female connector", ref="AS02");
 
+  //TODO render model
+  BillOfMaterials("M3x16 flat head phillips screw", 2, ref="PH_M3x16_ch");
+  BillOfMaterials("M3 washer", 2, ref="AL_M3");
+  BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
+
   border_height=PSU_Female_border_height;
   border_width=30.2;
   border_thickness = 4.84;
