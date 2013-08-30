@@ -27,7 +27,7 @@ module motor_gear(teeth=11, shaft_diameter=5){
   BillOfMaterials(category="3D Printed", partname="Small Extruder Gear", ref="MM2_SEG");
 
   {//TODO: Add this part to the CAD model
-    BillOfMaterials("M3x8 grubscrew - TODO", ref="GS_M3x8");
+    BillOfMaterials("M3x8 grubscrew - TODO", ref="H_M3x8_sc");
   }
 
   material("ABS")
