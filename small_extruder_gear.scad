@@ -24,6 +24,8 @@ include <BillOfMaterials.h>;
 include <render.h>;
 
 module motor_gear(teeth=11, shaft_diameter=4.8, bevel=0.5){
+  base_r=10.5;
+
   BillOfMaterials(category="3D Printed", partname="Small Extruder Gear", ref="MM2_SEG");
 
   {//TODO: Add this part to the CAD model
@@ -47,10 +49,10 @@ module motor_gear(teeth=11, shaft_diameter=4.8, bevel=0.5){
       mirror( [0, 0, 1] )
       difference() {
         //base
-        rotate_extrude($fn=120) {
-          square( [9, 8] );
-          square( [10, 7] );
-          translate( [9, 7] ) circle( 1, $fn=50 );
+        rotate_extrude($fn=120){
+          square( [base_r, 8] );
+          square( [base_r+1, 7] );
+          translate( [base_r, 7] ) circle( 1, $fn=50 );
         }
 
         //captive nut and grub holes
