@@ -23,7 +23,7 @@ use <gears.scad>;
 include <BillOfMaterials.h>;
 include <render.h>;
 
-module motor_gear(teeth=11, shaft_diameter=5){
+module motor_gear(teeth=11, shaft_diameter=4.8, bevel=0.5){
   BillOfMaterials(category="3D Printed", partname="Small Extruder Gear", ref="MM2_SEG");
 
   {//TODO: Add this part to the CAD model
@@ -36,7 +36,12 @@ module motor_gear(teeth=11, shaft_diameter=5){
   difference() {
     union() {
       //gear
-      herringbone_gear( teeth=teeth, $fn=50 );
+      union(){
+        herringbone_gear( teeth=teeth, $fn=50 );
+
+        //we don't want a hole here
+        cylinder(h=10,r=5, center=true);
+      }
 
       translate( [0, 0, 13] )
       mirror( [0, 0, 1] )
@@ -62,7 +67,11 @@ module motor_gear(teeth=11, shaft_diameter=5){
 
     //shaft hole
     translate( [0, 0, -6] )
-    cylinder( r=shaft_diameter/2, h=20, $fn=20 );
+    linear_extrude(height=20)
+    intersection(){
+        circle(r=shaft_diameter/2);
+      translate([-shaft_diameter/2,-shaft_diameter/2]) square([shaft_diameter, shaft_diameter-bevel]);
+    }
   }
 }
 
