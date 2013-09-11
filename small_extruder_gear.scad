@@ -77,4 +77,10 @@ module motor_gear(teeth=11, shaft_diameter=5, bevel=0.5){
   }
 }
 
-motor_gear();
+module motor_gear_positioned_for_printing(){
+  translate([0,0,18])
+  rotate([180,0])
+  motor_gear();
+}
+
+motor_gear_positioned_for_printing();
