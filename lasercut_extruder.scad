@@ -625,7 +625,10 @@ module lasercut_extruder(){
     extruder_gear(teeth=37);
 
     translate([hobbed_bolt_position[0], 0, hobbed_bolt_position[1]]) {
-        translate([0,-30,0]) rotate([180,0,0]) hobbed_bolt();
+        translate([0,-30,0])
+        rotate([0,extruder_gear_angle])
+        rotate([180,0,0])
+        hobbed_bolt();
         // TODO: put washers in the right place
         translate([0,5*thickness/2+washer_thickness,0])
         rotate([-90,0,0])
