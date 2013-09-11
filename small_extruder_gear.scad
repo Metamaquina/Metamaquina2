@@ -23,7 +23,7 @@ use <gears.scad>;
 include <BillOfMaterials.h>;
 include <render.h>;
 
-module motor_gear(teeth=11, shaft_diameter=4.8, bevel=0.5){
+module motor_gear(teeth=11, shaft_diameter=5, bevel=0.5){
   base_r=10.5;
 
   BillOfMaterials(category="3D Printed", partname="Small Extruder Gear", ref="MM2_SEG");
