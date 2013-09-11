@@ -62,7 +62,7 @@ module motor_gear(teeth=11, shaft_diameter=5, bevel=0.5){
           //nut
           translate( [0, 0, 13.3] ) rotate( [0, 0, 30] ) cylinder( r=3.12, h=2.4, $fn=6 );
           //grub hole
-          translate( [0, 0, 9] ) cylinder( r=1.5, h=10, $fn=20 );
+          cylinder( r=1.5, h=20, $fn=20 );
         }
       }
     }
