@@ -26,32 +26,45 @@ include <ZLink.h>;
 include <BillOfMaterials.h>;
 include <render.h>;
 
-module ZLink(clearance = 0.2, hull_size=0){
+module ZLink(clearance = 0.2, hull_size=0, wing_thickness=2.6){
   BillOfMaterials(category="3D Printed", partname="ZLink", ref="MM2_ZL");
 
   material("ABS"){
+    //wings with holes for bolts
     difference(){
       union(){
-        linear_extrude(height=2.6){
+        linear_extrude(height=wing_thickness){
           difference(){
+            //the wings
 	          hull(){
               for (i=[-1,1])
       			    translate([i*dx_z_threaded, 0])
       			    circle(r=6);
 	          }
+  
+            //holes for bolts
             for (i=[-1,1])
 	            translate([i*dx_z_threaded, 0])
-	            circle(r=m3_diameter/2, $fn=20);
+              circle(r=m3_diameter/2, $fn=20);
           }
         }
+
+        //nut borders
         for (i=[-1,1])
-      		translate([i*dx_z_threaded, 0, 2.6]) cylinder(r=5, h=2, $fn=6);
+      		translate([i*dx_z_threaded, 0, wing_thickness]) cylinder(r=5, h=2, $fn=6);
       }
 
+      //holes for nuts
       for (i=[-1,1])
-        translate([i*dx_z_threaded, 0, 2]) cylinder(r=3, h=5, $fn=6);
+        translate([i*dx_z_threaded, 0, wing_thickness-0.6]) cylinder(r=3, h=5, $fn=6);
+
+      //hexagonal central hole for M8 nuts, spring and threaded rod
+      translate([0,0,ZLink_rod_height])
+      rotate([90,0])
+      cylinder(r=8, $fn=6, h=50, center=true);      
     }
 
+    //ZLink main-body, for passing the threaded rod, the spring and the M8 nuts
     translate([0,Zlink_hole_height, ZLink_rod_height])
     rotate([90, 0, 0]){
       linear_extrude(height=XPlatform_height - thickness)
