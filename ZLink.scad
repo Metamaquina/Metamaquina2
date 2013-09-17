@@ -88,5 +88,6 @@ module ZLink(clearance = 0.2, hull_size=0, wing_thickness=2.6){
   }
 }
 
+rotate(60)
 ZLink();
 
