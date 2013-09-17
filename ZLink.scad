@@ -26,7 +26,7 @@ include <ZLink.h>;
 include <BillOfMaterials.h>;
 include <render.h>;
 
-module ZLink(clearance = 0.2, hull_size=0, wing_thickness=2.6){
+module ZLink(nut_borders=false, clearance = 0.2, hull_size=0, wing_thickness=8.5){
   BillOfMaterials(category="3D Printed", partname="ZLink", ref="MM2_ZL");
 
   material("ABS"){
@@ -50,11 +50,13 @@ module ZLink(clearance = 0.2, hull_size=0, wing_thickness=2.6){
         }
 
         //nut borders
+        if (nut_borders)
         for (i=[-1,1])
       		translate([i*dx_z_threaded, 0, wing_thickness]) cylinder(r=5, h=2, $fn=6);
       }
 
       //holes for nuts
+      if (nut_borders)
       for (i=[-1,1])
         translate([i*dx_z_threaded, 0, wing_thickness-0.6]) cylinder(r=3, h=5, $fn=6);
 
