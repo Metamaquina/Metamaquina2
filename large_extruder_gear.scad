@@ -57,7 +57,7 @@ module extruder_gear(teeth=37, circles=12, shaft=8.6){
       }
       else{
 	rotate(2)
-        translate([12,0,-0.01])
+        translate([12,0,1])
         scale(0.6)
         linear_extrude(height=20) import("MM_hole.dxf", layer="eme");
       }
