@@ -45,7 +45,7 @@ module ZLink(nut_borders=false, clearance = 0.2, hull_size=0, wing_thickness=8.5
             //holes for bolts
             for (i=[-1,1])
 	            translate([i*dx_z_threaded, 0])
-              circle(r=m3_diameter/2, $fn=20);
+              circle(r=m3_diameter/2 + 0.3, $fn=20);
           }
         }
 
