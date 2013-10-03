@@ -82,7 +82,7 @@ module FrontRule_face(){
 
 //rolamento
     translate([0,-8+tolerancia,0])
-      square([bearing_thickness+2*mudguard_washer_thickness+2*washer_thickness,50], center=true);
+      tsquare([bearing_thickness+2*mudguard_washer_thickness+2*washer_thickness,50], center=true);
     }
   }
 }
