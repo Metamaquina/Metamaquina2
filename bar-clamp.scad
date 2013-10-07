@@ -33,7 +33,7 @@ include <render.h>
 module barclamp(){
   BillOfMaterials(category="3D Printed", partname="Bar Clamp", ref="MM2_BC");
 
-  outer_diameter = threaded_rod_diameter/2 + 2.4;
+  outer_diameter = threaded_rod_diameter/2 + 4;
 
   material("ABS"){
     difference(){
@@ -49,8 +49,13 @@ module barclamp(){
         nut(outer_diameter*2, outer_diameter*2, false);
       }
 
-      translate([18, outer_diameter, 9])
-      cube([18,05,20], center=true);
+      hull(){
+        translate([11, outer_diameter, 9])
+        cube([1, 1, 20], center=true);
+
+        translate([28, outer_diameter, 9])
+        cube([1, 4, 20], center=true);
+      }
 
       translate([outer_diameter, outer_diameter, -1])
       cylinder(h = 20, r = threaded_rod_diameter/2, $fn = 80);
