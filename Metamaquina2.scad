@@ -1504,7 +1504,7 @@ module MachineRightPanel_sheet(){
   rotate([90,0,0]){
     material("lasercut")
     linear_extrude(height=thickness)
-    MachineRightPanel_face();
+    %MachineRightPanel_face();
 
     translate([0,0,thickness])
     mirror([0,0,1])
@@ -1535,7 +1535,7 @@ module MachineLeftPanel_sheet(){
   rotate([90,0,0]){
     material("lasercut")
     linear_extrude(height=thickness)
-    MachineLeftPanel_face();
+    %MachineLeftPanel_face();
 
     tslot_parts_from_list(SidePanel_TSLOTS);
 
@@ -1580,7 +1580,7 @@ module MachineTopPanel_sheet(){
   translate([0,-XZStage_offset,machine_height]){
     material("lasercut")
     linear_extrude(height=thickness)
-    MachineTopPanel_face();
+    %MachineTopPanel_face();
 
     tslot_parts_from_list(TopPanel_TSLOTS);
 
@@ -1964,7 +1964,7 @@ module XCarriage(){
 
   //lasercut parts:
   translate([XCarPosition, 0, XCarriage_height]){
-    XCarriage_bottom_sheet();
+    %XCarriage_bottom_sheet();
     translate([0,0,-bearing_sandwich_spacing]){
 
       for (i=[-1,1]){
@@ -1973,17 +1973,17 @@ module XCarriage(){
           double_M3_lasercut_spacer();
         }
 
-        translate([i*(XCarriage_length/2-XCarriage_padding), 0])
-        double_M3_lasercut_spacer();
+        //translate([i*(XCarriage_length/2-XCarriage_padding), 0])
+        //double_M3_lasercut_spacer();
       }
 
       translate([0,0,-thickness])
       XCarriage_sandwich_sheet();
     }
 
-    if (render_extruder)
-      translate([0,0,thickness])
-      lasercut_extruder();
+    //if (render_extruder)
+      //translate([0,0,thickness])
+      //lasercut_extruder();
   }
 
   {
@@ -2007,8 +2007,8 @@ module XCarriage(){
 
 module XPlatform(){
   //submodules: 
-  XEndMotor();
-  XEndIdler();
+  %XEndMotor();
+  %XEndIdler();
   XCarriage();
   XBelt();
 
@@ -2747,7 +2747,7 @@ module XMotor(){
 module YMotor(){
   rotate([0,0,-90-45])
   rotate([180,0,0])
-  NEMA17_subassembly();
+  %NEMA17_subassembly();
 }
 
 module ZMotors(){
@@ -2791,8 +2791,8 @@ module plate_border(w=500, h=500, border=2){
 //!LaserCutPanels();
 module Metamaquina2(){
   LaserCutPanels();
-  FrontAssembly();
-  RearAssembly();
+  %FrontAssembly();
+  %RearAssembly() ;
 
   if (render_xplatform){
     translate([0,
@@ -2805,7 +2805,7 @@ module Metamaquina2(){
   }
 
   YPlatform();
-  ZAxis();
+  %ZAxis();
 }
 
 //rotate([0,0,cos(360*time)*60])
@@ -2857,8 +2857,8 @@ use <FilamentSpoolHolder.scad>;
 
 translate([400,0,0])
 rotate([0,0,90]){
-  FilamentSpoolHolder();
-  FilamentSpool();
+  //FilamentSpoolHolder();
+  //FilamentSpool();
 }
 
 

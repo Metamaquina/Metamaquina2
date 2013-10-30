@@ -28,7 +28,6 @@ use <large_extruder_gear.scad>
 
 use <tslot.scad>;
 include <Metamaquina2.h>;
-include <BillOfMaterials.h>;
 include <nuts.h>;
 include <washers.h>;
 include <bolts.h>;
@@ -55,7 +54,7 @@ module M3_hole(){
 }
 
 module M4_hole(){
-  circle(r=m4_diameter/2);
+  #circle(r=m4_diameter/2);
 }
 ///////////////////
 
@@ -73,14 +72,14 @@ module handle_face(r=5, width=HandleWidth, height=HandleHeight){
     import("M_circle.dxf");
   }
 }
-
+/*
 module handle_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="LCExtruder Handle");
 
   material("lasercut")
   linear_extrude(height=thickness)
   handle_face();
-}
+}*/
 
 //!idler_side_face();
 module idler_side_face(smooth_rod_cut_diameter=7.8){
@@ -88,7 +87,7 @@ module idler_side_face(smooth_rod_cut_diameter=7.8){
 
   rotate(90)
   union(){
-    difference(){
+    /*difference(){
       hull(){
         rounded_square([2*R,R], corners=[0,R,R,0]);
 
@@ -115,7 +114,7 @@ module idler_side_face(smooth_rod_cut_diameter=7.8){
     }
     translate([R,R-thickness/2])
     rotate(-90)
-    TSlot_joints(width=R);
+    TSlot_joints(width=R);*/
   }
 }
 //!idler_side_face();
@@ -124,7 +123,7 @@ module idler_back_face(){
   rounding = 5;
   idler_width = 5*thickness;
   idler_height = R+2+rounding;
-
+/*
   difference(){
     translate([-idler_width/2,0])
     rounded_square([idler_width,idler_height], corners=[0,0,rounding,rounding]);
@@ -139,7 +138,7 @@ module idler_back_face(){
     for (i=[-1,1])
       translate([i*(2*thickness),0])
       t_slot_holes(width=R, thickness=thickness);
-  }
+  }*/
 }
 
 module idler_back_sheet(){
@@ -159,7 +158,7 @@ module idler_side_sheet(){
 }
 
 module idler_spacer_5mm_sheet(){
-  BillOfMaterials(/*category="Lasercut Acrylic", */partname="LCExtruder Idler 5mm Acrylic Spacer", ref="MM2_LC_SPC5");
+  BillOfMaterials(category="Lasercut Acrylic", partname="LCExtruder Idler 5mm Spacer");
 
   material("acrylic")
   linear_extrude(height=5)
@@ -463,10 +462,10 @@ module slice5(){
 
 module handle(){
   { //TODO: Add these parts to the CAD model
-    BillOfMaterials("M4 lock-nut", 4, ref="P_M4_ny");
-    BillOfMaterials("M4 washer", 4, ref="AL_M4");//for the lock nuts
-    BillOfMaterials("Compresison Spring CM1678 (6mm x 16.5mm) - TODO:check this!", 2, ref="CM1678");
-    BillOfMaterials("M4 washer", 2, ref="AL_M4");//for the springs
+    BillOfMaterials("M4 lock nut", 4);
+    BillOfMaterials("M4 washer", 4);//for the lock nuts
+    BillOfMaterials("Compresison Spring CM1678 (6mm x 16.5mm) - TODO:check this!", 2);
+    BillOfMaterials("M4 washer", 2);//for the springs
   }
 
   nut_height = 3;
@@ -485,7 +484,7 @@ module handle(){
 
 module idler_bolt_subassembly(){
   length=30;
-  BillOfMaterials(str("M8x", length, "mm Smooth Rod"), ref="MM2_IDLER_ROD");
+  BillOfMaterials(str("M8x", length, "mm Smooth Rod"));
 
   //bolt body
   material("metal")
@@ -497,7 +496,7 @@ module idler(){
   { //TODO: Add these parts to the CAD model
 
     //for the idler axis
-    BillOfMaterials("M3x30 bolt", ref="H_M3x30");
+    BillOfMaterials("M3x30 bolt");
   }
 
   R=23;
@@ -521,14 +520,10 @@ module idler(){
       }
 
       translate(idler_bearing_position - idler_axis_position)
-      // give some room to accomodate lasercut and spacer
-      // thickness variations
-      translate([0,0, thickness+0.5]){
-        idler_spacer_5mm_sheet();
+      translate([0,0, thickness]){
+        idler_spacer_6mm_sheet();
 
-        // give some room to accomodate lasercut and spacer
-        // thickness variations
-        translate([0,0, thickness-1.0]){
+        translate([0,0, thickness]){
           608zz_bearing(true);
 
           translate([0,0,bearing_thickness])
@@ -549,22 +544,22 @@ module idler(){
 module extruder_block(){
 
   { //TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x30 bolt", 2, ref="H_M3x30"); // for attaching the jhead_body
+    BillOfMaterials("M3x30 bolt", 2); // for attaching the jhead_body
 
     { // to hold the MDF sheets together
-      BillOfMaterials("M3x35 bolt", 5, ref="H_M3x35");
-      BillOfMaterials("M3 washer", 5*3, ref="AL_M3");
-      BillOfMaterials("M3 lock-nut", 5, ref="P_M3_ny");
+      BillOfMaterials("M3x35 bolt", 5);
+      BillOfMaterials("M3 washer", 5*3);
+      BillOfMaterials("M3 lock-nut", 5);
       //TODO: decide wheter we'll use M3x30 or M3x35 in some places here
     }
   }
 
   rotate([90,0]){
-    slice1();
-    slice2();
-    slice3();
-    slice4();
-    slice5();
+    //slice1();
+    //slice2();
+    //slice3();
+    //slice4();
+    //slice5();
   }
 }
 
@@ -588,62 +583,52 @@ module nozzle(length=50){
 }
 
 module hobbed_bolt(){
-  BillOfMaterials("Hobbed bolt", ref="MM2_HBLT");
-  // TODO: use <hobbed_bolt.h> values to draw hobbed bolt 3D model
+  BillOfMaterials("Hobbed bolt");
+
   material("metal")
-  rotate([90,0]){
-    cylinder(r=13.0/2, h=5, $fn=6);
-    translate([0,0,5])
-    cylinder(r=8.0/2, h=50);
-  }
+  rotate([90,0])
+  cylinder(r=7.2/2, h=5*thickness);
 }
-//!hobbed_bolt();
 
 washer_thickness = 1.5;
-module lasercut_extruder(){
+module gears_Bowden(){
   rotate(90)
   union(){
     translate([0,2.5*thickness]){
       extruder_block();
-      idler();
+      //idler();
     }
-
+/*
     translate([7,0,58]){
       rotate([0,-90,0]){
         rotate([0,0,-90]){
           handle();
         }
       }
-    }
+    }*/
 
-    //nozzle(); by Sara
+    //nozzle();
 
     translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
     rotate([0,extruder_gear_angle])
     rotate([90,0])
     extruder_gear(teeth=37);
 
-    translate([hobbed_bolt_position[0], 0, hobbed_bolt_position[1]]) {
-        translate([0,-30,0]) rotate([180,0,0]) hobbed_bolt();
-        // TODO: put washers in the right place
-        translate([0,5*thickness/2+washer_thickness,0])
-        rotate([-90,0,0])
-        M8_locknut();
-    }
+    //translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]]) hobbed_bolt();
 
-    translate([hobbed_bolt_position[0], -3*thickness/2, hobbed_bolt_position[1]])
-    rotate([90,0])
-    608zz_bearing(true);
+    //translate([hobbed_bolt_position[0], -3*thickness/2, hobbed_bolt_position[1]])
+    //rotate([90,0])
+    //608zz_bearing(true);
 
-    translate([hobbed_bolt_position[0], 3*thickness/2+7, hobbed_bolt_position[1]])
-    rotate([90,0])
-    608zz_bearing(true);
+    //translate([hobbed_bolt_position[0], 3*thickness/2+7, hobbed_bolt_position[1]])
+    //rotate([90,0])
+    //608zz_bearing(true);
 
     translate([motor_position[0], -thickness/2, motor_position[1]])
     rotate([-90,0])
     rotate(motor_angle)
     {
-      %NEMA17_subassembly();
+      NEMA17_subassembly();
 
       translate([0,0,-2*thickness - 2*washer_thickness])
       rotate([180,0])
@@ -652,6 +637,7 @@ module lasercut_extruder(){
   }
 }
 
-lasercut_extruder();
-%translate([0,0,-thickness]) XCarriage_bottom_sheet();
+  gears_Bowden();
+
+//%translate([0,0,-thickness]) XCarriage_bottom_sheet();
 
