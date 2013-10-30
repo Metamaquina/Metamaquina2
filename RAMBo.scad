@@ -33,7 +33,7 @@ RAMBo_height = 104;
 epsilon = 0.05;
 
 module PSU_connector(){
-  BillOfMaterials("Power supply connector for RAMBo board");
+  BillOfMaterials("Power supply connector for RAMBo board", ref="39530-0006");
 
   //Power supply connector
 
@@ -53,7 +53,7 @@ module PSU_connector(){
 
     for (i = [1 : 6]) {
       translate([conn_thickness/2,bolts_offset + 5*i,-epsilon]) {
-       cylinder(conn_height+2*epsilon,r=bolt_diameter/2, $fn=20);
+       cylinder(conn_height+2*epsilon,r=bolt_diameter/2);
        }
     }
   }
@@ -69,7 +69,7 @@ module RAMBo_cover_curves(border=0){
 }
 
 module RAMBo_cover(){
-  BillOfMaterials("Lasercut acrylic RAMBo cover");
+  BillOfMaterials("Lasercut acrylic RAMBo cover", ref="MM2_RAMBO_COVER");
 
   material("acrylic")
   linear_extrude(height=RAMBo_cover_thickness)
@@ -77,11 +77,11 @@ module RAMBo_cover(){
 }
 
 module RAMBo(){
-  BillOfMaterials("RAMBo board");
+  BillOfMaterials("RAMBo board", ref="RMB_1.1b");
 
   { //TODO: add these parts to the CAD model
-    BillOfMaterials("M3x25 bolt",4); //to mount the RAMBo board in the side panel
-    BillOfMaterials("M3x10 bolt",4); //To attach the cover
+    BillOfMaterials("M3x25 bolt",4, ref="H_M3x25"); //to mount the RAMBo board in the side panel
+    BillOfMaterials("M3x10 bolt",4, ref="H_M3x10"); //To attach the cover
   }
 
   for (x=[RAMBo_border, RAMBo_width-RAMBo_border]){
@@ -90,11 +90,11 @@ module RAMBo(){
         double_M3_lasercut_spacer();
 
         translate([0,0,2*thickness+RAMBo_pcb_thickness]){
-          hexspacer_38mm();
+          hexspacer_32mm();
           translate([0,0,hexspacer_length+RAMBo_cover_thickness]){
             //bolt head
             material("metal")
-            cylinder(r=3, h=M3_bolt_head, $fn=20);
+            cylinder(r=3, h=M3_bolt_head);
           }
         }
       }
@@ -129,7 +129,7 @@ module RAMBo_wiring_holes(){
   hull()
   for (i=[-1,1])
     translate([i*15,0])
-    circle(r=10, $fn=20);
+    circle(r=10);
 
 
   //These are ziptie holes for making sure the individual wires
@@ -184,16 +184,16 @@ module RAMBo_wiring_holes(){
 
 module RAMBo_holes(){
   translate([RAMBo_border, RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
+  circle(r=m4_diameter/2);
 
   translate([RAMBo_border, RAMBo_height-RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
+  circle(r=m4_diameter/2);
 
   translate([RAMBo_width-RAMBo_border, RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
+  circle(r=m4_diameter/2);
 
   translate([RAMBo_width-RAMBo_border, RAMBo_height-RAMBo_border])
-  circle(r=m4_diameter/2, $fn=20);
+  circle(r=m4_diameter/2);
 }
 
 module RAMBo_pcb(){
@@ -206,4 +206,6 @@ module RAMBo_pcb(){
     }
   }
 }
+
+//RAMBo();
 

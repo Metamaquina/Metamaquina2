@@ -18,27 +18,30 @@
 
 include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
-include <jheads.h>;
+include <jhead.h>;
 include <render.h>;
 use <nozzle.scad>;
 
 module J_head_assembly(){
 
-  extruders_distance=9;
+extruders_distance=9;
 
-  for (i=[-1,1]){
-    translate([i*extruders_distance,0,0])
-    J_head_body();
-  }
+  J_head_body();
 
-  translate([-extruders_distance,0,-50])
-  rotate([0,0,180])
-  difference(){
-    v4nozzle();
-}
-
-  translate([extruders_distance,0,-50])
+  translate([-0.15625*25.4+extruders_distance/2,-0.250*25.4,-50])
+  //translate([1*extruders_distance,0,0])
   v4nozzle();
+
+
+
+rotate([0,0,180])
+  translate([-0.15625*25.4+extruders_distance/2,-0.250*25.4,-50])
+  //translate([0,0,0])
+  
+  #v4nozzle();
+
+
+ // #v4nozzle();
 }
 
 module J_head_body(){
@@ -50,31 +53,31 @@ module J_head_body(){
   }
 
 h1=50;
-r1=10.4/2;
+r1=2*10.4/2;
 
 h2=1;
-r2=13/2;
+r2=2*13/2;
 
 h3=13.6;
-r3=16/2;
+r3=2*16/2;
 
 h4=1;
-r4=16/2;
+r4=2*16/2;
 
 h5=1;
-r5=16/2;
+r5=2*16/2;
 
 h6=1;
-r6=16/2;
+r6=2*16/2;
 
 h7=1;
-r7=16/2;
+r7=2*16/2;
 
 h8=10.4;
-r8=16/2;
+r8=2*16/2;
 
 h9=4.64;
-r9=(5/8)*inch/2;
+r9=2*(5/8)*inch/2;
 
 
   material("peek"){

@@ -31,10 +31,9 @@ use <tslot.scad>;
 //subassemblies
 include <endstop.h>;
 include <heated_bed.h>;
-use <gears_Bowden.scad>;
+use <lasercut_2_extruders.scad>;
 use <RAMBo.scad>;
 use <jheads.scad>;
-use <lasercut_2_extruders.scad>
 
 //parts
 include <NEMA.h>;
@@ -198,7 +197,6 @@ XCarriage_width = XPlatform_width + 22;
 //XCarriage_width = XEnd_width;
 XCarriage_length = 82 + (num_extruders-1) * extra_extruder_length;
 XCarriage_lm8uu_distance = XCarriage_length - 30;
-base_thickness = 10;
 
 nozzle_hole_width = 50;
 nozzle_hole_length = machine_x_dim - 2*XEnd_box_size - nozzle_hole_width - 2*thickness - 2*20;
@@ -413,7 +411,7 @@ module MachineLeftPanel_face(){
             translate([x,y])
             rotate(angle)
             cable_clip_mount(type); 
-      }
+        }
     }
 
     translate([RAMBo_x, RAMBo_y]){
@@ -434,7 +432,6 @@ module MachineLeftPanel_face(){
         translate([0,-10])
         rotate(90)
         zip_tie_holes();
-
     }
 
     translate([z_max_endstop_x, z_max_endstop_y])
@@ -442,7 +439,7 @@ module MachineLeftPanel_face(){
 
     translate([z_min_endstop_x, z_min_endstop_y])
     z_min_mount_holes();
-    
+
     //holes_for_motor_wires();
     //holes_for_z_endstop_wires();
     //holes_for_x_motor_and_endstop_wires();
@@ -546,11 +543,6 @@ module MachineSidePanel_face(){
       //holes for inserting rear bars
       translate([RightPanel_basewidth-30, base_bars_height]) bar_cut();
       translate([RightPanel_basewidth, base_bars_Zdistance + base_bars_height]) bar_cut();
-
-    //for (i=[-1,1]){ //sara parei aqui
-      //translate([i*extruder_mount_holes_distance/2, base_thickness/2])
-      #cirle(r=500/2);
-    //}
 
       //cut for attaching bottom panel
       translate([XZStage_position - BottomPanel_width/2, BottomPanel_zoffset - slot_extra_thickness/2])
@@ -1335,17 +1327,17 @@ module XCarriage_plainface(sandwich=false){
     union(){
       translate([-(num_extruders-1)*extra_extruder_length/2+extruder_dist,0])
       //#circle(r=XCarriage_nozzle_hole_radius);
-      circle(r=13/2);
+      #circle(r=13/2); //sara
 
       translate([-(num_extruders-1)*extra_extruder_length/2-extruder_dist,0])
       //circle(r=XCarriage_nozzle_hole_radius);
-      circle(r=13/2);
+      #circle(r=13/2); //sara
     }
 
     //hole for extruder wiring
     if (!sandwich){
       translate([-10,8])
-      rounded_square([20,6], corners=[3,3,2,2]);
+      #rounded_square([20,6], corners=[3,3,2,2]);
     }
 
     for (i=[-1,1])
@@ -1511,10 +1503,6 @@ module MachineRightPanel_sheet(){
     mirror([0,0,1])
     tslot_parts_from_list(SidePanel_TSLOTS);
 
-/*    translate([50,95,6])
-    rotate([0,0,180])
-    lasercut_extruder1(); //sara*/
-
     if (HIQUA_POWERSUPPLY){
       translate([powersupply_Xposition, powersupply_Yposition])
       rotate([0, 180, 0])
@@ -1543,10 +1531,6 @@ module MachineLeftPanel_sheet(){
     MachineLeftPanel_face();
 
     tslot_parts_from_list(SidePanel_TSLOTS);
-/*
-    translate([50,95,0])
-    rotate([180,0,0])
-    lasercut_extruder2(); //sara*/
 
     for (clip=left_cable_clips){
       assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
@@ -2780,12 +2764,12 @@ module plate_border(w=500, h=500, border=2){
   }
 }
 
-//!LaserCutPanels(); //sara
+//!LaserCutPanels();
 module Metamaquina2(){
   LaserCutPanels();
-  //FrontAssembly();
-  //RearAssembly();
-/*
+  FrontAssembly();
+  RearAssembly();
+
   if (render_xplatform){
     translate([0,
                -XZStage_offset,
@@ -2797,7 +2781,7 @@ module Metamaquina2(){
   }
 
   YPlatform();
-  ZAxis();*/
+  ZAxis();
 }
 
 //rotate([0,0,cos(360*time)*60])
@@ -2851,14 +2835,6 @@ if (render_calibration_guide){
 
 use <FilamentSpoolHolder.scad>;
 
- //sara 
-
-/*
-translate([400,0,0])
-rotate([0,0,90]){
-  FilamentSpoolHolder();
-  FilamentSpool();
-}*/
-
+FilamentSpoolHolder();
 
 

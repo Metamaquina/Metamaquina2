@@ -25,7 +25,7 @@ include <BillOfMaterials.h>;
 include <render.h>;
 
 module extruder_gear(teeth=37, circles=12, shaft=8.6){
-  BillOfMaterials(category="3D Printed", partname="Large Extruder Gear");
+  BillOfMaterials(category="3D Printed", partname="Large Extruder Gear", ref="MM2_LEG");
 
   body_thickness = 4;
   hub_thickness = 8;

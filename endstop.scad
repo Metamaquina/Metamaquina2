@@ -41,7 +41,7 @@ module z_max_mount_holes(){
       // Since all of the 3d printer wiring will be prepared
       // in an early assembly stage this hole should be
       // large enough to let the ZMAX microswitch pass through:
-      translate([-7,0]){
+      translate([-7,-4]){
 
         translate([-microswitch_thickness/2 - 1,-microswitch_width/2 - 1])
         rounded_square([microswitch_thickness+2, microswitch_width+2], corners=[2,2,2,2]);
@@ -100,14 +100,14 @@ module y_endstop_mount_holes(){
   zip_tie_holes(d=6);
 
   //hole to give room for bolt tips and M25 nuts:
-  translate([0,-10])
+  translate([0,-6])
   rotate(90)
   zip_tie_holes(d=microswitch_holes_distance, r=3);
 
   //these serve as reference for us
   // to see where will be the tips of the M2.5 bolts
   %for (i=[-1,1])
-    translate([i*microswitch_holes_distance/2,-10])
+    translate([i*microswitch_holes_distance/2,-6])
     M25_hole();
 }
 
@@ -132,13 +132,13 @@ thickness = 6;
 
 module ymin_endstop_subassembly(){
   {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x16 bolt", 2);
-    BillOfMaterials("M3 washer", 2);
-    BillOfMaterials("M3 lock-nut", 2);
+    BillOfMaterials("M3x16 bolt", 2, ref="H_M3x16");
+    BillOfMaterials("M3 washer", 2, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
 
-    BillOfMaterials("M2.5x16 bolt", 2);
-    BillOfMaterials("M2.5 washer", 2);
-    BillOfMaterials("M2.5 lock-nut", 2);
+    BillOfMaterials("M2.5x16 bolt, cylindric head", 2, ref="H_M2.5x16_cl");
+    BillOfMaterials("M2.5 washer", 2, ref="AL_M2.5");
+    BillOfMaterials("M2.5 nut", 2, ref="P_M2.5");
   }
 
   ymin_endstop_spacer_sheet();
@@ -151,13 +151,13 @@ module ymin_endstop_subassembly(){
 
 module ymax_endstop_subassembly(){
   {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x16 bolt", 2);
-    BillOfMaterials("M3 washer", 2);
-    BillOfMaterials("M3 lock-nut", 2);
+    BillOfMaterials("M3x16 bolt", 2, ref="H_M3x16");
+    BillOfMaterials("M3 washer", 2, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
 
-    BillOfMaterials("M2.5x16 bolt", 2);
-    BillOfMaterials("M2.5 washer", 2);
-    BillOfMaterials("M2.5 lock-nut", 2);
+    BillOfMaterials("M2.5x16 bolt, cylindric head", 2, ref="H_M2.5x16_cl");
+    BillOfMaterials("M2.5 washer", 2, ref="AL_M2.5");
+    BillOfMaterials("M2.5 nut", 2, ref="P_M2.5");
   }
 
   ymax_endstop_spacer_sheet();
@@ -177,13 +177,13 @@ module YMIN_endstop_spacer_sheet(){
 
 module z_min_endstop(){
   {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x25 bolt", 2);
-    BillOfMaterials("M3 washer", 2);
-    BillOfMaterials("M3 lock-nut", 2);
+    BillOfMaterials("M3x25 bolt", 2, ref="H_M3x25");
+    BillOfMaterials("M3 washer", 2, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
 
-    BillOfMaterials("M2.5x16 bolt", 2);
-    BillOfMaterials("M2.5 washer", 2);
-    BillOfMaterials("M2.5 lock-nut", 2);
+    BillOfMaterials("M2.5x16 bolt, cylindric head", 2, ref="H_M2.5x16_cl");
+    BillOfMaterials("M2.5 washer", 2, ref="AL_M2.5");
+    BillOfMaterials("M2.5 nut", 2, ref="P_M2.5");
   }
 
   translate([20,0]){
@@ -199,13 +199,13 @@ module z_min_endstop(){
 
 module z_max_endstop(){
   {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x25 bolt", 2);
-    BillOfMaterials("M3 washer", 2);
-    BillOfMaterials("M3 lock-nut", 2);
+    BillOfMaterials("M3x25 bolt", 2, ref="H_M3x25");
+    BillOfMaterials("M3 washer", 2, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
 
-    BillOfMaterials("M2.5x16 bolt", 2);
-    BillOfMaterials("M2.5 washer", 2);
-    BillOfMaterials("M2.5 lock-nut", 2);
+    BillOfMaterials("M2.5x16 bolt, cylindric head", 2, ref="H_M2.5x16_cl");
+    BillOfMaterials("M2.5 washer", 2, ref="AL_M2.5");
+    BillOfMaterials("M2.5 nut", 2, ref="P_M2.5");
   }
 
   translate([0,-2.5])
@@ -280,6 +280,9 @@ module endstop_spacer_face2(nut_gap=false){
 module ymin_endstop_spacer_face(){
   difference(){
     endstop_spacer_face1(nut_gap=false);
+
+    translate([5,-14])
+    rotate(90)
     import("labels.dxf", layer="ymin");
   }
 }
@@ -287,6 +290,9 @@ module ymin_endstop_spacer_face(){
 module ymax_endstop_spacer_face(){
   difference(){
     endstop_spacer_face1(nut_gap=false);
+
+    translate([5,-14])
+    rotate(90)
     import("labels.dxf", layer="ymax");
   }
 }
@@ -295,6 +301,9 @@ module zmin_endstop_spacer_face1(){
   difference(){
     mirror([1,0])
     endstop_spacer_face1();
+
+    translate([0,-14])
+    rotate(90)
     import("labels.dxf", layer="zmin");
   }
 }
@@ -303,6 +312,9 @@ module zmin_endstop_spacer_face2(){
   difference(){
     mirror([1,0])
     endstop_spacer_face2();
+
+    translate([0,-14])
+    rotate(90)
     import("labels.dxf", layer="zmin");
   }
 }
@@ -310,6 +322,9 @@ module zmin_endstop_spacer_face2(){
 module zmax_endstop_spacer_face1(){
   difference(){
     endstop_spacer_face1();
+
+    translate([5,-14])
+    rotate(90)
     import("labels.dxf", layer="zmax");
   }
 }
@@ -317,13 +332,16 @@ module zmax_endstop_spacer_face1(){
 module zmax_endstop_spacer_face2(){
   difference(){
     endstop_spacer_face2();
+
+    translate([5,-14])
+    rotate(90)
     import("labels.dxf", layer="zmax");
   }
 }
 
 module mechanical_switch(bom=true){
   if (bom)
-    BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM");
+    BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM", ref="KW11-3Z-5-3T");
 
   metal_thickness = 1;
 

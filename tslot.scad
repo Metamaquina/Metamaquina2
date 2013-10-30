@@ -20,6 +20,9 @@
 
 include <Metamaquina2.h>;
 include <BillOfMaterials.h>;
+include <washers.h>;
+include <bolts.h>;
+include <nuts.h>;
 
 module t_slot_holes(width, thickness, joint_size=5){
   translate([0, width/2])
@@ -41,9 +44,9 @@ module t_slot_cuts(width, diameter, length){
 module t_slot_shape(diameter, length){
   {
     //TODO: Add these nuts, washers and bolts to the CAD model
-    BillOfMaterials(str("M",diameter,"x",length," Bolt"));
-    BillOfMaterials(str("M",diameter," nut"));
-    BillOfMaterials(str("M",diameter," washer"));
+    BillOfMaterials(str("M",diameter,"x",length," bolt"), ref=str("H_M",diameter,"x",length));
+    BillOfMaterials(str("M",diameter," nut"), ref=str("P_M",diameter));
+    BillOfMaterials(str("M",diameter," washer"), ref=str("AL_M",diameter));
   }
 
 	translate([-diameter/2, 0])
@@ -83,3 +86,49 @@ washer_height = 0.5;
   cylinder(r=diameter, h=diameter/2, $fn=6);
 }
 
+module tslot_shapes_from_list(list, length=16){
+  for (tslot=list){
+    assign(x=tslot[0],
+           y=tslot[1],
+           angle=tslot[2])
+    translate([x,y])
+    rotate(angle)
+    t_slot_shape(3,length);
+  }
+}
+
+module tslot_holes_from_list(list){
+  for (tslot=list){
+    assign(x=tslot[0],
+           y=tslot[1],
+           width=tslot[2],
+           angle=tslot[3])
+    if(width>0)
+      translate([x, y])
+      rotate(angle)
+      TSlot_holes(width=width);
+  }
+}
+
+//how is this different from t_slot_bolt_washer_nut() ?
+module tslot_parts_from_list(list, length=16){
+  for (tslot=list){
+    assign(x=tslot[0],
+           y=tslot[1],
+           width=tslot[2],
+           angle=tslot[3])
+    translate([x, y])
+    rotate(angle)
+    translate([0, width/2]){
+      translate([0, 0, thickness]){
+        M3_washer();
+
+        translate([0,0,m3_washer_thickness])
+        bolt(3,length);
+      }
+
+      translate([0,0,8-length])
+      M3_nut();
+    }
+  }
+}

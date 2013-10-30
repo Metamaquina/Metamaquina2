@@ -22,43 +22,44 @@ include <nuts.h>;
 include <render.h>;
 
 module M25_nut(){
-  BillOfMaterials("M2.5 nut");
+  BillOfMaterials("M2.5 nut", ref="P_M2.5");
   nut(m25_nut_r, R = m25_nut_R, H = m25_nut_height);
 }
 
 module M3_nut(){
-  BillOfMaterials("M3 nut");
+  BillOfMaterials("M3 nut", ref="P_M3");
   nut(r = m3_nut_r, R = m3_nut_R, H = m3_nut_height);
 }
 
 module M3_locknut(){
-  BillOfMaterials("M3 lock-nut");
+  BillOfMaterials("M3 lock-nut", ref="P_M3_ny");
   locknut(r = 2.25, R = 6.235, H1 = 2.23, H = 3.95);
 }
 
 module M4_nut(){
-  BillOfMaterials("M4 nut");
+  BillOfMaterials("M4 nut", ref="P_M4");
   nut(r = m4_nut_r, R = m4_nut_R, H = m4_nut_height);
 }
 
-module M8_nut(id=""){
-  BillOfMaterials(str("M8 nut ", id));
+module M8_nut(){
+  BillOfMaterials("M8 nut", ref="P_M8");
   nut(r = m8_nut_r, R = m8_nut_R, H = m8_nut_height);
 }
 
 //TODO: verify this
 module new_M8_nut(){
+  BillOfMaterials("M8 nut", ref="P_M8");
   nut(r = 6.75, R = 14.76, H = 6.35);
 }
 
 //TODO: verify this
 module M8_locknut(){
-  BillOfMaterials("M8 lock-nut");
-  locknut(r = 6.75, R = 14.76, H1 = 6.4, H = 7.94);
+  BillOfMaterials("M8 lock-nut", ref="P_M8_ny");
+  locknut(r = m8_nut_r, R = m8_nut_R, H1 = 6.4, H = 7.94);
 }
 
 module M8_cap_nut(){
-  BillOfMaterials("M8 cap-nut");
+  BillOfMaterials("M8 cap-nut", ref="P_M8_ca");
   cap_nut(r = m8_capnut_r, R = m8_capnut_R, H1 = m8_capnut_H1, H = m8_capnut_height);
 }
 
@@ -111,3 +112,4 @@ module cap_nut(r, R, H1, H) {
 
 M8_locknut();
 translate([0,30,0]) M8_cap_nut();
+translate([0,70,0]) M8_nut();

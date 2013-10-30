@@ -92,7 +92,7 @@ bearing_sandwich_spacing = 12;
 RAMBo_x = 1;
 RAMBo_y = 133;
 
-rods_diameter_clearance = 0.1; //extra room for the X and Z rods
+rods_radius_clearance = 0.04; //extra room for the X and Z rods
 
 //For the actual build volume we avoid using the marginal
 //region around the heated bed
@@ -223,35 +223,61 @@ rear_backtop_advance = XZStage_position - (XPlatform_width/2 + XEnd_extra_width 
 RightPanel_topheight = 30;
 RightPanel_topwidth = XZStage_position + 30 - rear_backtop_advance;
 
-module bar_cut(l=2*bar_cut_length){
-    translate([-l/2,0]) circle(r=m8_diameter/2);
-    square([l, m8_diameter], center=true);
-    translate([l/2,0]) circle(r=m8_diameter/2);
-}
+ArcPanel_width = SidePanels_distance - 2 * thickness;
+ArcPanel_height = 140; //TODO: make it depend on the machine height
 
-
-bolts = [
-/*BottomPanel*/
-  [SidePanels_distance/2,   BottomPanel_width*(3/4), BottomPanel_zoffset,      0, 90,0],
-  [SidePanels_distance/2,  -BottomPanel_width*(3/4), BottomPanel_zoffset,      0, 90,0],
-  [-SidePanels_distance/2,  BottomPanel_width*(3/4), BottomPanel_zoffset,      0,-90,0],
-  [-SidePanels_distance/2, -BottomPanel_width*(3/4), BottomPanel_zoffset,      0,-90,0],
-/*TopPanel*/
-  [-SidePanels_distance/2+thickness/2, 0, machine_height + thickness,      0,0,0],
-/*RightPanel*/
-/*LeftPanel*/
-
+SidePanel_TSLOT_SHAPES = [
+//parameters => [x, y, angle]
+  [rear_backtop_advance+RightPanel_topwidth-25, machine_height+thickness, 180],
+  [rear_backtop_advance+5, machine_height+thickness, 180]
 ];
 
-if (render_bolts){
-  material("metal"){
-    for (p = bolts){
-      translate([p[0],p[1],p[2]])
-      rotate([p[3],p[4],p[5]])
-      t_slot_bolt_washer_nut(3,16);
-    }
-  }
-}
+SidePanel_TSLOTS = [
+//parameters => [x, y, width, angle]
+  //tslots for arc panel
+  [XZStage_position - ArcPanel_rear_advance + thickness/2, machine_height-50, 50, 0],
+  [XZStage_position - ArcPanel_rear_advance + thickness/2, machine_height-ArcPanel_height, 50, 0],
+  //tslots for bottom panel (without joints)
+  [XZStage_position + BottomPanel_width/2 + BottomPanel_width/4, BottomPanel_zoffset + thickness/2, 0, 0],
+  [XZStage_position + -BottomPanel_width/2 - BottomPanel_width/4, BottomPanel_zoffset + thickness/2, 0, 0]
+];
+
+TopPanel_TSLOTS = [
+//parameters => [x, y, width, angle]
+  [-ArcPanel_width/2, ArcPanel_rear_advance - thickness/2, 50, -90],
+  [25, ArcPanel_rear_advance - thickness/2, 50, 90],
+  [ArcPanel_width/2, ArcPanel_rear_advance - thickness/2, 50, 90],
+  [-Z_rods_distance/2 + Z_rod_sidepanel_distance - thickness/2, -30, 50, 0],
+  [-Z_rods_distance/2 + Z_rod_sidepanel_distance - thickness/2, RightPanel_topwidth-60, 50, 0],
+  [Z_rods_distance/2-Z_rod_sidepanel_distance + thickness/2, -30, 50, 0],
+  [Z_rods_distance/2-Z_rod_sidepanel_distance + thickness/2, RightPanel_topwidth-60, 50, 0]
+];
+
+XEndMotor_back_face_TSLOTS = [
+//parameters => [x, y, width, angle]
+  [XPlatform_width/2 - thickness,
+   thickness,
+   XPlatform_height - thickness,
+   0],
+
+  [-XPlatform_width/2 - XEnd_extra_width + thickness,
+   thickness,
+   XPlatform_height - thickness,
+   0]
+];
+
+XEndIdler_back_face_TSLOTS = [
+//parameters => [x, y, width, angle]
+  [XPlatform_width/2 + XEnd_extra_width - thickness,
+   thickness,
+   XPlatform_height - thickness,
+   0],
+
+  [-XPlatform_width/2 + thickness,
+   thickness,
+   XPlatform_height - thickness,
+   0]
+];
 
 // 2d shapes for laser-cutting:
 
@@ -298,7 +324,7 @@ module SecondaryRodEnd_face(L, third_hole=true){
   difference(){
     RodEnd_face(L, third_hole=true);
 
-    circle(r=(m8_diameter + rods_diameter_clearance)/2);
+    circle(r=m8_diameter/2 + rods_radius_clearance);
 
     translate([L-8,0])
     circle(r=m8_diameter/2 + 2);
@@ -497,6 +523,12 @@ module MachineRightPanel_face(){
   }
 }
 
+module bar_cut(l=2*bar_cut_length){
+  hull()
+    for(i=[-1,1])
+    translate([i*l/2,0]) circle(r=m8_diameter/2);
+}
+
 //!MachineSidePanel_face();
 module MachineSidePanel_face(){
   union(){
@@ -512,65 +544,21 @@ module MachineSidePanel_face(){
       translate([RightPanel_basewidth, base_bars_Zdistance + base_bars_height]) bar_cut();
 
       //cut for attaching bottom panel
-      if (zmotors_on_top){
-        //in case ZMotors are installed on the top
-        translate([XZStage_position, feetheight]){
-          translate([BottomPanel_width/2 + BottomPanel_width/4, thickness/2])
-          M3_hole();
+      translate([XZStage_position - BottomPanel_width/2, BottomPanel_zoffset - slot_extra_thickness/2])
+      square([BottomPanel_width, thickness + slot_extra_thickness]);
 
-          translate([-BottomPanel_width/2, -slot_extra_thickness/2])
-          square([BottomPanel_width, thickness + slot_extra_thickness]);
-
-          translate([-BottomPanel_width/2 - BottomPanel_width/4, thickness/2])
-          M3_hole();
-        }
-      } else {
-        //in case ZMotors are installed on the bottom
-        translate([XZStage_position, BottomPanel_zoffset]){
-          translate([BottomPanel_width/2 + BottomPanel_width/4, thickness/2])
-          M3_hole();
-
-          translate([-BottomPanel_width/2, -slot_extra_thickness/2])
-          square([BottomPanel_width, thickness + slot_extra_thickness]);
-
-          translate([-BottomPanel_width/2 - BottomPanel_width/4, thickness/2])
-          M3_hole();
-        }
-
+      translate([XZStage_position - 12, feetheight-5]){
         //hole for z motors wiring
-        translate([XZStage_position - 12, feetheight-5])
         rounded_square([24, 24+5], corners=[5,5,5,5]);
 
+        //zipties to protect the Z-motor wiring from mechanical stress
+        translate([12,37])
+        rotate(45)
+        zip_tie_holes();
       }
 
-      //tslots for top panel
-      translate([rear_backtop_advance, machine_height+thickness]){
-        translate([5, 0])
-        rotate([0,0,180])
-        t_slot_shape(3, 16);
-
-        translate([RightPanel_topwidth-25, 0])
-        rotate([0,0,180])
-        t_slot_shape(3, 16);
-      }
-
-      //tslots for arc panel
-      translate([XZStage_position - ArcPanel_rear_advance + thickness/2, machine_height]){
-        translate([0, -50])
-        TSlot_holes();
-
-        //translate([0, -ArcPanel_height/2 - 25])
-        //TSlot_holes();
-
-        translate([0, -ArcPanel_height])
-        TSlot_holes();
-      }
-
-      if (zmotors_on_top){     
-        //tslot for bottom panel
-        translate([XZStage_position,feetheight])
-        t_slot_shape(3, 16);
-      }
+      tslot_shapes_from_list(SidePanel_TSLOT_SHAPES);
+      tslot_holes_from_list(SidePanel_TSLOTS);
     }
 
     //tslots for top panel
@@ -581,13 +569,6 @@ module MachineSidePanel_face(){
     translate([rear_backtop_advance + RightPanel_topwidth - 50, machine_height+thickness/2])
     rotate([0,0,-90])
     TSlot_joints();
-
-    if (zmotors_on_top){
-      //tslot for bottom panel
-      translate([XZStage_position + BottomPanel_width/2, feetheight + thickness/2])
-      rotate([0,0,90])
-      TSlot_joints(BottomPanel_width);
-    }
   }
 }
 
@@ -634,7 +615,7 @@ module MachineSidePanel_plainface(){
 module TopPanel_holes(){
   translate([Z_rods_distance/2,0]){
     //holes for Zrod and Zbar
-    circle(r = m8_diameter/2 + rods_diameter_clearance);
+    circle(r = m8_diameter/2 + rods_radius_clearance);
 
     translate([8, 0])
     M3_hole();
@@ -645,35 +626,14 @@ module TopPanel_holes(){
     translate([-z_rod_z_bar_distance - 8, 8])
     M3_hole();
 
-    if (zmotors_on_top){
-      translate([-z_rod_z_bar_distance,0]){
-        //holes for Z motors
-        NEMA17_holes();
-
-        //hole for zmotor wiring
-        translate([0,40])
-        rounded_square([6,16], corners=[3,3,3,3], center=true);
-      }
-    } else {
-      translate([-z_rod_z_bar_distance,0]){
-        //This hole's diameter is considerably larger than the threaded rod diameter
-        // in order to allow slightly bent rods to freely move. Otherwise, we would potentially have more whobble as a result of a tightly fixed rod.
-        circle(r=(m8_diameter+4)/2);
-      }
-    }
-
-    translate([0,-30-25]){
-      translate([-Z_rod_sidepanel_distance + thickness/2, 25])
-        TSlot_holes();
-
-      translate([-Z_rod_sidepanel_distance + thickness/2, RightPanel_topwidth-5])
-        TSlot_holes();
+    translate([-z_rod_z_bar_distance,0]){
+      //This hole's diameter is considerably larger than the threaded rod diameter
+      // in order to allow slightly bent rods to freely move. Otherwise, we would potentially have more whobble as a result of a tightly fixed rod.
+      circle(r=(m8_diameter+4)/2);
     }
   }
 }
 
-ArcPanel_width = SidePanels_distance - 2 * thickness;
-ArcPanel_height = 140; //TODO: make it depend on the machine height
 module MachineArcPanel_face(){
   render(){
     difference(){
@@ -842,22 +802,9 @@ module MachineTopPanel_face(){
       }
     }
 
-    top_hole_for_extruder_wires();    
-    
-    //tslots for arc panel
-    translate([0,ArcPanel_rear_advance - thickness/2]){
-      translate([-ArcPanel_width/2, 0])
-      rotate([0,0,-90])
-      TSlot_holes();
+    top_hole_for_extruder_wires();
 
-      translate([25, 0])
-      rotate([0,0,90])
-      TSlot_holes();
-
-      translate([ArcPanel_width/2, 0])
-      rotate([0,0,90])
-      TSlot_holes();
-    }
+    tslot_holes_from_list(TopPanel_TSLOTS);
 
     TopPanel_holes(); 
     mirror([1,0,0]) TopPanel_holes();
@@ -867,7 +814,7 @@ module MachineTopPanel_face(){
 module BottomPanel_holes(){
     //holes for Z rods
     translate([Z_rods_distance/2,0]){
-      circle(r=(m8_diameter + 2*rods_diameter_clearance)/2);
+      circle(r=m8_diameter/2 + rods_radius_clearance);
       translate([0, -8]) M3_hole();
       translate([0, 8]) M3_hole();
       //translate([8, 0]) M3_hole();
@@ -885,28 +832,16 @@ module BottomPanel_holes(){
     translate([Z_rods_distance/2 - Z_rod_sidepanel_distance + thickness, BottomPanel_width/2 + BottomPanel_width/4])
     rotate([0,0,90])
     t_slot_shape(3,16);
-
-    translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness,0]){
-      // motor wires
-      translate([16,0])
-      zip_tie_holes(d=16);
-
-      //not necessary anymore (spiral tube or contractile mesh)
-      //translate([60,0])
-      //zip_tie_holes(d=16);
-    }
-    //not necessary anymore (spiral tube or contractile mesh)
-    //zip_tie_holes(d=16);
 }
 
 module heatedbed_bottompanel_hole(){
-  translate([20,3])
+  translate([20,5])
   heated_bed_wire_passthru_hole();
 }
 
 module zip_tie_holes(d=12, r=m3_diameter/2, bom=true){
   if (bom)
-    BillOfMaterials("Zip tie");
+    BillOfMaterials("Zip tie", ref="T18R_6.6_P");
 
   for (i=[-1,1]){
     translate([0,d/2*i])
@@ -914,9 +849,10 @@ module zip_tie_holes(d=12, r=m3_diameter/2, bom=true){
   }
 }
 
-module Y_belt(){
-  BillOfMaterials("GT2 belt for the Y axis");
-
+module YBelt(){
+  //TODO: pass length to BOM as a float - update integration script to support it
+  BillOfMaterials("GT2 belt for the Y axis", 1, ref="GT2B6");
+  
   translate([2.5, 0, 66])
   rotate([0,0,-90])
   rotate([90,0,0]){
@@ -991,7 +927,7 @@ module MachineBottomPanel_face(){
       BottomPanel_holes();
       mirror([1,0,0]) BottomPanel_holes();
 
-      translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness + 16, 24])
+      translate([-Z_rods_distance/2 + Z_rod_sidepanel_distance + thickness + 16, 30])
       heatedbed_bottompanel_hole();
 
       y_max_endstop_mount_holes();
@@ -1018,9 +954,11 @@ module XPlatform_bottom_face(remove_frontal_bridge=1){
 	    }
 
       //hole for extruder nozzle:
-      square([nozzle_hole_length, nozzle_hole_width], center=true);
-      translate([nozzle_hole_length/2,0]) circle(r=nozzle_hole_width/2);
-      translate([-nozzle_hole_length/2,0]) circle(r=nozzle_hole_width/2);
+      hull()
+      for (i=[-1,1])
+        translate([i*nozzle_hole_length/2,0]) circle(r=nozzle_hole_width/2);
+
+      x_carriage_screw_driver_access_holes();
 
       rotate([0,0,180])
       translate([-machine_x_dim/2, 0])
@@ -1208,13 +1146,7 @@ module XEnd_back_face(){
       translate([-14, 0])
       M3_hole();
 
-      translate([XPlatform_width/2 - thickness, thickness]){
-        TSlot_holes(width=XPlatform_height - thickness);
-      }
-
-      translate([-XPlatform_width/2 - XEnd_extra_width + thickness, thickness]){
-        TSlot_holes(width=XPlatform_height - thickness);
-      }
+      tslot_holes_from_list(XEnd_back_face_TSLOTS);
     }
   }
 }
@@ -1277,11 +1209,9 @@ module XEnd_front_face(){
     }
 	  
     //holes for x-axis rods
-    translate([X_rods_distance/2, X_rod_height + thickness])
-    circle(r=(X_rods_diameter + rods_diameter_clearance)/2);
-
-    translate([-X_rods_distance/2, X_rod_height + thickness])
-    circle(r=(X_rods_diameter + rods_diameter_clearance)/2);
+    for (i=[-1,1])
+      translate([i*X_rods_distance/2, X_rod_height + thickness])
+      circle(r=X_rods_diameter/2 + rods_radius_clearance);
 
     //screw holes for z-axis threaded bar
     for (i=[-1,1])
@@ -1290,7 +1220,7 @@ module XEnd_front_face(){
 
     //hole for belt
   	translate([-XPlatform_width/2 - XEnd_extra_width + belt_offset - 5, XIdler_height])
-    square([belt_width+6, 2*(IdlerRadius+4)], center=true);
+    square([belt_width+8, 2*(IdlerRadius+4)], center=true);
 
     translate([XPlatform_width/2 - thickness, thickness]){
       TSlot_holes(width=XPlatform_height - thickness);
@@ -1364,6 +1294,13 @@ module XEndstopHolder(){
   }
 }
 
+module x_carriage_screw_driver_access_holes(){
+  //holes for the screwdriver to access the wade extruder mount screws
+  for (i=[-1,1])
+    translate([0,i*extruder_mount_holes_distance/2])
+    circle(r=10/2);
+}
+
 module XCarriage_plainface(sandwich=false){
   difference(){
     if (sandwich){
@@ -1405,15 +1342,19 @@ module XCarriage_plainface(sandwich=false){
     translate([i*(num_extruders-1)*extra_extruder_length/2,0])
 
       if (sandwich){
-        //holes for the screwdriver to access the wade extruder mount screws
-        for (i=[-1,1])
-          translate([0,i*extruder_mount_holes_distance/2])  
-          circle(r=10/2);
+        x_carriage_screw_driver_access_holes();
       } else {
-        //holes for attaching the wade extruder
-        for (i=[-1,1])
-          translate([0,i*extruder_mount_holes_distance/2])  
+        //holes for attaching and removing the wade extruder
+          translate([0,-1*extruder_mount_holes_distance/2])
           circle(r=m4_diameter/2);
+
+        hull(){
+          translate([0,1*extruder_mount_holes_distance/2])
+          circle(r=m4_diameter/2);
+
+          translate([0,1*extruder_mount_holes_distance/2+10])
+          circle(r=m4_diameter/2);
+        }
       }
 
     //holes for spacers
@@ -1433,11 +1374,13 @@ module XCarriage_bottom_face(){
   difference(){
     XCarriage_plainface();
 
-    //holes for beltclamps
-    translate ([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width]){
+    union(){
+      //holes for beltclamps
+      translate ([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width]){
       for (i=[-1.3,1.3])
         translate([i*(XCarriage_lm8uu_distance/2+10), 0])
         beltclamp_holes();
+      }
     }
 
     //these are for making sure the motor wires are not broken by the machine's constant movement:
@@ -1525,9 +1468,9 @@ module RodEnd_ZBottomRight_sheet(){
 
 module RodEndTop_sheet(){
   {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x25 bolt", 3);
-    BillOfMaterials("M3 washer", 3);
-    BillOfMaterials("M3 lock-nut", 3);
+    BillOfMaterials("M3x25 bolt", 3, ref="H_M3x25");
+    BillOfMaterials("M3 washer", 3, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 3, ref="P_M3_ny");
   }
 
   material("lasercut")
@@ -1543,9 +1486,9 @@ module SecondaryRodEndTop_sheet(){
 
 module RodEndBottom_sheet(){
   {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x20 bolt", 2);
-    BillOfMaterials("M3 washer", 2);
-    BillOfMaterials("M3 lock-nut", 2);
+    BillOfMaterials("M3x20 bolt", 2, ref="H_M3x20");
+    BillOfMaterials("M3 washer", 2, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
   }
 
   material("lasercut")
@@ -1561,7 +1504,11 @@ module MachineRightPanel_sheet(){
   rotate([90,0,0]){
     material("lasercut")
     linear_extrude(height=thickness)
-    MachineRightPanel_face();
+    %MachineRightPanel_face();
+
+    translate([0,0,thickness])
+    mirror([0,0,1])
+    tslot_parts_from_list(SidePanel_TSLOTS);
 
     if (HIQUA_POWERSUPPLY){
       translate([powersupply_Xposition, powersupply_Yposition])
@@ -1588,7 +1535,9 @@ module MachineLeftPanel_sheet(){
   rotate([90,0,0]){
     material("lasercut")
     linear_extrude(height=thickness)
-    MachineLeftPanel_face();
+    %MachineLeftPanel_face();
+
+    tslot_parts_from_list(SidePanel_TSLOTS);
 
     for (clip=left_cable_clips){
       assign(type=clip[0], angle=clip[1], x=clip[2], y=clip[3]){
@@ -1623,15 +1572,17 @@ module MachineTopPanel_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Machine Top Panel");
 
   {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x25 bolt", 2);
-    BillOfMaterials("M3 washer", 2);
-    BillOfMaterials("M3 lock-nut", 2);
+    BillOfMaterials("M3x25 bolt", 2, ref="H_M3x25");
+    BillOfMaterials("M3 washer", 2, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
   }
 
   translate([0,-XZStage_offset,machine_height]){
     material("lasercut")
     linear_extrude(height=thickness)
-    MachineTopPanel_face();
+    %MachineTopPanel_face();
+
+    tslot_parts_from_list(TopPanel_TSLOTS);
 
     translate([0,120,thickness])
     top_wiring_hole_aux_sheet(r=extruder_wiring_radius);
@@ -1706,12 +1657,15 @@ module XPlatform_bottom_sheet(){
 module XEndMotor_back_face_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="XEnd Motor Back");
 
-  material("lasercut")
   translate([thickness, 0, 0])
   rotate([0,-90,0])
-  rotate([0,0,-90])
-  linear_extrude(height=thickness)
-  XEndMotor_back_face();
+  rotate([0,0,-90]){
+    material("lasercut")
+    linear_extrude(height=thickness)
+    XEndMotor_back_face();
+
+    tslot_parts_from_list(XEndMotor_back_face_TSLOTS);
+  }
 }
 
 module XEndMotor_front_face_sheet(){
@@ -1725,14 +1679,20 @@ module XEndMotor_front_face_sheet(){
   XEnd_front_face();
 }
 
+//!XEndIdler_back_face_sheet();
 module XEndIdler_back_face_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="XEnd Idler Back");
 
-  material("lasercut")
-  rotate([0,-90,0])
-  rotate([0,0,-90])
-  linear_extrude(height=thickness)
-  mirror([1,0]) XEndIdler_back_face();
+  translate([-thickness,0])
+  rotate([0,90,0])
+  rotate([0,0,90])
+  {
+    material("lasercut")
+    linear_extrude(height=thickness)
+    XEndIdler_back_face();
+
+    tslot_parts_from_list(XEndIdler_back_face_TSLOTS);
+  }
 }
 
 module XEndIdler_front_face_sheet(){
@@ -1845,9 +1805,10 @@ module belt(bearings, belt_width=5){
   }
 }
 
-module Xbelt(){
-  BillOfMaterials("GT2 belt for the X axis");
-
+module XBelt(){
+  //TODO: pass length to BOM as a float - update integration script to support it
+  BillOfMaterials("GT2 belt for the Y axis", 1, ref="GT2B6");
+  
   translate([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + thickness]){
     rotate([90,0,0]){
       belt(bearings = [
@@ -1864,14 +1825,14 @@ module Xbelt(){
   }
 }
 
-//!Xbelt();
+//!XBelt();
 
 module belt_clamps(){
 
   { //TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x20 bolt", 4); //TODO: check this!
-    BillOfMaterials("M3 lock-nut", 4);
-    BillOfMaterials("M3 washer", 4);
+    BillOfMaterials("M3x20 bolt", 4, ref="H_M3x20"); //TODO: check this!
+    BillOfMaterials("M3 lock-nut", 4, ref="P_M3_ny");
+    BillOfMaterials("M3 washer", 4, ref="AL_M3");
   }
 
   for (i=[-1,1])
@@ -1927,8 +1888,14 @@ module XEndIdler_ZLink(){
   ZLink();
 }
 
+// consider cutting error for bars length specification
+// TODO: render geometry accordingly to specs
+function closest(x) = floor(x+0.5);
+function corrected_length(x, supplier_error=2) = closest(x) - supplier_error;
+function corrected_Ylength(x, supplier_error=2) = closest(x) + supplier_error;
+
 module XRods(){
-  BillOfMaterials(str("M8x",X_rod_length,"mm Smooth Rod"), 2);
+  BillOfMaterials(str("M8x",corrected_length(X_rod_length),"mm Smooth Rod"), 2, ref=str("MM2_XROD_",corrected_length(X_rod_length)));
   material("metal"){
     translate([0, -X_rods_distance/2, thickness + X_rod_height])
     rotate([0,90,0])
@@ -1941,7 +1908,7 @@ module XRods(){
 }
 
 module YRods(){
-  BillOfMaterials(str("M8x",Y_rod_length,"mm Smooth Rod"), 2);
+  BillOfMaterials(str("M8x",corrected_Ylength(Y_rod_length),"mm Smooth Rod"), 2, ref=str("MM2_YROD_",corrected_Ylength(Y_rod_length)));
   material("metal"){
     translate([Y_rods_distance/2, -Y_rod_length/2, Y_rod_height])
     rotate([-90,0,0])
@@ -1954,7 +1921,7 @@ module YRods(){
 }
 
 module ZRods(){
-  BillOfMaterials(str("M8x",Z_rod_length,"mm Smooth Rod"), 2);
+  BillOfMaterials(str("M8x",corrected_length(Z_rod_length),"mm Smooth Rod"), 2, ref=str("MM2_ZROD_",corrected_length(Z_rod_length)));
 
   material("metal"){
     translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2, -XZStage_offset, BottomPanel_zoffset])
@@ -1965,8 +1932,13 @@ module ZRods(){
   }
 }
 
+//TODO:count threaded rods properly
+//this counts for the total ammount of uncut bars used to manufacture one MM2
+BillOfMaterials("M8 threaded rod (1m)", 2, ref="BR_M8");
+
 module ZBars(){
-  BillOfMaterials(str("M8x",Z_bar_length,"mm Threaded Rod"), 2);
+  
+  BillOfMaterials(str("M8x",corrected_length(Z_bar_length),"mm Threaded Rod"), 2);
 
   material("threaded metal"){
     translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
@@ -1981,18 +1953,18 @@ module XCarriage(){
   { //Add these parts to the CAD model
 
     //to keep the bearing sandwich in place
-    BillOfMaterials("M3 lock-nut", 6);
-    BillOfMaterials("M3x30 bolt", 6);
-    BillOfMaterials("M3 washer", 6);
+    BillOfMaterials("M3 lock-nut", 6, ref="P_M3_ny");
+    BillOfMaterials("M3x30 bolt", 6, ref="H_M3x30");
+    BillOfMaterials("M3 washer", 6, ref="AL_M3");
 
     //to attach the extruder to the XCarriage
-    BillOfMaterials("M4x20 bolt", 2);
-    BillOfMaterials("M4 lock-nut", 2);
+    BillOfMaterials("M4x25 bolt", 2, ref="H_M4x25");
+    BillOfMaterials("M4 lock-nut", 2, ref="P_M4_ny");
   }
 
   //lasercut parts:
   translate([XCarPosition, 0, XCarriage_height]){
-    XCarriage_bottom_sheet();
+    %XCarriage_bottom_sheet();
     translate([0,0,-bearing_sandwich_spacing]){
 
       for (i=[-1,1]){
@@ -2001,26 +1973,25 @@ module XCarriage(){
           double_M3_lasercut_spacer();
         }
 
-        translate([i*(XCarriage_length/2-XCarriage_padding), 0])
-        double_M3_lasercut_spacer();
+        //translate([i*(XCarriage_length/2-XCarriage_padding), 0])
+        //double_M3_lasercut_spacer();
       }
 
       translate([0,0,-thickness])
       XCarriage_sandwich_sheet();
     }
 
-    if (render_extruder)
-      translate([0,0,thickness])
-      lasercut_extruder();
+    //if (render_extruder)
+      //translate([0,0,thickness])
+      //lasercut_extruder();
   }
 
   {
     //TODO: Add these microswitches to the CAD model
-    BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM",2 ); //XMIN & XMAX
-
-    BillOfMaterials("M2.5x16 bolt",4);
-    BillOfMaterials("M2.5 lock-nut",4);
-    BillOfMaterials("M2.5 washer",4);
+    BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM",2, ref="KW11-3Z-5-3T" ); //XMIN & XMAX
+    BillOfMaterials("M2.5x16 bolt, cylindric head",4, ref="H_M2.5x16_cl");
+    BillOfMaterials("M2.5 nut",4, ref="P_M2.5");
+    BillOfMaterials("M2.5 washer",4, ref="AL_M2.5");
   }
 
   //plastic parts:
@@ -2035,11 +2006,11 @@ module XCarriage(){
 }
 
 module XPlatform(){
-  //submodules:
-  XEndMotor();
-  XEndIdler();
+  //submodules: 
+  %XEndMotor();
+  %XEndIdler();
   XCarriage();
-  Xbelt();
+  XBelt();
 
   //lasercut parts:
   XPlatform_bottom_sheet();
@@ -2049,7 +2020,7 @@ module XPlatform(){
 }
 
 module GT2_pulley(){
-  BillOfMaterials("GT2 pulley");
+  BillOfMaterials("GT2 pulley 6mm x 16 teeth", ref="GT2P6x16_Al");
 
   material("metal"){
     //TODO: implement-me!
@@ -2065,16 +2036,16 @@ module XEndMotor(){
   { //TODO: Add these parts to the CAD model
 
     //For the Z-Link
-    BillOfMaterials("Compression Spring CM1516 (D=11.1mm, length=18mm)", 1);
-    BillOfMaterials("M8 nut", 2);
-    BillOfMaterials("M3x12 bolt", 2);
-    BillOfMaterials("M3 nut", 2);
-    BillOfMaterials("M3 washer", 2);
+    BillOfMaterials("Compression Spring CM1516 (D=11.1mm, length=18mm)", 1, ref="CM1516");
+    BillOfMaterials("M8 nut", 2, ref="P_M8");
+    BillOfMaterials("M3x12 bolt", 2, ref="H_M3x12");
+    BillOfMaterials("M3 nut", 2, ref="P_M3");
+    BillOfMaterials("M3 washer", 2, ref="AL_M3");
 
     //to keep the bearing sandwiches in place
-    BillOfMaterials("M3 lock-nut", 4);
-    BillOfMaterials("M3x30 bolt", 4);
-    BillOfMaterials("M3 washer", 4);
+    BillOfMaterials("M3 lock-nut", 4, ref="P_M3_ny");
+    BillOfMaterials("M3x30 bolt", 4, ref="H_M3x30");
+    BillOfMaterials("M3 washer", 4, ref="AL_M3");
   }
 
   translate([-machine_x_dim/2,0]){
@@ -2102,22 +2073,24 @@ module XEndIdler(){
   { //TODO: Add these parts to the CAD model
 
     //For the Z-Link
-    BillOfMaterials("Compression Spring CM1516 (D=11.1mm, length=18mm)", 1);
-    BillOfMaterials("M8 nut", 2);
-    BillOfMaterials("M3x12 bolt", 2);
-    BillOfMaterials("M3 nut", 2);
-    BillOfMaterials("M3 washer", 2);
 
-    //to keep the bearing sandwiche in place
-    BillOfMaterials("M3 lock-nut", 4);
-    BillOfMaterials("M3x30 bolt", 4);
-    BillOfMaterials("M3 washer", 4);
+    //For the Z-Link
+    BillOfMaterials("Compression Spring CM1516 (D=11.1mm, length=18mm)", 1, ref="CM1516");
+    BillOfMaterials("M8 nut", 2, ref="P_M8");
+    BillOfMaterials("M3x12 bolt", 2, ref="H_M3x12");
+    BillOfMaterials("M3 nut", 2, ref="P_M3");
+    BillOfMaterials("M3 washer", 2, ref="AL_M3");
+
+    //to keep the bearing sandwiches in place
+    BillOfMaterials("M3 lock-nut", 4, ref="P_M3_ny");
+    BillOfMaterials("M3x30 bolt", 4, ref="H_M3x30");
+    BillOfMaterials("M3 washer", 4, ref="AL_M3");
 
     //for the idler bearing assembly
-    BillOfMaterials("M3x? bolt", 1);
-    BillOfMaterials("M8 lock-nut", 1);
-    BillOfMaterials("M8 washer", 5);//TODO: check this!
-    BillOfMaterials("M8 mudguard washer", 2);
+    BillOfMaterials("M8x35 bolt", 1, ref="H_M8x35");
+    BillOfMaterials("M8 lock-nut", 1, ref="P_M8_ny");
+    BillOfMaterials("M8 washer", 5, ref="AL_M8");//TODO: check this!
+    BillOfMaterials("M8 mudguard washer", 2, ref="AF_M8");
   }
 
 
@@ -2163,20 +2136,22 @@ module YPlatform_right_sandwich_face(){
 }
 
 module YPlatform_left_sandwich_outline(){
+//This shape and it's positioning are important to let the heated bed wiring free to move. If we placed it mirrored there would be a chance of the wiring to get stuck in one of the corners of this sheet.
+
   width=40;
   height=50;
   r=5;
   R=25;
   translate([-width/2,-height/2])
-  rounded_square([width, height], corners=[r,R,r,R]);
+  rounded_square([width, height], corners=[R,r,R,r]);
 }
 
 module YPlatform_left_sandwich_holes(){
-    translate([14,0])
+    translate([-14,0])
     M3_hole();
 
     for (j=[-1,1])
-      translate([-14,j*(50/2 - 5)])
+      translate([14,j*(50/2 - 5)])
       M3_hole();
 }
 
@@ -2209,19 +2184,19 @@ module YPlatform_subassembly(){
   { //Add these parts to the CAD model
 
     //to keep the left bearing sandwiches in place
-    BillOfMaterials("M3 lock-nut", 3);
-    BillOfMaterials("M3x30 bolt", 3);
-    BillOfMaterials("M3 washer", 3);
+    BillOfMaterials("M3 lock-nut", 3, ref="P_M3_ny");
+    BillOfMaterials("M3x30 bolt", 3, ref="H_M3x30");
+    BillOfMaterials("M3 washer", 3, ref="AL_M3");
 
     //to keep the right bearing sandwiches in place
-    BillOfMaterials("M3 lock-nut", 4);
-    BillOfMaterials("M3x30 bolt", 4);
-    BillOfMaterials("M3 washer", 4);
+    BillOfMaterials("M3 lock-nut", 4, ref="P_M3_ny");
+    BillOfMaterials("M3x30 bolt", 4, ref="H_M3x30");
+    BillOfMaterials("M3 washer", 4, ref="AL_M3");
 
     //for the Y belt clamps
-    BillOfMaterials("M3 lock-nut", 4);
-    BillOfMaterials("M3x25 bolt", 4);
-    BillOfMaterials("M3 washer", 4);
+    BillOfMaterials("M3 lock-nut", 4, ref="P_M3_ny");
+    BillOfMaterials("M3x25 bolt", 4, ref="H_M3x25");
+    BillOfMaterials("M3 washer", 4, ref="AL_M3");
   }
 
   translate([0,0,100-15]){ /*TODO*/
@@ -2242,7 +2217,7 @@ module YPlatform_subassembly(){
       translate([-Y_rods_distance/2, 0, -thickness]){
         YPlatform_left_sandwich_sheet();
 
-        for (p=[[-14,20],[-14,-20],[14,0]]){
+        for (p=[[14,20],[14,-20],[-14,0]]){
           translate(p)
           rotate([180,0]){
             M3_washer();
@@ -2272,19 +2247,19 @@ module YPlatform_subassembly(){
     YPlatform_linear_bearings();
 
     translate([YEndstopHolder_distance/2,90]){
-      translate([0,thickness/2+1.4,-thickness])
-      yendstop_hit_subassembly();
+//      translate([0,thickness/2+1.4,-thickness])
+//      yendstop_hit_subassembly();
 
-//      rotate([-90,0])
-//      YEndstopHolder_sheet();
+      rotate([-90,0])
+      YEndstopHolder_sheet();
     }
 
     translate([-YEndstopHolder_distance/2,-90 - thickness]){
-      translate([0,thickness/2-1.4,-thickness])
-      yendstop_hit_subassembly();
+//      translate([0,thickness/2-1.4,-thickness])
+//      yendstop_hit_subassembly();
 
-//      rotate([-90,0])
-//      YEndstopHolder_sheet();
+      rotate([-90,0])
+      YEndstopHolder_sheet();
     }
   }
 }
@@ -2330,11 +2305,11 @@ module YPlatform_right_sandwich_holes(){
 }
 
 module YPlatform_spacers(){
-  translate([-Y_rods_distance/2 + 14, 0])
+  translate([-Y_rods_distance/2 - 14, 0])
   double_M3_lasercut_spacer();
 
   for (j=[-1,1]){
-    translate([-Y_rods_distance/2 - 14, j*(50/2-5)])
+    translate([-Y_rods_distance/2 + 14, j*(50/2-5)])
     double_M3_lasercut_spacer();
   }
 
@@ -2410,22 +2385,24 @@ module holes_for_heated_bed_wiring(){
   rotate(45)
   zip_tie_holes();
 
-  translate([-100,0])
-  heated_bed_wire_passthru_hole();
+  translate([-100,0]){
+    translate([0,10])
+    rotate(90)
+    zip_tie_holes();
+
+    heated_bed_wire_passthru_hole();
+  }
 }
 
 module heated_bed_wire_passthru_hole(){
-  for (i=[-1,1]){
-    for (j=[-1,1]){
-      translate([i*5, j*10])
-      M3_hole();
-    }
-  }
+  translate([0,-10])
+  rotate(90)
+  zip_tie_holes();
 
   hull(){
     for (i=[-1,1]){
-      translate([i*5, 0])
-        circle(r=5/2);
+      translate([i*3, 0])
+        circle(r=10/2);
     }
   }
 }
@@ -2444,7 +2421,7 @@ module YPlatform(){
     YPlatform_subassembly();
   }
   YRods();
-  Y_belt();
+  YBelt();
 }
 
 module bearing_assembly(rear){
@@ -2533,7 +2510,7 @@ module nut_cap_assembly(){
 }
 
 module FrontBars(){
-  BillOfMaterials(str("M8x",horiz_bars_length,"mm Threaded Rod"), 2);
+  BillOfMaterials(str("M8x",corrected_length(horiz_bars_length),"mm Threaded Rod"), 2);
 
   translate([0, -RightPanel_basewidth/2 + bar_cut_length, base_bars_Zdistance + base_bars_height]){
 
@@ -2578,7 +2555,7 @@ module FrontBars(){
 }
 
 module RearBars(){
-  BillOfMaterials(str("M8x",horiz_bars_length,"mm Threaded Rod"), 2);
+  BillOfMaterials(str("M8x",corrected_length(horiz_bars_length),"mm Threaded Rod"), 2);
 
   translate([0, RightPanel_basewidth/2 - bar_cut_length, base_bars_Zdistance + base_bars_height]){
 
@@ -2721,8 +2698,8 @@ module BottomRearNutsAndWashers(){
 module FrontAssembly(){
   FrontBars();
 
-//  FrontTopBar();
-  //FrontBottomBars();
+  FrontTopBar();
+  FrontBottomBars();
 }
 
 //!YMotorAssembly();
@@ -2736,8 +2713,8 @@ module YMotorAssembly(){
 
 module RearAssembly(){
   RearBars();
-//  RearTopBar(); //sara
-//  RearBottomBar();
+  RearTopBar();
+  RearBottomBar();
 
   translate([-7, RightPanel_basewidth/2 - bar_cut_length, 60 + feetheight +12])
   rotate([0,-90,0])
@@ -2745,12 +2722,12 @@ module RearAssembly(){
   YMotorAssembly();
 }
 
-module LaserCutPanels(){ //sara
-  //MachineTopPanel_sheet();
+module LaserCutPanels(){
+  MachineTopPanel_sheet();
   MachineLeftPanel_sheet();
   MachineRightPanel_sheet();
-  //MachineArcPanel_sheet();
-  //MachineBottomPanel_sheet();
+  MachineArcPanel_sheet();
+  MachineBottomPanel_sheet();
 
   RodEnd_ZTopLeft_sheet();
   SecondaryRodEnd_ZTopLeft_sheet();
@@ -2770,7 +2747,7 @@ module XMotor(){
 module YMotor(){
   rotate([0,0,-90-45])
   rotate([180,0,0])
-  NEMA17_subassembly();
+  %NEMA17_subassembly();
 }
 
 module ZMotors(){
@@ -2813,10 +2790,10 @@ module plate_border(w=500, h=500, border=2){
 
 //!LaserCutPanels();
 module Metamaquina2(){
-  //LaserCutPanels();
-  FrontAssembly();
-  //RearAssembly(); //sara
-/*
+  LaserCutPanels();
+  %FrontAssembly();
+  %RearAssembly() ;
+
   if (render_xplatform){
     translate([0,
                -XZStage_offset,
@@ -2828,16 +2805,11 @@ module Metamaquina2(){
   }
 
   YPlatform();
-  ZAxis();*/
+  %ZAxis();
 }
 
 //rotate([0,0,cos(360*time)*60])
 Metamaquina2();
-
-supplier_error = 2; // means bars&rods are cut with a typical error of +/- 2mm
-function closest(x) = floor(x+0.5);
-function corrected_length(x) = closest(x) - supplier_error;
-function corrected_Ylength(x) = closest(x) + supplier_error;
 
 echo(str("XCarriage dimensions: ", XCarriage_width, " mm x ", XCarriage_length, " mm"));
 
@@ -2850,7 +2822,7 @@ echo(str("  X_rod_length (x2): ", corrected_length(X_rod_length), " mm"));
 echo(str("  Y_rod_length (x2): ", corrected_Ylength(Y_rod_length), " mm"));
 echo(str("  Z_rod_length (x2): ", corrected_length(Z_rod_length), " mm"));
 
-barclamp_calibration = (SidePanels_distance - 2*thickness - Y_rods_distance - m8_diameter)/2 - slot_extra_thickness;
+barclamp_calibration = (SidePanels_distance - 2*thickness - Y_rods_distance - m8_diameter)/2;
 
 echo(str("calibration distance between the internal face of a sidepanel and the closest tangent of a Y-axis rod: ", barclamp_calibration, " mm"));
 
@@ -2862,7 +2834,7 @@ if (render_calibration_guide){
 bearing_thickness = 7;
 washer_thickness = 1.5;
 mudguard_washer_thickness = 2;
-Ybearing_calibration = (SidePanels_distance - 2*thickness)/2 - bearing_thickness/2 - washer_thickness - mudguard_washer_thickness - slot_extra_thickness;
+Ybearing_calibration = (SidePanels_distance - 2*thickness)/2 - bearing_thickness/2 - washer_thickness - mudguard_washer_thickness;
 
 echo(str("calibration distance between the internal face of a sidepanel and the closest face of a mudguard washer: ", Ybearing_calibration, " mm"));
 
@@ -2878,3 +2850,16 @@ if (render_calibration_guide){
   translate([-SidePanels_distance/2 + thickness, -RightPanel_basewidth/2 + bar_cut_length - 10, base_bars_Zdistance/2 + base_bars_height])
   color([1,1,0.4,0.7]) cube([Sidepanel_calibration, 20, 15]);
 }
+
+
+use <FilamentSpoolHolder.scad>;
+
+
+translate([400,0,0])
+rotate([0,0,90]){
+  //FilamentSpoolHolder();
+  //FilamentSpool();
+}
+
+
+

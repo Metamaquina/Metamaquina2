@@ -147,31 +147,39 @@ module cable_clip(type){
 //http://www.farnell.com/datasheets/1504045.pdf
 module RA3_cable_clip_mount() clip_mount(L=13, W=13);
 module RA3_cable_clip(){
-  BillOfMaterials("Cable-clip Hellerman RA3");
+  BillOfMaterials("Cable-clip Hellerman RA3", ref="RA3");
   hellerman_cable_clip_with_sticker(D=3, H=5, L=13, W=13, W2=5, clip_thickness=1);
 }
 
-module RA6_cable_clip_mount() clip_mount(L=20.7, W=11.6);
+module RA6_cable_clip_mount(){
+  clip_mount(L=20.7, W=11.6);
+
+  translate([-9,5])
+  rotate(-90)
+  scale(0.6)
+  import("RA6.dxf");
+}
+
 module RA6_cable_clip(){
-  BillOfMaterials("Cable-clip Hellerman RA6");
+  BillOfMaterials("Cable-clip Hellerman RA6", ref="RA6");
   hellerman_cable_clip_with_sticker(D=6, L=20.7, H=9, W=11.6, W2=5, clip_thickness=1.5);
 }
 
 module RA9_cable_clip_mount() clip_mount(L=19, W=11.25);
 module RA9_cable_clip(){
-  BillOfMaterials("Cable-clip Hellerman RA9");
+  BillOfMaterials("Cable-clip Hellerman RA9", ref="RA9");
   hellerman_cable_clip_with_sticker(D=9, H=12.5, L=19, W=11.25, W2=6.75, clip_thickness=1.5 /*todo*/);
 }
 
 module RA13_cable_clip_mount() clip_mount(L=23.3, W=24);
 module RA13_cable_clip(){
-  BillOfMaterials("Cable-clip Hellerman RA13");
+  BillOfMaterials("Cable-clip Hellerman RA13", ref="RA13");
   hellerman_cable_clip_with_sticker(D=13, H=16.5, L=23.3, W=24, W2=9.5, clip_thickness=1.8 /*todo*/);
 }
 
 module RA18_cable_clip_mount() clip_mount(L=28.5, W=28.5);
 module RA18_cable_clip(){
-  BillOfMaterials("Cable-clip Hellerman RA18");
+  BillOfMaterials("Cable-clip Hellerman RA18", ref="RA18");
   hellerman_cable_clip_with_sticker(D=18, L=28.5, H=23, W=28.5, W2=10, clip_thickness=1.8);
 }
 

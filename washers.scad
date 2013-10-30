@@ -22,31 +22,36 @@ include <BillOfMaterials.h>;
 include <render.h>;
 
 module M3_washer(){
-  BillOfMaterials("M3 washer");
+  BillOfMaterials("M3 washer", ref="AL_M3");
   washer(washer_thickness = m3_washer_thickness,
          external_diameter = m3_washer_D,
          internal_diameter = m3_washer_d);
 }
 
 module M4_washer(){
-  BillOfMaterials("M4 washer");
+  BillOfMaterials("M4 washer", ref="AL_M4");
   washer(washer_thickness = m4_washer_thickness,
          external_diameter = m4_washer_D,
          internal_diameter = m4_washer_d);
 }
 
 module M8_washer(){
-  BillOfMaterials("M8 washer");
+  BillOfMaterials("M8 washer", ref="AL_M8");
   washer(washer_thickness = m8_washer_thickness,
          external_diameter = m8_washer_D,
          internal_diameter = m8_washer_d);
 }
 
 module M8_mudguard_washer(){
-  BillOfMaterials("M8 mudguard washer");
+  BillOfMaterials("M8 mudguard washer", ref="AF_M8");
   washer(washer_thickness = m8_mudguard_washer_thickness,
          external_diameter = m8_mudguard_washer_D,
          internal_diameter = m8_mudguard_washer_d);
+}
+
+module M8_lock_washer(){
+  BillOfMaterials("M8 lock washer", ref="AP_M8");
+  //TODO: render
 }
 
 module washer(washer_thickness, external_diameter, internal_diameter){

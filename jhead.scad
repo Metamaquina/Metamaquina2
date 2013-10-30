@@ -37,11 +37,11 @@ extruders_distance=9;
 }
 
 module J_head_body(){
-  BillOfMaterials("JHead machined body");
+  BillOfMaterials("JHead machined body", ref="MM2_PEEK");
 
   {
     //TODO: Add this part to the CAD model
-    BillOfMaterials("PTFE liner");
+    BillOfMaterials("PTFE liner", ref="MM2_PTFE_liner");
   }
 
 h1=50;
@@ -104,11 +104,19 @@ r9=(5/8)*inch/2;
       }
 
       union()
+<<<<<<< .merge_file_K4LOfE
       translate([13+10/2,0,-50+4.76+4.64-10/2+6])
       cube(size=[10,100,10], center=true );
 
       translate([-13-10/2,0,-50+4.76+4.64-10/2+6])
       cube(size=[10,100,10], center=true );
+=======
+      translate([13/2+10/2,0,-50+4.76+4.64-10/2+6])
+      cube(size=[10,10,10], center=true );
+
+      translate([-13/2-10/2,0,-50+4.76+4.64-10/2+6])
+      cube(size=[10,10,10], center=true );
+>>>>>>> .merge_file_sSWurE
     }
   }
 }
