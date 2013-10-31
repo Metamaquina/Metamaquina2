@@ -146,7 +146,7 @@ for (i=[-1,1])
 /*
   translate([XCarPosition, 0, XCarriage_height-36])
   rotate([0,0,90])
-/*
+*/
   translate([0,0,-24])
 
   translate([i*18,-29/2, 6])

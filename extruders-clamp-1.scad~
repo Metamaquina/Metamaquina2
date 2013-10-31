@@ -97,7 +97,7 @@ module extrudersclamp(){
 
 
 //descomente para ver no carrinho
-/*
+
 color("red") 
 translate([XCarPosition, 0, XCarriage_height-2*thickness]){
   rotate([0,0,90]){
@@ -108,7 +108,7 @@ translate([XCarPosition, 0, XCarriage_height-2*thickness]){
   }
 }
 %XCarriage();
-*/
+
 
 //descomente para ver apenas a peça
 
