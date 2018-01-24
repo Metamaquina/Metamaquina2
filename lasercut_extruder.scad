@@ -12,11 +12,11 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program. If not, see <http://www.gnu.org/licenses/>.
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use <NEMA.scad>;
 use <608zz_bearing.scad>;
@@ -133,7 +133,7 @@ module idler_back_face(){
       translate([i*HandleWidth/6,R])
       hull(){
         M4_hole();
-        translate([0,-5]) M4_hole();
+        translate([0,-5]) M4_hole();      
       }
 
     for (i=[-1,1])
@@ -654,3 +654,4 @@ module lasercut_extruder(){
 
 lasercut_extruder();
 %translate([0,0,-thickness]) XCarriage_bottom_sheet();
+

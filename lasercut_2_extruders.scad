@@ -591,7 +591,7 @@ module hobbed_bolt(){
 }
 
 washer_thickness = 1.5;
-module gears_Bowden(){
+module lasercut_extruder(){
   rotate(90)
   union(){
     translate([0,2.5*thickness]){
@@ -607,12 +607,12 @@ module gears_Bowden(){
       }
     }*/
 
-    //nozzle();
+    nozzle();
 
-    translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
-    rotate([0,extruder_gear_angle])
-    rotate([90,0])
-    extruder_gear(teeth=37);
+    //translate([hobbed_bolt_position[0], -5*thickness/2 - 2*washer_thickness, hobbed_bolt_position[1]])
+    //rotate([0,extruder_gear_angle])
+    //rotate([90,0])
+    //extruder_gear(teeth=37);
 
     //translate([hobbed_bolt_position[0], 5*thickness/2, hobbed_bolt_position[1]]) hobbed_bolt();
 
@@ -624,20 +624,20 @@ module gears_Bowden(){
     //rotate([90,0])
     //608zz_bearing(true);
 
-    translate([motor_position[0], -thickness/2, motor_position[1]])
-    rotate([-90,0])
-    rotate(motor_angle)
-    {
-      NEMA17_subassembly();
+    //translate([motor_position[0], -thickness/2, motor_position[1]])
+    //rotate([-90,0])
+    //rotate(motor_angle)
+    //{
+      //NEMA17_subassembly();
 
-      translate([0,0,-2*thickness - 2*washer_thickness])
-      rotate([180,0])
-      motor_gear(teeth=11);
-    }
+      //translate([0,0,-2*thickness - 2*washer_thickness])
+      //rotate([180,0])
+     // motor_gear(teeth=11);
+    //}
   }
 }
 
-  gears_Bowden();
+  lasercut_extruder();
 
-//%translate([0,0,-thickness]) XCarriage_bottom_sheet();
+%translate([0,0,-thickness]) XCarriage_bottom_sheet();
 

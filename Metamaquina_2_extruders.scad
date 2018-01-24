@@ -31,9 +31,9 @@ use <tslot.scad>;
 //subassemblies
 include <endstop.h>;
 include <heated_bed.h>;
-use <lasercut_extruder.scad>;
+use <lasercut_2_extruders.scad>;
 use <RAMBo.scad>;
-use <jhead.scad>;
+use <jheads.scad>;
 
 //parts
 include <NEMA.h>;
@@ -43,7 +43,7 @@ include <bolts.h>;
 include <nuts.h>;
 include <spacer.h>;
 include <lm8uu_bearing.h>;
-include <jhead.h>;
+include <jheads.h>;
 include <PowerSupply.h>;
 use <608zz_bearing.scad>;
 use <domed_cap_nuts.scad>;
@@ -189,6 +189,7 @@ XPlatform_width = X_rods_distance + X_rods_diameter + 2*margin + 2* tslot_extra;
 XEnd_width = XPlatform_width+XEnd_extra_width;
 num_extruders = 1;
 extra_extruder_length = 50; //TODO
+extruder_dist = 9; //distance between extruders
 XCarriage_padding = 6;
 XCarriage_nozzle_hole_radius = 20;
 XCarriage_width = XPlatform_width + 22;
@@ -841,7 +842,7 @@ module heatedbed_bottompanel_hole(){
 
 module zip_tie_holes(d=12, r=m3_diameter/2, bom=true){
   if (bom)
-    BillOfMaterials("Zip tie", ref="T18R_6.6_P");
+    BillOfMaterials("Zip tie");
 
   for (i=[-1,1]){
     translate([0,d/2*i])
@@ -849,10 +850,9 @@ module zip_tie_holes(d=12, r=m3_diameter/2, bom=true){
   }
 }
 
-module YBelt(){
-  //TODO: pass length to BOM as a float - update integration script to support it
-  BillOfMaterials("GT2 belt for the Y axis", 1, ref="GT2B6");
-  
+module Y_belt(){
+  BillOfMaterials("GT2 belt for the Y axis");
+
   translate([2.5, 0, 66])
   rotate([0,0,-90])
   rotate([90,0,0]){
@@ -1324,18 +1324,20 @@ module XCarriage_plainface(sandwich=false){
     }
 
     //central hole for extruder nozzle
-    hull(){
-      translate([-(num_extruders-1)*extra_extruder_length/2,0])
-      circle(r=XCarriage_nozzle_hole_radius);
+    union(){
+      translate([-(num_extruders-1)*extra_extruder_length/2+extruder_dist,0])
+      //#circle(r=XCarriage_nozzle_hole_radius);
+      #circle(r=13/2); //sara
 
-      translate([(num_extruders-1)*extra_extruder_length/2,0])
-      circle(r=XCarriage_nozzle_hole_radius);
+      translate([-(num_extruders-1)*extra_extruder_length/2-extruder_dist,0])
+      //circle(r=XCarriage_nozzle_hole_radius);
+      #circle(r=13/2); //sara
     }
 
     //hole for extruder wiring
     if (!sandwich){
-      translate([-25,-10])
-      rounded_square([25,20], corners=[5,5,5,5]);
+      translate([-10,8])
+      #rounded_square([20,6], corners=[3,3,2,2]);
     }
 
     for (i=[-1,1])
@@ -1344,17 +1346,10 @@ module XCarriage_plainface(sandwich=false){
       if (sandwich){
         x_carriage_screw_driver_access_holes();
       } else {
-        //holes for attaching and removing the wade extruder
-          translate([0,-1*extruder_mount_holes_distance/2])
+        //holes for attaching the wade extruder
+        for (i=[-1,1])
+          translate([0,i*extruder_mount_holes_distance/2])
           circle(r=m4_diameter/2);
-
-        hull(){
-          translate([0,1*extruder_mount_holes_distance/2])
-          circle(r=m4_diameter/2);
-
-          translate([0,1*extruder_mount_holes_distance/2+10])
-          circle(r=m4_diameter/2);
-        }
       }
 
     //holes for spacers
@@ -1374,13 +1369,11 @@ module XCarriage_bottom_face(){
   difference(){
     XCarriage_plainface();
 
-    union(){
-      //holes for beltclamps
-      translate ([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width]){
+    //holes for beltclamps
+    translate ([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + belt_width]){
       for (i=[-1.3,1.3])
         translate([i*(XCarriage_lm8uu_distance/2+10), 0])
         beltclamp_holes();
-      }
     }
 
     //these are for making sure the motor wires are not broken by the machine's constant movement:
@@ -1468,9 +1461,9 @@ module RodEnd_ZBottomRight_sheet(){
 
 module RodEndTop_sheet(){
   {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x25 bolt", 3, ref="H_M3x25");
-    BillOfMaterials("M3 washer", 3, ref="AL_M3");
-    BillOfMaterials("M3 lock-nut", 3, ref="P_M3_ny");
+    BillOfMaterials("M3x25 bolt", 3);
+    BillOfMaterials("M3 washer", 3);
+    BillOfMaterials("M3 lock-nut", 3);
   }
 
   material("lasercut")
@@ -1486,9 +1479,9 @@ module SecondaryRodEndTop_sheet(){
 
 module RodEndBottom_sheet(){
   {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x20 bolt", 2, ref="H_M3x20");
-    BillOfMaterials("M3 washer", 2, ref="AL_M3");
-    BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
+    BillOfMaterials("M3x20 bolt", 2);
+    BillOfMaterials("M3 washer", 2);
+    BillOfMaterials("M3 lock-nut", 2);
   }
 
   material("lasercut")
@@ -1572,9 +1565,9 @@ module MachineTopPanel_sheet(){
   BillOfMaterials(category="Lasercut wood", partname="Machine Top Panel");
 
   {//TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x25 bolt", 2, ref="H_M3x25");
-    BillOfMaterials("M3 washer", 2, ref="AL_M3");
-    BillOfMaterials("M3 lock-nut", 2, ref="P_M3_ny");
+    BillOfMaterials("M3x25 bolt", 2);
+    BillOfMaterials("M3 washer", 2);
+    BillOfMaterials("M3 lock-nut", 2);
   }
 
   translate([0,-XZStage_offset,machine_height]){
@@ -1805,10 +1798,9 @@ module belt(bearings, belt_width=5){
   }
 }
 
-module XBelt(){
-  //TODO: pass length to BOM as a float - update integration script to support it
-  BillOfMaterials("GT2 belt for the Y axis", 1, ref="GT2B6");
-  
+module Xbelt(){
+  BillOfMaterials("GT2 belt for the X axis");
+
   translate([0, XPlatform_width/2 + XEnd_extra_width - belt_offset + thickness]){
     rotate([90,0,0]){
       belt(bearings = [
@@ -1825,14 +1817,14 @@ module XBelt(){
   }
 }
 
-//!XBelt();
+//!Xbelt();
 
 module belt_clamps(){
 
   { //TODO: Add these parts to the CAD model
-    BillOfMaterials("M3x20 bolt", 4, ref="H_M3x20"); //TODO: check this!
-    BillOfMaterials("M3 lock-nut", 4, ref="P_M3_ny");
-    BillOfMaterials("M3 washer", 4, ref="AL_M3");
+    BillOfMaterials("M3x20 bolt", 4); //TODO: check this!
+    BillOfMaterials("M3 lock-nut", 4);
+    BillOfMaterials("M3 washer", 4);
   }
 
   for (i=[-1,1])
@@ -1888,14 +1880,8 @@ module XEndIdler_ZLink(){
   ZLink();
 }
 
-// consider cutting error for bars length specification
-// TODO: render geometry accordingly to specs
-function closest(x) = floor(x+0.5);
-function corrected_length(x, supplier_error=2) = closest(x) - supplier_error;
-function corrected_Ylength(x, supplier_error=2) = closest(x) + supplier_error;
-
 module XRods(){
-  BillOfMaterials(str("M8x",corrected_length(X_rod_length),"mm Smooth Rod"), 2, ref=str("MM2_XROD_",corrected_length(X_rod_length)));
+  BillOfMaterials(str("M8x",X_rod_length,"mm Smooth Rod"), 2);
   material("metal"){
     translate([0, -X_rods_distance/2, thickness + X_rod_height])
     rotate([0,90,0])
@@ -1908,7 +1894,7 @@ module XRods(){
 }
 
 module YRods(){
-  BillOfMaterials(str("M8x",corrected_Ylength(Y_rod_length),"mm Smooth Rod"), 2, ref=str("MM2_YROD_",corrected_Ylength(Y_rod_length)));
+  BillOfMaterials(str("M8x",Y_rod_length,"mm Smooth Rod"), 2);
   material("metal"){
     translate([Y_rods_distance/2, -Y_rod_length/2, Y_rod_height])
     rotate([-90,0,0])
@@ -1921,7 +1907,7 @@ module YRods(){
 }
 
 module ZRods(){
-  BillOfMaterials(str("M8x",corrected_length(Z_rod_length),"mm Smooth Rod"), 2, ref=str("MM2_ZROD_",corrected_length(Z_rod_length)));
+  BillOfMaterials(str("M8x",Z_rod_length,"mm Smooth Rod"), 2);
 
   material("metal"){
     translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2, -XZStage_offset, BottomPanel_zoffset])
@@ -1932,13 +1918,8 @@ module ZRods(){
   }
 }
 
-//TODO:count threaded rods properly
-//this counts for the total ammount of uncut bars used to manufacture one MM2
-BillOfMaterials("M8 threaded rod (1m)", 2, ref="BR_M8");
-
 module ZBars(){
-  
-  BillOfMaterials(str("M8x",corrected_length(Z_bar_length),"mm Threaded Rod"), 2);
+  BillOfMaterials(str("M8x",Z_bar_length,"mm Threaded Rod"), 2);
 
   material("threaded metal"){
     translate([-machine_x_dim/2 + thickness + lm8uu_diameter/2 + z_rod_z_bar_distance, -XZStage_offset, BottomPanel_zoffset + motor_shaft_length])
@@ -1953,18 +1934,18 @@ module XCarriage(){
   { //Add these parts to the CAD model
 
     //to keep the bearing sandwich in place
-    BillOfMaterials("M3 lock-nut", 6, ref="P_M3_ny");
-    BillOfMaterials("M3x30 bolt", 6, ref="H_M3x30");
-    BillOfMaterials("M3 washer", 6, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 6);
+    BillOfMaterials("M3x30 bolt", 6);
+    BillOfMaterials("M3 washer", 6);
 
     //to attach the extruder to the XCarriage
-    BillOfMaterials("M4x25 bolt", 2, ref="H_M4x25");
-    BillOfMaterials("M4 lock-nut", 2, ref="P_M4_ny");
+    BillOfMaterials("M4x20 bolt", 2);
+    BillOfMaterials("M4 lock-nut", 2);
   }
 
   //lasercut parts:
   translate([XCarPosition, 0, XCarriage_height]){
-    XCarriage_bottom_sheet();
+    XCarriage_bottom_sheet(); //sara
     translate([0,0,-bearing_sandwich_spacing]){
 
       for (i=[-1,1]){
@@ -1978,20 +1959,17 @@ module XCarriage(){
       }
 
       translate([0,0,-thickness])
-      XCarriage_sandwich_sheet();
+      XCarriage_sandwich_sheet(); //sara
     }
-
-    if (render_extruder)
-      translate([0,0,thickness])
-      lasercut_extruder();
   }
 
   {
     //TODO: Add these microswitches to the CAD model
-    BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM",2, ref="KW11-3Z-5-3T" ); //XMIN & XMAX
-    BillOfMaterials("M2.5x16 bolt, cylindric head",4, ref="H_M2.5x16_cl");
-    BillOfMaterials("M2.5 nut",4, ref="P_M2.5");
-    BillOfMaterials("M2.5 washer",4, ref="AL_M2.5");
+    BillOfMaterials("Microswitch KW11-3Z-5-3T - 18MM",2 ); //XMIN & XMAX
+
+    BillOfMaterials("M2.5x16 bolt",4);
+    BillOfMaterials("M2.5 lock-nut",4);
+    BillOfMaterials("M2.5 washer",4);
   }
 
   //plastic parts:
@@ -2002,15 +1980,15 @@ module XCarriage(){
 
   //nozzle:
   translate([XCarPosition, 0, XCarriage_height + thickness])
-  J_head_assembly();
+  J_head_assembly();//sara
 }
 
-module XPlatform(){
-  //submodules: 
+module XPlatform(){ 
+  //submodules:
   XEndMotor();
   XEndIdler();
-  XCarriage();
-  XBelt();
+  XCarriage(); //sara
+  Xbelt();
 
   //lasercut parts:
   XPlatform_bottom_sheet();
@@ -2020,7 +1998,7 @@ module XPlatform(){
 }
 
 module GT2_pulley(){
-  BillOfMaterials("GT2 pulley 6mm x 16 teeth", ref="GT2P6x16_Al");
+  BillOfMaterials("GT2 pulley");
 
   material("metal"){
     //TODO: implement-me!
@@ -2036,16 +2014,16 @@ module XEndMotor(){
   { //TODO: Add these parts to the CAD model
 
     //For the Z-Link
-    BillOfMaterials("Compression Spring CM1516 (D=11.1mm, length=18mm)", 1, ref="CM1516");
-    BillOfMaterials("M8 nut", 2, ref="P_M8");
-    BillOfMaterials("M3x12 bolt", 2, ref="H_M3x12");
-    BillOfMaterials("M3 nut", 2, ref="P_M3");
-    BillOfMaterials("M3 washer", 2, ref="AL_M3");
+    BillOfMaterials("Compression Spring CM1516 (D=11.1mm, length=18mm)", 1);
+    BillOfMaterials("M8 nut", 2);
+    BillOfMaterials("M3x12 bolt", 2);
+    BillOfMaterials("M3 nut", 2);
+    BillOfMaterials("M3 washer", 2);
 
     //to keep the bearing sandwiches in place
-    BillOfMaterials("M3 lock-nut", 4, ref="P_M3_ny");
-    BillOfMaterials("M3x30 bolt", 4, ref="H_M3x30");
-    BillOfMaterials("M3 washer", 4, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 4);
+    BillOfMaterials("M3x30 bolt", 4);
+    BillOfMaterials("M3 washer", 4);
   }
 
   translate([-machine_x_dim/2,0]){
@@ -2073,24 +2051,22 @@ module XEndIdler(){
   { //TODO: Add these parts to the CAD model
 
     //For the Z-Link
+    BillOfMaterials("Compression Spring CM1516 (D=11.1mm, length=18mm)", 1);
+    BillOfMaterials("M8 nut", 2);
+    BillOfMaterials("M3x12 bolt", 2);
+    BillOfMaterials("M3 nut", 2);
+    BillOfMaterials("M3 washer", 2);
 
-    //For the Z-Link
-    BillOfMaterials("Compression Spring CM1516 (D=11.1mm, length=18mm)", 1, ref="CM1516");
-    BillOfMaterials("M8 nut", 2, ref="P_M8");
-    BillOfMaterials("M3x12 bolt", 2, ref="H_M3x12");
-    BillOfMaterials("M3 nut", 2, ref="P_M3");
-    BillOfMaterials("M3 washer", 2, ref="AL_M3");
-
-    //to keep the bearing sandwiches in place
-    BillOfMaterials("M3 lock-nut", 4, ref="P_M3_ny");
-    BillOfMaterials("M3x30 bolt", 4, ref="H_M3x30");
-    BillOfMaterials("M3 washer", 4, ref="AL_M3");
+    //to keep the bearing sandwiche in place
+    BillOfMaterials("M3 lock-nut", 4);
+    BillOfMaterials("M3x30 bolt", 4);
+    BillOfMaterials("M3 washer", 4);
 
     //for the idler bearing assembly
-    BillOfMaterials("M8x35 bolt", 1, ref="H_M8x35");
-    BillOfMaterials("M8 lock-nut", 1, ref="P_M8_ny");
-    BillOfMaterials("M8 washer", 5, ref="AL_M8");//TODO: check this!
-    BillOfMaterials("M8 mudguard washer", 2, ref="AF_M8");
+    BillOfMaterials("M3x? bolt", 1);
+    BillOfMaterials("M8 lock-nut", 1);
+    BillOfMaterials("M8 washer", 5);//TODO: check this!
+    BillOfMaterials("M8 mudguard washer", 2);
   }
 
 
@@ -2184,19 +2160,19 @@ module YPlatform_subassembly(){
   { //Add these parts to the CAD model
 
     //to keep the left bearing sandwiches in place
-    BillOfMaterials("M3 lock-nut", 3, ref="P_M3_ny");
-    BillOfMaterials("M3x30 bolt", 3, ref="H_M3x30");
-    BillOfMaterials("M3 washer", 3, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 3);
+    BillOfMaterials("M3x30 bolt", 3);
+    BillOfMaterials("M3 washer", 3);
 
     //to keep the right bearing sandwiches in place
-    BillOfMaterials("M3 lock-nut", 4, ref="P_M3_ny");
-    BillOfMaterials("M3x30 bolt", 4, ref="H_M3x30");
-    BillOfMaterials("M3 washer", 4, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 4);
+    BillOfMaterials("M3x30 bolt", 4);
+    BillOfMaterials("M3 washer", 4);
 
     //for the Y belt clamps
-    BillOfMaterials("M3 lock-nut", 4, ref="P_M3_ny");
-    BillOfMaterials("M3x25 bolt", 4, ref="H_M3x25");
-    BillOfMaterials("M3 washer", 4, ref="AL_M3");
+    BillOfMaterials("M3 lock-nut", 4);
+    BillOfMaterials("M3x25 bolt", 4);
+    BillOfMaterials("M3 washer", 4);
   }
 
   translate([0,0,100-15]){ /*TODO*/
@@ -2421,7 +2397,7 @@ module YPlatform(){
     YPlatform_subassembly();
   }
   YRods();
-  YBelt();
+  Y_belt();
 }
 
 module bearing_assembly(rear){
@@ -2510,7 +2486,7 @@ module nut_cap_assembly(){
 }
 
 module FrontBars(){
-  BillOfMaterials(str("M8x",corrected_length(horiz_bars_length),"mm Threaded Rod"), 2);
+  BillOfMaterials(str("M8x",horiz_bars_length,"mm Threaded Rod"), 2);
 
   translate([0, -RightPanel_basewidth/2 + bar_cut_length, base_bars_Zdistance + base_bars_height]){
 
@@ -2555,7 +2531,7 @@ module FrontBars(){
 }
 
 module RearBars(){
-  BillOfMaterials(str("M8x",corrected_length(horiz_bars_length),"mm Threaded Rod"), 2);
+  BillOfMaterials(str("M8x",horiz_bars_length,"mm Threaded Rod"), 2);
 
   translate([0, RightPanel_basewidth/2 - bar_cut_length, base_bars_Zdistance + base_bars_height]){
 
@@ -2698,8 +2674,8 @@ module BottomRearNutsAndWashers(){
 module FrontAssembly(){
   FrontBars();
 
-  FrontTopBar();
-  FrontBottomBars();
+//  FrontTopBar();
+  //FrontBottomBars();
 }
 
 //!YMotorAssembly();
@@ -2713,8 +2689,8 @@ module YMotorAssembly(){
 
 module RearAssembly(){
   RearBars();
-  RearTopBar();
-  RearBottomBar();
+//  RearTopBar();
+//  RearBottomBar();
 
   translate([-7, RightPanel_basewidth/2 - bar_cut_length, 60 + feetheight +12])
   rotate([0,-90,0])
@@ -2811,6 +2787,11 @@ module Metamaquina2(){
 //rotate([0,0,cos(360*time)*60])
 Metamaquina2();
 
+supplier_error = 2; // means bars&rods are cut with a typical error of +/- 2mm
+function closest(x) = floor(x+0.5);
+function corrected_length(x) = closest(x) - supplier_error;
+function corrected_Ylength(x) = closest(x) + supplier_error;
+
 echo(str("XCarriage dimensions: ", XCarriage_width, " mm x ", XCarriage_length, " mm"));
 
 echo(str("barras roscadas M8:"));
@@ -2854,12 +2835,6 @@ if (render_calibration_guide){
 
 use <FilamentSpoolHolder.scad>;
 
-
-translate([400,0,0])
-rotate([0,0,90]){
-  FilamentSpoolHolder();
-  FilamentSpool();
-}
-
+FilamentSpoolHolder();
 
 
