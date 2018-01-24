@@ -32,7 +32,7 @@ module extrudersclamp(r1 = 12/2, r2 = 16/2, h = 12, largura_total = 84, comprime
   BillOfMaterials(category="3D Printed", partname="Extruders Clamp", ref="");
 
   material("ABS"){
-    translate([0,0,h/2])
+    translate([0,-0.5,h/2])
     difference(){
 
       union(){
@@ -40,7 +40,7 @@ module extrudersclamp(r1 = 12/2, r2 = 16/2, h = 12, largura_total = 84, comprime
         for (i=[-1,1]){
           hull(){
             //círculo menor - extremidades
-            translate([i*33,0,-h/2])
+            translate([i*35,0,-h/2])
             cylinder(h = h, r = m3_diameter*3/2, $fn=80);
 
             //círculo maior para colocação dos parafusos 
@@ -55,25 +55,22 @@ module extrudersclamp(r1 = 12/2, r2 = 16/2, h = 12, largura_total = 84, comprime
           //
           translate([i*largura_total/10,0,-4.5/2])
           if (pescoco){
-            hull(){
-              translate([0,0,0])
-              cylinder(h = 0.1, r = r2, $fn=80);
 
-              translate([0,0,4.3])
-              cylinder(h = 0.1, r = r1, $fn=80);
-            }
+            translate([0,0,0])
+            cylinder(h = 4.5, r = r1-0.5/8, $fn=80);
+
           } else {
 
-            cylinder(h = 4.5, r = r2, $fn=80);
+            cylinder(h = 4.5, r = r2-0.5/8, $fn=80);
           }
 
           //define profundidade do sulco para encaixe do extrusor
-          translate([i*largura_total/10,0,4.5/2-0.2])
-          cylinder(h = (h-4.5)/2+0.4, r = r2, $fn=80);
+          translate([i*largura_total/10,0,4.5/2-0.1])
+          cylinder(h = (h-4.5)/2+0.2, r = r2-0.5/8, $fn=80);
 
           //furo para encaixe dos extrusores
           translate([i*largura_total/10,0,-(h-4.5)/2-4.5/2-0.1])
-          cylinder(h = (h-4.5)/2+0.2, r = r2, $fn=80);
+          cylinder(h = (h-4.5)/2+0.2, r = r2-0.5/8, $fn=80);
 
           //furo parafusos que prendem os bicos
           translate([-largura_total/3.5*i,7, 0])
@@ -86,19 +83,19 @@ module extrudersclamp(r1 = 12/2, r2 = 16/2, h = 12, largura_total = 84, comprime
             //chanfro para a alocação das cabeças dos parafusos e das porcas
             translate([-largura_total/3.5*i,-55, 0])
             rotate([90,0])
-            cylinder(r=3.8, h=100, $fn=6, center=true);
+            cylinder(r=4, h=100, $fn=6, center=true);
 
           } else {
 
             //chanfro para a alocação das cabeças dos parafusos e das porcas
             translate([-largura_total/3.5*i,-55, 0])
             rotate([90,0])
-            cylinder(r=6.3/2, h=100, center=true);
+            cylinder(r=4, h=100, center=true);
           }
 
           //furo parafusos que prendem no carrinho
-          translate([i*32,0,-h/2-1])
-          cylinder(h = h+2, r = m4_diameter/2, $fn=80);   
+          translate([i*35,0,-h/2-1])
+          cylinder(h = h+2, r = m3_diameter/2, $fn=80);   
 
           //divide ao meio
           translate([-largura_total/2,0,-h/2-1])
@@ -121,42 +118,45 @@ XCarriage_height = thickness + X_rod_height + lm8uu_diameter/2;
 /*
 color("red") 
 translate([XCarPosition, 0, XCarriage_height-2*thickness]){
-  rotate([0,0,90]){
-    extrudersclamp();
-    mirror([0,1,0]){extrudersclamp(pescoco=true, porca=true);}
-  }
-}
+extrudersclamp();
+mirror([0,1,0]){extrudersclamp(pescoco=true);}
+
 %XCarriage();
 */
 
 //descomente para ver apenas a peça
-
-  translate([0,-0.5,0])
-  extrudersclamp(pescoco=true, porca=false);
-
-  translate([0,0.5,0])
-  mirror([0,1,0])
-  extrudersclamp(pescoco=true, porca=true);
+/*
+extrudersclamp(pescoco=true, porca=false);
+mirror([0,1,0]){extrudersclamp(pescoco=true, porca=true);}
+*/
 
 //parafuro e porca lateral
 /*
 largura_total = 84;
 
 for (i=[-1,1])
-/*
-  translate([XCarPosition, 0, XCarriage_height-36])
-  rotate([0,0,90])
-/*
-  translate([0,0,-24])
+  //translate([XCarPosition, 0, XCarriage_height-36])
 
-  translate([i*18,-29/2, 6])
+  translate([largura_total/3.5*i,-7, 6])
   rotate([0, i*90])
-
-  translate([-largura_total/3.5*i,7,(thickness+6)/2])
+  //translate([-largura_total/3.5*i,-55, 0])
   rotate([90,0]){
-    M3x16();
+    M3x20();
+    translate([0,0,-16])
     rotate(30,0,0)
-    translate([0,0,-14])
     M3_nut();
 }
 */
+
+//descomente para ver a impressão
+
+  translate([0,2,0])
+  rotate([270,0,0])
+  #extrudersclamp(pescoco=true, porca=false);
+
+  translate([0,-14,0])
+  rotate([270,0,0])
+  #extrudersclamp(pescoco=true, porca=true);
+
+
+//mirror([0,1,0]){extrudersclamp(pescoco=true, porca=true);}
