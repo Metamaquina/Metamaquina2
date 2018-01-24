@@ -24,11 +24,16 @@ use <nozzle.scad>;
 
 module J_head_assembly(){
 
+extruders_distance=9;
+
   J_head_body();
 
   translate([-0.15625*25.4,-0.250*25.4,-50])
   //translate([1*extruders_distance,0,0])
   v4nozzle();
+
+
+ // #v4nozzle();
 }
 
 module J_head_body(){
@@ -97,7 +102,7 @@ r9=(5/8)*inch/2;
         cylinder(h=h9,r=r9);
         }
       }
-/*
+
       union()
 <<<<<<< .merge_file_K4LOfE
       translate([13+10/2,0,-50+4.76+4.64-10/2+6])
@@ -112,10 +117,8 @@ r9=(5/8)*inch/2;
       translate([-13/2-10/2,0,-50+4.76+4.64-10/2+6])
       cube(size=[10,10,10], center=true );
 >>>>>>> .merge_file_sSWurE
-*/
     }
   }
 }
 
 J_head_assembly();
-
