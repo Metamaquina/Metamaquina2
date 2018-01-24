@@ -643,7 +643,7 @@ module lasercut_extruder(){
     rotate([-90,0])
     rotate(motor_angle)
     {
-      %NEMA17_subassembly();
+      NEMA17_subassembly();
 
       translate([0,0,-2*thickness - 2*washer_thickness])
       rotate([180,0])
