@@ -4,7 +4,7 @@ Metamaquina2
 
 Metamaquina 2 - fully parametric 3D printer
 
-![A photo of the Metamaquina 2 desktop 3d printer](http://metamaquina.com.br/site/wp-content/themes/ifeaturepro/includes/landing-page/img/header.jpg)
+![A photo of the Metamaquina 2 desktop 3d printer](img/MM2_header.jpg)
 
 Manufacturing Instructions
 ==========================
